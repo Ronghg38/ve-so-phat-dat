@@ -1,311 +1,1317 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vé Số Phát Đạt</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f3f4f6;color:#222;font-family:Arial,sans-serif;font-size:14px}
-header{background:#c40000;color:#fff;padding:12px 10px;text-align:center;position:sticky;top:0;z-index:10}
-header h1{font-size:21px;margin:0 0 4px}
-header p{margin:0;font-size:12px}
-nav{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:68px;z-index:9}
-nav button{border:0;background:#fff;padding:11px 15px;white-space:nowrap;font-weight:bold;color:#444}
-nav button.active{color:#c40000;border-bottom:3px solid #c40000}
-.container{max-width:900px;margin:auto;padding:10px}
-.title{font-size:18px;font-weight:bold;color:#c40000;margin:5px 0 8px}
-.date{background:#fff;border-radius:8px;padding:9px;margin-bottom:9px;text-align:center;font-weight:bold;border:1px solid #e5e5e5}
-.station-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:9px}
-.station-tabs button{flex:0 0 auto;border:1px solid #ddd;background:#fff;border-radius:7px;padding:8px 11px;font-weight:bold}
-.station-tabs button.active{background:#c40000;color:#fff;border-color:#c40000}
-.schedule{background:#fff;border:1px solid #ddd;border-radius:8px;padding:9px;margin-bottom:10px}
-.schedule h3{margin:0 0 7px;color:#c40000;font-size:14px}
-.days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.day{background:#f7f7f7;border-radius:5px;padding:6px 2px;text-align:center;font-size:11px}
-.day strong{display:block;color:#c40000;margin-bottom:3px}
-.day.today{background:#ffe7e7;border:1px solid #e33}
-.card{background:#fff;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;overflow:hidden}
-.card-head{background:#c40000;color:#fff;padding:9px 10px;display:flex;justify-content:space-between;align-items:center}
-.card-head strong{font-size:16px}
-.badge{background:#fff;color:#c40000;padding:3px 7px;border-radius:12px;font-size:11px}
-table{width:100%;border-collapse:collapse}
-th,td{border-bottom:1px solid #eee;padding:7px 5px;text-align:center}
-th{width:60px;background:#fafafa;color:#777;font-size:12px;font-weight:normal}
-td{font-weight:bold;letter-spacing:.4px}
-.db td{font-size:20px;color:#c40000;padding:9px}
-.small{font-size:12px;color:#777;text-align:center;margin:7px 0}
-.section{display:none}
-.section.active{display:block}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
-.stat{background:#fff;border:1px solid #ddd;border-radius:7px;padding:9px;text-align:center}
-.stat b{display:block;font-size:18px;color:#c40000}
-.check{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px}
-.check input,.check select{width:100%;padding:10px;margin:5px 0 8px;border:1px solid #ccc;border-radius:6px}
-.check button{width:100%;padding:10px;border:0;border-radius:6px;background:#c40000;color:#fff;font-weight:bold}
-.result{margin-top:8px;text-align:center;font-weight:bold}
-footer{text-align:center;color:#888;font-size:11px;padding:18px 5px}
+
+body{
+  margin:0;
+  background:#f5f5f5;
+  color:#222;
+  font:14px Arial,sans-serif
+}
+
+.header{
+  background:#d40000;
+  color:#fff;
+  text-align:center;
+  padding:10px 8px
+}
+
+.header h1{
+  margin:0;
+  font-size:22px
+}
+
+.header p{
+  margin:4px 0 0;
+  font-size:12px
+}
+
+.nav{
+  background:#fff;
+  display:flex;
+  overflow:auto;
+  border-bottom:1px solid #ddd;
+  position:sticky;
+  top:0;
+  z-index:5
+}
+
+.nav button{
+  border:0;
+  background:#fff;
+  padding:11px 14px;
+  white-space:nowrap;
+  font-weight:bold
+}
+
+.nav .on{
+  color:#d40000;
+  border-bottom:3px solid #d40000
+}
+
+.wrap{
+  max-width:1000px;
+  margin:auto;
+  padding:8px
+}
+
+.bar{
+  background:#d40000;
+  color:#fff;
+  padding:9px 10px;
+  font-weight:bold;
+  font-size:16px;
+  border-radius:5px 5px 0 0;
+  margin-top:6px
+}
+
+.date{
+  background:#fff;
+  text-align:center;
+  padding:8px;
+  font-weight:bold;
+  border:1px solid #ddd;
+  border-top:0
+}
+
+.tabs{
+  display:flex;
+  gap:5px;
+  overflow:auto;
+  background:#fff;
+  padding:7px;
+  border:1px solid #ddd;
+  border-top:0
+}
+
+.tabs button{
+  flex:0 0 auto;
+  border:1px solid #ccc;
+  background:#fafafa;
+  border-radius:5px;
+  padding:7px 12px;
+  font-weight:bold
+}
+
+.tabs button.on{
+  background:#d40000;
+  color:#fff;
+  border-color:#d40000
+}
+
+.panel{
+  display:none
+}
+
+.panel.on{
+  display:block
+}
+
+.table-wrap{
+  overflow-x:auto;
+  background:#fff;
+  border:1px solid #ddd
+}
+
+.compact{
+  width:100%;
+  min-width:650px;
+  border-collapse:collapse;
+  table-layout:fixed
+}
+
+.compact th,
+.compact td{
+  border:1px solid #ddd;
+  text-align:center;
+  padding:6px 4px
+}
+
+.compact th{
+  width:55px;
+  background:#f7f7f7;
+  font-size:12px
+}
+
+.compact thead th{
+  background:#eee;
+  color:#b40000;
+  font-size:14px
+}
+
+.compact td{
+  font-weight:bold;
+  line-height:1.45
+}
+
+.compact .db td{
+  font-size:18px;
+  color:#d40000
+}
+
+.compact .db th{
+  color:#d40000
+}
+
+.notice{
+  font-size:11px;
+  color:#777;
+  text-align:center;
+  padding:7px
+}
+
+.schedule{
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:6px;
+  margin-top:8px;
+  padding:8px
+}
+
+.schedule h3{
+  margin:0 0 7px;
+  color:#d40000;
+  font-size:14px
+}
+
+.schedule-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px
+}
+
+.sday{
+  background:#f7f7f7;
+  border-radius:4px;
+  padding:5px 2px;
+  text-align:center;
+  font-size:10px;
+  min-height:48px
+}
+
+.sday b{
+  display:block;
+  color:#d40000;
+  margin-bottom:3px
+}
+
+.region{
+  display:none
+}
+
+.region.on{
+  display:block
+}
+
+.card{
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:6px;
+  overflow:hidden
+}
+
+.card h3{
+  margin:0;
+  background:#d40000;
+  color:#fff;
+  padding:9px;
+  text-align:center
+}
+
+.result{
+  width:100%;
+  border-collapse:collapse
+}
+
+.result th,
+.result td{
+  border-bottom:1px solid #eee;
+  padding:7px;
+  text-align:center
+}
+
+.result th{
+  width:55px;
+  color:#777;
+  font-weight:normal
+}
+
+.result td{
+  font-weight:bold;
+  line-height:1.5
+}
+
+.result .db td{
+  font-size:21px;
+  color:#d40000
+}
+
+.foot{
+  text-align:center;
+  color:#888;
+  font-size:11px;
+  padding:15px
+}
+
 @media(max-width:600px){
- body{font-size:13px}
- header h1{font-size:19px}
- .days{grid-template-columns:repeat(4,1fr)}
- th{width:50px}
- td{font-size:13px}
- .db td{font-size:18px}
+
+  .header h1{
+    font-size:19px
+  }
+
+  .compact{
+    min-width:650px
+  }
+
+  .schedule-grid{
+    grid-template-columns:repeat(4,1fr)
+  }
+
 }
 </style>
 </head>
+
 <body>
 
-<header>
+<div class="header">
   <h1>🎯 VÉ SỐ PHÁT ĐẠT</h1>
-  <p>Kết quả xổ số • Lịch từng đài • Dò vé</p>
-</header>
-
-<nav>
-  <button class="active" onclick="showRegion('mn',this)">Miền Nam</button>
-  <button onclick="showRegion('mt',this)">Miền Trung</button>
-  <button onclick="showRegion('mb',this)">Miền Bắc</button>
-  <button onclick="showRegion('stats',this)">Thống kê</button>
-  <button onclick="showRegion('check',this)">Dò vé</button>
-</nav>
-
-<div class="container">
-
-<!-- MIỀN NAM -->
-<section id="mn" class="section active">
-  <div class="title">XỔ SỐ MIỀN NAM</div>
-  <div class="date">Thứ 4 • 23/09/2026</div>
-
-  <div class="station-tabs">
-    <button class="active" onclick="showStation('mn-all',this)">3 đài</button>
-    <button onclick="showStation('dong-nai',this)">Đồng Nai</button>
-    <button onclick="showStation('can-tho',this)">Cần Thơ</button>
-    <button onclick="showStation('soc-trang',this)">Sóc Trăng</button>
-  </div>
-
-  <div id="mn-all" class="station-view">
-    <div class="card">
-      <div class="card-head"><strong>ĐỒNG NAI</strong><span class="badge">23/09</span></div>
-      <table>
-        <tr><th>G.8</th><td>14</td></tr>
-        <tr><th>G.7</th><td>778</td></tr>
-        <tr><th>G.6</th><td>6394 • 1954 • 0247</td></tr>
-        <tr><th>G.5</th><td>6421</td></tr>
-        <tr><th>G.4</th><td>10692 • 34215 • 46927 • 92993 • 53119 • 48129 • 71845</td></tr>
-        <tr><th>G.3</th><td>66244 • 57727</td></tr>
-        <tr><th>G.2</th><td>72389</td></tr>
-        <tr><th>G.1</th><td>44953</td></tr>
-        <tr class="db"><th>ĐB</th><td>567326</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <div class="card-head"><strong>CẦN THƠ</strong><span class="badge">23/09</span></div>
-      <table>
-        <tr><th>G.8</th><td>50</td></tr>
-        <tr><th>G.7</th><td>843</td></tr>
-        <tr><th>G.6</th><td>4535 • 3835 • 5078</td></tr>
-        <tr><th>G.5</th><td>9174</td></tr>
-        <tr><th>G.4</th><td>85468 • 24481 • 93448 • 63122 • 54072 • 71243 • 48066</td></tr>
-        <tr><th>G.3</th><td>69203 • 12962</td></tr>
-        <tr><th>G.2</th><td>08214</td></tr>
-        <tr><th>G.1</th><td>56175</td></tr>
-        <tr class="db"><th>ĐB</th><td>157293</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <div class="card-head"><strong>SÓC TRĂNG</strong><span class="badge">23/09</span></div>
-      <table>
-        <tr><th>G.8</th><td>66</td></tr>
-        <tr><th>G.7</th><td>744</td></tr>
-        <tr><th>G.6</th><td>7699 • 8469 • 4721</td></tr>
-        <tr><th>G.5</th><td>7242</td></tr>
-        <tr><th>G.4</th><td>62307 • 91798 • 09559 • 43811 • 23682 • 52990 • 45011</td></tr>
-        <tr><th>G.3</th><td>01301 • 62146</td></tr>
-        <tr><th>G.2</th><td>84117</td></tr>
-        <tr><th>G.1</th><td>61832</td></tr>
-        <tr class="db"><th>ĐB</th><td>523291</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div id="dong-nai" class="station-view" style="display:none"></div>
-  <div id="can-tho" class="station-view" style="display:none"></div>
-  <div id="soc-trang" class="station-view" style="display:none"></div>
-
-  <div class="schedule">
-    <h3>📅 LỊCH MIỀN NAM</h3>
-    <div class="days">
-      <div class="day"><strong>T2</strong>TP.HCM<br>Đồng Tháp<br>Cà Mau</div>
-      <div class="day"><strong>T3</strong>Bến Tre<br>Vũng Tàu<br>Bạc Liêu</div>
-      <div class="day today"><strong>T4</strong>Đồng Nai<br>Cần Thơ<br>Sóc Trăng</div>
-      <div class="day"><strong>T5</strong>Tây Ninh<br>An Giang<br>Bình Thuận</div>
-      <div class="day"><strong>T6</strong>Vĩnh Long<br>Bình Dương<br>Trà Vinh</div>
-      <div class="day"><strong>T7</strong>TP.HCM<br>Long An<br>Bình Phước<br>Hậu Giang</div>
-      <div class="day"><strong>CN</strong>Tiền Giang<br>Kiên Giang<br>Đà Lạt</div>
-    </div>
-  </div>
-</section>
-
-<!-- MIỀN TRUNG -->
-<section id="mt" class="section">
-  <div class="title">XỔ SỐ MIỀN TRUNG</div>
-  <div class="date">Thứ 4 • 23/09/2026</div>
-  <div class="station-tabs">
-    <button class="active" onclick="showStation('mt-all',this)">2 đài</button>
-    <button onclick="showStation('da-nang',this)">Đà Nẵng</button>
-    <button onclick="showStation('khanh-hoa',this)">Khánh Hòa</button>
-  </div>
-
-  <div id="mt-all" class="station-view">
-    <div class="card">
-      <div class="card-head"><strong>ĐÀ NẴNG</strong><span class="badge">23/09</span></div>
-      <table>
-        <tr><th>G.8</th><td>58</td></tr><tr><th>G.7</th><td>587</td></tr>
-        <tr><th>G.6</th><td>4625 • 4606 • 9673</td></tr><tr><th>G.5</th><td>7725</td></tr>
-        <tr><th>G.4</th><td>93257 • 19528 • 28931 • 44759 • 03443 • 78386 • 43038</td></tr>
-        <tr><th>G.3</th><td>23603 • 12203</td></tr><tr><th>G.2</th><td>35390</td></tr>
-        <tr><th>G.1</th><td>50920</td></tr><tr class="db"><th>ĐB</th><td>756753</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <div class="card-head"><strong>KHÁNH HÒA</strong><span class="badge">23/09</span></div>
-      <table>
-        <tr><th>G.8</th><td>35</td></tr><tr><th>G.7</th><td>376</td></tr>
-        <tr><th>G.6</th><td>8070 • 3241 • 0194</td></tr><tr><th>G.5</th><td>4135</td></tr>
-        <tr><th>G.4</th><td>90825 • 80982 • 78875 • 79043 • 95986 • 21931 • 28413</td></tr>
-        <tr><th>G.3</th><td>01756 • 64635</td></tr><tr><th>G.2</th><td>61216</td></tr>
-        <tr><th>G.1</th><td>10518</td></tr><tr class="db"><th>ĐB</th><td>001370</td></tr>
-      </table>
-    </div>
-  </div>
-  <div id="da-nang" class="station-view" style="display:none"></div>
-  <div id="khanh-hoa" class="station-view" style="display:none"></div>
-
-  <div class="schedule">
-    <h3>📅 LỊCH MIỀN TRUNG</h3>
-    <div class="days">
-      <div class="day"><strong>T2</strong>Huế<br>Phú Yên</div>
-      <div class="day"><strong>T3</strong>Đắk Lắk<br>Quảng Nam</div>
-      <div class="day today"><strong>T4</strong>Đà Nẵng<br>Khánh Hòa</div>
-      <div class="day"><strong>T5</strong>Bình Định<br>Quảng Bình<br>Quảng Trị</div>
-      <div class="day"><strong>T6</strong>Gia Lai<br>Ninh Thuận</div>
-      <div class="day"><strong>T7</strong>Đà Nẵng<br>Quảng Ngãi<br>Đắk Nông</div>
-      <div class="day"><strong>CN</strong>Khánh Hòa<br>Kon Tum<br>Huế</div>
-    </div>
-  </div>
-</section>
-
-<!-- MIỀN BẮC -->
-<section id="mb" class="section">
-  <div class="title">XỔ SỐ MIỀN BẮC</div>
-  <div class="date">Thứ 4 • 23/09/2026</div>
-  <div class="station-tabs">
-    <button class="active" onclick="showStation('mb-all',this)">Hôm nay</button>
-    <button onclick="showStation('bac-ninh',this)">Bắc Ninh</button>
-  </div>
-  <div id="mb-all" class="station-view">
-    <div class="card">
-      <div class="card-head"><strong>BẮC NINH</strong><span class="badge">23/09</span></div>
-      <table>
-        <tr><th>G.7</th><td>34 • 21 • 60 • 89</td></tr>
-        <tr><th>G.6</th><td>188 • 567 • 903</td></tr>
-        <tr><th>G.5</th><td>6524 • 1687 • 0357 • 9642 • 0185 • 9078</td></tr>
-        <tr><th>G.4</th><td>9109 • 5019 • 9268 • 2494</td></tr>
-        <tr><th>G.3</th><td>44485 • 42689 • 50615 • 61435 • 30004 • 30420</td></tr>
-        <tr><th>G.2</th><td>60738 • 52745</td></tr>
-        <tr><th>G.1</th><td>23650</td></tr>
-        <tr class="db"><th>ĐB</th><td>76406</td></tr>
-      </table>
-    </div>
-  </div>
-  <div id="bac-ninh" class="station-view" style="display:none"></div>
-  <div class="schedule">
-    <h3>📅 LỊCH MIỀN BẮC</h3>
-    <div class="days">
-      <div class="day"><strong>T2</strong>Hà Nội</div>
-      <div class="day"><strong>T3</strong>Quảng Ninh</div>
-      <div class="day today"><strong>T4</strong>Bắc Ninh</div>
-      <div class="day"><strong>T5</strong>Hà Nội</div>
-      <div class="day"><strong>T6</strong>Hải Phòng</div>
-      <div class="day"><strong>T7</strong>Nam Định</div>
-      <div class="day"><strong>CN</strong>Thái Bình</div>
-    </div>
-  </div>
-</section>
-
-<section id="stats" class="section">
-  <div class="title">THỐNG KÊ</div>
-  <div class="stats">
-    <div class="stat"><b>3</b>Đài MN</div>
-    <div class="stat"><b>2</b>Đài MT</div>
-    <div class="stat"><b>1</b>Đài MB</div>
-  </div>
-  <div class="card">
-    <div class="card-head"><strong>Vé Số Phát Đạt</strong></div>
-    <div style="padding:12px">Khu vực thống kê có thể mở rộng thêm đầu/đuôi, tần suất và lịch sử từng đài.</div>
-  </div>
-</section>
-
-<section id="check" class="section">
-  <div class="title">DÒ VÉ</div>
-  <div class="check">
-    <label>Chọn miền</label>
-    <select id="regionCheck">
-      <option>Miền Nam</option><option>Miền Trung</option><option>Miền Bắc</option>
-    </select>
-    <label>Nhập 2 số cuối vé</label>
-    <input id="ticket" maxlength="2" inputmode="numeric" placeholder="Ví dụ: 93">
-    <button onclick="checkTicket()">DÒ VÉ</button>
-    <div id="checkResult" class="result"></div>
-  </div>
-</section>
-
-<footer>© 2026 Vé Số Phát Đạt • Giao diện tối ưu điện thoại</footer>
+  <p>Kết quả • Lịch từng đài • Xem riêng từng đài</p>
 </div>
 
+<div class="nav">
+
+  <button class="on"
+  onclick="region('mn',this)">
+  Miền Nam
+  </button>
+
+  <button onclick="region('mt',this)">
+  Miền Trung
+  </button>
+
+  <button onclick="region('mb',this)">
+  Miền Bắc
+  </button>
+
+</div>
+
+<div class="wrap">
+
+<!-- ================= MIỀN NAM ================= -->
+
+<section id="mn" class="region on">
+
+<div class="bar">
+🔴 MIỀN NAM
+</div>
+
+<div class="date">
+Thứ Tư • 23/09/2026
+</div>
+
+<div class="tabs">
+
+<button class="on"
+onclick="stationTab('mnall',this)">
+3 ĐÀI
+</button>
+
+<button onclick="stationTab('mn-dn',this)">
+ĐỒNG NAI
+</button>
+
+<button onclick="stationTab('mn-ct',this)">
+CẦN THƠ
+</button>
+
+<button onclick="stationTab('mn-st',this)">
+SÓC TRĂNG
+</button>
+
+</div>
+
+
+<!-- 3 ĐÀI -->
+
+<div id="mnall" class="panel on">
+
+<div class="table-wrap">
+
+<table class="compact">
+
+<thead>
+
+<tr>
+<th>Giải</th>
+<th>Đồng Nai</th>
+<th>Cần Thơ</th>
+<th>Sóc Trăng</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<th>G.8</th>
+<td>14</td>
+<td>50</td>
+<td>66</td>
+</tr>
+
+<tr>
+<th>G.7</th>
+<td>778</td>
+<td>843</td>
+<td>744</td>
+</tr>
+
+<tr>
+<th>G.6</th>
+
+<td>
+6394<br>
+1954<br>
+0247
+</td>
+
+<td>
+4535<br>
+3835<br>
+5078
+</td>
+
+<td>
+7699<br>
+8469<br>
+4721
+</td>
+
+</tr>
+
+<tr>
+<th>G.5</th>
+<td>6421</td>
+<td>9174</td>
+<td>7242</td>
+</tr>
+
+<tr>
+<th>G.4</th>
+
+<td>
+10692<br>
+34215<br>
+46927<br>
+92993<br>
+53119<br>
+48129<br>
+71845
+</td>
+
+<td>
+85468<br>
+24481<br>
+93448<br>
+63122<br>
+54072<br>
+71243<br>
+48066
+</td>
+
+<td>
+62307<br>
+91798<br>
+09559<br>
+43811<br>
+23682<br>
+52990<br>
+45011
+</td>
+
+</tr>
+
+<tr>
+<th>G.3</th>
+
+<td>
+66244<br>
+57727
+</td>
+
+<td>
+69203<br>
+12962
+</td>
+
+<td>
+01301<br>
+62146
+</td>
+
+</tr>
+
+<tr>
+<th>G.2</th>
+<td>72389</td>
+<td>08214</td>
+<td>84117</td>
+</tr>
+
+<tr>
+<th>G.1</th>
+<td>44953</td>
+<td>56175</td>
+<td>61832</td>
+</tr>
+
+<tr class="db">
+
+<th>ĐB</th>
+
+<td>567326</td>
+<td>157293</td>
+<td>523291</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="notice">
+← Vuốt ngang để xem đủ 3 đài →
+</div>
+
+</div>
+
+
+<!-- ĐỒNG NAI -->
+
+<div id="mn-dn" class="panel">
+
+<div class="card">
+
+<h3>
+ĐỒNG NAI • 23/09/2026
+</h3>
+
+<table class="result">
+
+<tr>
+<th>G.8</th>
+<td>14</td>
+</tr>
+
+<tr>
+<th>G.7</th>
+<td>778</td>
+</tr>
+
+<tr>
+<th>G.6</th>
+<td>6394 • 1954 • 0247</td>
+</tr>
+
+<tr>
+<th>G.5</th>
+<td>6421</td>
+</tr>
+
+<tr>
+<th>G.4</th>
+<td>
+10692 • 34215 • 46927 •
+92993 • 53119 • 48129 • 71845
+</td>
+</tr>
+
+<tr>
+<th>G.3</th>
+<td>66244 • 57727</td>
+</tr>
+
+<tr>
+<th>G.2</th>
+<td>72389</td>
+</tr>
+
+<tr>
+<th>G.1</th>
+<td>44953</td>
+</tr>
+
+<tr class="db">
+<th>ĐB</th>
+<td>567326</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- CẦN THƠ -->
+
+<div id="mn-ct" class="panel">
+
+<div class="card">
+
+<h3>
+CẦN THƠ • 23/09/2026
+</h3>
+
+<table class="result">
+
+<tr>
+<th>G.8</th>
+<td>50</td>
+</tr>
+
+<tr>
+<th>G.7</th>
+<td>843</td>
+</tr>
+
+<tr>
+<th>G.6</th>
+<td>4535 • 3835 • 5078</td>
+</tr>
+
+<tr>
+<th>G.5</th>
+<td>9174</td>
+</tr>
+
+<tr>
+<th>G.4</th>
+<td>
+85468 • 24481 • 93448 •
+63122 • 54072 • 71243 • 48066
+</td>
+</tr>
+
+<tr>
+<th>G.3</th>
+<td>69203 • 12962</td>
+</tr>
+
+<tr>
+<th>G.2</th>
+<td>08214</td>
+</tr>
+
+<tr>
+<th>G.1</th>
+<td>56175</td>
+</tr>
+
+<tr class="db">
+<th>ĐB</th>
+<td>157293</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- SÓC TRĂNG -->
+
+<div id="mn-st" class="panel">
+
+<div class="card">
+
+<h3>
+SÓC TRĂNG • 23/09/2026
+</h3>
+
+<table class="result">
+
+<tr>
+<th>G.8</th>
+<td>66</td>
+</tr>
+
+<tr>
+<th>G.7</th>
+<td>744</td>
+</tr>
+
+<tr>
+<th>G.6</th>
+<td>7699 • 8469 • 4721</td>
+</tr>
+
+<tr>
+<th>G.5</th>
+<td>7242</td>
+</tr>
+
+<tr>
+<th>G.4</th>
+<td>
+62307 • 91798 • 09559 •
+43811 • 23682 • 52990 • 45011
+</td>
+</tr>
+
+<tr>
+<th>G.3</th>
+<td>01301 • 62146</td>
+</tr>
+
+<tr>
+<th>G.2</th>
+<td>84117</td>
+</tr>
+
+<tr>
+<th>G.1</th>
+<td>61832</td>
+</tr>
+
+<tr class="db">
+<th>ĐB</th>
+<td>523291</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- LỊCH MIỀN NAM -->
+
+<div class="schedule">
+
+<h3>
+📅 LỊCH XỔ SỐ TỪNG ĐÀI MIỀN NAM
+</h3>
+
+<div class="schedule-grid">
+
+<div class="sday">
+<b>T2</b>
+TP.HCM<br>
+Đồng Tháp<br>
+Cà Mau
+</div>
+
+<div class="sday">
+<b>T3</b>
+Bến Tre<br>
+Vũng Tàu<br>
+Bạc Liêu
+</div>
+
+<div class="sday">
+<b>T4</b>
+Đồng Nai<br>
+Cần Thơ<br>
+Sóc Trăng
+</div>
+
+<div class="sday">
+<b>T5</b>
+Tây Ninh<br>
+An Giang<br>
+Bình Thuận
+</div>
+
+<div class="sday">
+<b>T6</b>
+Vĩnh Long<br>
+Bình Dương<br>
+Trà Vinh
+</div>
+
+<div class="sday">
+<b>T7</b>
+TP.HCM<br>
+Long An<br>
+Bình Phước<br>
+Hậu Giang
+</div>
+
+<div class="sday">
+<b>CN</b>
+Tiền Giang<br>
+Kiên Giang<br>
+Đà Lạt
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= MIỀN TRUNG ================= -->
+
+<section id="mt" class="region">
+
+<div class="bar">
+🟠 MIỀN TRUNG
+</div>
+
+<div class="date">
+Thứ Tư • 23/09/2026
+</div>
+
+<div class="tabs">
+
+<button class="on"
+onclick="stationTab('mtall',this)">
+2 ĐÀI
+</button>
+
+<button onclick="stationTab('mt-dn',this)">
+ĐÀ NẴNG
+</button>
+
+<button onclick="stationTab('mt-kh',this)">
+KHÁNH HÒA
+</button>
+
+</div>
+
+
+<div id="mtall" class="panel on">
+
+<div class="table-wrap">
+
+<table class="compact">
+
+<thead>
+
+<tr>
+<th>Giải</th>
+<th>Đà Nẵng</th>
+<th>Khánh Hòa</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<th>G.8</th>
+<td>58</td>
+<td>35</td>
+</tr>
+
+<tr>
+<th>G.7</th>
+<td>587</td>
+<td>376</td>
+</tr>
+
+<tr>
+<th>G.6</th>
+
+<td>
+4625<br>
+4606<br>
+9673
+</td>
+
+<td>
+8070<br>
+3241<br>
+0194
+</td>
+
+</tr>
+
+<tr>
+<th>G.5</th>
+<td>7725</td>
+<td>4135</td>
+</tr>
+
+<tr>
+<th>G.4</th>
+
+<td>
+93257<br>
+19528<br>
+28931<br>
+44759<br>
+03443<br>
+78386<br>
+43038
+</td>
+
+<td>
+90825<br>
+80982<br>
+78875<br>
+79043<br>
+95986<br>
+21931<br>
+28413
+</td>
+
+</tr>
+
+<tr>
+<th>G.3</th>
+
+<td>
+23603<br>
+12203
+</td>
+
+<td>
+01756<br>
+64635
+</td>
+
+</tr>
+
+<tr>
+<th>G.2</th>
+<td>35390</td>
+<td>61216</td>
+</tr>
+
+<tr>
+<th>G.1</th>
+<td>50920</td>
+<td>10518</td>
+</tr>
+
+<tr class="db">
+<th>ĐB</th>
+<td>756753</td>
+<td>001370</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div id="mt-dn" class="panel">
+
+<div class="card">
+
+<h3>
+ĐÀ NẴNG • 23/09/2026
+</h3>
+
+<table class="result">
+
+<tr><th>G.8</th><td>58</td></tr>
+<tr><th>G.7</th><td>587</td></tr>
+<tr><th>G.6</th><td>4625 • 4606 • 9673</td></tr>
+<tr><th>G.5</th><td>7725</td></tr>
+
+<tr>
+<th>G.4</th>
+<td>
+93257 • 19528 • 28931 •
+44759 • 03443 • 78386 • 43038
+</td>
+</tr>
+
+<tr><th>G.3</th><td>23603 • 12203</td></tr>
+<tr><th>G.2</th><td>35390</td></tr>
+<tr><th>G.1</th><td>50920</td></tr>
+
+<tr class="db">
+<th>ĐB</th>
+<td>756753</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div id="mt-kh" class="panel">
+
+<div class="card">
+
+<h3>
+KHÁNH HÒA • 23/09/2026
+</h3>
+
+<table class="result">
+
+<tr><th>G.8</th><td>35</td></tr>
+<tr><th>G.7</th><td>376</td></tr>
+<tr><th>G.6</th><td>8070 • 3241 • 0194</td></tr>
+<tr><th>G.5</th><td>4135</td></tr>
+
+<tr>
+<th>G.4</th>
+<td>
+90825 • 80982 • 78875 •
+79043 • 95986 • 21931 • 28413
+</td>
+</tr>
+
+<tr><th>G.3</th><td>01756 • 64635</td></tr>
+<tr><th>G.2</th><td>61216</td></tr>
+<tr><th>G.1</th><td>10518</td></tr>
+
+<tr class="db">
+<th>ĐB</th>
+<td>001370</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="schedule">
+
+<h3>
+📅 LỊCH XỔ SỐ TỪNG ĐÀI MIỀN TRUNG
+</h3>
+
+<div class="schedule-grid">
+
+<div class="sday">
+<b>T2</b>
+Huế<br>
+Phú Yên
+</div>
+
+<div class="sday">
+<b>T3</b>
+Đắk Lắk<br>
+Quảng Nam
+</div>
+
+<div class="sday">
+<b>T4</b>
+Đà Nẵng<br>
+Khánh Hòa
+</div>
+
+<div class="sday">
+<b>T5</b>
+Bình Định<br>
+Quảng Bình<br>
+Quảng Trị
+</div>
+
+<div class="sday">
+<b>T6</b>
+Gia Lai<br>
+Ninh Thuận
+</div>
+
+<div class="sday">
+<b>T7</b>
+Đà Nẵng<br>
+Quảng Ngãi<br>
+Đắk Nông
+</div>
+
+<div class="sday">
+<b>CN</b>
+Khánh Hòa<br>
+Kon Tum<br>
+Huế
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= MIỀN BẮC ================= -->
+
+<section id="mb" class="region">
+
+<div class="bar">
+🔵 MIỀN BẮC
+</div>
+
+<div class="date">
+Thứ Tư • 23/09/2026
+</div>
+
+<div class="tabs">
+
+<button class="on"
+onclick="stationTab('mball',this)">
+TỔNG HỢP
+</button>
+
+<button onclick="stationTab('mb-bn',this)">
+BẮC NINH
+</button>
+
+</div>
+
+
+<div id="mball" class="panel on">
+
+<div class="table-wrap">
+
+<table class="compact">
+
+<thead>
+
+<tr>
+<th>Giải</th>
+<th>Bắc Ninh</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<th>G.7</th>
+<td>34 • 21 • 60 • 89</td>
+</tr>
+
+<tr>
+<th>G.6</th>
+<td>188 • 567 • 903</td>
+</tr>
+
+<tr>
+<th>G.5</th>
+<td>
+6524 • 1687 • 0357 •
+9642 • 0185 • 9078
+</td>
+</tr>
+
+<tr>
+<th>G.4</th>
+<td>9109 • 5019 • 9268 • 2494</td>
+</tr>
+
+<tr>
+<th>G.3</th>
+<td>
+44485 • 42689 • 50615 •
+61435 • 30004 • 30420
+</td>
+</tr>
+
+<tr>
+<th>G.2</th>
+<td>60738 • 52745</td>
+</tr>
+
+<tr>
+<th>G.1</th>
+<td>23650</td>
+</tr>
+
+<tr class="db">
+<th>ĐB</th>
+<td>76406</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div id="mb-bn" class="panel">
+
+<div class="card">
+
+<h3>
+BẮC NINH • 23/09/2026
+</h3>
+
+<table class="result">
+
+<tr>
+<th>G.7</th>
+<td>34 • 21 • 60 • 89</td>
+</tr>
+
+<tr>
+<th>G.6</th>
+<td>188 • 567 • 903</td>
+</tr>
+
+<tr>
+<th>G.5</th>
+<td>
+6524 • 1687 • 0357 •
+9642 • 0185 • 9078
+</td>
+</tr>
+
+<tr>
+<th>G.4</th>
+<td>9109 • 5019 • 9268 • 2494</td>
+</tr>
+
+<tr>
+<th>G.3</th>
+<td>
+44485 • 42689 • 50615 •
+61435 • 30004 • 30420
+</td>
+</tr>
+
+<tr>
+<th>G.2</th>
+<td>60738 • 52745</td>
+</tr>
+
+<tr>
+<th>G.1</th>
+<td>23650</td>
+</tr>
+
+<tr class="db">
+<th>ĐB</th>
+<td>76406</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div class="schedule">
+
+<h3>
+📅 LỊCH XỔ SỐ MIỀN BẮC
+</h3>
+
+<div class="schedule-grid">
+
+<div class="sday">
+<b>T2</b>
+Hà Nội
+</div>
+
+<div class="sday">
+<b>T3</b>
+Quảng Ninh
+</div>
+
+<div class="sday">
+<b>T4</b>
+Bắc Ninh
+</div>
+
+<div class="sday">
+<b>T5</b>
+Hà Nội
+</div>
+
+<div class="sday">
+<b>T6</b>
+Hải Phòng
+</div>
+
+<div class="sday">
+<b>T7</b>
+Nam Định
+</div>
+
+<div class="sday">
+<b>CN</b>
+Thái Bình
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<div class="foot">
+© 2026 Vé Số Phát Đạt
+</div>
+
+</div>
+
+
 <script>
-const stationData={
-'dong-nai':{name:'ĐỒNG NAI',html:`<div class="card"><div class="card-head"><strong>ĐỒNG NAI</strong><span class="badge">23/09</span></div><table>
-<tr><th>G.8</th><td>14</td></tr><tr><th>G.7</th><td>778</td></tr><tr><th>G.6</th><td>6394 • 1954 • 0247</td></tr><tr><th>G.5</th><td>6421</td></tr><tr><th>G.4</th><td>10692 • 34215 • 46927 • 92993 • 53119 • 48129 • 71845</td></tr><tr><th>G.3</th><td>66244 • 57727</td></tr><tr><th>G.2</th><td>72389</td></tr><tr><th>G.1</th><td>44953</td></tr><tr class="db"><th>ĐB</th><td>567326</td></tr></table></div>`},
-'can-tho':{name:'CẦN THƠ',html:`<div class="card"><div class="card-head"><strong>CẦN THƠ</strong><span class="badge">23/09</span></div><table>
-<tr><th>G.8</th><td>50</td></tr><tr><th>G.7</th><td>843</td></tr><tr><th>G.6</th><td>4535 • 3835 • 5078</td></tr><tr><th>G.5</th><td>9174</td></tr><tr><th>G.4</th><td>85468 • 24481 • 93448 • 63122 • 54072 • 71243 • 48066</td></tr><tr><th>G.3</th><td>69203 • 12962</td></tr><tr><th>G.2</th><td>08214</td></tr><tr><th>G.1</th><td>56175</td></tr><tr class="db"><th>ĐB</th><td>157293</td></tr></table></div>`},
-'soc-trang':{name:'SÓC TRĂNG',html:`<div class="card"><div class="card-head"><strong>SÓC TRĂNG</strong><span class="badge">23/09</span></div><table>
-<tr><th>G.8</th><td>66</td></tr><tr><th>G.7</th><td>744</td></tr><tr><th>G.6</th><td>7699 • 8469 • 4721</td></tr><tr><th>G.5</th><td>7242</td></tr><tr><th>G.4</th><td>62307 • 91798 • 09559 • 43811 • 23682 • 52990 • 45011</td></tr><tr><th>G.3</th><td>01301 • 62146</td></tr><tr><th>G.2</th><td>84117</td></tr><tr><th>G.1</th><td>61832</td></tr><tr class="db"><th>ĐB</th><td>523291</td></tr></table></div>`},
-'da-nang':{name:'ĐÀ NẴNG',html:`<div class="card"><div class="card-head"><strong>ĐÀ NẴNG</strong><span class="badge">23/09</span></div><table>
-<tr><th>G.8</th><td>58</td></tr><tr><th>G.7</th><td>587</td></tr><tr><th>G.6</th><td>4625 • 4606 • 9673</td></tr><tr><th>G.5</th><td>7725</td></tr><tr><th>G.4</th><td>93257 • 19528 • 28931 • 44759 • 03443 • 78386 • 43038</td></tr><tr><th>G.3</th><td>23603 • 12203</td></tr><tr><th>G.2</th><td>35390</td></tr><tr><th>G.1</th><td>50920</td></tr><tr class="db"><th>ĐB</th><td>756753</td></tr></table></div>`},
-'khanh-hoa':{name:'KHÁNH HÒA',html:`<div class="card"><div class="card-head"><strong>KHÁNH HÒA</strong><span class="badge">23/09</span></div><table>
-<tr><th>G.8</th><td>35</td></tr><tr><th>G.7</th><td>376</td></tr><tr><th>G.6</th><td>8070 • 3241 • 0194</td></tr><tr><th>G.5</th><td>4135</td></tr><tr><th>G.4</th><td>90825 • 80982 • 78875 • 79043 • 95986 • 21931 • 28413</td></tr><tr><th>G.3</th><td>01756 • 64635</td></tr><tr><th>G.2</th><td>61216</td></tr><tr><th>G.1</th><td>10518</td></tr><tr class="db"><th>ĐB</th><td>001370</td></tr></table></div>`},
-'bac-ninh':{name:'BẮC NINH',html:`<div class="card"><div class="card-head"><strong>BẮC NINH</strong><span class="badge">23/09</span></div><table>
-<tr><th>G.7</th><td>34 • 21 • 60 • 89</td></tr><tr><th>G.6</th><td>188 • 567 • 903</td></tr><tr><th>G.5</th><td>6524 • 1687 • 0357 • 9642 • 0185 • 9078</td></tr><tr><th>G.4</th><td>9109 • 5019 • 9268 • 2494</td></tr><tr><th>G.3</th><td>44485 • 42689 • 50615 • 61435 • 30004 • 30420</td></tr><tr><th>G.2</th><td>60738 • 52745</td></tr><tr><th>G.1</th><td>23650</td></tr><tr class="db"><th>ĐB</th><td>76406</td></tr></table></div>`}
-};
 
-for(const [id,d] of Object.entries(stationData)){
-  const el=document.getElementById(id);
-  if(el) el.innerHTML=d.html;
+function region(id,btn){
+
+  document
+  .querySelectorAll('.region')
+  .forEach(x=>x.classList.remove('on'));
+
+  document
+  .getElementById(id)
+  .classList.add('on');
+
+  document
+  .querySelectorAll('.nav button')
+  .forEach(x=>x.classList.remove('on'));
+
+  btn.classList.add('on');
+
+  window.scrollTo(0,0);
 }
 
-function showRegion(id,btn){
- document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
- if(btn) btn.classList.add('active');
- window.scrollTo({top:0,behavior:'smooth'});
+
+function stationTab(id,btn){
+
+  const section=btn.closest('.region');
+
+  section
+  .querySelectorAll('.panel')
+  .forEach(x=>x.classList.remove('on'));
+
+  document
+  .getElementById(id)
+  .classList.add('on');
+
+  btn
+  .parentElement
+  .querySelectorAll('button')
+  .forEach(x=>x.classList.remove('on'));
+
+  btn.classList.add('on');
+
 }
-function showStation(id,btn){
- const section=btn.closest('.section');
- section.querySelectorAll('.station-view').forEach(x=>x.style.display='none');
- document.getElementById(id).style.display='block';
- section.querySelectorAll('.station-tabs button').forEach(x=>x.classList.remove('active'));
- btn.classList.add('active');
-}
-function checkTicket(){
- const v=document.getElementById('ticket').value.trim();
- const r=document.getElementById('checkResult');
- if(!/^\d{2}$/.test(v)){r.textContent='Vui lòng nhập đúng 2 số.';r.style.color='#c40000';return;}
- r.textContent='Đã nhận số '+v+'. Chức năng dò đầy đủ từng giải sẽ được kết nối dữ liệu tự động.';
- r.style.color='#16833b';
-}
+
 </script>
+
 </body>
 </html>
