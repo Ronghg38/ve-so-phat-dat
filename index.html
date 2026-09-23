@@ -1,91 +1,448 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vé Số Phát Đạt</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #222;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vé Số Phát Đạt - Xổ Số Hôm Nay</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f4f6;
+    color:#222;
+}
+
+/* HEADER */
+.header{
+    background:linear-gradient(135deg,#c40000,#e60000);
+    color:white;
+    padding:18px 12px;
+    text-align:center;
+    box-shadow:0 2px 8px #999;
+}
+
+.logo{
+    font-size:27px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.slogan{
+    margin-top:6px;
+    font-size:14px;
+}
+
+/* MENU */
+.menu{
+    background:#fff;
+    display:flex;
+    overflow-x:auto;
+    box-shadow:0 2px 5px #ccc;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.menu a{
+    min-width:100px;
+    text-align:center;
+    padding:14px 8px;
+    text-decoration:none;
+    color:#333;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.menu a:hover{
+    background:#ffeaea;
+    color:#c40000;
+}
+
+/* CONTAINER */
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:15px;
+}
+
+/* TITLE */
+.title{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-left:5px solid #c40000;
+    border-radius:8px;
+    box-shadow:0 2px 6px #ddd;
+}
+
+.title h2{
+    margin:0;
+    color:#c40000;
+}
+
+.date{
+    margin-top:6px;
+    color:#666;
+    font-size:14px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:18px;
+    box-shadow:0 2px 7px #ddd;
+    border-top:4px solid #c40000;
+}
+
+.card h3{
+    margin-top:0;
+    color:#c40000;
+}
+
+.card p{
+    line-height:1.6;
+    color:#555;
+}
+
+/* BUTTON */
+.button{
+    display:inline-block;
+    background:#c40000;
+    color:white;
+    padding:10px 15px;
+    border-radius:6px;
+    text-decoration:none;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+.button:hover{
+    background:#9d0000;
+}
+
+/* DO VE */
+.check{
+    background:white;
+    margin-top:15px;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 7px #ddd;
+}
+
+.check h2{
+    color:#c40000;
+    margin-top:0;
+}
+
+input,select{
+    width:100%;
+    padding:13px;
+    margin:7px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:16px;
+}
+
+.check button{
+    width:100%;
+    padding:13px;
+    background:#c40000;
+    color:white;
+    border:0;
+    border-radius:6px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#result{
+    margin-top:15px;
+    padding:12px;
+    background:#fff4f4;
+    border-radius:6px;
+    display:none;
+}
+
+/* NOTE */
+.note{
+    margin-top:15px;
+    background:#fff8df;
+    border-left:4px solid #e5a900;
+    padding:12px;
+    border-radius:5px;
+    font-size:14px;
+}
+
+/* FOOTER */
+.footer{
+    margin-top:25px;
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:25px 15px;
+}
+
+.footer strong{
+    color:#ff3333;
+}
+
+/* MOBILE */
+@media(max-width:700px){
+    .grid{
+        grid-template-columns:1fr;
     }
 
-    header {
-      background: #c00;
-      color: white;
-      padding: 18px;
-      text-align: center;
+    .logo{
+        font-size:23px;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 28px;
+    .container{
+        padding:10px;
     }
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
+    .card{
+        padding:15px;
     }
-
-    .box {
-      background: white;
-      padding: 20px;
-      margin-bottom: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px #ddd;
-    }
-
-    h2 {
-      color: #c00;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #222;
-      color: white;
-      margin-top: 30px;
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  <h1>VÉ SỐ PHÁT ĐẠT</h1>
-  <p>Xổ số hôm nay - Thống kê - Kết quả</p>
+<!-- HEADER -->
+<header class="header">
+    <div class="logo">🎯 VÉ SỐ PHÁT ĐẠT</div>
+    <div class="slogan">
+        Xổ số hôm nay • Kết quả • Thống kê
+    </div>
 </header>
 
-<div class="container">
+<!-- MENU -->
+<nav class="menu">
+    <a href="#home">Trang chủ</a>
+    <a href="#miennam">Miền Nam</a>
+    <a href="#mientrung">Miền Trung</a>
+    <a href="#mienbac">Miền Bắc</a>
+    <a href="#dove">Dò vé</a>
+</nav>
 
-  <div class="box">
-    <h2>Xổ số hôm nay</h2>
-    <p>Chào mừng bạn đến với Vé Số Phát Đạt.</p>
-  </div>
+<main class="container" id="home">
 
-  <div class="box">
-    <h2>Miền Nam</h2>
-    <p>Cập nhật kết quả và thống kê xổ số Miền Nam.</p>
-  </div>
+    <!-- TIÊU ĐỀ -->
+    <section class="title">
+        <h2>📢 XỔ SỐ HÔM NAY</h2>
+        <div class="date" id="today"></div>
+    </section>
 
-  <div class="box">
-    <h2>Miền Trung</h2>
-    <p>Cập nhật kết quả và thống kê xổ số Miền Trung.</p>
-  </div>
+    <!-- 3 MIỀN -->
+    <section class="grid">
 
-  <div class="box">
-    <h2>Miền Bắc</h2>
-    <p>Cập nhật kết quả và thống kê xổ số Miền Bắc.</p>
-  </div>
+        <div class="card" id="miennam">
+            <h3>🔴 Xổ Số Miền Nam</h3>
+            <p>
+                Cập nhật kết quả xổ số Miền Nam,
+                thống kê đầu đuôi và các thông tin xổ số.
+            </p>
+            <a class="button" href="#dove">Xem kết quả</a>
+        </div>
 
-</div>
+        <div class="card" id="mientrung">
+            <h3>🟠 Xổ Số Miền Trung</h3>
+            <p>
+                Cập nhật kết quả xổ số Miền Trung
+                và thông tin thống kê theo từng đài.
+            </p>
+            <a class="button" href="#dove">Xem kết quả</a>
+        </div>
 
-<footer>
-  © 2026 Vé Số Phát Đạt
+        <div class="card" id="mienbac">
+            <h3>🔵 Xổ Số Miền Bắc</h3>
+            <p>
+                Kết quả xổ số Miền Bắc,
+                thống kê và dò vé số.
+            </p>
+            <a class="button" href="#dove">Xem kết quả</a>
+        </div>
+
+    </section>
+
+    <!-- DÒ VÉ -->
+    <section class="check" id="dove">
+
+        <h2>🎫 DÒ VÉ SỐ</h2>
+
+        <p>
+            Nhập dãy số trên vé để kiểm tra.
+        </p>
+
+        <input
+            type="text"
+            id="ticket"
+            maxlength="6"
+            inputmode="numeric"
+            placeholder="Nhập số vé, ví dụ: 123456"
+        >
+
+        <select id="region">
+            <option value="">-- Chọn miền --</option>
+            <option value="nam">Miền Nam</option>
+            <option value="trung">Miền Trung</option>
+            <option value="bac">Miền Bắc</option>
+        </select>
+
+        <button onclick="checkTicket()">
+            🔍 KIỂM TRA VÉ
+        </button>
+
+        <div id="result"></div>
+
+    </section>
+
+    <!-- THỐNG KÊ -->
+    <section class="grid" style="margin-top:15px;">
+
+        <div class="card">
+            <h3>📊 Thống kê</h3>
+            <p>
+                Thống kê kết quả xổ số theo ngày,
+                tuần và tháng.
+            </p>
+            <a class="button" href="#thongke">Xem thống kê</a>
+        </div>
+
+        <div class="card">
+            <h3>🔢 Đầu - Đuôi</h3>
+            <p>
+                Tra cứu bảng đầu đuôi và
+                các bộ số theo từng đài.
+            </p>
+            <a class="button" href="#thongke">Xem đầu đuôi</a>
+        </div>
+
+        <div class="card">
+            <h3>📅 Kết quả hôm qua</h3>
+            <p>
+                Tra cứu kết quả xổ số
+                các ngày trước.
+            </p>
+            <a class="button" href="#thongke">Xem kết quả</a>
+        </div>
+
+    </section>
+
+    <!-- THÔNG BÁO -->
+    <div class="note" id="thongke">
+        ⚠️ <strong>Lưu ý:</strong>
+        Trang hiện đang xây dựng hệ thống dữ liệu.
+        Kết quả xổ số chính thức cần được cập nhật từ nguồn dữ liệu phù hợp.
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div>
+        <strong>VÉ SỐ PHÁT ĐẠT</strong>
+    </div>
+
+    <p>
+        Xổ số hôm nay • Kết quả • Thống kê
+    </p>
+
+    <small>
+        © 2026 Vé Số Phát Đạt
+    </small>
 </footer>
+
+<script>
+
+/* HIỂN THỊ NGÀY */
+const today = new Date();
+
+const dateText =
+    today.toLocaleDateString(
+        "vi-VN",
+        {
+            weekday:"long",
+            day:"2-digit",
+            month:"2-digit",
+            year:"numeric"
+        }
+    );
+
+document.getElementById("today").innerHTML =
+    "📅 " + dateText;
+
+
+/* DÒ VÉ */
+function checkTicket(){
+
+    const ticket =
+        document.getElementById("ticket").value.trim();
+
+    const region =
+        document.getElementById("region").value;
+
+    const result =
+        document.getElementById("result");
+
+    result.style.display = "block";
+
+    if(ticket === ""){
+        result.innerHTML =
+            "⚠️ Vui lòng nhập số vé.";
+        return;
+    }
+
+    if(!/^[0-9]{2,6}$/.test(ticket)){
+        result.innerHTML =
+            "⚠️ Số vé phải gồm từ 2 đến 6 chữ số.";
+        return;
+    }
+
+    if(region === ""){
+        result.innerHTML =
+            "⚠️ Vui lòng chọn miền xổ số.";
+        return;
+    }
+
+    let regionName = "";
+
+    if(region === "nam"){
+        regionName = "Miền Nam";
+    }
+
+    if(region === "trung"){
+        regionName = "Miền Trung";
+    }
+
+    if(region === "bac"){
+        regionName = "Miền Bắc";
+    }
+
+    result.innerHTML =
+        "🔎 Đã nhận vé <strong>" +
+        ticket +
+        "</strong> - " +
+        regionName +
+        ".<br><br>" +
+        "⏳ Chức năng đối chiếu giải thưởng sẽ hoạt động khi hệ thống dữ liệu kết quả được kết nối.";
+}
+
+</script>
 
 </body>
 </html>
