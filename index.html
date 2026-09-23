@@ -2,520 +2,676 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Vé Số Phát Đạt - Xổ Số Miền Nam</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vé Số Phát Đạt - Kết Quả Xổ Số</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
-    margin:0;
-    background:#f4f4f4;
-    font-family:Arial,Helvetica,sans-serif;
-    color:#111;
+ margin:0;
+ background:#f3f3f3;
+ font-family:Arial,sans-serif;
+ color:#222
+}
+header{
+ background:#c90000;
+ color:#fff;
+ text-align:center;
+ padding:15px 8px
+}
+header h1{margin:0;font-size:25px}
+header p{margin:6px 0 0;font-size:14px}
+
+nav{
+ background:#fff;
+ display:flex;
+ overflow-x:auto;
+ white-space:nowrap;
+ border-bottom:1px solid #ddd;
+ position:sticky;
+ top:0;
+ z-index:10
+}
+nav a{
+ padding:13px 16px;
+ text-decoration:none;
+ color:#222;
+ font-weight:bold
+}
+nav a:hover{
+ color:#c00;
+ background:#fff0f0
 }
 
-/* HEADER */
-.header{
-    background:#d40000;
-    color:white;
-    padding:15px 10px;
-    text-align:center;
-}
-
-.header h1{
-    margin:0;
-    font-size:25px;
-}
-
-.header p{
-    margin:6px 0 0;
-    font-size:14px;
-}
-
-/* MENU */
-.menu{
-    background:#fff;
-    display:flex;
-    overflow-x:auto;
-    white-space:nowrap;
-    border-bottom:1px solid #ccc;
-}
-
-.menu a{
-    padding:13px 17px;
-    text-decoration:none;
-    color:#222;
-    font-weight:bold;
-}
-
-.menu a:hover{
-    background:#ffe5e5;
-    color:#c00;
-}
-
-/* MAIN */
 .container{
-    max-width:1100px;
-    margin:auto;
+ max-width:1200px;
+ margin:auto
 }
 
-/* TITLE */
-.page-title{
-    background:#d40000;
-    color:white;
-    padding:11px 14px;
-    font-size:19px;
-    font-weight:bold;
+.title{
+ background:#c90000;
+ color:#fff;
+ padding:12px 15px;
+ font-size:19px;
+ font-weight:bold
 }
 
-.breadcrumb{
-    background:white;
-    padding:13px;
-    font-weight:bold;
-    color:#8d0000;
-    border-bottom:1px solid #ddd;
+.date{
+ background:#fff;
+ padding:11px 15px;
+ border-bottom:1px solid #ddd;
+ font-weight:bold
 }
 
-.breadcrumb span{
-    text-decoration:underline;
-}
-
-/* DATE */
-.date-title{
-    background:#fff;
-    padding:12px;
-    font-size:18px;
-    font-weight:bold;
-}
-
-/* TABLE */
-.table-wrap{
-    width:100%;
-    overflow-x:auto;
-    background:white;
-}
-
-.lottery{
-    width:100%;
-    min-width:650px;
-    border-collapse:collapse;
-    table-layout:fixed;
-}
-
-.lottery th,
-.lottery td{
-    border:1px solid #d2d2d2;
-    text-align:center;
-    vertical-align:middle;
-}
-
-.lottery th{
-    background:#e9e9e9;
-    padding:11px 5px;
-    font-size:17px;
-}
-
-.lottery th.station{
-    color:#1717a5;
-    text-decoration:underline;
-    font-size:19px;
-}
-
-.lottery td.label{
-    width:75px;
-    background:#f7f7f7;
-    font-size:17px;
-    font-weight:bold;
-}
-
-.lottery td.number{
-    padding:8px 4px;
-    font-size:30px;
-    font-weight:bold;
-    line-height:1.55;
-}
-
-.lottery td.db{
-    color:#d40000;
-    font-size:37px;
-    font-weight:900;
-}
-
-.lottery td.g8{
-    color:#df0000;
-    font-size:35px;
-    font-weight:900;
-}
-
-.lottery td.g7{
-    font-size:31px;
-    font-weight:800;
-}
-
-.lottery td.g1{
-    font-size:32px;
-    font-weight:900;
-}
-
-.lottery td.multi{
-    line-height:1.7;
-}
-
-/* SECTION */
 .section{
-    margin-top:15px;
-    background:white;
+ margin-top:14px;
+ background:#fff
 }
 
 .section-title{
-    background:#d40000;
-    color:white;
-    padding:12px;
-    font-size:19px;
-    font-weight:bold;
+ background:#c90000;
+ color:#fff;
+ padding:12px 15px;
+ font-size:18px;
+ font-weight:bold
 }
 
-/* OTHER REGIONS */
-.region-card{
-    background:white;
-    margin-top:15px;
-    border:1px solid #ddd;
+.table-wrap{
+ width:100%;
+ overflow-x:auto;
+ -webkit-overflow-scrolling:touch
 }
 
-.region-card h2{
-    margin:0;
-    padding:12px;
-    background:#eee;
-    color:#c40000;
-    font-size:19px;
+table{
+ width:100%;
+ min-width:650px;
+ border-collapse:collapse;
+ text-align:center
 }
 
-.region-card p{
-    padding:12px;
+th,td{
+ border:1px solid #d2d2d2;
+ padding:8px 5px;
+ vertical-align:middle
 }
 
-/* FOOTER */
-.footer{
-    margin-top:20px;
-    background:#222;
-    color:white;
-    text-align:center;
-    padding:22px 10px;
+th{
+ background:#f1f1f1;
+ color:#111
 }
 
-.footer strong{
-    color:#ff3333;
+.station{
+ color:#a00000;
+ font-size:18px
 }
 
-/* MOBILE */
+.label{
+ width:70px;
+ background:#fafafa;
+ font-weight:bold;
+ position:sticky;
+ left:0;
+ z-index:2
+}
+
+.num{
+ font-size:24px;
+ font-weight:bold;
+ line-height:1.5
+}
+
+.g8{
+ color:#d00000;
+ font-size:30px
+}
+
+.gdb{
+ color:#d00000;
+ font-size:34px;
+ font-weight:900
+}
+
+.multi{
+ line-height:1.8
+}
+
+.info{
+ background:#fff;
+ padding:13px 15px;
+ color:#666;
+ font-size:14px
+}
+
+.cards{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
+ padding:12px
+}
+
+.card{
+ background:#fff;
+ border:1px solid #ddd;
+ border-radius:8px;
+ padding:15px
+}
+
+.card h3{
+ margin:0 0 8px;
+ color:#b00000
+}
+
+footer{
+ margin-top:18px;
+ background:#222;
+ color:#fff;
+ text-align:center;
+ padding:23px
+}
+
+footer strong{color:#ff3333}
+
 @media(max-width:700px){
-
-    .header h1{
-        font-size:23px;
-    }
-
-    .page-title{
-        font-size:17px;
-    }
-
-    .breadcrumb{
-        font-size:15px;
-    }
-
-    .lottery{
-        min-width:650px;
-    }
-
-    .lottery td.number{
-        font-size:27px;
-    }
-
-    .lottery td.db{
-        font-size:34px;
-    }
-
-    .lottery td.g8{
-        font-size:32px;
-    }
+ header h1{font-size:23px}
+ .title{font-size:17px}
+ .section-title{font-size:17px}
+ table{min-width:680px}
+ .num{font-size:22px}
+ .g8{font-size:28px}
+ .gdb{font-size:31px}
+ .cards{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 
-<header class="header">
-    <h1>🎯 VÉ SỐ PHÁT ĐẠT</h1>
-    <p>Xổ số hôm nay • Kết quả • Thống kê</p>
+<header>
+<h1>🎯 VÉ SỐ PHÁT ĐẠT</h1>
+<p>Kết quả xổ số hôm nay • Thống kê • Dò vé</p>
 </header>
 
-<nav class="menu">
-    <a href="index.html">🏠 Trang chủ</a>
-    <a href="#miennam">Miền Nam</a>
-    <a href="#mientrung">Miền Trung</a>
-    <a href="#mienbac">Miền Bắc</a>
-    <a href="#thongke">Thống kê</a>
-    <a href="#dove">Dò vé</a>
+<nav>
+<a href="#home">🏠 Trang chủ</a>
+<a href="#nam">🔴 Miền Nam</a>
+<a href="#trung">🟠 Miền Trung</a>
+<a href="#bac">🔵 Miền Bắc</a>
+<a href="#thongke">📊 Thống kê</a>
+<a href="#dove">🎫 Dò vé</a>
 </nav>
 
-<main class="container">
+<main class="container" id="home">
 
-    <div class="page-title">
-        XSMN - Kết quả xổ số miền Nam
-    </div>
+<div class="title">
+KẾT QUẢ XỔ SỐ HÔM NAY
+</div>
 
-    <div class="breadcrumb">
-        <span>XSMN</span>
-        »
-        <span>XSMN hôm nay</span>
-        »
-        <span id="today"></span>
-    </div>
-
-    <div class="date-title">
-        🔴 KẾT QUẢ XỔ SỐ MIỀN NAM
-    </div>
-
-    <div class="table-wrap" id="miennam">
-
-        <table class="lottery">
-
-            <thead>
-                <tr>
-                    <th>Giải</th>
-                    <th class="station">Đồng Nai</th>
-                    <th class="station">Cần Thơ</th>
-                    <th class="station">Sóc Trăng</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td class="label">G.8</td>
-
-                    <td class="number g8">—</td>
-                    <td class="number g8">—</td>
-                    <td class="number g8">—</td>
-                </tr>
-
-                <tr>
-                    <td class="label">G.7</td>
-
-                    <td class="number g7">—</td>
-                    <td class="number g7">—</td>
-                    <td class="number g7">—</td>
-                </tr>
-
-                <tr>
-                    <td class="label">G.6</td>
-
-                    <td class="number multi">
-                        —<br>
-                        —<br>
-                        —
-                    </td>
-
-                    <td class="number multi">
-                        —<br>
-                        —<br>
-                        —
-                    </td>
-
-                    <td class="number multi">
-                        —<br>
-                        —<br>
-                        —
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="label">G.5</td>
-
-                    <td class="number">—</td>
-                    <td class="number">—</td>
-                    <td class="number">—</td>
-                </tr>
-
-                <tr>
-                    <td class="label">G.4</td>
-
-                    <td class="number multi">
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —
-                    </td>
-
-                    <td class="number multi">
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —
-                    </td>
-
-                    <td class="number multi">
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —<br>
-                        —
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="label">G.3</td>
-
-                    <td class="number multi">
-                        —<br>—
-                    </td>
-
-                    <td class="number multi">
-                        —<br>—
-                    </td>
-
-                    <td class="number multi">
-                        —<br>—
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="label">G.2</td>
-
-                    <td class="number">—</td>
-                    <td class="number">—</td>
-                    <td class="number">—</td>
-                </tr>
-
-                <tr>
-                    <td class="label">G.1</td>
-
-                    <td class="number g1">—</td>
-                    <td class="number g1">—</td>
-                    <td class="number g1">—</td>
-                </tr>
-
-                <tr>
-                    <td class="label">G.ĐB</td>
-
-                    <td class="number db">—</td>
-                    <td class="number db">—</td>
-                    <td class="number db">—</td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
+<div class="date">
+📅 Thứ Tư, ngày 23/09/2026
+</div>
 
 
-    <!-- MIỀN TRUNG -->
+<!-- ================= MIỀN NAM ================= -->
 
-    <section class="section" id="mientrung">
+<section class="section" id="nam">
 
-        <div class="section-title">
-            🟠 XỔ SỐ MIỀN TRUNG
-        </div>
+<div class="section-title">
+🔴 XỔ SỐ MIỀN NAM - 23/09/2026
+</div>
 
-        <div class="region-card">
-            <h2>Kết quả xổ số Miền Trung</h2>
-            <p>
-                Bảng kết quả Miền Trung sẽ được hiển thị
-                theo đúng đài quay trong ngày.
-            </p>
-        </div>
+<div class="table-wrap">
 
-    </section>
+<table>
+
+<thead>
+<tr>
+<th>Giải</th>
+<th class="station">Đồng Nai</th>
+<th class="station">Cần Thơ</th>
+<th class="station">Sóc Trăng</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td class="label">G.8</td>
+<td class="num g8">14</td>
+<td class="num g8">50</td>
+<td class="num g8">66</td>
+</tr>
+
+<tr>
+<td class="label">G.7</td>
+<td class="num">778</td>
+<td class="num">843</td>
+<td class="num">744</td>
+</tr>
+
+<tr>
+<td class="label">G.6</td>
+
+<td class="num multi">
+6394<br>
+1954<br>
+0247
+</td>
+
+<td class="num multi">
+4535<br>
+3835<br>
+5078
+</td>
+
+<td class="num multi">
+7699<br>
+8469<br>
+4721
+</td>
+
+</tr>
+
+<tr>
+<td class="label">G.5</td>
+<td class="num">6421</td>
+<td class="num">9174</td>
+<td class="num">7242</td>
+</tr>
+
+<tr>
+<td class="label">G.4</td>
+
+<td class="num multi">
+10692<br>
+34215<br>
+46927<br>
+92993<br>
+53119<br>
+48129<br>
+71845
+</td>
+
+<td class="num multi">
+85468<br>
+24481<br>
+93448<br>
+63122<br>
+54072<br>
+71243<br>
+48066
+</td>
+
+<td class="num multi">
+62307<br>
+91798<br>
+09559<br>
+43811<br>
+23682<br>
+52990<br>
+45011
+</td>
+
+</tr>
+
+<tr>
+<td class="label">G.3</td>
+
+<td class="num multi">
+66244<br>
+57727
+</td>
+
+<td class="num multi">
+69203<br>
+12962
+</td>
+
+<td class="num multi">
+01301<br>
+62146
+</td>
+
+</tr>
+
+<tr>
+<td class="label">G.2</td>
+<td class="num">72389</td>
+<td class="num">08214</td>
+<td class="num">84117</td>
+</tr>
+
+<tr>
+<td class="label">G.1</td>
+<td class="num">44953</td>
+<td class="num">56175</td>
+<td class="num">61832</td>
+</tr>
+
+<tr>
+<td class="label">G.ĐB</td>
+<td class="gdb">567326</td>
+<td class="gdb">157293</td>
+<td class="gdb">523291</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+<div class="info">
+📌 Kỳ quay Miền Nam thứ Tư: Đồng Nai - Cần Thơ - Sóc Trăng.
+</div>
+
+</section>
 
 
-    <!-- MIỀN BẮC -->
+<!-- ================= MIỀN TRUNG ================= -->
 
-    <section class="section" id="mienbac">
+<section class="section" id="trung">
 
-        <div class="section-title">
-            🔵 XỔ SỐ MIỀN BẮC
-        </div>
+<div class="section-title">
+🟠 XỔ SỐ MIỀN TRUNG - 23/09/2026
+</div>
 
-        <div class="region-card">
-            <h2>Kết quả xổ số Miền Bắc</h2>
-            <p>
-                Bảng kết quả Miền Bắc sẽ được hiển thị
-                theo đúng mẫu bảng xổ số.
-            </p>
-        </div>
+<div class="table-wrap">
 
-    </section>
+<table>
+
+<thead>
+<tr>
+<th>Giải</th>
+<th class="station">Đà Nẵng</th>
+<th class="station">Khánh Hòa</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td class="label">G.8</td>
+<td class="num g8">58</td>
+<td class="num g8">35</td>
+</tr>
+
+<tr>
+<td class="label">G.7</td>
+<td class="num">587</td>
+<td class="num">376</td>
+</tr>
+
+<tr>
+<td class="label">G.6</td>
+
+<td class="num multi">
+4625<br>
+4606<br>
+9673
+</td>
+
+<td class="num multi">
+8070<br>
+3241<br>
+0194
+</td>
+
+</tr>
+
+<tr>
+<td class="label">G.5</td>
+<td class="num">7725</td>
+<td class="num">4135</td>
+</tr>
+
+<tr>
+<td class="label">G.4</td>
+
+<td class="num multi">
+93257<br>
+19528<br>
+28931<br>
+44759<br>
+03443<br>
+78386<br>
+43038
+</td>
+
+<td class="num multi">
+90825<br>
+80982<br>
+78875<br>
+79043<br>
+95986<br>
+21931<br>
+28413
+</td>
+
+</tr>
+
+<tr>
+<td class="label">G.3</td>
+
+<td class="num multi">
+23603<br>
+12203
+</td>
+
+<td class="num multi">
+01756<br>
+64635
+</td>
+
+</tr>
+
+<tr>
+<td class="label">G.2</td>
+<td class="num">35390</td>
+<td class="num">61216</td>
+</tr>
+
+<tr>
+<td class="label">G.1</td>
+<td class="num">50920</td>
+<td class="num">10518</td>
+</tr>
+
+<tr>
+<td class="label">G.ĐB</td>
+<td class="gdb">756753</td>
+<td class="gdb">001370</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+<div class="info">
+📌 Kỳ quay Miền Trung thứ Tư: Đà Nẵng - Khánh Hòa.
+</div>
+
+</section>
 
 
-    <!-- THỐNG KÊ -->
+<!-- ================= MIỀN BẮC ================= -->
 
-    <section class="section" id="thongke">
+<section class="section" id="bac">
 
-        <div class="section-title">
-            📊 THỐNG KÊ XỔ SỐ
-        </div>
+<div class="section-title">
+🔵 XỔ SỐ MIỀN BẮC - 23/09/2026
+</div>
 
-        <div class="region-card">
-            <p>
-                Thống kê đầu đuôi, tần suất,
-                loto và các dữ liệu xổ số sẽ được
-                tích hợp tại đây.
-            </p>
-        </div>
+<div class="table-wrap">
 
-    </section>
+<table>
+
+<thead>
+<tr>
+<th>Giải</th>
+<th class="station">Bắc Ninh</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td class="label">G.7</td>
+<td class="num">34 - 21 - 60 - 89</td>
+</tr>
+
+<tr>
+<td class="label">G.6</td>
+<td class="num">188 - 567 - 903</td>
+</tr>
+
+<tr>
+<td class="label">G.5</td>
+<td class="num multi">
+6524 - 1687 - 0357<br>
+9642 - 0185 - 9078
+</td>
+</tr>
+
+<tr>
+<td class="label">G.4</td>
+<td class="num">9109 - 5019 - 9268 - 2494</td>
+</tr>
+
+<tr>
+<td class="label">G.3</td>
+<td class="num multi">
+44485 - 42689 - 50615<br>
+61435 - 30004 - 30420
+</td>
+</tr>
+
+<tr>
+<td class="label">G.2</td>
+<td class="num">60738 - 52745</td>
+</tr>
+
+<tr>
+<td class="label">G.1</td>
+<td class="num">23650</td>
+</tr>
+
+<tr>
+<td class="label">ĐB</td>
+<td class="gdb">76406</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+<div class="info">
+📌 Xổ số Miền Bắc thứ Tư: Bắc Ninh.
+</div>
+
+</section>
 
 
-    <!-- DÒ VÉ -->
+<!-- ================= THỐNG KÊ ================= -->
 
-    <section class="section" id="dove">
+<section class="section" id="thongke">
 
-        <div class="section-title">
-            🎫 DÒ VÉ SỐ
-        </div>
+<div class="section-title">
+📊 THỐNG KÊ XỔ SỐ
+</div>
 
-        <div class="region-card">
-            <p>
-                Chức năng dò vé sẽ được kết nối
-                với dữ liệu kết quả ở bước tiếp theo.
-            </p>
-        </div>
+<div class="cards">
 
-    </section>
+<div class="card">
+<h3>🔢 Đầu - Đuôi</h3>
+<p>
+Tra cứu đầu đuôi theo từng đài.
+</p>
+</div>
+
+<div class="card">
+<h3>📈 Tần suất</h3>
+<p>
+Theo dõi tần suất xuất hiện của các bộ số.
+</p>
+</div>
+
+<div class="card">
+<h3>📅 Lịch sử</h3>
+<p>
+Tra cứu kết quả các ngày trước.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= DÒ VÉ ================= -->
+
+<section class="section" id="dove">
+
+<div class="section-title">
+🎫 DÒ VÉ SỐ
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>Nhập số vé</h3>
+
+<input id="ticket"
+type="text"
+inputmode="numeric"
+maxlength="6"
+placeholder="Ví dụ: 567326"
+style="width:100%;padding:12px">
+
+<br><br>
+
+<button onclick="checkTicket()"
+style="width:100%;padding:12px;background:#c90000;color:#fff;border:0;border-radius:5px;font-weight:bold">
+🔍 DÒ VÉ
+</button>
+
+<p id="result"></p>
+
+</div>
+
+</div>
+
+</section>
 
 </main>
 
 
-<footer class="footer">
-    <strong>🎯 VÉ SỐ PHÁT ĐẠT</strong>
-    <p>Xổ số hôm nay • Kết quả • Thống kê • Dò vé</p>
-    <small>© 2026 Vé Số Phát Đạt</small>
+<footer>
+<strong>🎯 VÉ SỐ PHÁT ĐẠT</strong>
+<p>Kết quả xổ số • Thống kê • Dò vé</p>
+<small>© 2026 Vé Số Phát Đạt</small>
 </footer>
 
 
 <script>
 
-const d = new Date();
+function checkTicket(){
 
-document.getElementById("today").innerText =
-d.toLocaleDateString("vi-VN",{
-    weekday:"long",
-    day:"2-digit",
-    month:"2-digit",
-    year:"numeric"
-});
+let x=document.getElementById("ticket").value.trim();
+
+let r=document.getElementById("result");
+
+if(!/^[0-9]{2,6}$/.test(x)){
+ r.innerHTML="⚠️ Vui lòng nhập số vé hợp lệ.";
+ return;
+}
+
+r.innerHTML=
+"🎫 Đã nhận số vé <b>"+x+
+"</b>.<br><br>"+
+"Chức năng đối chiếu đầy đủ theo từng đài sẽ được kết nối tiếp.";
+
+}
 
 </script>
 
