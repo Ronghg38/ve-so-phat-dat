@@ -2,218 +2,245 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Vé Số Phát Đạt - Xổ Số Hôm Nay</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vé Số Phát Đạt - Xổ Số Miền Nam</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
+
 body{
- margin:0;
- font-family:Arial,Helvetica,sans-serif;
- background:#f2f3f5;
- color:#222
+    margin:0;
+    background:#f4f4f4;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#111;
 }
+
+/* HEADER */
 .header{
- background:linear-gradient(135deg,#a90000,#e00000);
- color:#fff;
- padding:18px 10px;
- text-align:center
+    background:#d40000;
+    color:white;
+    padding:15px 10px;
+    text-align:center;
 }
-.logo{
- font-size:29px;
- font-weight:800
+
+.header h1{
+    margin:0;
+    font-size:25px;
 }
-.slogan{
- margin-top:6px;
- font-size:14px
+
+.header p{
+    margin:6px 0 0;
+    font-size:14px;
 }
+
+/* MENU */
 .menu{
- background:#b40000;
- display:flex;
- overflow-x:auto;
- white-space:nowrap;
- position:sticky;
- top:0;
- z-index:20
+    background:#fff;
+    display:flex;
+    overflow-x:auto;
+    white-space:nowrap;
+    border-bottom:1px solid #ccc;
 }
+
 .menu a{
- color:#fff;
- text-decoration:none;
- padding:14px 17px;
- font-weight:bold;
- font-size:14px
+    padding:13px 17px;
+    text-decoration:none;
+    color:#222;
+    font-weight:bold;
 }
-.menu a:hover{background:#8d0000}
+
+.menu a:hover{
+    background:#ffe5e5;
+    color:#c00;
+}
+
+/* MAIN */
 .container{
- max-width:1200px;
- margin:auto;
- padding:12px
+    max-width:1100px;
+    margin:auto;
 }
-.banner{
- background:#fff;
- border-radius:10px;
- padding:15px;
- margin-bottom:12px;
- box-shadow:0 2px 7px #ccc;
- border-left:5px solid #c40000
+
+/* TITLE */
+.page-title{
+    background:#d40000;
+    color:white;
+    padding:11px 14px;
+    font-size:19px;
+    font-weight:bold;
 }
-.banner h1{
- color:#b40000;
- margin:0 0 5px;
- font-size:23px
+
+.breadcrumb{
+    background:white;
+    padding:13px;
+    font-weight:bold;
+    color:#8d0000;
+    border-bottom:1px solid #ddd;
 }
-.date{
- color:#666;
- font-size:14px
+
+.breadcrumb span{
+    text-decoration:underline;
 }
+
+/* DATE */
+.date-title{
+    background:#fff;
+    padding:12px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+/* TABLE */
+.table-wrap{
+    width:100%;
+    overflow-x:auto;
+    background:white;
+}
+
+.lottery{
+    width:100%;
+    min-width:650px;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+
+.lottery th,
+.lottery td{
+    border:1px solid #d2d2d2;
+    text-align:center;
+    vertical-align:middle;
+}
+
+.lottery th{
+    background:#e9e9e9;
+    padding:11px 5px;
+    font-size:17px;
+}
+
+.lottery th.station{
+    color:#1717a5;
+    text-decoration:underline;
+    font-size:19px;
+}
+
+.lottery td.label{
+    width:75px;
+    background:#f7f7f7;
+    font-size:17px;
+    font-weight:bold;
+}
+
+.lottery td.number{
+    padding:8px 4px;
+    font-size:30px;
+    font-weight:bold;
+    line-height:1.55;
+}
+
+.lottery td.db{
+    color:#d40000;
+    font-size:37px;
+    font-weight:900;
+}
+
+.lottery td.g8{
+    color:#df0000;
+    font-size:35px;
+    font-weight:900;
+}
+
+.lottery td.g7{
+    font-size:31px;
+    font-weight:800;
+}
+
+.lottery td.g1{
+    font-size:32px;
+    font-weight:900;
+}
+
+.lottery td.multi{
+    line-height:1.7;
+}
+
+/* SECTION */
 .section{
- background:#fff;
- border-radius:10px;
- margin-bottom:15px;
- overflow:hidden;
- box-shadow:0 2px 7px #ccc
+    margin-top:15px;
+    background:white;
 }
+
 .section-title{
- background:#c40000;
- color:#fff;
- padding:13px 15px;
- font-size:19px;
- font-weight:bold
+    background:#d40000;
+    color:white;
+    padding:12px;
+    font-size:19px;
+    font-weight:bold;
 }
-.scroll{
- overflow-x:auto;
- width:100%
+
+/* OTHER REGIONS */
+.region-card{
+    background:white;
+    margin-top:15px;
+    border:1px solid #ddd;
 }
-.result-table{
- width:100%;
- min-width:700px;
- border-collapse:collapse;
- text-align:center
+
+.region-card h2{
+    margin:0;
+    padding:12px;
+    background:#eee;
+    color:#c40000;
+    font-size:19px;
 }
-.result-table th{
- background:#fff0f0;
- color:#a90000;
- padding:11px 8px;
- border:1px solid #ddd
+
+.region-card p{
+    padding:12px;
 }
-.result-table td{
- border:1px solid #ddd;
- padding:9px 6px;
- font-size:15px;
- font-weight:500
-}
-.result-table td:first-child{
- background:#fafafa;
- font-weight:bold;
- width:75px;
- position:sticky;
- left:0;
- z-index:2
-}
-.station{
- font-size:17px!important;
- color:#a90000
-}
-.db{
- color:#d00000!important;
- font-size:23px!important;
- font-weight:800!important
-}
-.g1{
- font-size:20px!important;
- font-weight:700!important
-}
-.update{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:10px;
- padding:12px 15px;
- background:#fafafa;
- border-top:1px solid #ddd
-}
-.btn{
- display:inline-block;
- border:0;
- background:#c40000;
- color:#fff;
- padding:10px 15px;
- border-radius:6px;
- font-weight:bold;
- text-decoration:none;
- cursor:pointer
-}
-.btn:hover{background:#950000}
-.grid{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:12px
-}
-.card{
- background:#fff;
- border-radius:10px;
- padding:17px;
- box-shadow:0 2px 7px #ccc;
- border-top:4px solid #c40000
-}
-.card h3{
- margin:0 0 8px;
- color:#b00000
-}
-.card p{
- color:#666;
- line-height:1.5
-}
-.check{
- background:#fff;
- padding:18px;
- border-radius:10px;
- box-shadow:0 2px 7px #ccc;
- margin-bottom:15px
-}
-.check h2{
- color:#b00000;
- margin-top:0
-}
-input,select{
- width:100%;
- padding:12px;
- margin:6px 0;
- border:1px solid #ccc;
- border-radius:6px;
- font-size:16px
-}
-#notice{
- margin-top:10px;
- padding:10px;
- background:#fff6d9;
- border-left:4px solid #e0a000;
- display:none
-}
-.ad{
- background:#eee;
- min-height:90px;
- display:flex;
- justify-content:center;
- align-items:center;
- color:#888;
- margin-bottom:15px;
- border-radius:8px
-}
+
+/* FOOTER */
 .footer{
- background:#222;
- color:#fff;
- text-align:center;
- padding:25px 10px;
- margin-top:20px
+    margin-top:20px;
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:22px 10px;
 }
-.footer strong{color:#ff3b3b}
+
+.footer strong{
+    color:#ff3333;
+}
+
+/* MOBILE */
 @media(max-width:700px){
- .logo{font-size:23px}
- .grid{grid-template-columns:1fr}
- .container{padding:8px}
- .section-title{font-size:17px}
- .result-table td{padding:8px 5px}
+
+    .header h1{
+        font-size:23px;
+    }
+
+    .page-title{
+        font-size:17px;
+    }
+
+    .breadcrumb{
+        font-size:15px;
+    }
+
+    .lottery{
+        min-width:650px;
+    }
+
+    .lottery td.number{
+        font-size:27px;
+    }
+
+    .lottery td.db{
+        font-size:34px;
+    }
+
+    .lottery td.g8{
+        font-size:32px;
+    }
 }
 </style>
 </head>
@@ -221,325 +248,274 @@ input,select{
 <body>
 
 <header class="header">
- <div class="logo">🎯 VÉ SỐ PHÁT ĐẠT</div>
- <div class="slogan">
-  Kết quả xổ số hôm nay • Thống kê • Dò vé
- </div>
+    <h1>🎯 VÉ SỐ PHÁT ĐẠT</h1>
+    <p>Xổ số hôm nay • Kết quả • Thống kê</p>
 </header>
 
 <nav class="menu">
- <a href="#trangchu">🏠 Trang chủ</a>
- <a href="#miennam">🔴 Miền Nam</a>
- <a href="#mientrung">🟠 Miền Trung</a>
- <a href="#mienbac">🔵 Miền Bắc</a>
- <a href="#thongke">📊 Thống kê</a>
- <a href="#dove">🎫 Dò vé</a>
+    <a href="index.html">🏠 Trang chủ</a>
+    <a href="#miennam">Miền Nam</a>
+    <a href="#mientrung">Miền Trung</a>
+    <a href="#mienbac">Miền Bắc</a>
+    <a href="#thongke">Thống kê</a>
+    <a href="#dove">Dò vé</a>
 </nav>
 
-<main class="container" id="trangchu">
+<main class="container">
 
-<div class="banner">
- <h1>📢 KẾT QUẢ XỔ SỐ HÔM NAY</h1>
- <div class="date" id="date"></div>
-</div>
+    <div class="page-title">
+        XSMN - Kết quả xổ số miền Nam
+    </div>
 
-<div class="ad">
- KHU VỰC QUẢNG CÁO
-</div>
+    <div class="breadcrumb">
+        <span>XSMN</span>
+        »
+        <span>XSMN hôm nay</span>
+        »
+        <span id="today"></span>
+    </div>
 
-<!-- MIỀN NAM -->
-<section class="section" id="miennam">
+    <div class="date-title">
+        🔴 KẾT QUẢ XỔ SỐ MIỀN NAM
+    </div>
 
- <div class="section-title">
-  🔴 KẾT QUẢ XỔ SỐ MIỀN NAM
- </div>
+    <div class="table-wrap" id="miennam">
 
- <div class="scroll">
- <table class="result-table">
+        <table class="lottery">
 
- <tr>
-  <th>Giải</th>
-  <th class="station">Đồng Nai</th>
-  <th class="station">Cần Thơ</th>
-  <th class="station">Sóc Trăng</th>
- </tr>
+            <thead>
+                <tr>
+                    <th>Giải</th>
+                    <th class="station">Đồng Nai</th>
+                    <th class="station">Cần Thơ</th>
+                    <th class="station">Sóc Trăng</th>
+                </tr>
+            </thead>
 
- <tr>
-  <td>G.8</td>
-  <td>—</td><td>—</td><td>—</td>
- </tr>
+            <tbody>
 
- <tr>
-  <td>G.7</td>
-  <td>—</td><td>—</td><td>—</td>
- </tr>
+                <tr>
+                    <td class="label">G.8</td>
 
- <tr>
-  <td>G.6</td>
-  <td>— — —</td>
-  <td>— — —</td>
-  <td>— — —</td>
- </tr>
+                    <td class="number g8">—</td>
+                    <td class="number g8">—</td>
+                    <td class="number g8">—</td>
+                </tr>
 
- <tr>
-  <td>G.5</td>
-  <td>—</td><td>—</td><td>—</td>
- </tr>
+                <tr>
+                    <td class="label">G.7</td>
 
- <tr>
-  <td>G.4</td>
-  <td>— — — — — —</td>
-  <td>— — — — — —</td>
-  <td>— — — — — —</td>
- </tr>
+                    <td class="number g7">—</td>
+                    <td class="number g7">—</td>
+                    <td class="number g7">—</td>
+                </tr>
 
- <tr>
-  <td>G.3</td>
-  <td>— —</td><td>— —</td><td>— —</td>
- </tr>
+                <tr>
+                    <td class="label">G.6</td>
 
- <tr>
-  <td>G.2</td>
-  <td>—</td><td>—</td><td>—</td>
- </tr>
+                    <td class="number multi">
+                        —<br>
+                        —<br>
+                        —
+                    </td>
 
- <tr>
-  <td>G.1</td>
-  <td class="g1">—</td>
-  <td class="g1">—</td>
-  <td class="g1">—</td>
- </tr>
+                    <td class="number multi">
+                        —<br>
+                        —<br>
+                        —
+                    </td>
 
- <tr>
-  <td>G.ĐB</td>
-  <td class="db">—</td>
-  <td class="db">—</td>
-  <td class="db">—</td>
- </tr>
+                    <td class="number multi">
+                        —<br>
+                        —<br>
+                        —
+                    </td>
+                </tr>
 
- </table>
- </div>
+                <tr>
+                    <td class="label">G.5</td>
 
- <div class="update">
-  <span>⏳ Đang chờ dữ liệu kết quả</span>
-  <button class="btn" onclick="updateData()">🔄 Cập nhật</button>
- </div>
+                    <td class="number">—</td>
+                    <td class="number">—</td>
+                    <td class="number">—</td>
+                </tr>
 
-</section>
+                <tr>
+                    <td class="label">G.4</td>
 
+                    <td class="number multi">
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —
+                    </td>
 
-<!-- MIỀN TRUNG -->
-<section class="section" id="mientrung">
+                    <td class="number multi">
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —
+                    </td>
 
- <div class="section-title">
-  🟠 KẾT QUẢ XỔ SỐ MIỀN TRUNG
- </div>
+                    <td class="number multi">
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —<br>
+                        —
+                    </td>
+                </tr>
 
- <div class="scroll">
- <table class="result-table">
+                <tr>
+                    <td class="label">G.3</td>
 
- <tr>
-  <th>Giải</th>
-  <th class="station">Đài 1</th>
-  <th class="station">Đài 2</th>
-  <th class="station">Đài 3</th>
- </tr>
+                    <td class="number multi">
+                        —<br>—
+                    </td>
 
- <tr><td>G.8</td><td>—</td><td>—</td><td>—</td></tr>
- <tr><td>G.7</td><td>—</td><td>—</td><td>—</td></tr>
- <tr><td>G.6</td><td>— — —</td><td>— — —</td><td>— — —</td></tr>
- <tr><td>G.5</td><td>—</td><td>—</td><td>—</td></tr>
- <tr><td>G.4</td><td>— — — —</td><td>— — — —</td><td>— — — —</td></tr>
- <tr><td>G.3</td><td>— —</td><td>— —</td><td>— —</td></tr>
- <tr><td>G.2</td><td>—</td><td>—</td><td>—</td></tr>
- <tr><td>G.1</td><td class="g1">—</td><td class="g1">—</td><td class="g1">—</td></tr>
- <tr><td>G.ĐB</td><td class="db">—</td><td class="db">—</td><td class="db">—</td></tr>
+                    <td class="number multi">
+                        —<br>—
+                    </td>
 
- </table>
- </div>
+                    <td class="number multi">
+                        —<br>—
+                    </td>
+                </tr>
 
-</section>
+                <tr>
+                    <td class="label">G.2</td>
 
+                    <td class="number">—</td>
+                    <td class="number">—</td>
+                    <td class="number">—</td>
+                </tr>
 
-<!-- MIỀN BẮC -->
-<section class="section" id="mienbac">
+                <tr>
+                    <td class="label">G.1</td>
 
- <div class="section-title">
-  🔵 KẾT QUẢ XỔ SỐ MIỀN BẮC
- </div>
+                    <td class="number g1">—</td>
+                    <td class="number g1">—</td>
+                    <td class="number g1">—</td>
+                </tr>
 
- <div class="scroll">
- <table class="result-table">
+                <tr>
+                    <td class="label">G.ĐB</td>
 
- <tr>
-  <th>Giải</th>
-  <th class="station">Miền Bắc</th>
- </tr>
+                    <td class="number db">—</td>
+                    <td class="number db">—</td>
+                    <td class="number db">—</td>
+                </tr>
 
- <tr><td>G.7</td><td>— — — —</td></tr>
- <tr><td>G.6</td><td>— — —</td></tr>
- <tr><td>G.5</td><td>— —</td></tr>
- <tr><td>G.4</td><td>— — — —</td></tr>
- <tr><td>G.3</td><td>— —</td></tr>
- <tr><td>G.2</td><td>—</td></tr>
- <tr><td>G.1</td><td class="g1">—</td></tr>
- <tr><td>ĐB</td><td class="db">—</td></tr>
+            </tbody>
 
- </table>
- </div>
+        </table>
 
-</section>
-
-
-<!-- THỐNG KÊ -->
-<section id="thongke">
-
- <div class="grid">
-
-  <div class="card">
-   <h3>📊 Thống kê</h3>
-   <p>Thống kê kết quả theo ngày, tuần và tháng.</p>
-   <button class="btn" onclick="comingSoon()">Xem thống kê</button>
-  </div>
-
-  <div class="card">
-   <h3>🔢 Đầu - Đuôi</h3>
-   <p>Tra cứu bảng đầu đuôi theo từng đài.</p>
-   <button class="btn" onclick="comingSoon()">Xem đầu đuôi</button>
-  </div>
-
-  <div class="card">
-   <h3>📅 Lịch xổ số</h3>
-   <p>Xem lịch quay thưởng của các tỉnh.</p>
-   <button class="btn" onclick="comingSoon()">Xem lịch</button>
-  </div>
-
- </div>
-
-</section>
+    </div>
 
 
-<!-- DÒ VÉ -->
-<section class="check" id="dove">
+    <!-- MIỀN TRUNG -->
 
- <h2>🎫 DÒ VÉ SỐ</h2>
+    <section class="section" id="mientrung">
 
- <p>Nhập số vé để chuẩn bị kiểm tra kết quả.</p>
+        <div class="section-title">
+            🟠 XỔ SỐ MIỀN TRUNG
+        </div>
 
- <input
-  id="ticket"
-  type="text"
-  inputmode="numeric"
-  maxlength="6"
-  placeholder="Nhập số vé">
+        <div class="region-card">
+            <h2>Kết quả xổ số Miền Trung</h2>
+            <p>
+                Bảng kết quả Miền Trung sẽ được hiển thị
+                theo đúng đài quay trong ngày.
+            </p>
+        </div>
 
- <select id="region">
-  <option value="">-- Chọn miền --</option>
-  <option>Miền Nam</option>
-  <option>Miền Trung</option>
-  <option>Miền Bắc</option>
- </select>
-
- <button class="btn" style="width:100%" onclick="checkTicket()">
-  🔍 KIỂM TRA VÉ
- </button>
-
- <div id="notice"></div>
-
-</section>
+    </section>
 
 
-<div class="ad">
- KHU VỰC QUẢNG CÁO
-</div>
+    <!-- MIỀN BẮC -->
+
+    <section class="section" id="mienbac">
+
+        <div class="section-title">
+            🔵 XỔ SỐ MIỀN BẮC
+        </div>
+
+        <div class="region-card">
+            <h2>Kết quả xổ số Miền Bắc</h2>
+            <p>
+                Bảng kết quả Miền Bắc sẽ được hiển thị
+                theo đúng mẫu bảng xổ số.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- THỐNG KÊ -->
+
+    <section class="section" id="thongke">
+
+        <div class="section-title">
+            📊 THỐNG KÊ XỔ SỐ
+        </div>
+
+        <div class="region-card">
+            <p>
+                Thống kê đầu đuôi, tần suất,
+                loto và các dữ liệu xổ số sẽ được
+                tích hợp tại đây.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- DÒ VÉ -->
+
+    <section class="section" id="dove">
+
+        <div class="section-title">
+            🎫 DÒ VÉ SỐ
+        </div>
+
+        <div class="region-card">
+            <p>
+                Chức năng dò vé sẽ được kết nối
+                với dữ liệu kết quả ở bước tiếp theo.
+            </p>
+        </div>
+
+    </section>
 
 </main>
 
 
 <footer class="footer">
- <strong>🎯 VÉ SỐ PHÁT ĐẠT</strong>
- <p>Xổ số hôm nay • Kết quả • Thống kê • Dò vé</p>
- <small>© 2026 Vé Số Phát Đạt</small>
+    <strong>🎯 VÉ SỐ PHÁT ĐẠT</strong>
+    <p>Xổ số hôm nay • Kết quả • Thống kê • Dò vé</p>
+    <small>© 2026 Vé Số Phát Đạt</small>
 </footer>
 
 
 <script>
 
-function showDate(){
+const d = new Date();
 
- const d=new Date();
-
- document.getElementById("date").innerHTML=
- "📅 "+d.toLocaleDateString("vi-VN",{
-  weekday:"long",
-  day:"2-digit",
-  month:"2-digit",
-  year:"numeric"
- });
-
-}
-
-showDate();
-
-
-function updateData(){
-
- alert(
- "Hệ thống đã ghi nhận yêu cầu cập nhật. " +
- "Phần dữ liệu kết quả thật sẽ được kết nối ở bước tiếp theo."
- );
-
-}
-
-
-function comingSoon(){
-
- alert(
- "Chức năng đang được xây dựng. " +
- "Sau khi kết nối dữ liệu, mục này sẽ hoạt động."
- );
-
-}
-
-
-function checkTicket(){
-
- const ticket=document.getElementById("ticket").value.trim();
- const region=document.getElementById("region").value;
- const notice=document.getElementById("notice");
-
- notice.style.display="block";
-
- if(!ticket){
-
-  notice.innerHTML="⚠️ Vui lòng nhập số vé.";
-
-  return;
- }
-
- if(!/^[0-9]{2,6}$/.test(ticket)){
-
-  notice.innerHTML=
-  "⚠️ Số vé phải gồm từ 2 đến 6 chữ số.";
-
-  return;
- }
-
- if(!region){
-
-  notice.innerHTML="⚠️ Vui lòng chọn miền.";
-
-  return;
- }
-
- notice.innerHTML=
- "🎫 Đã nhận vé <b>"+ticket+
- "</b> - "+region+
- ".<br><br>"+
- "⏳ Chức năng đối chiếu giải thưởng sẽ hoạt động "+
- "sau khi kết nối dữ liệu kết quả.";
-
-}
+document.getElementById("today").innerText =
+d.toLocaleDateString("vi-VN",{
+    weekday:"long",
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric"
+});
 
 </script>
 
