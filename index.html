@@ -2,34 +2,34 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>Vé Số Phát Đạt</title>
 
 <style>
-*{box-sizing:border-box}
 
-:root{
-  --red:#d0021b;
-  --blue:#1743a5;
-  --border:#d9d9d9;
-  --bg:#eef0f2;
+*{
+  box-sizing:border-box;
 }
 
-html,body{margin:0;padding:0;background:var(--bg)}
 body{
+  margin:0;
+  background:#e9ecef;
   color:#111;
   font-family:Arial,Helvetica,sans-serif;
 }
 
 .app{
   width:100%;
-  max-width:700px;
+  max-width:520px;
   min-height:100vh;
-  margin:0 auto;
+  margin:auto;
   background:#fff;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
+
 header{
   height:70px;
   display:flex;
@@ -40,17 +40,15 @@ header{
 }
 
 .menu{
-  width:40px;
+  width:35px;
   font-size:25px;
   color:#555;
   cursor:pointer;
 }
 
-.menu:last-child{text-align:right}
-
 .logo{
   text-align:center;
-  color:var(--red);
+  color:#d0021b;
   font-size:20px;
   font-weight:bold;
   line-height:1.05;
@@ -59,16 +57,17 @@ header{
 .logo small{
   display:block;
   margin-top:5px;
-  color:#444;
+  color:#555;
   font-size:10px;
   font-weight:normal;
 }
 
-/* MIỀN */
+/* ================= MIỀN ================= */
+
 .region-nav{
   display:flex;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
+  border-top:1px solid #ddd;
+  border-bottom:1px solid #ddd;
 }
 
 .region-nav button{
@@ -76,7 +75,7 @@ header{
   min-width:0;
   padding:12px 2px;
   border:0;
-  border-right:1px solid var(--border);
+  border-right:1px solid #ddd;
   background:#fff;
   color:#0056b3;
   font-weight:bold;
@@ -84,72 +83,85 @@ header{
   cursor:pointer;
 }
 
-.region-nav button:last-child{border-right:0}
-.region-nav button.active{color:var(--red)}
+.region-nav button:last-child{
+  border-right:0;
+}
 
-/* NGÀY */
+.region-nav button.active{
+  color:#d0021b;
+}
+
+/* ================= NGÀY ================= */
+
 .day-nav{
   display:flex;
   justify-content:space-around;
-  padding:8px 3px;
+  padding:9px 2px;
   background:#fafafa;
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid #ddd;
 }
 
 .day-nav button{
   border:0;
   background:none;
-  padding:5px 7px;
+  padding:6px 7px;
   font-size:14px;
   cursor:pointer;
 }
 
 .day-nav button.active{
-  color:var(--red);
+  color:#d0021b;
   font-weight:bold;
 }
 
-/* ĐÀI */
+/* ================= ĐÀI ================= */
+
 .station-nav{
   display:flex;
   gap:6px;
   overflow-x:auto;
   padding:9px 10px;
-  border-bottom:1px solid var(--border);
   background:#fff;
+  border-bottom:1px solid #ddd;
   scrollbar-width:none;
 }
-.station-nav::-webkit-scrollbar{display:none}
+
+.station-nav::-webkit-scrollbar{
+  display:none;
+}
 
 .station-nav button{
   flex:none;
   border:1px solid #ccc;
   background:#fff;
   border-radius:4px;
-  padding:7px 11px;
+  padding:8px 12px;
+  color:#333;
   font-size:13px;
+  white-space:nowrap;
   cursor:pointer;
 }
 
 .station-nav button.active{
-  background:var(--red);
+  background:#d0021b;
   color:#fff;
-  border-color:var(--red);
+  border-color:#d0021b;
 }
 
-/* ALERT */
+/* ================= THÔNG BÁO ================= */
+
 .alert{
   display:flex;
-  justify-content:center;
   align-items:center;
-  gap:12px;
+  justify-content:center;
+  gap:10px;
   padding:9px;
   color:#555;
   font-size:13px;
 }
 
 .alert a{
-  background:var(--red);
+  background:#d0021b;
   color:#fff;
   text-decoration:none;
   padding:5px 11px;
@@ -157,164 +169,110 @@ header{
   font-size:12px;
 }
 
-/* TITLE */
+/* ================= TITLE ================= */
+
 .title{
-  background:var(--red);
+  background:#d0021b;
   color:#fff;
   padding:11px 14px;
-  font-size:18px;
+  font-size:15px;
   font-weight:bold;
 }
 
 .breadcrumb{
-  padding:12px 10px;
-  font-size:16px;
+  padding:10px 12px;
+  font-size:13px;
   font-weight:bold;
-  border-bottom:1px solid var(--border);
   white-space:nowrap;
   overflow:hidden;
-  text-overflow:ellipsis;
 }
 
 .breadcrumb span{
-  color:#7d1515;
-  text-decoration:underline;
+  color:#8b0000;
 }
 
-/* THÔNG TIN ĐÀI */
+/* ================= ĐÀI ĐANG XEM ================= */
+
 .station-info{
   padding:10px 14px;
   background:#fff8f8;
-  color:var(--red);
+  color:#d0021b;
   font-weight:bold;
   border-bottom:1px solid #eee;
 }
 
-/* TABLE */
-.result-table{
+/* ================= TABLE ================= */
+
+/*
+  Quan trọng:
+  Khi có nhiều đài, bảng được phép kéo ngang.
+  Không ép 3-4 đài vào một màn hình nhỏ.
+*/
+
+.table-wrap{
   width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+table{
+  width:100%;
+  min-width:500px;
   border-collapse:collapse;
   table-layout:fixed;
   text-align:center;
   background:#fff;
 }
 
-.result-table th,
-.result-table td{
-  border:1px solid var(--border);
-  padding:8px 2px;
+th,
+td{
+  border:1px solid #ddd;
+  padding:8px 3px;
   vertical-align:middle;
 }
 
-.result-table th{
-  color:var(--blue);
-  font-size:17px;
-  height:54px;
-}
-
-.result-table .prize{
-  width:15%;
+th{
+  color:#0056b3;
+  font-size:13px;
   background:#fafafa;
-  color:#333;
-  font-size:16px;
-  font-weight:normal;
 }
 
-.result-table .num{
-  font-size:31px;
-  font-weight:700;
+.prize{
+  width:70px;
+  background:#f8f8f8;
+  color:#444;
+  font-size:13px;
+}
+
+.num{
+  font-size:20px;
+  font-weight:bold;
   line-height:1.65;
-  letter-spacing:-.5px;
-  overflow-wrap:anywhere;
+  white-space:nowrap;
 }
 
-.result-table .db{
-  color:var(--red);
-  font-size:42px;
-  line-height:1.25;
+.db{
+  color:#d0021b;
+  font-size:27px;
 }
 
-/* XSMN/XSMT: một đài */
-.result-table.single .num{
-  font-size:40px;
-}
-.result-table.single .db{
-  font-size:44px;
+/* Khi chỉ xem một đài */
+
+.single-station table{
+  min-width:100%;
 }
 
-/* XSMN/XSMT: nhiều đài */
-.result-table.multi .num{
+.single-station .num{
   font-size:28px;
   line-height:1.65;
 }
-.result-table.multi .db{
-  font-size:31px;
+
+.single-station .db{
+  font-size:34px;
 }
 
-/* Các cụm số trong một ô */
-.numbers{
-  display:grid;
-  gap:4px 6px;
-  align-items:center;
-  justify-items:center;
-}
+/* ================= THỐNG KÊ ================= */
 
-.numbers.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.numbers.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.numbers.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-
-.stack{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:2px;
-}
-
-/* XSMB */
-.result-table.mb .num{
-  font-size:31px;
-  line-height:1.65;
-}
-
-.result-table.mb .db{
-  font-size:44px;
-  color:var(--red);
-}
-
-.result-table.mb .code-row td{
-  color:#4932a5;
-  font-size:27px;
-  font-weight:normal;
-  letter-spacing:0;
-}
-
-.result-table.mb .code-label{
-  color:#333;
-  font-size:16px;
-}
-
-.result-table.mb .g3 .numbers,
-.result-table.mb .g5 .numbers{
-  grid-template-columns:repeat(3,minmax(0,1fr));
-}
-
-.result-table.mb .g4 .numbers{
-  grid-template-columns:repeat(2,minmax(0,1fr));
-}
-
-.result-table.mb .g6 .numbers{
-  grid-template-columns:repeat(3,minmax(0,1fr));
-}
-
-.result-table.mb .g7 .numbers{
-  grid-template-columns:repeat(4,minmax(0,1fr));
-}
-
-.result-table.mb .g2 .numbers{
-  grid-template-columns:repeat(2,minmax(0,1fr));
-}
-
-/* THỐNG KÊ */
 .statistics{
   display:none;
   padding-bottom:20px;
@@ -328,8 +286,8 @@ header{
 }
 
 .stat-title{
-  background:var(--red);
-  color:white;
+  background:#d0021b;
+  color:#fff;
   padding:9px;
   font-weight:bold;
 }
@@ -348,60 +306,87 @@ header{
   font-weight:bold;
 }
 
-/* FOOTER */
+/* ================= FOOTER ================= */
+
 .footer{
   padding:18px;
   text-align:center;
   color:#777;
   font-size:12px;
-  border-top:1px solid var(--border);
+  border-top:1px solid #ddd;
 }
 
-/* MOBILE */
-@media (max-width:520px){
-  .title{font-size:16px}
-  .breadcrumb{font-size:15px}
-  .result-table th{font-size:14px;height:48px}
-  .result-table .prize{font-size:14px}
-  .result-table.single .num{font-size:34px}
-  .result-table.single .db{font-size:40px}
-  .result-table.multi .num{font-size:22px}
-  .result-table.multi .db{font-size:25px}
-  .result-table.mb .num{font-size:25px}
-  .result-table.mb .db{font-size:38px}
-  .result-table.mb .code-row td{font-size:21px}
+/* ================= MOBILE ================= */
+
+@media(max-width:380px){
+
+  .day-nav button{
+    padding:6px 4px;
+    font-size:13px;
+  }
+
+  table{
+    min-width:460px;
+  }
+
+  .num{
+    font-size:18px;
+  }
+
 }
 
-@media (max-width:380px){
-  .result-table.multi .num{font-size:19px}
-  .result-table.mb .num{font-size:22px}
-  .result-table.mb .code-row td{font-size:18px}
-  .result-table.single .num{font-size:30px}
-  .result-table.single .db{font-size:36px}
-}
 </style>
 </head>
 
+
 <body>
+
 <div class="app">
 
+<!-- ================= HEADER ================= -->
+
 <header>
+
   <div class="menu">☰</div>
+
   <div class="logo">
-    Vé Số<br>PHÁT ĐẠT
+    Vé Số<br>
+    PHÁT ĐẠT
     <small>Chính xác từng giây</small>
   </div>
+
   <div class="menu">👤</div>
+
 </header>
 
+
+<!-- ================= MIỀN ================= -->
+
 <nav class="region-nav">
-  <button data-region="mb">XSMB</button>
-  <button data-region="mn" class="active">XSMN</button>
-  <button data-region="mt">XSMT</button>
-  <button data-region="stat">Thống kê</button>
+
+  <button data-region="mb">
+    XSMB
+  </button>
+
+  <button data-region="mn" class="active">
+    XSMN
+  </button>
+
+  <button data-region="mt">
+    XSMT
+  </button>
+
+  <button data-region="stat">
+    Thống kê
+  </button>
+
 </nav>
 
+
+<!-- ================= NGÀY ================= -->
+
 <nav class="day-nav">
+
   <button data-day="T2">T2</button>
   <button data-day="T3">T3</button>
   <button data-day="T4">T4</button>
@@ -409,498 +394,1088 @@ header{
   <button data-day="T6">T6</button>
   <button data-day="T7">T7</button>
   <button data-day="CN">CN</button>
+
 </nav>
 
-<div class="station-nav" id="stationNav"></div>
+
+<!-- ================= DANH SÁCH ĐÀI ================= -->
+
+<div
+  class="station-nav"
+  id="stationNav">
+</div>
+
+
+<!-- ================= NỘI DUNG ================= -->
 
 <div id="mainContent">
+
   <div class="alert">
-    <span id="alertText">Kết quả xổ số mới nhất 👍</span>
-    <a href="#">Xem ngay</a>
+
+    <span id="alertText">
+      Kết quả xổ số mới nhất 👍
+    </span>
+
+    <a href="#">
+      Xem ngay
+    </a>
+
   </div>
 
-  <div class="title" id="pageTitle"></div>
+
+  <div
+    class="title"
+    id="pageTitle">
+  </div>
+
 
   <div class="breadcrumb">
-    <span id="breadcrumbRegion"></span>
+
+    <span id="breadcrumbRegion">
+      XSMN
+    </span>
+
     »
-    <span id="breadcrumbDay"></span>
+
+    <span id="breadcrumbDay">
+      Thứ 2
+    </span>
+
     »
-    <span id="dateText"></span>
+
+    <span id="dateText">
+    </span>
+
   </div>
 
-  <div class="station-info" id="stationInfo"></div>
 
-  <table class="result-table" id="resultTable">
-    <thead><tr id="tableHead"></tr></thead>
-    <tbody id="tableBody"></tbody>
-  </table>
+  <div
+    class="station-info"
+    id="stationInfo">
+  </div>
+
+
+  <!-- QUAN TRỌNG: BẢNG CÓ THỂ KÉO NGANG -->
+
+  <div
+    class="table-wrap"
+    id="tableWrap">
+
+    <table>
+
+      <thead>
+
+        <tr id="tableHead"></tr>
+
+      </thead>
+
+      <tbody id="tableBody"></tbody>
+
+    </table>
+
+  </div>
+
 </div>
 
-<div class="statistics" id="statistics">
-  <div class="title">Thống kê XSMN</div>
+
+<!-- ================= THỐNG KÊ ================= -->
+
+<div
+  class="statistics"
+  id="statistics">
+
+  <div class="title">
+    Thống kê XSMN
+  </div>
+
 
   <div class="stat-box">
-    <div class="stat-title">Đầu</div>
+
+    <div class="stat-title">
+      Đầu
+    </div>
+
     <div class="stat-body">
-      <span class="tag">0</span><span class="tag">1</span><span class="tag">2</span>
-      <span class="tag">3</span><span class="tag">4</span><span class="tag">5</span>
-      <span class="tag">6</span><span class="tag">7</span><span class="tag">8</span>
+
+      <span class="tag">0</span>
+      <span class="tag">1</span>
+      <span class="tag">2</span>
+      <span class="tag">3</span>
+      <span class="tag">4</span>
+      <span class="tag">5</span>
+      <span class="tag">6</span>
+      <span class="tag">7</span>
+      <span class="tag">8</span>
       <span class="tag">9</span>
+
     </div>
+
   </div>
 
+
   <div class="stat-box">
-    <div class="stat-title">Đuôi</div>
+
+    <div class="stat-title">
+      Đuôi
+    </div>
+
     <div class="stat-body">
-      <span class="tag">0</span><span class="tag">1</span><span class="tag">2</span>
-      <span class="tag">3</span><span class="tag">4</span><span class="tag">5</span>
-      <span class="tag">6</span><span class="tag">7</span><span class="tag">8</span>
+
+      <span class="tag">0</span>
+      <span class="tag">1</span>
+      <span class="tag">2</span>
+      <span class="tag">3</span>
+      <span class="tag">4</span>
+      <span class="tag">5</span>
+      <span class="tag">6</span>
+      <span class="tag">7</span>
+      <span class="tag">8</span>
       <span class="tag">9</span>
+
     </div>
+
   </div>
 
+
   <div class="stat-box">
-    <div class="stat-title">Cặp số tham khảo</div>
-    <div class="stat-body">
-      <span class="tag">12</span><span class="tag">21</span>
-      <span class="tag">36</span><span class="tag">63</span>
-      <span class="tag">68</span><span class="tag">86</span>
+
+    <div class="stat-title">
+      Cặp số tham khảo
     </div>
+
+    <div class="stat-body">
+
+      <span class="tag">12</span>
+      <span class="tag">21</span>
+      <span class="tag">36</span>
+      <span class="tag">63</span>
+      <span class="tag">68</span>
+      <span class="tag">86</span>
+
+    </div>
+
   </div>
+
 </div>
+
 
 <div class="footer">
-  Vé Số Phát Đạt © 2026<br>
+
+  Vé Số Phát Đạt © 2026
+
+  <br>
+
   Dữ liệu hiển thị nhằm mục đích tham khảo.
+
 </div>
 
 </div>
+
 
 <script>
-/* =========================
-   DANH SÁCH ĐÀI
-========================= */
-const MN={
-  T2:["TPHCM","Đồng Tháp","Cà Mau"],
-  T3:["Bến Tre","Vũng Tàu","Bạc Liêu"],
-  T4:["Đồng Nai","Cần Thơ","Sóc Trăng"],
-  T5:["Tây Ninh","An Giang","Bình Thuận"],
-  T6:["Bình Dương","Vĩnh Long","Trà Vinh"],
-  T7:["TPHCM","Long An","Bình Phước","Hậu Giang"],
-  CN:["Tiền Giang","Kiên Giang","Đà Lạt"]
+
+/* =====================================================
+   XSMN - TẤT CẢ CÁC ĐÀI THEO NGÀY
+===================================================== */
+
+const MN = {
+
+  T2:[
+    "TPHCM",
+    "Đồng Tháp",
+    "Cà Mau"
+  ],
+
+  T3:[
+    "Bến Tre",
+    "Vũng Tàu",
+    "Bạc Liêu"
+  ],
+
+  T4:[
+    "Đồng Nai",
+    "Cần Thơ",
+    "Sóc Trăng"
+  ],
+
+  T5:[
+    "Tây Ninh",
+    "An Giang",
+    "Bình Thuận"
+  ],
+
+  T6:[
+    "Bình Dương",
+    "Vĩnh Long",
+    "Trà Vinh"
+  ],
+
+  T7:[
+    "TPHCM",
+    "Long An",
+    "Bình Phước",
+    "Hậu Giang"
+  ],
+
+  CN:[
+    "Tiền Giang",
+    "Kiên Giang",
+    "Đà Lạt"
+  ]
+
 };
 
-const MT={
-  T2:["Phú Yên","Thừa Thiên Huế"],
-  T3:["Quảng Nam","Đắk Lắk"],
-  T4:["Đà Nẵng","Khánh Hòa"],
-  T5:["Bình Định","Quảng Bình","Quảng Trị"],
-  T6:["Gia Lai","Ninh Thuận"],
-  T7:["Đà Nẵng","Quảng Ngãi","Đắk Nông"],
-  CN:["Kon Tum","Khánh Hòa"]
+
+/* =====================================================
+   XSMT - TẤT CẢ CÁC ĐÀI THEO NGÀY
+===================================================== */
+
+const MT = {
+
+  T2:[
+    "Phú Yên",
+    "Thừa Thiên Huế"
+  ],
+
+  T3:[
+    "Quảng Nam",
+    "Đắk Lắk"
+  ],
+
+  T4:[
+    "Đà Nẵng",
+    "Khánh Hòa"
+  ],
+
+  T5:[
+    "Bình Định",
+    "Quảng Bình",
+    "Quảng Trị"
+  ],
+
+  T6:[
+    "Gia Lai",
+    "Ninh Thuận"
+  ],
+
+  T7:[
+    "Đà Nẵng",
+    "Quảng Ngãi",
+    "Đắk Nông"
+  ],
+
+  CN:[
+    "Kon Tum",
+    "Khánh Hòa"
+  ]
+
 };
 
-const MB=["Hà Nội"];
 
-const dayName={
-  T2:"Thứ 2",T3:"Thứ 3",T4:"Thứ 4",
-  T5:"Thứ 5",T6:"Thứ 6",T7:"Thứ 7",CN:"Chủ nhật"
+/* =====================================================
+   XSMB
+===================================================== */
+
+const MB = [
+  "Hà Nội"
+];
+
+
+/* =====================================================
+   TÊN NGÀY
+===================================================== */
+
+const dayName = {
+
+  T2:"Thứ 2",
+  T3:"Thứ 3",
+  T4:"Thứ 4",
+  T5:"Thứ 5",
+  T6:"Thứ 6",
+  T7:"Thứ 7",
+  CN:"Chủ nhật"
+
 };
 
-let currentRegion="mn";
-let currentDay="T2";
-let currentStation=-1;
 
-/* =========================
-   DỮ LIỆU MẪU MIỀN NAM/TRUNG
-   Mỗi đài có đúng cơ cấu:
-   G8:1, G7:1, G6:3, G5:1,
-   G4:7, G3:2, G2:1, G1:1, DB:1
-========================= */
-function createSouthNumbers(index){
-  const seed=1000+index*1234;
+/* =====================================================
+   TRẠNG THÁI
+===================================================== */
 
-  const n=(value,len)=>String(value).padStart(len,"0").slice(-len);
+let currentRegion = "mn";
 
-  return {
-    G8:[n(10+index,2)],
-    G7:[n(200+index*111,3)],
-    G6:[n(seed,4),n(seed+111,4),n(seed+222,4)],
-    G5:[n(seed+333,4)],
-    G4:[
-      n(seed+444,5),n(seed+555,5),n(seed+666,5),
-      n(seed+777,5),n(seed+888,5),n(seed+999,5),
-      n(seed+1111,5)
-    ],
-    G3:[n(seed+123,5),n(seed+456,5)],
-    G2:[n(seed+2222,5)],
-    G1:[n(seed+3333,5)],
-    DB:[n(400000+index*12345,6)]
-  };
-}
+let currentDay = "T2";
 
-/* =========================
-   DỮ LIỆU MẪU MIỀN BẮC
-========================= */
-function createNorthNumbers(){
-  return {
-    codes:["2GU","4GU","6GU","5GU","7GU","9GU"],
-    DB:["78196"],
-    G1:["91282"],
-    G2:["68753","84293"],
-    G3:["26364","94735","53485","04606","35704","61416"],
-    G4:["3789","5569","2524","0483"],
-    G5:["1399","2321","1121","8155","9803","9490"],
-    G6:["970","276","920"],
-    G7:["40","28","16","11"]
-  };
-}
+let currentStation = -1;
 
-/* =========================
-   LẤY ĐÀI
-========================= */
+
+/* =====================================================
+   LẤY DANH SÁCH ĐÀI
+===================================================== */
+
 function getStations(){
-  if(currentRegion==="mn") return MN[currentDay]||[];
-  if(currentRegion==="mt") return MT[currentDay]||[];
-  if(currentRegion==="mb") return MB;
+
+  if(currentRegion === "mn"){
+    return MN[currentDay] || [];
+  }
+
+  if(currentRegion === "mt"){
+    return MT[currentDay] || [];
+  }
+
+  if(currentRegion === "mb"){
+    return MB;
+  }
+
   return [];
+
 }
 
-/* =========================
-   NÚT ĐÀI
-========================= */
+
+/* =====================================================
+   TẠO DỮ LIỆU MẪU
+===================================================== */
+
+function createSampleNumbers(index){
+
+  const base =
+    10000 + index * 1234;
+
+
+  return {
+
+    G8:[
+      String(10 + index)
+        .padStart(2,"0")
+    ],
+
+    G7:[
+      String(100 + index * 111)
+    ],
+
+    G6:[
+      [
+        String(base).slice(-4),
+        String(base + 111).slice(-4),
+        String(base + 222).slice(-4)
+      ]
+    ],
+
+    G5:[
+      String(base + 333).slice(-4)
+    ],
+
+    G4:[
+      [
+        String(base + 444).slice(-5),
+        String(base + 555).slice(-5),
+        String(base + 666).slice(-5),
+        String(base + 777).slice(-5),
+        String(base + 888).slice(-5),
+        String(base + 999).slice(-5),
+        String(base + 1111).slice(-5)
+      ]
+    ],
+
+    G3:[
+      [
+        String(base + 123).slice(-5),
+        String(base + 456).slice(-5)
+      ]
+    ],
+
+    G2:[
+      String(base + 2222).slice(-5)
+    ],
+
+    G1:[
+      String(base + 3333).slice(-5)
+    ],
+
+    DB:[
+      String(400000 + index * 12345)
+    ]
+
+  };
+
+}
+
+
+/* =====================================================
+   RENDER NÚT ĐÀI
+===================================================== */
+
 function renderStationButtons(){
-  const box=document.getElementById("stationNav");
-  const stations=getStations();
 
-  box.innerHTML="";
+  const box =
+    document.getElementById("stationNav");
 
-  /* XSMB chỉ có một bảng, không cần thanh chọn đài */
-  if(currentRegion==="mb"){
-    box.style.display="none";
-    return;
-  }
+  const stations =
+    getStations();
+
+  box.innerHTML = "";
+
 
   if(!stations.length){
-    box.style.display="none";
+
+    box.style.display = "none";
+
     return;
+
   }
 
-  box.style.display="flex";
 
-  const all=document.createElement("button");
-  all.textContent="Tất cả";
-  if(currentStation===-1) all.classList.add("active");
+  box.style.display = "flex";
 
-  all.onclick=()=>{
-    currentStation=-1;
+
+  /* TẤT CẢ */
+
+  const all =
+    document.createElement("button");
+
+  all.textContent = "Tất cả";
+
+
+  if(currentStation === -1){
+
+    all.classList.add("active");
+
+  }
+
+
+  all.onclick = function(){
+
+    currentStation = -1;
+
     renderStationButtons();
+
     renderTable();
+
   };
+
 
   box.appendChild(all);
 
-  stations.forEach((station,index)=>{
-    const btn=document.createElement("button");
-    btn.textContent=station;
 
-    if(currentStation===index) btn.classList.add("active");
+  /* TỪNG ĐÀI */
 
-    btn.onclick=()=>{
-      currentStation=index;
-      renderStationButtons();
-      renderTable();
-    };
+  stations.forEach(function(station,index){
 
-    box.appendChild(btn);
-  });
-}
+    const btn =
+      document.createElement("button");
 
-/* =========================
-   HEADER BẢNG
-========================= */
-function renderTableHead(){
-  const head=document.getElementById("tableHead");
-  const stations=getStations();
+    btn.textContent = station;
 
-  if(currentRegion==="mb"){
-    head.innerHTML=`<th class="prize">Giải</th><th>Hà Nội</th>`;
-    return;
-  }
 
-  let html=`<th class="prize">Giải</th>`;
+    if(currentStation === index){
 
-  if(currentStation===-1){
-    stations.forEach(station=>{
-      html+=`<th>${station}</th>`;
-    });
-  }else{
-    html+=`<th>${stations[currentStation]}</th>`;
-  }
+      btn.classList.add("active");
 
-  head.innerHTML=html;
-}
-
-/* =========================
-   Ô SỐ
-========================= */
-function numberCell(value,isDB=false){
-  return `<td class="num${isDB?" db":""}">${value}</td>`;
-}
-
-function groupNumbers(values,cols){
-  return `<div class="numbers cols-${cols}">
-    ${values.map(v=>`<span>${v}</span>`).join("")}
-  </div>`;
-}
-
-/* =========================
-   BẢNG XSMN/XSMT
-========================= */
-function renderSouthTable(){
-  const stations=getStations();
-  const selected=currentStation===-1
-    ? stations.map((_,i)=>i)
-    : [currentStation];
-
-  const data=selected.map(i=>createSouthNumbers(i));
-  const table=document.getElementById("resultTable");
-
-  table.className="result-table "+(selected.length===1?"single":"multi");
-
-  let html="";
-
-  html+=`<tr><td class="prize">G.8</td>
-    ${data.map(x=>numberCell(x.G8[0],true)).join("")}</tr>`;
-
-  html+=`<tr><td class="prize">G.7</td>
-    ${data.map(x=>numberCell(x.G7[0])).join("")}</tr>`;
-
-  html+=`<tr><td class="prize">G.6</td>
-    ${data.map(x=>`<td class="num">${x.G6.join("<br>")}</td>`).join("")}</tr>`;
-
-  html+=`<tr><td class="prize">G.5</td>
-    ${data.map(x=>numberCell(x.G5[0])).join("")}</tr>`;
-
-  html+=`<tr><td class="prize">G.4</td>
-    ${data.map(x=>`<td class="num">${x.G4.join("<br>")}</td>`).join("")}</tr>`;
-
-  html+=`<tr><td class="prize">G.3</td>
-    ${data.map(x=>`<td class="num">${x.G3.join("<br>")}</td>`).join("")}</tr>`;
-
-  html+=`<tr><td class="prize">G.2</td>
-    ${data.map(x=>numberCell(x.G2[0])).join("")}</tr>`;
-
-  html+=`<tr><td class="prize">G.1</td>
-    ${data.map(x=>numberCell(x.G1[0])).join("")}</tr>`;
-
-  html+=`<tr><td class="prize">ĐB</td>
-    ${data.map(x=>numberCell(x.DB[0],true)).join("")}</tr>`;
-
-  document.getElementById("tableBody").innerHTML=html;
-}
-
-/* =========================
-   BẢNG XSMB
-========================= */
-function renderNorthTable(){
-  const d=createNorthNumbers();
-  const table=document.getElementById("resultTable");
-  table.className="result-table mb";
-
-  let html="";
-
-  html+=`
-    <tr class="code-row">
-      <td class="prize code-label">Mã ĐB</td>
-      <td>${d.codes.join("&nbsp;&nbsp;")}</td>
-    </tr>`;
-
-  html+=`
-    <tr>
-      <td class="prize">G.ĐB</td>
-      <td class="num db">${d.DB[0]}</td>
-    </tr>`;
-
-  html+=`
-    <tr>
-      <td class="prize">G.1</td>
-      <td class="num">${d.G1[0]}</td>
-    </tr>`;
-
-  html+=`
-    <tr>
-      <td class="prize">G.2</td>
-      <td class="num">${groupNumbers(d.G2,2)}</td>
-    </tr>`;
-
-  html+=`
-    <tr class="g3">
-      <td class="prize">G.3</td>
-      <td class="num">${groupNumbers(d.G3,3)}</td>
-    </tr>`;
-
-  html+=`
-    <tr class="g4">
-      <td class="prize">G.4</td>
-      <td class="num">${groupNumbers(d.G4,2)}</td>
-    </tr>`;
-
-  html+=`
-    <tr class="g5">
-      <td class="prize">G.5</td>
-      <td class="num">${groupNumbers(d.G5,3)}</td>
-    </tr>`;
-
-  html+=`
-    <tr class="g6">
-      <td class="prize">G.6</td>
-      <td class="num">${groupNumbers(d.G6,3)}</td>
-    </tr>`;
-
-  html+=`
-    <tr class="g7">
-      <td class="prize">G.7</td>
-      <td class="num db">${groupNumbers(d.G7,4)}</td>
-    </tr>`;
-
-  document.getElementById("tableBody").innerHTML=html;
-}
-
-/* =========================
-   RENDER
-========================= */
-function renderTable(){
-  renderTableHead();
-
-  const stations=getStations();
-
-  if(!stations.length){
-    document.getElementById("tableBody").innerHTML=`
-      <tr><td colspan="6" style="padding:30px">Chưa có dữ liệu.</td></tr>`;
-    return;
-  }
-
-  if(currentRegion==="mb"){
-    renderNorthTable();
-  }else{
-    renderSouthTable();
-  }
-
-  const info=document.getElementById("stationInfo");
-
-  if(currentRegion==="mb"){
-    info.textContent="Đang xem: Xổ số miền Bắc - Hà Nội";
-  }else if(currentStation===-1){
-    info.textContent="Đang xem: Tất cả các đài";
-  }else{
-    info.textContent="Đang xem: "+stations[currentStation];
-  }
-}
-
-/* =========================
-   TIÊU ĐỀ
-========================= */
-function updatePage(){
-  const regionText=
-    currentRegion==="mb"?"XSMB":
-    currentRegion==="mt"?"XSMT":"XSMN";
-
-  const regionFull=
-    currentRegion==="mb"?"Xổ số miền Bắc":
-    currentRegion==="mt"?"Xổ số miền Trung":"Xổ số miền Nam";
-
-  document.getElementById("pageTitle").textContent=
-    `${regionText} - Kết quả ${regionFull} - ${regionText}`;
-
-  document.getElementById("breadcrumbRegion").textContent=regionText;
-  document.getElementById("breadcrumbDay").textContent=
-    `${regionText} ${dayName[currentDay]}`;
-
-  const now=new Date();
-  const date=
-    String(now.getDate()).padStart(2,"0")+"/"+
-    String(now.getMonth()+1).padStart(2,"0")+"/"+
-    now.getFullYear();
-
-  document.getElementById("dateText").textContent=date;
-  document.getElementById("alertText").textContent=
-    `Kết quả ${regionFull} mới nhất 👍`;
-}
-
-/* =========================
-   CHỌN NGÀY
-========================= */
-document.querySelectorAll(".day-nav button").forEach(button=>{
-  button.onclick=()=>{
-    currentDay=button.dataset.day;
-    currentStation=-1;
-
-    document.querySelectorAll(".day-nav button")
-      .forEach(x=>x.classList.remove("active"));
-
-    button.classList.add("active");
-
-    updatePage();
-    renderStationButtons();
-    renderTable();
-  };
-});
-
-/* =========================
-   CHỌN MIỀN
-========================= */
-document.querySelectorAll(".region-nav button").forEach(button=>{
-  button.onclick=()=>{
-    document.querySelectorAll(".region-nav button")
-      .forEach(x=>x.classList.remove("active"));
-
-    button.classList.add("active");
-
-    const region=button.dataset.region;
-
-    if(region==="stat"){
-      document.getElementById("mainContent").style.display="none";
-      document.getElementById("stationNav").style.display="none";
-      document.getElementById("statistics").style.display="block";
-      return;
     }
 
-    document.getElementById("statistics").style.display="none";
-    document.getElementById("mainContent").style.display="block";
 
-    currentRegion=region;
-    currentStation=-1;
+    btn.onclick = function(){
 
-    updatePage();
-    renderStationButtons();
-    renderTable();
-  };
-});
+      currentStation = index;
 
-/* =========================
-   NGÀY HIỆN TẠI
-========================= */
-function todayCode(){
-  return {
-    0:"CN",1:"T2",2:"T3",3:"T4",
-    4:"T5",5:"T6",6:"T7"
-  }[new Date().getDay()];
+      renderStationButtons();
+
+      renderTable();
+
+    };
+
+
+    box.appendChild(btn);
+
+  });
+
 }
 
-/* =========================
-   KHỞI ĐỘNG
-========================= */
-currentDay=todayCode();
 
-document.querySelectorAll(".day-nav button").forEach(x=>{
-  x.classList.toggle("active",x.dataset.day===currentDay);
+/* =====================================================
+   HEADER BẢNG
+===================================================== */
+
+function renderTableHead(){
+
+  const head =
+    document.getElementById("tableHead");
+
+  const stations =
+    getStations();
+
+
+  let html =
+    `<th class="prize">Giải</th>`;
+
+
+  if(currentStation === -1){
+
+    /*
+      TẤT CẢ ĐÀI
+    */
+
+    stations.forEach(function(station){
+
+      html +=
+        `<th>${station}</th>`;
+
+    });
+
+  }
+
+  else{
+
+    /*
+      CHỈ MỘT ĐÀI
+    */
+
+    html +=
+      `<th>${stations[currentStation]}</th>`;
+
+  }
+
+
+  head.innerHTML = html;
+
+}
+
+
+/* =====================================================
+   TẠO DÒNG THƯỜNG
+===================================================== */
+
+function rowHTML(
+  label,
+  values,
+  isDB = false
+){
+
+  let html =
+    `<tr>
+      <td class="prize">${label}</td>`;
+
+
+  values.forEach(function(value){
+
+    html +=
+      `<td class="num ${isDB ? "db" : ""}">
+        ${value}
+      </td>`;
+
+  });
+
+
+  html += `</tr>`;
+
+
+  return html;
+
+}
+
+
+/* =====================================================
+   RENDER BẢNG
+===================================================== */
+
+function renderTable(){
+
+  renderTableHead();
+
+
+  const body =
+    document.getElementById("tableBody");
+
+  const wrap =
+    document.getElementById("tableWrap");
+
+  const stations =
+    getStations();
+
+
+  if(!stations.length){
+
+    body.innerHTML = `
+      <tr>
+        <td colspan="5"
+            style="padding:30px">
+          Chưa có dữ liệu.
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+
+  let selectedIndexes = [];
+
+
+  if(currentStation === -1){
+
+    /*
+      TẤT CẢ ĐÀI
+    */
+
+    stations.forEach(function(_,index){
+
+      selectedIndexes.push(index);
+
+    });
+
+  }
+
+  else{
+
+    /*
+      MỘT ĐÀI
+    */
+
+    selectedIndexes = [
+      currentStation
+    ];
+
+  }
+
+
+  const allData =
+    selectedIndexes.map(function(index){
+
+      return createSampleNumbers(index);
+
+    });
+
+
+  let html = "";
+
+
+  /* G8 */
+
+  html += rowHTML(
+    "G.8",
+    allData.map(x => x.G8[0]),
+    true
+  );
+
+
+  /* G7 */
+
+  html += rowHTML(
+    "G.7",
+    allData.map(x => x.G7[0])
+  );
+
+
+  /* G6 */
+
+  html += `
+    <tr>
+
+      <td class="prize">
+        G.6
+      </td>
+
+      ${allData.map(x => `
+
+        <td class="num">
+
+          ${x.G6[0].join("<br>")}
+
+        </td>
+
+      `).join("")}
+
+    </tr>
+  `;
+
+
+  /* G5 */
+
+  html += rowHTML(
+    "G.5",
+    allData.map(x => x.G5[0])
+  );
+
+
+  /* G4 */
+
+  html += `
+    <tr>
+
+      <td class="prize">
+        G.4
+      </td>
+
+      ${allData.map(x => `
+
+        <td class="num">
+
+          ${x.G4[0].join("<br>")}
+
+        </td>
+
+      `).join("")}
+
+    </tr>
+  `;
+
+
+  /* G3 */
+
+  html += `
+    <tr>
+
+      <td class="prize">
+        G.3
+      </td>
+
+      ${allData.map(x => `
+
+        <td class="num">
+
+          ${x.G3[0].join("<br>")}
+
+        </td>
+
+      `).join("")}
+
+    </tr>
+  `;
+
+
+  /* G2 */
+
+  html += rowHTML(
+    "G.2",
+    allData.map(x => x.G2[0])
+  );
+
+
+  /* G1 */
+
+  html += rowHTML(
+    "G.1",
+    allData.map(x => x.G1[0])
+  );
+
+
+  /* ĐẶC BIỆT */
+
+  html += rowHTML(
+    "ĐB",
+    allData.map(x => x.DB[0]),
+    true
+  );
+
+
+  body.innerHTML = html;
+
+
+  /* =========================
+     THÔNG TIN ĐÀI
+  ========================= */
+
+  const info =
+    document.getElementById("stationInfo");
+
+
+  if(currentStation === -1){
+
+    info.textContent =
+      "Đang xem: Tất cả các đài";
+
+    wrap.classList.remove(
+      "single-station"
+    );
+
+  }
+
+  else{
+
+    info.textContent =
+      "Đang xem: " +
+      stations[currentStation];
+
+    wrap.classList.add(
+      "single-station"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CẬP NHẬT TRANG
+===================================================== */
+
+function updatePage(){
+
+  let regionText;
+
+  let regionFull;
+
+
+  if(currentRegion === "mb"){
+
+    regionText = "XSMB";
+
+    regionFull =
+      "Xổ số miền Bắc";
+
+  }
+
+  else if(currentRegion === "mt"){
+
+    regionText = "XSMT";
+
+    regionFull =
+      "Xổ số miền Trung";
+
+  }
+
+  else{
+
+    regionText = "XSMN";
+
+    regionFull =
+      "Xổ số miền Nam";
+
+  }
+
+
+  document.getElementById(
+    "pageTitle"
+  ).textContent =
+    `${regionText} ${dayName[currentDay]} - ${regionFull}`;
+
+
+  document.getElementById(
+    "breadcrumbRegion"
+  ).textContent =
+    regionText;
+
+
+  document.getElementById(
+    "breadcrumbDay"
+  ).textContent =
+    dayName[currentDay];
+
+
+  const now =
+    new Date();
+
+
+  const date =
+    String(now.getDate())
+      .padStart(2,"0")
+    + "/" +
+    String(now.getMonth()+1)
+      .padStart(2,"0")
+    + "/" +
+    now.getFullYear();
+
+
+  document.getElementById(
+    "dateText"
+  ).textContent = date;
+
+
+  document.getElementById(
+    "alertText"
+  ).textContent =
+    `Kết quả ${regionFull} mới nhất 👍`;
+
+}
+
+
+/* =====================================================
+   CLICK NGÀY
+===================================================== */
+
+document
+.querySelectorAll(".day-nav button")
+.forEach(function(button){
+
+  button.onclick = function(){
+
+    currentDay =
+      button.dataset.day;
+
+    currentStation = -1;
+
+
+    document
+      .querySelectorAll(
+        ".day-nav button"
+      )
+      .forEach(function(x){
+
+        x.classList.remove("active");
+
+      });
+
+
+    button.classList.add("active");
+
+
+    updatePage();
+
+    renderStationButtons();
+
+    renderTable();
+
+  };
+
 });
 
+
+/* =====================================================
+   CLICK MIỀN
+===================================================== */
+
+document
+.querySelectorAll(".region-nav button")
+.forEach(function(button){
+
+  button.onclick = function(){
+
+    document
+      .querySelectorAll(
+        ".region-nav button"
+      )
+      .forEach(function(x){
+
+        x.classList.remove("active");
+
+      });
+
+
+    button.classList.add("active");
+
+
+    const region =
+      button.dataset.region;
+
+
+    /* THỐNG KÊ */
+
+    if(region === "stat"){
+
+      document
+        .getElementById("mainContent")
+        .style.display = "none";
+
+
+      document
+        .getElementById("stationNav")
+        .style.display = "none";
+
+
+      document
+        .getElementById("statistics")
+        .style.display = "block";
+
+
+      return;
+
+    }
+
+
+    /* QUAY LẠI XỔ SỐ */
+
+    document
+      .getElementById("statistics")
+      .style.display = "none";
+
+
+    document
+      .getElementById("mainContent")
+      .style.display = "block";
+
+
+    currentRegion = region;
+
+    currentStation = -1;
+
+
+    updatePage();
+
+    renderStationButtons();
+
+    renderTable();
+
+  };
+
+});
+
+
+/* =====================================================
+   TỰ ĐỘNG CHỌN NGÀY HIỆN TẠI
+===================================================== */
+
+function todayCode(){
+
+  const day =
+    new Date().getDay();
+
+
+  return {
+
+    0:"CN",
+    1:"T2",
+    2:"T3",
+    3:"T4",
+    4:"T5",
+    5:"T6",
+    6:"T7"
+
+  }[day];
+
+}
+
+
+/* =====================================================
+   KHỞI ĐỘNG
+===================================================== */
+
+currentDay =
+  todayCode();
+
+
+document
+.querySelectorAll(
+  ".day-nav button"
+)
+.forEach(function(button){
+
+  button.classList.remove(
+    "active"
+  );
+
+
+  if(
+    button.dataset.day ===
+    currentDay
+  ){
+
+    button.classList.add(
+      "active"
+    );
+
+  }
+
+});
+
+
 updatePage();
+
 renderStationButtons();
+
 renderTable();
+
 </script>
+
 </body>
 </html>
