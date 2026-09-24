@@ -305,4 +305,32 @@
 </div>
 
 </body>
+ <script>
+  // Xử lý chuyển đổi Tab Miền (XSMB, XSMN, XSMT)
+  const mainNavButtons = document.querySelectorAll('.main-nav button');
+  mainNavButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Xóa active tất cả các nút
+      mainNavButtons.forEach(btn => btn.classList.remove('active'));
+      // Thêm active cho nút được click
+      this.classList.add('active');
+      
+      // Mở rộng sau này: Gọi hàm tải dữ liệu tương ứng với miền tại đây
+    });
+  });
+
+  // Xử lý chuyển đổi Tab Ngày (T2, T3... CN)
+  const dayNavSpans = document.querySelectorAll('.day-nav span');
+  dayNavSpans.forEach(span => {
+    span.addEventListener('click', function() {
+      // Xóa active tất cả các ngày
+      dayNavSpans.forEach(s => s.classList.remove('active'));
+      // Thêm active cho ngày được click
+      this.classList.add('active');
+      
+      // Mở rộng sau này: Gọi hàm tải dữ liệu tương ứng với ngày tại đây
+    });
+  });
+ </script>
+ 
 </html>
