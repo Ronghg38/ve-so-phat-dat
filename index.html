@@ -4,305 +4,1227 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vé Số Phát Đạt</title>
+
 <style>
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #e9ecef;
-    color: #111;
-  }
-  .app-container {
-    max-width: 500px;
-    margin: 0 auto;
-    background: #fff;
-    min-height: 100vh;
-  }
-  
-  /* --- HEADER --- */
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-  }
-  .menu-icon {
-    font-size: 24px;
-    color: #555;
-    cursor: pointer;
-  }
-  .logo {
-    text-align: center;
-    color: #d0021b;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 1.1;
-  }
-  .logo small {
-    display: block;
-    font-size: 10px;
-    font-weight: normal;
-    color: #333;
-  }
+*{box-sizing:border-box}
 
-  /* --- MAIN NAV TABS --- */
-  .main-nav {
-    display: flex;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-  }
-  .main-nav button {
-    flex: 1;
-    background: #fff;
-    border: none;
-    border-right: 1px solid #ddd;
-    padding: 12px 5px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #0056b3;
-    cursor: pointer;
-  }
-  .main-nav button:last-child {
-    border-right: none;
-  }
-  .main-nav button.active {
-    color: #d0021b;
-  }
+body{
+  font-family:Arial,sans-serif;
+  margin:0;
+  padding:0;
+  background:#e9ecef;
+  color:#111;
+}
 
-  /* --- DAY NAV --- */
-  .day-nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 15px;
-    background: #fcfcfc;
-    border-bottom: 1px solid #ddd;
-  }
-  .day-nav span {
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-  }
-  .day-nav span.active {
-    color: #d0021b;
-    font-weight: bold;
-  }
+.app-container{
+  max-width:500px;
+  margin:0 auto;
+  background:#fff;
+  min-height:100vh;
+}
 
-  /* --- ALERT BANNER --- */
-  .alert-banner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 10px;
-    font-size: 14px;
-    color: #555;
-  }
-  .btn-red {
-    background: #d0021b;
-    color: #fff;
-    padding: 5px 12px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
-  }
+/* HEADER */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 15px;
+}
 
-  /* --- TITLE & BREADCRUMBS --- */
-  .title-bar {
-    background: #d0021b;
-    color: #fff;
-    padding: 10px 15px;
-    font-size: 15px;
-    font-weight: bold;
-  }
-  .breadcrumbs {
-    padding: 10px 15px;
-    font-size: 14px;
-    font-weight: bold;
-  }
-  .breadcrumbs a {
-    color: #0056b3;
-    text-decoration: none;
-  }
-  .breadcrumbs span {
-    color: #d0021b;
-  }
+.menu-icon{
+  font-size:24px;
+  color:#555;
+  cursor:pointer;
+}
 
-  /* --- RESULT TABLE --- */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    table-layout: fixed;
-  }
-  th, td {
-    border: 1px solid #ddd;
-    padding: 10px 2px;
-    vertical-align: middle;
-  }
-  th {
-    color: #0056b3;
-    font-size: 13px;
-    font-weight: bold;
-    padding: 8px 2px;
-  }
-  .col-prize {
-    width: 12%;
-    font-size: 13px;
-    color: #555;
-    background: #f9f9f9;
-  }
-  
-  .number-group {
-    font-size: 21px;
-    font-weight: bold;
-    line-height: 1.5;
-  }
-  .red-text {
-    color: #d0021b;
-    font-size: 28px;
-  }
+.logo{
+  text-align:center;
+  color:#d0021b;
+  font-weight:bold;
+  font-size:18px;
+  line-height:1.1;
+}
+
+.logo small{
+  display:block;
+  font-size:10px;
+  font-weight:normal;
+  color:#333;
+}
+
+/* MAIN NAV */
+.main-nav{
+  display:flex;
+  border-top:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+}
+
+.main-nav button{
+  flex:1;
+  background:#fff;
+  border:none;
+  border-right:1px solid #ddd;
+  padding:12px 3px;
+  font-size:13px;
+  font-weight:bold;
+  color:#0056b3;
+  cursor:pointer;
+}
+
+.main-nav button:last-child{
+  border-right:none;
+}
+
+.main-nav button.active{
+  color:#d0021b;
+}
+
+/* DAY NAV */
+.day-nav{
+  display:flex;
+  justify-content:space-between;
+  padding:12px 10px;
+  background:#fcfcfc;
+  border-bottom:1px solid #ddd;
+}
+
+.day-nav button{
+  border:0;
+  background:none;
+  font-size:14px;
+  color:#333;
+  cursor:pointer;
+  padding:0;
+}
+
+.day-nav button.active{
+  color:#d0021b;
+  font-weight:bold;
+}
+
+/* STATION NAV */
+.station-nav{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  padding:9px 10px;
+  border-bottom:1px solid #ddd;
+  background:#fff;
+}
+
+.station-nav::-webkit-scrollbar{
+  display:none;
+}
+
+.station-nav button{
+  flex:none;
+  border:1px solid #ccc;
+  background:#fff;
+  border-radius:4px;
+  padding:7px 10px;
+  color:#333;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.station-nav button.active{
+  background:#d0021b;
+  color:#fff;
+  border-color:#d0021b;
+}
+
+/* ALERT */
+.alert-banner{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:15px;
+  padding:10px;
+  font-size:14px;
+  color:#555;
+}
+
+.btn-red{
+  background:#d0021b;
+  color:#fff;
+  padding:5px 12px;
+  border-radius:4px;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:bold;
+}
+
+/* TITLE */
+.title-bar{
+  background:#d0021b;
+  color:#fff;
+  padding:10px 15px;
+  font-size:15px;
+  font-weight:bold;
+}
+
+.breadcrumbs{
+  padding:10px 15px;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.breadcrumbs a{
+  color:#0056b3;
+  text-decoration:none;
+}
+
+.breadcrumbs span{
+  color:#d0021b;
+}
+
+/* SELECTED STATION */
+.selected-station{
+  padding:8px 15px;
+  background:#fff8f8;
+  color:#d0021b;
+  font-size:13px;
+  font-weight:bold;
+  border-bottom:1px solid #eee;
+}
+
+/* RESULT TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  text-align:center;
+  table-layout:fixed;
+}
+
+th,td{
+  border:1px solid #ddd;
+  padding:10px 2px;
+  vertical-align:middle;
+}
+
+th{
+  color:#0056b3;
+  font-size:13px;
+  font-weight:bold;
+  padding:8px 2px;
+}
+
+.col-prize{
+  width:12%;
+  font-size:13px;
+  color:#555;
+  background:#f9f9f9;
+}
+
+.number-group{
+  font-size:21px;
+  font-weight:bold;
+  line-height:1.5;
+}
+
+.red-text{
+  color:#d0021b;
+  font-size:28px;
+}
+
+/* THỐNG KÊ */
+.statistics{
+  display:none;
+}
+
+.stat-box{
+  margin:10px;
+  border:1px solid #ddd;
+  border-radius:5px;
+  overflow:hidden;
+}
+
+.stat-title{
+  background:#d0021b;
+  color:white;
+  padding:9px;
+  font-weight:bold;
+}
+
+.stat-content{
+  padding:10px;
+}
+
+.stat-tag{
+  display:inline-block;
+  background:#f2f2f2;
+  padding:5px 8px;
+  margin:3px;
+  border-radius:4px;
+  font-weight:bold;
+}
+
+.footer{
+  margin-top:15px;
+  padding:15px;
+  text-align:center;
+  color:#777;
+  font-size:12px;
+  border-top:1px solid #ddd;
+}
 </style>
 </head>
+
 <body>
 
 <div class="app-container">
-  
-  <!-- Header -->
-  <header>
-    <div class="menu-icon">☰</div>
-    <div class="logo">
-      Vé Số<br>PHÁT ĐẠT
-      <small>Chính xác từng giây</small>
-    </div>
-    <div class="menu-icon">👤</div>
-  </header>
 
-  <!-- Main Tabs -->
-  <nav class="main-nav">
-    <button>XSMB</button>
-    <button class="active">XSMN</button>
-    <button>XSMT</button>
-    <button>Thống kê XSMN</button>
-  </nav>
+<!-- HEADER -->
+<header>
 
-  <!-- Day Tabs -->
-  <nav class="day-nav">
-    <span class="active">T2</span>
-    <span>T3</span>
-    <span>T4</span>
-    <span>T5</span>
-    <span>T6</span>
-    <span>T7</span>
-    <span>CN</span>
-  </nav>
+  <div class="menu-icon">☰</div>
 
-  <!-- Alert Banner -->
-  <div class="alert-banner">
-    <span>KQXS miền Bắc mới nhất 👍</span>
-    <a href="#" class="btn-red">Tại đây</a>
+  <div class="logo">
+    Vé Số<br>PHÁT ĐẠT
+    <small>Chính xác từng giây</small>
   </div>
 
-  <!-- Region Title -->
-  <div class="title-bar">
+  <div class="menu-icon">👤</div>
+
+</header>
+
+
+<!-- MAIN NAV -->
+<nav class="main-nav">
+
+  <button data-region="XSMB">
+    XSMB
+  </button>
+
+  <button data-region="XSMN" class="active">
+    XSMN
+  </button>
+
+  <button data-region="XSMT">
+    XSMT
+  </button>
+
+  <button data-region="STAT">
+    Thống kê XSMN
+  </button>
+
+</nav>
+
+
+<!-- DAY NAV -->
+<nav class="day-nav">
+
+  <button data-day="T2">T2</button>
+  <button data-day="T3">T3</button>
+  <button data-day="T4">T4</button>
+  <button data-day="T5">T5</button>
+  <button data-day="T6">T6</button>
+  <button data-day="T7">T7</button>
+  <button data-day="CN">CN</button>
+
+</nav>
+
+
+<!-- DANH SÁCH ĐÀI -->
+<div class="station-nav" id="stationNav"></div>
+
+
+<!-- NỘI DUNG KẾT QUẢ -->
+<div id="resultPage">
+
+  <div class="alert-banner">
+
+    <span id="alertText">
+      KQXS miền Nam mới nhất 👍
+    </span>
+
+    <a href="#" class="btn-red">
+      Tại đây
+    </a>
+
+  </div>
+
+
+  <div class="title-bar" id="titleBar">
     XSMN Thứ 2 - Xổ số miền Nam Thứ 2
   </div>
 
-  <!-- Breadcrumbs -->
+
   <div class="breadcrumbs">
-    <a href="#">XSMN</a> » <a href="#">XSMN Thứ 2</a> » <span>XSMN 21/09/2026</span>
+
+    <a href="#" id="regionLink">
+      XSMN
+    </a>
+
+    »
+
+    <a href="#" id="dayLink">
+      XSMN Thứ 2
+    </a>
+
+    »
+
+    <span id="dateText">
+      XSMN 21/09/2026
+    </span>
+
   </div>
 
-  <!-- Lottery Results Table -->
+
+  <div class="selected-station" id="selectedStation">
+    Đang xem: Tất cả các đài
+  </div>
+
+
+  <!-- BẢNG -->
   <table>
+
     <thead>
-      <tr>
-        <th class="col-prize">Giải</th>
+
+      <tr id="tableHead">
+
+        <th class="col-prize">
+          Giải
+        </th>
+
         <th>TPHCM</th>
         <th>Đồng Tháp</th>
         <th>Cà Mau</th>
+
       </tr>
+
     </thead>
-    <tbody>
-      <tr>
-        <td class="col-prize">G.8</td>
-        <td class="number-group red-text">31</td>
-        <td class="number-group red-text">81</td>
-        <td class="number-group red-text">74</td>
-      </tr>
-      <tr>
-        <td class="col-prize">G.7</td>
-        <td class="number-group">281</td>
-        <td class="number-group">484</td>
-        <td class="number-group">982</td>
-      </tr>
-      <tr>
-        <td class="col-prize">G.6</td>
-        <td class="number-group">
-          0322<br>8736<br>7715
-        </td>
-        <td class="number-group">
-          6185<br>4869<br>2151
-        </td>
-        <td class="number-group">
-          5312<br>2712<br>1296
-        </td>
-      </tr>
-      <tr>
-        <td class="col-prize">G.5</td>
-        <td class="number-group">9729</td>
-        <td class="number-group">0086</td>
-        <td class="number-group">3477</td>
-      </tr>
-      <tr>
-        <td class="col-prize">G.4</td>
-        <td class="number-group">
-          35059<br>37355<br>42827<br>17002<br>70220<br>17567<br>88881
-        </td>
-        <td class="number-group">
-          08345<br>01182<br>76355<br>92320<br>60333<br>85210<br>44442
-        </td>
-        <td class="number-group">
-          47814<br>21054<br>95023<br>78916<br>68510<br>96056<br>32155
-        </td>
-      </tr>
-      <tr>
-        <td class="col-prize">G.3</td>
-        <td class="number-group">
-          12890<br>55672
-        </td>
-        <td class="number-group">
-          66321<br>90214
-        </td>
-        <td class="number-group">
-          78213<br>41562
-        </td>
-      </tr>
-      <tr>
-        <td class="col-prize">G.2</td>
-        <td class="number-group">83145</td>
-        <td class="number-group">76290</td>
-        <td class="number-group">12948</td>
-      </tr>
-      <tr>
-        <td class="col-prize">G.1</td>
-        <td class="number-group">92813</td>
-        <td class="number-group">45012</td>
-        <td class="number-group">88190</td>
-      </tr>
-      <tr>
-        <td class="col-prize">ĐB</td>
-        <td class="number-group red-text">482915</td>
-        <td class="number-group red-text">109283</td>
-        <td class="number-group red-text">726194</td>
-      </tr>
-    </tbody>
+
+    <tbody id="tableBody"></tbody>
+
   </table>
 
 </div>
+
+
+<!-- THỐNG KÊ -->
+<div class="statistics" id="statistics">
+
+  <div class="title-bar">
+    Thống kê XSMN
+  </div>
+
+
+  <div class="stat-box">
+
+    <div class="stat-title">
+      Thống kê đầu
+    </div>
+
+    <div class="stat-content">
+
+      <span class="stat-tag">0</span>
+      <span class="stat-tag">1</span>
+      <span class="stat-tag">2</span>
+      <span class="stat-tag">3</span>
+      <span class="stat-tag">4</span>
+      <span class="stat-tag">5</span>
+      <span class="stat-tag">6</span>
+      <span class="stat-tag">7</span>
+      <span class="stat-tag">8</span>
+      <span class="stat-tag">9</span>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-box">
+
+    <div class="stat-title">
+      Thống kê đuôi
+    </div>
+
+    <div class="stat-content">
+
+      <span class="stat-tag">0</span>
+      <span class="stat-tag">1</span>
+      <span class="stat-tag">2</span>
+      <span class="stat-tag">3</span>
+      <span class="stat-tag">4</span>
+      <span class="stat-tag">5</span>
+      <span class="stat-tag">6</span>
+      <span class="stat-tag">7</span>
+      <span class="stat-tag">8</span>
+      <span class="stat-tag">9</span>
+
+    </div>
+
+  </div>
+
+
+  <div class="stat-box">
+
+    <div class="stat-title">
+      Cặp số
+    </div>
+
+    <div class="stat-content">
+
+      <span class="stat-tag">12</span>
+      <span class="stat-tag">21</span>
+      <span class="stat-tag">36</span>
+      <span class="stat-tag">63</span>
+      <span class="stat-tag">68</span>
+      <span class="stat-tag">86</span>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="footer">
+  Vé Số Phát Đạt © 2026<br>
+  Dữ liệu hiển thị nhằm mục đích tham khảo.
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   LỊCH ĐÀI MIỀN NAM
+===================================================== */
+
+const XSMN = {
+
+  T2:[
+    "TPHCM",
+    "Đồng Tháp",
+    "Cà Mau"
+  ],
+
+  T3:[
+    "Bến Tre",
+    "Vũng Tàu",
+    "Bạc Liêu"
+  ],
+
+  T4:[
+    "Đồng Nai",
+    "Cần Thơ",
+    "Sóc Trăng"
+  ],
+
+  T5:[
+    "Tây Ninh",
+    "An Giang",
+    "Bình Thuận"
+  ],
+
+  T6:[
+    "Bình Dương",
+    "Vĩnh Long",
+    "Trà Vinh"
+  ],
+
+  T7:[
+    "TPHCM",
+    "Long An",
+    "Bình Phước",
+    "Hậu Giang"
+  ],
+
+  CN:[
+    "Tiền Giang",
+    "Kiên Giang",
+    "Đà Lạt"
+  ]
+
+};
+
+
+/* =====================================================
+   LỊCH ĐÀI MIỀN TRUNG
+===================================================== */
+
+const XSMT = {
+
+  T2:[
+    "Phú Yên",
+    "Thừa Thiên Huế"
+  ],
+
+  T3:[
+    "Quảng Nam",
+    "Đắk Lắk"
+  ],
+
+  T4:[
+    "Đà Nẵng",
+    "Khánh Hòa"
+  ],
+
+  T5:[
+    "Bình Định",
+    "Quảng Bình",
+    "Quảng Trị"
+  ],
+
+  T6:[
+    "Gia Lai",
+    "Ninh Thuận"
+  ],
+
+  T7:[
+    "Đà Nẵng",
+    "Quảng Ngãi",
+    "Đắk Nông"
+  ],
+
+  CN:[
+    "Kon Tum",
+    "Khánh Hòa"
+  ]
+
+};
+
+
+/* =====================================================
+   MIỀN BẮC
+===================================================== */
+
+const XSMB = [
+  "Hà Nội"
+];
+
+
+/* =====================================================
+   TÊN NGÀY
+===================================================== */
+
+const DAY_NAME = {
+
+  T2:"Thứ 2",
+  T3:"Thứ 3",
+  T4:"Thứ 4",
+  T5:"Thứ 5",
+  T6:"Thứ 6",
+  T7:"Thứ 7",
+  CN:"Chủ nhật"
+
+};
+
+
+/* =====================================================
+   TRẠNG THÁI
+===================================================== */
+
+let currentRegion="XSMN";
+
+let currentDay="T2";
+
+let currentStation=-1;
+
+
+/* =====================================================
+   LẤY DANH SÁCH ĐÀI
+===================================================== */
+
+function getStations(){
+
+  if(currentRegion==="XSMN"){
+    return XSMN[currentDay] || [];
+  }
+
+  if(currentRegion==="XSMT"){
+    return XSMT[currentDay] || [];
+  }
+
+  if(currentRegion==="XSMB"){
+    return XSMB;
+  }
+
+  return [];
+
+}
+
+
+/* =====================================================
+   TẠO DỮ LIỆU MẪU
+   Giữ cấu trúc để sau này nối API
+===================================================== */
+
+function createData(index){
+
+  let n=1000+(index*137);
+
+  return {
+
+    G8:
+      String(10+index).padStart(2,"0"),
+
+    G7:
+      String(200+index*111),
+
+    G6:[
+      String(n).slice(-4),
+      String(n+111).slice(-4),
+      String(n+222).slice(-4)
+    ],
+
+    G5:
+      String(n+333).slice(-4),
+
+    G4:[
+      String(n+444).slice(-5),
+      String(n+555).slice(-5),
+      String(n+666).slice(-5),
+      String(n+777).slice(-5),
+      String(n+888).slice(-5),
+      String(n+999).slice(-5),
+      String(n+1111).slice(-5)
+    ],
+
+    G3:[
+      String(n+123).slice(-5),
+      String(n+456).slice(-5)
+    ],
+
+    G2:
+      String(n+2222).slice(-5),
+
+    G1:
+      String(n+3333).slice(-5),
+
+    DB:
+      String(400000+index*12345)
+
+  };
+
+}
+
+
+/* =====================================================
+   NÚT ĐÀI
+===================================================== */
+
+function renderStations(){
+
+  const box=
+    document.getElementById("stationNav");
+
+  const stations=
+    getStations();
+
+  box.innerHTML="";
+
+
+  if(currentRegion==="XSMB"){
+
+    box.style.display="none";
+
+    return;
+
+  }
+
+
+  box.style.display="flex";
+
+
+  /* TẤT CẢ */
+
+  const all=
+    document.createElement("button");
+
+  all.textContent="Tất cả";
+
+  if(currentStation===-1){
+    all.classList.add("active");
+  }
+
+  all.onclick=function(){
+
+    currentStation=-1;
+
+    renderStations();
+    renderTable();
+
+  };
+
+  box.appendChild(all);
+
+
+  /* TỪNG ĐÀI */
+
+  stations.forEach(function(station,index){
+
+    const btn=
+      document.createElement("button");
+
+    btn.textContent=station;
+
+    if(currentStation===index){
+      btn.classList.add("active");
+    }
+
+    btn.onclick=function(){
+
+      currentStation=index;
+
+      renderStations();
+      renderTable();
+
+    };
+
+    box.appendChild(btn);
+
+  });
+
+}
+
+
+/* =====================================================
+   HEADER BẢNG
+===================================================== */
+
+function renderTableHead(){
+
+  const head=
+    document.getElementById("tableHead");
+
+  const stations=
+    getStations();
+
+
+  let html=
+    `<th class="col-prize">Giải</th>`;
+
+
+  if(currentStation===-1){
+
+    stations.forEach(function(station){
+
+      html+=`
+        <th>${station}</th>
+      `;
+
+    });
+
+  }else{
+
+    html+=`
+      <th>${stations[currentStation]}</th>
+    `;
+
+  }
+
+
+  head.innerHTML=html;
+
+}
+
+
+/* =====================================================
+   DÒNG BẢNG
+===================================================== */
+
+function makeRow(title,values,red=false){
+
+  let html=`
+    <tr>
+      <td class="col-prize">${title}</td>
+  `;
+
+
+  values.forEach(function(value){
+
+    html+=`
+      <td class="number-group ${red ? "red-text":""}">
+        ${value}
+      </td>
+    `;
+
+  });
+
+
+  html+=`</tr>`;
+
+  return html;
+
+}
+
+
+/* =====================================================
+   HIỂN THỊ BẢNG
+===================================================== */
+
+function renderTable(){
+
+  const stations=
+    getStations();
+
+  renderTableHead();
+
+
+  const body=
+    document.getElementById("tableBody");
+
+
+  if(!stations.length){
+
+    body.innerHTML=`
+      <tr>
+        <td colspan="10" style="padding:30px">
+          Chưa có dữ liệu.
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+
+  let indexes=[];
+
+
+  if(currentStation===-1){
+
+    stations.forEach(function(_,index){
+
+      indexes.push(index);
+
+    });
+
+  }else{
+
+    indexes=[currentStation];
+
+  }
+
+
+  const results=
+    indexes.map(function(index){
+
+      return createData(index);
+
+    });
+
+
+  let html="";
+
+
+  html+=makeRow(
+    "G.8",
+    results.map(x=>x.G8),
+    true
+  );
+
+
+  html+=makeRow(
+    "G.7",
+    results.map(x=>x.G7)
+  );
+
+
+  html+=`
+    <tr>
+      <td class="col-prize">G.6</td>
+
+      ${results.map(x=>`
+
+        <td class="number-group">
+          ${x.G6.join("<br>")}
+        </td>
+
+      `).join("")}
+
+    </tr>
+  `;
+
+
+  html+=makeRow(
+    "G.5",
+    results.map(x=>x.G5)
+  );
+
+
+  html+=`
+    <tr>
+      <td class="col-prize">G.4</td>
+
+      ${results.map(x=>`
+
+        <td class="number-group">
+          ${x.G4.join("<br>")}
+        </td>
+
+      `).join("")}
+
+    </tr>
+  `;
+
+
+  html+=`
+    <tr>
+      <td class="col-prize">G.3</td>
+
+      ${results.map(x=>`
+
+        <td class="number-group">
+          ${x.G3.join("<br>")}
+        </td>
+
+      `).join("")}
+
+    </tr>
+  `;
+
+
+  html+=makeRow(
+    "G.2",
+    results.map(x=>x.G2)
+  );
+
+
+  html+=makeRow(
+    "G.1",
+    results.map(x=>x.G1)
+  );
+
+
+  html+=makeRow(
+    "ĐB",
+    results.map(x=>x.DB),
+    true
+  );
+
+
+  body.innerHTML=html;
+
+
+  const selected=
+    document.getElementById("selectedStation");
+
+
+  if(currentStation===-1){
+
+    selected.textContent=
+      "Đang xem: Tất cả các đài";
+
+  }else{
+
+    selected.textContent=
+      "Đang xem: "+stations[currentStation];
+
+  }
+
+}
+
+
+/* =====================================================
+   CẬP NHẬT TIÊU ĐỀ
+===================================================== */
+
+function updateHeader(){
+
+  let regionName="";
+
+  if(currentRegion==="XSMB")
+    regionName="XSMB - Xổ số miền Bắc";
+
+  if(currentRegion==="XSMN")
+    regionName="XSMN - Xổ số miền Nam";
+
+  if(currentRegion==="XSMT")
+    regionName="XSMT - Xổ số miền Trung";
+
+
+  document.getElementById("titleBar").textContent=
+    `${regionName} ${DAY_NAME[currentDay]}`;
+
+
+  document.getElementById("regionLink").textContent=
+    currentRegion;
+
+
+  document.getElementById("dayLink").textContent=
+    DAY_NAME[currentDay];
+
+
+  const now=new Date();
+
+  const date=
+    String(now.getDate()).padStart(2,"0")+
+    "/" +
+    String(now.getMonth()+1).padStart(2,"0")+
+    "/" +
+    now.getFullYear();
+
+
+  document.getElementById("dateText").textContent=
+    date;
+
+
+  document.getElementById("alertText").textContent=
+    `KQXS ${regionName} mới nhất 👍`;
+
+}
+
+
+/* =====================================================
+   CHỌN NGÀY
+===================================================== */
+
+document.querySelectorAll(".day-nav button")
+.forEach(function(button){
+
+  button.addEventListener("click",function(){
+
+    currentDay=
+      this.dataset.day;
+
+    currentStation=-1;
+
+
+    document.querySelectorAll(".day-nav button")
+    .forEach(function(btn){
+
+      btn.classList.remove("active");
+
+    });
+
+
+    this.classList.add("active");
+
+
+    updateHeader();
+
+    renderStations();
+
+    renderTable();
+
+  });
+
+});
+
+
+/* =====================================================
+   CHỌN MIỀN
+===================================================== */
+
+document.querySelectorAll(".main-nav button")
+.forEach(function(button){
+
+  button.addEventListener("click",function(){
+
+    document.querySelectorAll(".main-nav button")
+    .forEach(function(btn){
+
+      btn.classList.remove("active");
+
+    });
+
+
+    this.classList.add("active");
+
+
+    const region=
+      this.dataset.region;
+
+
+    if(region==="STAT"){
+
+      document.getElementById("resultPage")
+        .style.display="none";
+
+      document.getElementById("stationNav")
+        .style.display="none";
+
+      document.getElementById("statistics")
+        .style.display="block";
+
+      return;
+
+    }
+
+
+    document.getElementById("resultPage")
+      .style.display="block";
+
+    document.getElementById("statistics")
+      .style.display="none";
+
+
+    currentRegion=region;
+
+    currentStation=-1;
+
+
+    updateHeader();
+
+    renderStations();
+
+    renderTable();
+
+  });
+
+});
+
+
+/* =====================================================
+   XÁC ĐỊNH NGÀY HIỆN TẠI
+===================================================== */
+
+function getToday(){
+
+  const d=
+    new Date().getDay();
+
+
+  const map={
+
+    0:"CN",
+    1:"T2",
+    2:"T3",
+    3:"T4",
+    4:"T5",
+    5:"T6",
+    6:"T7"
+
+  };
+
+
+  return map[d];
+
+}
+
+
+/* =====================================================
+   KHỞI ĐỘNG
+===================================================== */
+
+currentDay=getToday();
+
+
+document.querySelectorAll(".day-nav button")
+.forEach(function(button){
+
+  if(button.dataset.day===currentDay){
+
+    button.classList.add("active");
+
+  }
+
+});
+
+
+updateHeader();
+
+renderStations();
+
+renderTable();
+
+</script>
 
 </body>
 </html>
