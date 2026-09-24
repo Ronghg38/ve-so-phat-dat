@@ -1,1186 +1,278 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vé Số Phát Đạt</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xổ số Đại Phát - Clone</title>
 <style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#f3f3f3;
-  color:#111;
-  font-family:Arial,Helvetica,sans-serif
-}
-
-/* ===== HEADER ===== */
-.header{
-  height:88px;
-  background:#fff;
-  border-bottom:1px solid #ddd;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px
-}
-
-.menu{
-  font-size:34px;
-  color:#333;
-  line-height:1
-}
-
-.logo{
-  text-align:center;
-  font-weight:900;
-  line-height:.9
-}
-
-.logo-small{
-  color:#c40000;
-  font-size:16px
-}
-
-.logo-main{
-  color:#c40000;
-  font-size:25px
-}
-
-.logo-sub{
-  color:#218b2b;
-  font-size:10px;
-  margin-top:5px
-}
-
-.user{
-  font-size:32px;
-  color:#111
-}
-
-/* ===== MIỀN ===== */
-.region-nav{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  background:#fff;
-  border-bottom:1px solid #ccc
-}
-
-.region-nav button{
-  border:1px solid #ccc;
-  border-top:0;
-  background:#fff;
-  padding:15px 5px;
-  font-size:19px;
-  font-weight:bold;
-  color:#111f9c
-}
-
-.region-nav button.on{
-  background:#d00000;
-  color:#fff;
-  border-color:#d00000
-}
-
-/* ===== NGÀY ===== */
-.days{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  background:#fff;
-  border-bottom:1px solid #ddd
-}
-
-.days button{
-  border:0;
-  background:#fff;
-  padding:14px 2px;
-  font-size:17px;
-  font-weight:bold;
-  color:#222
-}
-
-.days button.on{
-  background:#eee;
-  color:#c40000
-}
-
-/* ===== NỘI DUNG ===== */
-.wrap{
-  max-width:1000px;
-  margin:auto
-}
-
-.region{
-  display:none
-}
-
-.region.on{
-  display:block
-}
-
-/* ===== TIÊU ĐỀ ===== */
-.title{
-  margin-top:10px;
-  background:#d00000;
-  color:#fff;
-  padding:12px 14px;
-  font-size:21px;
-  font-weight:bold
-}
-
-.breadcrumb{
-  background:#fff;
-  padding:14px 12px;
-  border:1px solid #ddd;
-  font-size:18px;
-  font-weight:bold;
-  color:#800000
-}
-
-.breadcrumb span{
-  color:#111f9c;
-  text-decoration:underline
-}
-
-/* ===== CHỌN ĐÀI ===== */
-.station-tabs{
-  display:flex;
-  overflow:auto;
-  background:#fff;
-  border-bottom:1px solid #ccc
-}
-
-.station-tabs button{
-  flex:0 0 auto;
-  border:0;
-  background:#fff;
-  padding:12px 18px;
-  font-size:15px;
-  font-weight:bold;
-  color:#222
-}
-
-.station-tabs button.on{
-  color:#d00000;
-  border-bottom:3px solid #d00000
-}
-
-/* ===== BẢNG ===== */
-.table-box{
-  background:#fff;
-  overflow-x:auto
-}
-
-.result{
-  width:100%;
-  border-collapse:collapse;
-  table-layout:fixed
-}
-
-.result th{
-  width:70px;
-  border:1px solid #ccc;
-  background:#fafafa;
-  font-size:16px;
-  font-weight:normal;
-  text-align:center;
-  vertical-align:middle
-}
-
-.result td{
-  border:1px solid #ccc;
-  text-align:center;
-  vertical-align:middle;
-  padding:12px 5px;
-  font-size:27px;
-  font-weight:800;
-  line-height:1.45
-}
-
-.result .g8 td{
-  color:#e00000;
-  font-size:42px
-}
-
-.result .db td{
-  color:#d00000;
-  font-size:43px
-}
-
-.result .db th{
-  font-size:18px
-}
-
-/* ===== NHIỀU ĐÀI ===== */
-.all-table{
-  min-width:650px
-}
-
-.all-table th:first-child{
-  width:65px
-}
-
-.all-table td{
-  font-size:20px
-}
-
-.all-table .db td{
-  font-size:30px
-}
-
-/* ===== GHI CHÚ ===== */
-.note{
-  background:#fff;
-  text-align:center;
-  color:#777;
-  font-size:12px;
-  padding:8px
-}
-
-/* ===== LỊCH ===== */
-.schedule{
-  background:#fff;
-  margin-top:10px;
-  padding:10px;
-  border-radius:8px;
-  box-shadow:0 2px 7px #ccc
-}
-
-.schedule-title{
-  font-size:22px;
-  font-weight:bold;
-  margin-bottom:10px
-}
-
-.schedule-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px
-}
-
-.schedule-day{
-  border:1px solid #d5d5d5;
-  border-radius:8px;
-  overflow:hidden;
-  background:#fff;
-  text-align:center
-}
-
-.schedule-day b{
-  display:block;
-  background:#eee;
-  padding:9px;
-  font-size:17px
-}
-
-.schedule-day a{
-  display:block;
-  padding:8px 4px;
-  color:#111f9c;
-  text-decoration:underline;
-  font-size:16px
-}
-
-/* ===== CHÂN ===== */
-.footer{
-  text-align:center;
-  padding:18px 5px;
-  color:#777;
-  font-size:12px
-}
-
-/* ===== MOBILE ===== */
-@media(max-width:600px){
-
-  .header{
-    height:88px
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e9ecef;
+    color: #111;
+  }
+  .app-container {
+    max-width: 500px;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 100vh;
+  }
+  
+  /* --- HEADER --- */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+  }
+  .menu-icon {
+    font-size: 24px;
+    color: #555;
+    cursor: pointer;
+  }
+  .logo {
+    text-align: center;
+    color: #d0021b;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 1.1;
+  }
+  .logo small {
+    display: block;
+    font-size: 10px;
+    font-weight: normal;
+    color: #333;
   }
 
-  .logo-main{
-    font-size:23px
+  /* --- MAIN NAV TABS --- */
+  .main-nav {
+    display: flex;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  .main-nav button {
+    flex: 1;
+    background: #fff;
+    border: none;
+    border-right: 1px solid #ddd;
+    padding: 12px 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #0056b3;
+    cursor: pointer;
+  }
+  .main-nav button:last-child {
+    border-right: none;
+  }
+  .main-nav button.active {
+    color: #d0021b;
   }
 
-  .region-nav button{
-    font-size:17px;
-    padding:14px 2px
+  /* --- DAY NAV --- */
+  .day-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    background: #fcfcfc;
+    border-bottom: 1px solid #ddd;
+  }
+  .day-nav span {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+  }
+  .day-nav span.active {
+    color: #d0021b;
+    font-weight: bold;
   }
 
-  .days button{
-    font-size:15px;
-    padding:13px 1px
+  /* --- ALERT BANNER --- */
+  .alert-banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+  .btn-red {
+    background: #d0021b;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
   }
 
-  .title{
-    font-size:19px
+  /* --- TITLE & BREADCRUMBS --- */
+  .title-bar {
+    background: #d0021b;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .breadcrumbs {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .breadcrumbs a {
+    color: #0056b3;
+    text-decoration: none;
+  }
+  .breadcrumbs span {
+    color: #d0021b;
   }
 
-  .breadcrumb{
-    font-size:16px
+  /* --- RESULT TABLE --- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
   }
-
-  .result th{
-    width:58px;
-    font-size:15px
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px 2px;
+    vertical-align: middle;
   }
-
-  .result td{
-    font-size:25px
+  th {
+    color: #0056b3;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 2px;
   }
-
-  .result .g8 td{
-    font-size:38px
+  .col-prize {
+    width: 12%;
+    font-size: 13px;
+    color: #555;
+    background: #f9f9f9;
   }
-
-  .result .db td{
-    font-size:40px
+  
+  .number-group {
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1.5;
   }
-
-  .schedule-title{
-    font-size:20px
+  .red-text {
+    color: #d0021b;
+    font-size: 28px;
   }
-
-  .schedule-grid{
-    grid-template-columns:repeat(2,1fr)
-  }
-}
 </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
-<header class="header">
-
-  <div class="menu">☰</div>
-
-  <div class="logo">
-    <div class="logo-small">VÉ SỐ</div>
-    <div class="logo-main">PHÁT ĐẠT</div>
-    <div class="logo-sub">CHÍNH XÁC TỪNG GIẤY</div>
-  </div>
-
-  <div class="user">♙</div>
-
-</header>
-
-
-<!-- MIỀN -->
-<div class="region-nav">
-
-  <button onclick="showRegion('mb',this)">
-    XSMB
-  </button>
-
-  <button class="on" onclick="showRegion('mn',this)">
-    XSMN
-  </button>
-
-  <button onclick="showRegion('mt',this)">
-    XSMT
-  </button>
-
-</div>
-
-
-<!-- NGÀY -->
-<div class="days">
-
-  <button>T2</button>
-  <button>T3</button>
-  <button class="on">T4</button>
-  <button>T5</button>
-  <button>T6</button>
-  <button>T7</button>
-  <button>CN</button>
-
-</div>
-
-
-<div class="wrap">
-
-
-<!-- ================= MIỀN NAM ================= -->
-
-<section id="mn" class="region on">
-
-  <div class="title">
-    XSMN - Kết quả xổ số Cần Thơ - SXCT
-  </div>
-
-  <div class="breadcrumb">
-    <span>XSMN</span>
-    » <span>XSMN Thứ 4</span>
-    » <span>XSMN 23/09/2026</span>
-  </div>
-
-  <!-- CHỌN ĐÀI -->
-
-  <div class="station-tabs">
-
-    <button class="on"
-      onclick="station('mn-ct',this)">
-      CẦN THƠ
-    </button>
-
-    <button
-      onclick="station('mn-dn',this)">
-      ĐỒNG NAI
-    </button>
-
-    <button
-      onclick="station('mn-st',this)">
-      SÓC TRĂNG
-    </button>
-
-    <button
-      onclick="station('mn-all',this)">
-      3 ĐÀI
-    </button>
-
-  </div>
-
-
-  <!-- CẦN THƠ -->
-
-  <div id="mn-ct" class="station">
-
-    <div class="table-box">
-
-      <table class="result">
-
-        <tr class="g8">
-          <th>G.8</th>
-          <td>50</td>
-        </tr>
-
-        <tr>
-          <th>G.7</th>
-          <td>843</td>
-        </tr>
-
-        <tr>
-          <th>G.6</th>
-          <td>
-            4535 &nbsp;&nbsp;
-            3835 &nbsp;&nbsp;
-            5078
-          </td>
-        </tr>
-
-        <tr>
-          <th>G.5</th>
-          <td>9174</td>
-        </tr>
-
-        <tr>
-          <th>G.4</th>
-          <td>
-            85468 &nbsp;&nbsp; 24481<br>
-            93448 &nbsp;&nbsp; 63122<br>
-            54072 &nbsp;&nbsp; 71243 &nbsp;&nbsp; 48066
-          </td>
-        </tr>
-
-        <tr>
-          <th>G.3</th>
-          <td>
-            69203 &nbsp;&nbsp; 12962
-          </td>
-        </tr>
-
-        <tr>
-          <th>G.2</th>
-          <td>08214</td>
-        </tr>
-
-        <tr>
-          <th>G.1</th>
-          <td>56175</td>
-        </tr>
-
-        <tr class="db">
-          <th>ĐB</th>
-          <td>157293</td>
-        </tr>
-
-      </table>
-
+<div class="app-container">
+  
+  <!-- Header -->
+  <header>
+    <div class="menu-icon">☰</div>
+    <div class="logo">
+      Xổ Số<br>ĐẠI PHÁT
+      <small>Chính xác từng giây</small>
     </div>
+    <div class="menu-icon">👤</div>
+  </header>
 
+  <!-- Main Tabs -->
+  <nav class="main-nav">
+    <button>XSMB</button>
+    <button class="active">XSMN</button>
+    <button>XSMT</button>
+    <button>Thống kê XSMN</button>
+  </nav>
+
+  <!-- Day Tabs -->
+  <nav class="day-nav">
+    <span class="active">T2</span>
+    <span>T3</span>
+    <span>T4</span>
+    <span>T5</span>
+    <span>T6</span>
+    <span>T7</span>
+    <span>CN</span>
+  </nav>
+
+  <!-- Alert Banner -->
+  <div class="alert-banner">
+    <span>KQXS miền Bắc mới nhất 👍</span>
+    <a href="#" class="btn-red">Tại đây</a>
   </div>
 
-
-  <!-- ĐỒNG NAI -->
-
-  <div id="mn-dn" class="station" style="display:none">
-
-    <div class="table-box">
-
-      <table class="result">
-
-        <tr class="g8">
-          <th>G.8</th>
-          <td>14</td>
-        </tr>
-
-        <tr>
-          <th>G.7</th>
-          <td>778</td>
-        </tr>
-
-        <tr>
-          <th>G.6</th>
-          <td>
-            6394 &nbsp;&nbsp;
-            1954 &nbsp;&nbsp;
-            0247
-          </td>
-        </tr>
-
-        <tr>
-          <th>G.5</th>
-          <td>6421</td>
-        </tr>
-
-        <tr>
-          <th>G.4</th>
-          <td>
-            10692 &nbsp;&nbsp; 34215<br>
-            46927 &nbsp;&nbsp; 92993<br>
-            53119 &nbsp;&nbsp; 48129 &nbsp;&nbsp; 71845
-          </td>
-        </tr>
-
-        <tr>
-          <th>G.3</th>
-          <td>66244 &nbsp;&nbsp; 57727</td>
-        </tr>
-
-        <tr>
-          <th>G.2</th>
-          <td>72389</td>
-        </tr>
-
-        <tr>
-          <th>G.1</th>
-          <td>44953</td>
-        </tr>
-
-        <tr class="db">
-          <th>ĐB</th>
-          <td>567326</td>
-        </tr>
-
-      </table>
-
-    </div>
-
+  <!-- Region Title -->
+  <div class="title-bar">
+    XSMN Thứ 2 - Xổ số miền Nam Thứ 2
   </div>
 
-
-  <!-- SÓC TRĂNG -->
-
-  <div id="mn-st" class="station" style="display:none">
-
-    <div class="table-box">
-
-      <table class="result">
-
-        <tr class="g8">
-          <th>G.8</th>
-          <td>66</td>
-        </tr>
-
-        <tr>
-          <th>G.7</th>
-          <td>744</td>
-        </tr>
-
-        <tr>
-          <th>G.6</th>
-          <td>
-            7699 &nbsp;&nbsp;
-            8469 &nbsp;&nbsp;
-            4721
-          </td>
-        </tr>
-
-        <tr>
-          <th>G.5</th>
-          <td>7242</td>
-        </tr>
-
-        <tr>
-          <th>G.4</th>
-          <td>
-            62307 &nbsp;&nbsp; 91798<br>
-            09559 &nbsp;&nbsp; 43811<br>
-            23682 &nbsp;&nbsp; 52990 &nbsp;&nbsp; 45011
-          </td>
-        </tr>
-
-        <tr>
-          <th>G.3</th>
-          <td>01301 &nbsp;&nbsp; 62146</td>
-        </tr>
-
-        <tr>
-          <th>G.2</th>
-          <td>84117</td>
-        </tr>
-
-        <tr>
-          <th>G.1</th>
-          <td>61832</td>
-        </tr>
-
-        <tr class="db">
-          <th>ĐB</th>
-          <td>523291</td>
-        </tr>
-
-      </table>
-
-    </div>
-
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <a href="#">XSMN</a> » <a href="#">XSMN Thứ 2</a> » <span>XSMN 21/09/2026</span>
   </div>
 
-
-  <!-- 3 ĐÀI -->
-
-  <div id="mn-all" class="station" style="display:none">
-
-    <div class="table-box">
-
-      <table class="result all-table">
-
-        <tr>
-          <th>Giải</th>
-          <th>Đồng Nai</th>
-          <th>Cần Thơ</th>
-          <th>Sóc Trăng</th>
-        </tr>
-
-        <tr>
-          <th>G.8</th>
-          <td>14</td>
-          <td>50</td>
-          <td>66</td>
-        </tr>
-
-        <tr>
-          <th>G.7</th>
-          <td>778</td>
-          <td>843</td>
-          <td>744</td>
-        </tr>
-
-        <tr>
-          <th>G.6</th>
-          <td>6394<br>1954<br>0247</td>
-          <td>4535<br>3835<br>5078</td>
-          <td>7699<br>8469<br>4721</td>
-        </tr>
-
-        <tr>
-          <th>G.5</th>
-          <td>6421</td>
-          <td>9174</td>
-          <td>7242</td>
-        </tr>
-
-        <tr>
-          <th>G.4</th>
-          <td>
-            10692<br>34215<br>46927<br>
-            92993<br>53119<br>48129<br>71845
-          </td>
-
-          <td>
-            85468<br>24481<br>93448<br>
-            63122<br>54072<br>71243<br>48066
-          </td>
-
-          <td>
-            62307<br>91798<br>09559<br>
-            43811<br>23682<br>52990<br>45011
-          </td>
-        </tr>
-
-        <tr>
-          <th>G.3</th>
-          <td>66244<br>57727</td>
-          <td>69203<br>12962</td>
-          <td>01301<br>62146</td>
-        </tr>
-
-        <tr>
-          <th>G.2</th>
-          <td>72389</td>
-          <td>08214</td>
-          <td>84117</td>
-        </tr>
-
-        <tr>
-          <th>G.1</th>
-          <td>44953</td>
-          <td>56175</td>
-          <td>61832</td>
-        </tr>
-
-        <tr class="db">
-          <th>ĐB</th>
-          <td>567326</td>
-          <td>157293</td>
-          <td>523291</td>
-        </tr>
-
-      </table>
-
-    </div>
-
-    <div class="note">
-      ← Vuốt ngang để xem đủ 3 đài →
-    </div>
-
-  </div>
-
-
-  <!-- LỊCH -->
-
-  <div class="schedule">
-
-    <div class="schedule-title">
-      📅 LỊCH XỔ SỐ MIỀN NAM
-    </div>
-
-    <div class="schedule-grid">
-
-      <div class="schedule-day">
-        <b>Thứ 2</b>
-        <a>TP.HCM</a>
-        <a>Đồng Tháp</a>
-        <a>Cà Mau</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 3</b>
-        <a>Bến Tre</a>
-        <a>Vũng Tàu</a>
-        <a>Bạc Liêu</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 4</b>
-        <a>Đồng Nai</a>
-        <a>Cần Thơ</a>
-        <a>Sóc Trăng</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 5</b>
-        <a>Tây Ninh</a>
-        <a>An Giang</a>
-        <a>Bình Thuận</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 6</b>
-        <a>Vĩnh Long</a>
-        <a>Bình Dương</a>
-        <a>Trà Vinh</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 7</b>
-        <a>TP.HCM</a>
-        <a>Long An</a>
-        <a>Bình Phước</a>
-        <a>Hậu Giang</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>CN</b>
-        <a>Tiền Giang</a>
-        <a>Kiên Giang</a>
-        <a>Đà Lạt</a>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= MIỀN TRUNG ================= -->
-
-<section id="mt" class="region">
-
-  <div class="title">
-    XSMT - Kết quả xổ số Miền Trung
-  </div>
-
-  <div class="breadcrumb">
-    <span>XSMT</span>
-    » <span>XSMT Thứ 4</span>
-    » <span>XSMT 23/09/2026</span>
-  </div>
-
-  <div class="station-tabs">
-
-    <button class="on"
-      onclick="station('mt-dn',this)">
-      ĐÀ NẴNG
-    </button>
-
-    <button
-      onclick="station('mt-kh',this)">
-      KHÁNH HÒA
-    </button>
-
-  </div>
-
-
-  <div id="mt-dn" class="station">
-
-    <div class="table-box">
-
-      <table class="result">
-
-        <tr class="g8">
-          <th>G.8</th>
-          <td>58</td>
-        </tr>
-
-        <tr><th>G.7</th><td>587</td></tr>
-
-        <tr>
-          <th>G.6</th>
-          <td>4625 &nbsp;&nbsp; 4606 &nbsp;&nbsp; 9673</td>
-        </tr>
-
-        <tr><th>G.5</th><td>7725</td></tr>
-
-        <tr>
-          <th>G.4</th>
-          <td>
-            93257 &nbsp;&nbsp; 19528<br>
-            28931 &nbsp;&nbsp; 44759<br>
-            03443 &nbsp;&nbsp; 78386 &nbsp;&nbsp; 43038
-          </td>
-        </tr>
-
-        <tr><th>G.3</th><td>23603 &nbsp;&nbsp; 12203</td></tr>
-        <tr><th>G.2</th><td>35390</td></tr>
-        <tr><th>G.1</th><td>50920</td></tr>
-
-        <tr class="db">
-          <th>ĐB</th>
-          <td>756753</td>
-        </tr>
-
-      </table>
-
-    </div>
-
-  </div>
-
-
-  <div id="mt-kh" class="station" style="display:none">
-
-    <div class="table-box">
-
-      <table class="result">
-
-        <tr class="g8">
-          <th>G.8</th>
-          <td>35</td>
-        </tr>
-
-        <tr><th>G.7</th><td>376</td></tr>
-
-        <tr>
-          <th>G.6</th>
-          <td>8070 &nbsp;&nbsp; 3241 &nbsp;&nbsp; 0194</td>
-        </tr>
-
-        <tr><th>G.5</th><td>4135</td></tr>
-
-        <tr>
-          <th>G.4</th>
-          <td>
-            90825 &nbsp;&nbsp; 80982<br>
-            78875 &nbsp;&nbsp; 79043<br>
-            95986 &nbsp;&nbsp; 21931 &nbsp;&nbsp; 28413
-          </td>
-        </tr>
-
-        <tr><th>G.3</th><td>01756 &nbsp;&nbsp; 64635</td></tr>
-        <tr><th>G.2</th><td>61216</td></tr>
-        <tr><th>G.1</th><td>10518</td></tr>
-
-        <tr class="db">
-          <th>ĐB</th>
-          <td>001370</td>
-        </tr>
-
-      </table>
-
-    </div>
-
-  </div>
-
-
-  <div class="schedule">
-
-    <div class="schedule-title">
-      📅 LỊCH XỔ SỐ MIỀN TRUNG
-    </div>
-
-    <div class="schedule-grid">
-
-      <div class="schedule-day">
-        <b>Thứ 2</b>
-        <a>Huế</a>
-        <a>Phú Yên</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 3</b>
-        <a>Đắk Lắk</a>
-        <a>Quảng Nam</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 4</b>
-        <a>Đà Nẵng</a>
-        <a>Khánh Hòa</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 5</b>
-        <a>Bình Định</a>
-        <a>Quảng Bình</a>
-        <a>Quảng Trị</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 6</b>
-        <a>Gia Lai</a>
-        <a>Ninh Thuận</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 7</b>
-        <a>Đà Nẵng</a>
-        <a>Quảng Ngãi</a>
-        <a>Đắk Nông</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>CN</b>
-        <a>Khánh Hòa</a>
-        <a>Kon Tum</a>
-        <a>Huế</a>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= MIỀN BẮC ================= -->
-
-<section id="mb" class="region">
-
-  <div class="title">
-    XSMB - Kết quả xổ số Miền Bắc
-  </div>
-
-  <div class="breadcrumb">
-    <span>XSMB</span>
-    » <span>XSMB Thứ 4</span>
-    » <span>XSMB 23/09/2026</span>
-  </div>
-
-  <div class="station-tabs">
-
-    <button class="on">
-      BẮC NINH
-    </button>
-
-  </div>
-
-  <div class="table-box">
-
-    <table class="result">
-
+  <!-- Lottery Results Table -->
+  <table>
+    <thead>
       <tr>
-        <th>G.7</th>
-        <td>34 &nbsp;&nbsp; 21 &nbsp;&nbsp; 60 &nbsp;&nbsp; 89</td>
+        <th class="col-prize">Giải</th>
+        <th>TPHCM</th>
+        <th>Đồng Tháp</th>
+        <th>Cà Mau</th>
       </tr>
-
+    </thead>
+    <tbody>
       <tr>
-        <th>G.6</th>
-        <td>188 &nbsp;&nbsp; 567 &nbsp;&nbsp; 903</td>
+        <td class="col-prize">G.8</td>
+        <td class="number-group red-text">31</td>
+        <td class="number-group red-text">81</td>
+        <td class="number-group red-text">74</td>
       </tr>
-
       <tr>
-        <th>G.5</th>
-        <td>
-          6524 &nbsp;&nbsp; 1687 &nbsp;&nbsp; 0357<br>
-          9642 &nbsp;&nbsp; 0185 &nbsp;&nbsp; 9078
+        <td class="col-prize">G.7</td>
+        <td class="number-group">281</td>
+        <td class="number-group">484</td>
+        <td class="number-group">982</td>
+      </tr>
+      <tr>
+        <td class="col-prize">G.6</td>
+        <td class="number-group">
+          0322<br>8736<br>7715
+        </td>
+        <td class="number-group">
+          6185<br>4869<br>2151
+        </td>
+        <td class="number-group">
+          5312<br>2712<br>1296
         </td>
       </tr>
-
       <tr>
-        <th>G.4</th>
-        <td>
-          9109 &nbsp;&nbsp; 5019<br>
-          9268 &nbsp;&nbsp; 2494
+        <td class="col-prize">G.5</td>
+        <td class="number-group">9729</td>
+        <td class="number-group">0086</td>
+        <td class="number-group">3477</td>
+      </tr>
+      <tr>
+        <td class="col-prize">G.4</td>
+        <td class="number-group">
+          35059<br>37355<br>42827
+        </td>
+        <td class="number-group">
+          08345<br>01182<br>76355
+        </td>
+        <td class="number-group">
+          47814<br>21054<br>95023
         </td>
       </tr>
-
-      <tr>
-        <th>G.3</th>
-        <td>
-          44485 &nbsp;&nbsp; 42689<br>
-          50615 &nbsp;&nbsp; 61435<br>
-          30004 &nbsp;&nbsp; 30420
-        </td>
-      </tr>
-
-      <tr>
-        <th>G.2</th>
-        <td>60738 &nbsp;&nbsp; 52745</td>
-      </tr>
-
-      <tr>
-        <th>G.1</th>
-        <td>23650</td>
-      </tr>
-
-      <tr class="db">
-        <th>ĐB</th>
-        <td>76406</td>
-      </tr>
-
-    </table>
-
-  </div>
-
-
-  <div class="schedule">
-
-    <div class="schedule-title">
-      📅 LỊCH XỔ SỐ MIỀN BẮC
-    </div>
-
-    <div class="schedule-grid">
-
-      <div class="schedule-day">
-        <b>Thứ 2</b>
-        <a>Hà Nội</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 3</b>
-        <a>Quảng Ninh</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 4</b>
-        <a>Bắc Ninh</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 5</b>
-        <a>Hà Nội</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 6</b>
-        <a>Hải Phòng</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>Thứ 7</b>
-        <a>Nam Định</a>
-      </div>
-
-      <div class="schedule-day">
-        <b>CN</b>
-        <a>Thái Bình</a>
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<div class="footer">
-© 2026 Vé Số Phát Đạt
-</div>
+    </tbody>
+  </table>
 
 </div>
-
-
-<script>
-
-/* ĐỔI MIỀN */
-
-function showRegion(id,btn){
-
-  document.querySelectorAll('.region')
-    .forEach(x=>x.classList.remove('on'));
-
-  document.getElementById(id)
-    .classList.add('on');
-
-  document.querySelectorAll('.region-nav button')
-    .forEach(x=>x.classList.remove('on'));
-
-  btn.classList.add('on');
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-}
-
-
-/* ĐỔI ĐÀI */
-
-function station(id,btn){
-
-  const box=btn.closest('.region');
-
-  box.querySelectorAll('.station')
-    .forEach(x=>{
-      x.style.display='none';
-    });
-
-  const target=document.getElementById(id);
-
-  if(target){
-    target.style.display='block';
-  }
-
-  btn.parentElement
-    .querySelectorAll('button')
-    .forEach(x=>x.classList.remove('on'));
-
-  btn.classList.add('on');
-
-}
-
-</script>
 
 </body>
 </html>
