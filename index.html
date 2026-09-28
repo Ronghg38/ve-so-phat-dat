@@ -2,161 +2,167 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>🎯 VÉ SỐ PHÁT ĐẠT</title>
 
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;
-  background:#f3f3f3;
-  color:#222;
-  font-family:Arial,sans-serif;
-  font-size:14px
+ margin:0;
+ background:#f3f3f3;
+ color:#222;
+ font-family:Arial,sans-serif;
+ font-size:15px
 }
 .header{
-  background:#d40000;
-  color:#fff;
-  text-align:center;
-  padding:14px 8px;
-  font-weight:bold;
-  font-size:21px
+ background:#d40000;
+ color:#fff;
+ text-align:center;
+ padding:15px 8px;
+ font-size:22px;
+ font-weight:bold
 }
 .date{
-  text-align:center;
-  background:#fff;
-  padding:9px;
-  color:#d40000;
-  font-weight:bold
+ background:#fff;
+ color:#c40000;
+ text-align:center;
+ padding:10px;
+ font-weight:bold;
+ font-size:16px
 }
 .tabs{
-  display:flex;
-  overflow-x:auto;
-  background:#fff;
-  border-bottom:1px solid #ddd
+ display:flex;
+ background:#fff;
+ border-bottom:1px solid #ddd;
+ position:sticky;
+ top:0;
+ z-index:5
 }
 .tab{
-  flex:1;
-  min-width:105px;
-  padding:11px 5px;
-  text-align:center;
-  font-weight:bold;
-  cursor:pointer;
-  border-right:1px solid #ddd
+ flex:1;
+ padding:13px 4px;
+ text-align:center;
+ font-weight:bold;
+ cursor:pointer;
+ border-right:1px solid #ddd
 }
 .tab.active{
-  background:#d40000;
-  color:#fff
+ background:#d40000;
+ color:#fff
 }
 .container{
-  max-width:700px;
-  margin:auto;
-  padding:8px
+ max-width:760px;
+ margin:auto;
+ padding:8px
 }
 .card{
-  background:#fff;
-  margin-bottom:9px;
-  padding:12px;
-  border-radius:8px;
-  box-shadow:0 1px 4px #ccc
+ background:#fff;
+ border-radius:10px;
+ padding:12px;
+ margin-bottom:10px;
+ box-shadow:0 2px 6px #ccc
 }
 .title{
-  color:#d40000;
-  font-weight:bold;
-  font-size:17px;
-  margin-bottom:8px
+ color:#c40000;
+ font-weight:bold;
+ font-size:18px;
+ margin-bottom:10px
 }
 .station-tabs{
-  display:flex;
-  overflow-x:auto;
-  margin-bottom:9px
+ display:flex;
+ overflow-x:auto;
+ gap:4px;
+ margin-bottom:10px
 }
 .station{
-  flex:1;
-  min-width:100px;
-  background:#eee;
-  padding:9px 5px;
-  text-align:center;
-  font-weight:bold;
-  cursor:pointer;
-  border-right:1px solid #fff
+ min-width:110px;
+ padding:10px 7px;
+ background:#eee;
+ border-radius:7px;
+ text-align:center;
+ font-weight:bold;
+ cursor:pointer
 }
 .station.active{
-  background:#d40000;
-  color:#fff
+ background:#d40000;
+ color:#fff
 }
-.number{
-  font-size:25px;
-  color:#d40000;
-  font-weight:bold;
-  letter-spacing:2px
-}
-.pick{
-  display:inline-block;
-  background:#fff0f0;
-  border:1px solid #d40000;
-  color:#d40000;
-  border-radius:7px;
-  padding:8px 13px;
-  margin:3px;
-  font-size:20px;
-  font-weight:bold
-}
-.small{
-  color:#666;
-  font-size:12px
-}
-.loading{
-  text-align:center;
-  padding:20px;
-  color:#d40000;
-  font-weight:bold
-}
-.error{
-  color:#b00000;
-  background:#fff0f0;
-  padding:10px;
-  border-radius:6px
-}
-.disclaimer{
-  background:#222;
-  color:#fff;
-  padding:12px;
-  text-align:center;
-  font-weight:bold;
-  line-height:1.5
-}
-.veo{
-  background:#fafafa;
-  border-left:4px solid #d40000;
-  padding:10px;
-  margin-top:8px;
-  white-space:pre-line;
-  line-height:1.5
+button{
+ width:100%;
+ border:0;
+ background:#d40000;
+ color:#fff;
+ padding:12px;
+ border-radius:8px;
+ font-size:16px;
+ font-weight:bold;
+ margin-bottom:10px
 }
 table{
-  width:100%;
-  border-collapse:collapse
+ width:100%;
+ border-collapse:collapse
 }
-td,th{
-  border:1px solid #ddd;
-  padding:7px;
-  text-align:center
+th,td{
+ border:1px solid #ddd;
+ padding:7px;
+ text-align:center
 }
 th{
-  background:#d40000;
-  color:#fff
+ background:#d40000;
+ color:#fff
 }
-.refresh{
-  width:100%;
-  border:0;
-  background:#d40000;
-  color:#fff;
-  padding:11px;
-  border-radius:7px;
-  font-weight:bold;
-  font-size:15px;
-  cursor:pointer
+.num{
+ color:#d40000;
+ font-size:23px;
+ font-weight:bold
+}
+.pick{
+ display:inline-block;
+ background:#fff0f0;
+ color:#c40000;
+ border:1px solid #d40000;
+ border-radius:8px;
+ padding:8px 13px;
+ margin:3px;
+ font-size:21px;
+ font-weight:bold
+}
+.small{
+ color:#666;
+ font-size:13px
+}
+.loading{
+ text-align:center;
+ padding:20px;
+ color:#c40000;
+ font-weight:bold
+}
+.error{
+ background:#fff0f0;
+ color:#a00000;
+ padding:12px;
+ border-radius:8px
+}
+.veo{
+ background:#fafafa;
+ border-left:5px solid #d40000;
+ padding:12px;
+ line-height:1.55;
+ white-space:pre-line
+}
+.disclaimer{
+ background:#222;
+ color:#fff;
+ text-align:center;
+ padding:13px 8px;
+ font-weight:bold;
+ line-height:1.5
+}
+.source{
+ color:#777;
+ font-size:12px;
+ text-align:center;
+ margin-top:8px
 }
 </style>
 </head>
@@ -165,69 +171,77 @@ th{
 
 <div class="header">🎯 VÉ SỐ PHÁT ĐẠT</div>
 
-<div class="date" id="dateBox">
-Đang cập nhật dữ liệu...
+<div id="dateBox" class="date">
+Đang cập nhật...
 </div>
 
 <div class="tabs">
-  <div class="tab active" onclick="changeRegion('mn',this)">
-    MIỀN NAM
-  </div>
-  <div class="tab" onclick="changeRegion('mt',this)">
-    MIỀN TRUNG
-  </div>
-  <div class="tab" onclick="changeRegion('mb',this)">
-    MIỀN BẮC
-  </div>
+ <div id="tab-mn" class="tab active"
+      onclick="changeRegion('mn')">MIỀN NAM</div>
+
+ <div id="tab-mt" class="tab"
+      onclick="changeRegion('mt')">MIỀN TRUNG</div>
+
+ <div id="tab-mb" class="tab"
+      onclick="changeRegion('mb')">MIỀN BẮC</div>
 </div>
 
 <div class="container">
 
-  <button class="refresh" onclick="loadData()">
-    🔄 CẬP NHẬT DỮ LIỆU
-  </button>
+<button onclick="loadData()">
+🔄 CẬP NHẬT DỮ LIỆU
+</button>
 
-  <div id="stationBox"></div>
+<div class="card">
+ <div class="title">🏆 CÁC ĐÀI HÔM NAY</div>
+ <div id="stations">
+  <div class="loading">Đang tải...</div>
+ </div>
+</div>
 
-  <div class="card">
-    <div class="title">📊 THỐNG KÊ & PHÂN TÍCH</div>
-    <div id="analysis">
-      <div class="loading">Đang tải dữ liệu...</div>
-    </div>
-  </div>
+<div class="card">
+ <div class="title">📊 THỐNG KÊ & PHÂN TÍCH CHI TIẾT</div>
+ <div id="analysis">
+  <div class="loading">Đang tải dữ liệu...</div>
+ </div>
+</div>
 
-  <div class="card">
-    <div class="title">🎯 GIAO THOA LIÊN ĐÀI</div>
-    <div id="cross">
-      Đang phân tích...
-    </div>
-  </div>
+<div class="card">
+ <div class="title">🎯 GIAO THOA LIÊN ĐÀI</div>
+ <div id="cross">
+  Đang phân tích...
+ </div>
+</div>
 
-  <div class="card">
-    <div class="title">🔥 CHỐT THAM KHẢO</div>
-    <div id="picks">
-      Đang tính toán...
-    </div>
-  </div>
+<div class="card">
+ <div class="title">🔥 3 CON SỐ THAM KHẢO</div>
+ <div id="picks">
+  Đang tính...
+ </div>
+</div>
 
-  <div class="card">
-    <div class="title">🎬 VEO 3 — ĐOẠN 1</div>
-    <div id="veo1" class="veo">
-      Đang tạo prompt...
-    </div>
-  </div>
+<div class="card">
+ <div class="title">🎬 VEO 3 — ĐOẠN 1</div>
+ <div id="veo1" class="veo">
+ Đang tạo...
+ </div>
+</div>
 
-  <div class="card">
-    <div class="title">🎬 VEO 3 — ĐOẠN 2</div>
-    <div id="veo2" class="veo">
-      Đang tạo prompt...
-    </div>
-  </div>
+<div class="card">
+ <div class="title">🎬 VEO 3 — ĐOẠN 2</div>
+ <div id="veo2" class="veo">
+ Đang tạo...
+ </div>
+</div>
 
-  <div class="card">
-    <div class="title">📅 LỊCH XỔ SỐ MIỀN NAM</div>
-    <div id="schedule"></div>
-  </div>
+<div class="card">
+ <div class="title">📅 LỊCH XỔ SỐ</div>
+ <div id="schedule"></div>
+</div>
+
+<div class="source">
+Nguồn dữ liệu kết quả: Ketqua.vn
+</div>
 
 </div>
 
@@ -237,17 +251,25 @@ Chỉ mang tính tham khảo giải trí – không khuyến khích lô đề �
 
 <script>
 
-const DATA_BASE =
-"https://raw.githubusercontent.com/rytekvn/lottery-data/main/results/";
+/* =========================
+   CẤU HÌNH
+========================= */
 
-const INDEX_URL =
-"https://raw.githubusercontent.com/rytekvn/lottery-data/main/index.json";
+let region="mn";
+let stations=[];
+let selected=0;
 
-const SCHEDULE = {
+/*
+ Proxy đọc trang công khai.
+ Không dùng API key.
+*/
+const PROXY="https://r.jina.ai/";
+
+const SCHEDULE={
 
 mn:{
 0:["Tiền Giang","Kiên Giang","Đà Lạt"],
-1:["Đồng Tháp","Cà Mau","TP.HCM"],
+1:["TP.HCM","Đồng Tháp","Cà Mau"],
 2:["Bến Tre","Vũng Tàu","Bạc Liêu"],
 3:["Đồng Nai","Cần Thơ","Sóc Trăng"],
 4:["Tây Ninh","An Giang","Bình Thuận"],
@@ -256,7 +278,7 @@ mn:{
 },
 
 mt:{
-0:["Kon Tum","Khánh Hòa"],
+0:["Khánh Hòa","Kon Tum"],
 1:["Phú Yên","Huế"],
 2:["Đà Nẵng","Khánh Hòa"],
 3:["Bình Định","Quảng Bình","Quảng Trị"],
@@ -277,678 +299,864 @@ mb:{
 
 };
 
-let region="mn";
-let currentData=null;
-let currentStations=[];
-let selectedStation=null;
+/* =========================
+   NGÀY VIỆT NAM
+========================= */
 
-function vnToday(){
+function vietnamDate(){
 
-const d=new Date();
-
-return new Intl.DateTimeFormat(
-"en-CA",
-{
-timeZone:"Asia/Ho_Chi_Minh",
-year:"numeric",
-month:"2-digit",
-day:"2-digit"
-}
-).format(d);
+ return new Intl.DateTimeFormat(
+  "en-CA",
+  {
+   timeZone:"Asia/Ho_Chi_Minh",
+   year:"numeric",
+   month:"2-digit",
+   day:"2-digit"
+  }
+ ).format(new Date());
 
 }
 
-function formatDate(date){
+function vietnamDay(){
 
-const p=date.split("-");
-
-return p[2]+"/"+p[1]+"/"+p[0];
-
-}
-
-function sumDigits(str){
-
-return String(str||"")
-.replace(/\D/g,"")
-.split("")
-.reduce((a,b)=>a+Number(b),0);
-
-}
-
-function oneDigit(n){
-
-while(n>=10){
-
-n=sumDigits(n);
+ return Number(
+  new Intl.DateTimeFormat(
+   "en-US",
+   {
+    timeZone:"Asia/Ho_Chi_Minh",
+    weekday:"short"
+   }
+  ).formatToParts(new Date())
+  .find(x=>x.type==="weekday")
+  .value
+  .replace("Sun","0")
+  .replace("Mon","1")
+  .replace("Tue","2")
+  .replace("Wed","3")
+  .replace("Thu","4")
+  .replace("Fri","5")
+  .replace("Sat","6")
+ );
 
 }
 
-return n;
+/* =========================
+   HÀM SỐ
+========================= */
+
+function digits(v){
+ return String(v||"").replace(/\D/g,"");
+}
+
+function sumDigits(v){
+
+ return digits(v)
+ .split("")
+ .reduce((a,b)=>a+Number(b),0);
 
 }
 
-function last2(n){
+function reduceOne(v){
 
-return String(n||"")
-.replace(/\D/g,"")
-.slice(-2)
-.padStart(2,"0");
+ v=Number(v)||0;
 
-}
+ while(v>=10)
+  v=sumDigits(v);
 
-function reverse2(n){
-
-const x=last2(n);
-
-return x[1]+x[0];
+ return v;
 
 }
 
-function getAllNumbers(station){
+function last2(v){
 
-let arr=[];
+ let s=digits(v);
 
-Object.keys(station).forEach(k=>{
+ if(!s)return "";
 
-const v=station[k];
-
-if(typeof v==="string" && /^\d+$/.test(v)){
-
-arr.push(v);
+ return s.slice(-2).padStart(2,"0");
 
 }
 
-if(Array.isArray(v)){
+function reverse2(v){
 
-v.forEach(x=>{
+ let s=last2(v);
 
-if(typeof x==="string" && /^\d+$/.test(x))
-arr.push(x);
-
-});
-
-}
-
-});
-
-return arr;
+ return s.length===2
+ ? s[1]+s[0]
+ : s;
 
 }
 
-function frequency(numbers){
+/* =========================
+   PARSE TRANG KETQUA.VN
+========================= */
 
-const f={};
+function cleanCell(v){
 
-numbers.forEach(n=>{
-
-const x=last2(n);
-
-f[x]=(f[x]||0)+1;
-
-});
-
-return f;
+ return String(v||"")
+ .replace(/<[^>]*>/g,"")
+ .replace(/\u00a0/g," ")
+ .trim();
 
 }
 
-function commonNumbers(stations){
+function splitNumbers(cell){
 
-const map={};
-
-stations.forEach(st=>{
-
-const nums=getAllNumbers(st);
-
-const unique=[...new Set(nums.map(last2))];
-
-unique.forEach(n=>{
-
-map[n]=(map[n]||0)+1;
-
-});
-
-});
-
-return Object.entries(map)
-
-.filter(x=>x[1]>=2)
-
-.sort((a,b)=>b[1]-a[1])
-
-.map(x=>x[0]);
+ return cleanCell(cell)
+ .split(/\s+/)
+ .filter(x=>/^\d+$/.test(x));
 
 }
 
-function calculateStation(st){
+function parseMarkdown(text){
 
-const special=
-st.specialPrize ||
-st.special ||
-st.gdb ||
-"";
+ const lines=text
+ .split("\n")
+ .map(x=>x.trim())
+ .filter(Boolean);
 
-const first=
-st.firstPrize ||
-st.first ||
-st.g1 ||
-"";
+ let result=[];
 
-const s=last2(special);
+ /*
+ Tìm bảng bắt đầu bằng:
+ Tỉnh | ...
+ */
 
-const pascal=
-oneDigit(
-sumDigits(special)+sumDigits(first)
-);
+ for(let i=0;i<lines.length;i++){
 
-const total=
-oneDigit(sumDigits(s));
+  if(!lines[i].startsWith("Tỉnh") ||
+     !lines[i].includes("|"))
+   continue;
 
-const cham=
-total;
+  let header=
+   lines[i]
+   .split("|")
+   .map(x=>cleanCell(x));
 
-const kep=
-s;
+  if(header.length<2)
+   continue;
 
-const ganh=
-reverse2(s);
+  let names=header.slice(1);
 
-const dau=s[0];
+  /*
+   Chỉ nhận bảng có giải G8/G7/ĐB.
+  */
 
-const duoi=s[1];
+  let foundDB=false;
 
-return {
+  for(
+   let j=i+2;
+   j<Math.min(i+35,lines.length);
+   j++
+  ){
 
-special,
-first,
-pascal,
-total,
-cham,
-kep,
-ganh,
-dau,
-duoi
+   if(lines[j].startsWith("ĐB"))
+    foundDB=true;
 
-};
+  }
+
+  if(!foundDB)
+   continue;
+
+  let data=names.map(name=>({
+
+   province:name,
+   prizes:{
+    specialPrize:"",
+    firstPrize:"",
+    secondPrize:[],
+    thirdPrize:[],
+    fourthPrize:[],
+    fifthPrize:[],
+    sixthPrize:[],
+    seventhPrize:[],
+    eighthPrize:[]
+   }
+
+  }));
+
+  let map={
+   "ĐB":"specialPrize",
+   "G1":"firstPrize",
+   "G2":"secondPrize",
+   "G3":"thirdPrize",
+   "G4":"fourthPrize",
+   "G5":"fifthPrize",
+   "G6":"sixthPrize",
+   "G7":"seventhPrize",
+   "G8":"eighthPrize"
+  };
+
+  for(
+   let j=i+2;
+   j<Math.min(i+35,lines.length);
+   j++
+  ){
+
+   let cells=
+    lines[j]
+    .split("|")
+    .map(x=>cleanCell(x));
+
+   let prize=cells[0];
+
+   if(!map[prize])
+    continue;
+
+   for(let c=1;c<cells.length;c++){
+
+    if(!data[c-1])
+     continue;
+
+    let nums=
+     splitNumbers(cells[c]);
+
+    if(prize==="ĐB"){
+
+     if(nums[0])
+      data[c-1].prizes.specialPrize=
+       nums[0];
+
+    }else if(prize==="G1"){
+
+     if(nums[0])
+      data[c-1].prizes.firstPrize=
+       nums[0];
+
+    }else{
+
+     data[c-1].prizes[map[prize]]
+      .push(...nums);
+
+    }
+
+   }
+
+  }
+
+  if(
+   data.some(
+    x=>x.prizes.specialPrize
+   )
+  ){
+
+   result=data;
+   break;
+
+  }
+
+ }
+
+ return result;
 
 }
 
-function stationName(st){
+/* =========================
+   TẢI DỮ LIỆU
+========================= */
 
-return st.province ||
-st.station ||
-st.name ||
-"Đài";
+async function fetchRegion(){
+
+ const date=vnToday();
+
+ let path="";
+
+ if(region==="mn")
+  path="/xsmn/"+date.split("-").reverse().join("-");
+
+ if(region==="mt")
+  path="/xsmt/"+date.split("-").reverse().join("-");
+
+ if(region==="mb")
+  path="/xsmb/"+date.split("-").reverse().join("-");
+
+ const url=PROXY+"https://ketqua.vn"+path;
+
+ const response=
+  await fetch(
+   url,
+   {cache:"no-store"}
+  );
+
+ if(!response.ok)
+  throw new Error(
+   "Không kết nối được nguồn dữ liệu."
+  );
+
+ const text=
+  await response.text();
+
+ const parsed=
+  parseMarkdown(text);
+
+ if(!parsed.length)
+  throw new Error(
+   "Nguồn dữ liệu chưa trả về bảng kết quả."
+  );
+
+ return parsed;
 
 }
+
+/* =========================
+   HIỂN THỊ ĐÀI
+========================= */
 
 function renderStations(){
 
-const box=document.getElementById("stationBox");
+ let html="";
 
-if(!currentStations.length){
+ stations.forEach((st,i)=>{
 
-box.innerHTML=
-'<div class="card error">Chưa có dữ liệu đài.</div>';
+  html+=`
+   <span
+    class="station ${i===selected?"active":""}"
+    onclick="selectStation(${i})">
+    ${st.province}
+   </span>
+  `;
 
-return;
+ });
 
-}
-
-let html=
-'<div class="station-tabs">';
-
-currentStations.forEach((st,i)=>{
-
-const active=
-selectedStation===i;
-
-html+=
-`<div class="station ${active?"active":""}"
-onclick="selectStation(${i})">
-${stationName(st)}
-</div>`;
-
-});
-
-html+="</div>";
-
-box.innerHTML=html;
+ document.getElementById("stations").innerHTML=
+  `<div class="station-tabs">${html}</div>`;
 
 }
 
 function selectStation(i){
 
-selectedStation=i;
+ selected=i;
 
-renderStations();
-
-renderAnalysis();
+ renderStations();
+ renderAnalysis();
 
 }
+
+/* =========================
+   TẤT CẢ SỐ CỦA ĐÀI
+========================= */
+
+function allNumbers(st){
+
+ let p=st.prizes;
+
+ let arr=[];
+
+ Object.values(p).forEach(v=>{
+
+  if(Array.isArray(v))
+   arr.push(...v);
+
+  else if(v)
+   arr.push(v);
+
+ });
+
+ return arr;
+
+}
+
+/* =========================
+   ĐẦU / ĐUÔI
+========================= */
+
+function headTail(st){
+
+ let nums=
+  allNumbers(st)
+  .map(last2)
+  .filter(Boolean);
+
+ let heads={};
+ let tails={};
+
+ nums.forEach(n=>{
+
+  heads[n[0]]=
+   (heads[n[0]]||0)+1;
+
+  tails[n[1]]=
+   (tails[n[1]]||0)+1;
+
+ });
+
+ return {
+  nums,
+  heads,
+  tails
+ };
+
+}
+
+/* =========================
+   PHÂN TÍCH ĐÀI
+========================= */
+
+function analyze(st){
+
+ let p=st.prizes;
+
+ let db=p.specialPrize||"";
+ let g1=p.firstPrize||"";
+
+ let db2=last2(db);
+
+ let pascal=
+  reduceOne(
+   sumDigits(db)+sumDigits(g1)
+  );
+
+ let tong=
+  reduceOne(
+   sumDigits(db2)
+  );
+
+ let kep=db2;
+
+ let ganh=reverse2(db2);
+
+ let dau=db2 ? db2[0] : "";
+
+ let duoi=db2 ? db2[1] : "";
+
+ let ht=headTail(st);
+
+ let topHead=
+  Object.entries(ht.heads)
+  .sort((a,b)=>b[1]-a[1])
+  .slice(0,3);
+
+ let topTail=
+  Object.entries(ht.tails)
+  .sort((a,b)=>b[1]-a[1])
+  .slice(0,3);
+
+ return {
+  db,
+  g1,
+  pascal,
+  tong,
+  kep,
+  ganh,
+  dau,
+  duoi,
+  topHead,
+  topTail
+ };
+
+}
+
+/* =========================
+   HIỂN THỊ PHÂN TÍCH
+========================= */
 
 function renderAnalysis(){
 
-const box=document.getElementById("analysis");
+ if(!stations.length){
+  document.getElementById("analysis").innerHTML=
+   "Chưa có dữ liệu.";
+  return;
+ }
 
-if(!currentStations.length){
+ let st=stations[selected];
 
-box.innerHTML="Chưa có dữ liệu.";
+ let a=analyze(st);
 
-return;
+ document.getElementById("analysis").innerHTML=`
 
-}
+ <table>
 
-let st=
-currentStations[selectedStation];
+ <tr>
+  <th>Nội dung</th>
+  <th>Kết quả</th>
+ </tr>
 
-let a=
-calculateStation(st);
+ <tr>
+  <td>Đặc biệt</td>
+  <td><b>${a.db}</b></td>
+ </tr>
 
-box.innerHTML=`
+ <tr>
+  <td>Giải nhất</td>
+  <td>${a.g1}</td>
+ </tr>
 
-<table>
+ <tr>
+  <td>Pascal</td>
+  <td class="num">${a.pascal}</td>
+ </tr>
 
-<tr>
-<th>Nội dung</th>
-<th>Kết quả</th>
-</tr>
+ <tr>
+  <td>Tổng / Chạm</td>
+  <td class="num">${a.tong}</td>
+ </tr>
 
-<tr>
-<td>GĐB</td>
-<td><b>${a.special||"—"}</b></td>
-</tr>
+ <tr>
+  <td>Kẹp</td>
+  <td>${a.kep}</td>
+ </tr>
 
-<tr>
-<td>G1</td>
-<td>${a.first||"—"}</td>
-</tr>
+ <tr>
+  <td>Gánh</td>
+  <td>${a.ganh}</td>
+ </tr>
 
-<tr>
-<td>Pascal</td>
-<td class="number">${a.pascal}</td>
-</tr>
+ <tr>
+  <td>Đầu ĐB</td>
+  <td class="num">${a.dau}</td>
+ </tr>
 
-<tr>
-<td>Tổng / Chạm</td>
-<td class="number">${a.total} / ${a.cham}</td>
-</tr>
+ <tr>
+  <td>Đuôi ĐB</td>
+  <td class="num">${a.duoi}</td>
+ </tr>
 
-<tr>
-<td>Kẹp</td>
-<td>${a.kep}</td>
-</tr>
+ </table>
 
-<tr>
-<td>Gánh</td>
-<td>${a.ganh}</td>
-</tr>
+ <br>
 
-<tr>
-<td>Đầu</td>
-<td class="number">${a.dau}</td>
-</tr>
+ <b>📌 Đầu xuất hiện nhiều:</b>
+ ${a.topHead.map(x=>x[0]+" ("+x[1]+")").join(" – ")}
 
-<tr>
-<td>Đuôi</td>
-<td class="number">${a.duoi}</td>
-</tr>
+ <br><br>
 
-</table>
+ <b>📌 Đuôi xuất hiện nhiều:</b>
+ ${a.topTail.map(x=>x[0]+" ("+x[1]+")").join(" – ")}
 
-<br>
+ `;
 
-<div>
-<b>Đầu/đuôi tham khảo:</b>
-${a.dau}${a.duoi}
-/
-${a.duoi}${a.dau}
-</div>
-
-`;
-
-renderCross();
+ renderCross();
+ renderPicks();
 
 }
+
+/* =========================
+   GIAO THOA
+========================= */
 
 function renderCross(){
 
-const cross=
-commonNumbers(currentStations);
+ let map={};
 
-document.getElementById("cross").innerHTML=
+ stations.forEach(st=>{
 
-cross.length ?
+  let unique=
+   [...new Set(
+    allNumbers(st)
+    .map(last2)
+    .filter(Boolean)
+   )];
 
-cross.slice(0,12)
-.map(n=>`<span class="pick">${n}</span>`)
-.join("")
+  unique.forEach(n=>{
 
-:
+   if(!map[n])
+    map[n]=0;
 
-'<span class="small">Chưa tìm thấy số giao thoa từ dữ liệu hiện có.</span>';
+   map[n]++;
 
-}
+  });
 
-function generatePicks(){
+ });
 
-let all=[];
+ let cross=
+  Object.entries(map)
+  .filter(x=>x[1]>=2)
+  .sort((a,b)=>b[1]-a[1]);
 
-currentStations.forEach(st=>{
+ if(!cross.length){
 
-getAllNumbers(st).forEach(n=>{
+  document.getElementById("cross").innerHTML=
+   `<span class="small">
+    Chưa có số giao thoa giữa các đài.
+   </span>`;
 
-all.push(last2(n));
+  return;
 
-});
+ }
 
-});
-
-const f=frequency(all);
-
-const cross=
-commonNumbers(currentStations);
-
-let score={};
-
-Object.keys(f).forEach(n=>{
-
-score[n]=f[n];
-
-});
-
-cross.forEach(n=>{
-
-score[n]=(score[n]||0)+10;
-
-});
-
-let picks=
-Object.keys(score)
-.sort((a,b)=>score[b]-score[a])
-.slice(0,3);
-
-while(picks.length<3){
-
-let x=
-String(
-Math.floor(Math.random()*100)
-).padStart(2,"0");
-
-if(!picks.includes(x))
-picks.push(x);
+ document.getElementById("cross").innerHTML=
+  cross
+  .slice(0,15)
+  .map(x=>
+   `<span class="pick">${x[0]}</span>`
+  )
+  .join("");
 
 }
 
-return picks;
+/* =========================
+   CHỐT 3 SỐ THAM KHẢO
+========================= */
+
+function getPicks(){
+
+ let score={};
+
+ /*
+  Tần suất tất cả giải
+ */
+
+ stations.forEach(st=>{
+
+  let nums=
+   allNumbers(st)
+   .map(last2)
+   .filter(Boolean);
+
+  nums.forEach(n=>{
+
+   score[n]=
+    (score[n]||0)+1;
+
+  });
+
+ });
+
+ /*
+  Giao thoa liên đài cộng điểm
+ */
+
+ let cross={};
+
+ stations.forEach(st=>{
+
+  [...new Set(
+   allNumbers(st)
+   .map(last2)
+  )].forEach(n=>{
+
+   cross[n]=(cross[n]||0)+1;
+
+  });
+
+ });
+
+ Object.entries(cross).forEach(
+  ([n,count])=>{
+
+   if(count>=2)
+    score[n]+=
+     count*8;
+
+  }
+ );
+
+ /*
+  Pascal + Kẹp/Gánh
+ */
+
+ stations.forEach(st=>{
+
+  let a=analyze(st);
+
+  [
+   String(a.pascal).padStart(2,"0"),
+   a.kep,
+   a.ganh
+  ].forEach(n=>{
+
+   if(n && n.length===2)
+    score[n]=(score[n]||0)+5;
+
+  });
+
+ });
+
+ return Object.keys(score)
+  .sort((a,b)=>score[b]-score[a])
+  .slice(0,3);
 
 }
+
+/* =========================
+   VEO 3
+========================= */
 
 function renderPicks(){
 
-const picks=
-generatePicks();
+ let picks=getPicks();
 
-document.getElementById("picks").innerHTML=
+ while(picks.length<3){
 
-picks
-.map(n=>`<span class="pick">${n}</span>`)
-.join("");
+  let n=
+   String(
+    Math.floor(Math.random()*100)
+   ).padStart(2,"0");
 
-const first=picks[0];
+  if(!picks.includes(n))
+   picks.push(n);
 
-const second=picks[1];
+ }
 
-const third=picks[2];
+ document.getElementById("picks").innerHTML=
+  picks
+  .map(n=>
+   `<span class="pick">${n}</span>`
+  )
+  .join("");
 
-document.getElementById("veo1").textContent=
+ let n1=picks[0];
+ let n2=picks[1];
+ let n3=picks[2];
+
+ document.getElementById("veo1").textContent=
 
 `Video dọc 9:16, thời lượng 10 giây.
-Bối cảnh điện ảnh Việt Nam về đêm, ánh sáng cinematic, chuyển động camera mượt.
 
-Hiển thị số ${first} thật lớn, nổi bật ở trung tâm khung hình.
-Tạo hiệu ứng ánh sáng và chuyển động nhẹ quanh con số.
-Không hiển thị thêm số khác.
+Bối cảnh Việt Nam về đêm, cinematic, ánh sáng đẹp,
+camera chuyển động chậm và mượt.
 
-Chữ cảnh báo phải lớn và rõ, xuất hiện từ đầu đến cuối:
+CHỈ HIỂN THỊ DUY NHẤT CON SỐ:
+${n1}
+
+Con số ${n1} xuất hiện lớn, rõ, nổi bật ở trung tâm.
+Không xuất hiện thêm con số nào khác.
+
+Dòng cảnh báo phải thật lớn, rõ và liên tục từ đầu đến cuối:
 
 "Chỉ mang tính tham khảo giải trí – không khuyến khích lô đề – không đảm bảo kết quả."
 
 Không hiển thị ngày tháng năm.`;
 
-document.getElementById("veo2").textContent=
+ document.getElementById("veo2").textContent=
 
-`Video nối tiếp đoạn 1, thời lượng 10 giây.
-Giữ phong cách và nhân vật liền mạch với đoạn trước.
+`Video nối tiếp trực tiếp đoạn 1, thời lượng 10 giây.
 
-Hiển thị đúng 2 con số:
-${second} và ${third}
+Giữ cùng phong cách điện ảnh và chuyển động camera
+để hai đoạn ghép thành một video 20 giây liền mạch.
 
-Hai con số xuất hiện lần lượt, tạo cảm giác tò mò và giữ chân người xem.
+CHỈ HIỂN THỊ 2 CON SỐ:
+
+${n2} và ${n3}
+
+Cho ${n2} xuất hiện trước,
+sau đó ${n3} xuất hiện.
 Không thêm con số thứ tư.
 
-Chữ cảnh báo phải lớn và rõ, xuất hiện từ đầu đến cuối:
+Dòng cảnh báo phải thật lớn, rõ và liên tục từ đầu đến cuối:
 
 "Chỉ mang tính tham khảo giải trí – không khuyến khích lô đề – không đảm bảo kết quả."
 
 Không hiển thị ngày tháng năm.`;
 
 }
+
+/* =========================
+   LỊCH
+========================= */
 
 function renderSchedule(){
 
-const day=
-new Date(
-new Date().toLocaleString(
-"en-US",
-{timeZone:"Asia/Ho_Chi_Minh"}
-)
-).getDay();
+ let day=
+  new Date(
+   new Date().toLocaleString(
+    "en-US",
+    {timeZone:"Asia/Ho_Chi_Minh"}
+   )
+  ).getDay();
 
-const names=
-SCHEDULE[region][day];
+ let names=
+  SCHEDULE[region][day];
 
-let html="<table>";
-
-html+="<tr><th>Ngày</th><th>Đài</th></tr>";
-
-names.forEach(n=>{
-
-html+=
-`<tr>
-<td>Hôm nay</td>
-<td>${n}</td>
-</tr>`;
-
-});
-
-html+="</table>";
-
-document.getElementById("schedule").innerHTML=html;
+ document.getElementById("schedule").innerHTML=
+ `
+ <table>
+ <tr>
+  <th>Ngày</th>
+  <th>Đài</th>
+ </tr>
+ <tr>
+  <td>Hôm nay</td>
+  <td>${names.join(" – ")}</td>
+ </tr>
+ </table>
+ `;
 
 }
 
-async function getJSON(url){
+/* =========================
+   ĐỔI MIỀN
+========================= */
 
-const r=
-await fetch(
-url+
-"?v="+Date.now()
-);
+function changeRegion(r){
 
-if(!r.ok)
-throw new Error("Không tải được dữ liệu");
+ region=r;
+ selected=0;
 
-return await r.json();
+ document
+  .querySelectorAll(".tab")
+  .forEach(x=>
+   x.classList.remove("active")
+  );
+
+ document
+  .getElementById("tab-"+r)
+  .classList.add("active");
+
+ loadData();
 
 }
+
+/* =========================
+   LOAD
+========================= */
 
 async function loadData(){
 
-document.getElementById("analysis").innerHTML=
-'<div class="loading">🔄 Đang cập nhật dữ liệu...</div>';
+ document.getElementById("dateBox").innerHTML=
+  "🔄 Đang cập nhật dữ liệu...";
 
-document.getElementById("cross").innerHTML=
-"Đang tải...";
+ document.getElementById("analysis").innerHTML=
+  '<div class="loading">Đang lấy kết quả...</div>';
 
-document.getElementById("picks").innerHTML=
-"Đang tính toán...";
+ try{
 
-try{
+  stations=
+   await fetchRegion();
 
-const today=
-vnToday();
+  selected=0;
 
-let data;
+  document.getElementById("dateBox").innerHTML=
+   "📅 KẾT QUẢ NGÀY "+
+   vietnamDate()
+   .split("-")
+   .reverse()
+   .join("/");
 
-try{
+  renderStations();
+  renderAnalysis();
+  renderSchedule();
 
-data=
-await getJSON(
-DATA_BASE+
-today+
-".json"
-);
+ }catch(e){
 
-}catch(e){
+  document.getElementById("dateBox").innerHTML=
+   "⚠️ Chưa lấy được dữ liệu";
 
-const index=
-await getJSON(INDEX_URL);
+  document.getElementById("analysis").innerHTML=
+   `<div class="error">
+    ⚠️ ${e.message}<br><br>
+    Hãy bấm "CẬP NHẬT DỮ LIỆU" thử lại.
+   </div>`;
 
-let dates=[];
+  document.getElementById("stations").innerHTML="";
+  document.getElementById("cross").innerHTML="";
+  document.getElementById("picks").innerHTML="";
+  document.getElementById("veo1").textContent="";
+  document.getElementById("veo2").textContent="";
 
-if(Array.isArray(index)){
-
-dates=index;
-
-}else if(Array.isArray(index.dates)){
-
-dates=index.dates;
-
-}else if(Array.isArray(index.results)){
-
-dates=index.results.map(x=>x.date);
-
-}
-
-dates=
-dates
-.filter(Boolean)
-.sort()
-.reverse();
-
-for(const date of dates.slice(0,10)){
-
-try{
-
-data=
-await getJSON(
-DATA_BASE+
-date+
-".json"
-);
-
-if(data) break;
-
-}catch(e){}
+ }
 
 }
 
-}
-
-if(!data)
-throw new Error("Không có dữ liệu");
-
-currentData=data;
-
-let results=
-data.results ||
-data.data ||
-[];
-
-if(!Array.isArray(results))
-results=[];
-
-const schedule=
-SCHEDULE[region][
-new Date(
-new Date().toLocaleString(
-"en-US",
-{timeZone:"Asia/Ho_Chi_Minh"}
-)
-).getDay()
-];
-
-currentStations=
-results.filter(st=>{
-
-const name=
-stationName(st);
-
-return schedule.some(x=>
-name
-.toLowerCase()
-.includes(x.toLowerCase())
-);
-
-});
-
-if(!currentStations.length){
-
-currentStations=results
-.slice(0, schedule.length);
-
-}
-
-selectedStation=0;
-
-const usedDate=
-data.date || today;
-
-document.getElementById("dateBox").innerHTML=
-`📅 Dữ liệu ngày <b>${formatDate(usedDate)}</b>`;
-
-renderStations();
-
-renderAnalysis();
-
-renderPicks();
-
-renderSchedule();
-
-}catch(err){
-
-document.getElementById("analysis").innerHTML=
-`<div class="error">
-⚠️ Chưa lấy được dữ liệu tự động.<br><br>
-${err.message}
-</div>`;
-
-document.getElementById("dateBox").textContent=
-"Chưa cập nhật được dữ liệu";
-
-}
-
-}
-
-function changeRegion(r,el){
-
-region=r;
-
-document
-.querySelectorAll(".tab")
-.forEach(x=>x.classList.remove("active"));
-
-el.classList.add("active");
-
-loadData();
-
-}
+/* =========================
+   TỰ ĐỘNG CẬP NHẬT
+========================= */
 
 loadData();
 
 setInterval(
-loadData,
-10*60*1000
+ loadData,
+ 10*60*1000
 );
 
 </script>
