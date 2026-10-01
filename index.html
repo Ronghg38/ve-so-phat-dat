@@ -1,777 +1,2059 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VÉ SỐ PHÁT ĐẠT - Kết Quả & Phân Tích Theo Ngày</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    body {
-      background-color: #f2f3f5;
-      color: #222;
-      padding-bottom: 35px;
-    }
-    /* Header */
-    .header {
-      background-color: #d90416;
-      color: #fff;
-      text-align: center;
-      padding: 16px 10px;
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-    /* Status Bar */
-    .status-bar {
-      background-color: #fff;
-      text-align: center;
-      padding: 9px 10px;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #1b8a3d;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    /* Tabs Miền */
-    .tabs {
-      display: flex;
-      background-color: #fff;
-      border-bottom: 1px solid #ddd;
-    }
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 13px 5px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #222;
-      background-color: #fff;
-      border-right: 1px solid #eee;
-      transition: 0.2s;
-    }
-    .tab:last-child {
-      border-right: none;
-    }
-    .tab.active {
-      background-color: #d90416;
-      color: #fff;
-    }
-    /* Container */
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 12px;
-    }
-    /* Bộ Chọn Từng Ngày */
-    .date-nav-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      border: 1px solid #ebebeb;
-    }
-    .date-controls {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .btn-day-step {
-      background: #f8f9fa;
-      border: 1px solid #dadce0;
-      color: #333;
-      padding: 8px 10px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .btn-day-step:active {
-      background: #e9ecef;
-    }
-    .date-input {
-      flex: 1;
-      padding: 7px 8px;
-      border: 1px solid #d90416;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      text-align: center;
-      color: #b81414;
-      background: #fff5f5;
-    }
-    /* Thanh trượt chọn nhanh từng ngày */
-    .day-strip {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-    .day-strip::-webkit-scrollbar {
-      display: none;
-    }
-    .day-pill {
-      flex: 0 0 auto;
-      padding: 7px 12px;
-      border-radius: 8px;
-      background: #f1f3f5;
-      color: #444;
-      font-size: 12.5px;
-      font-weight: 700;
-      text-align: center;
-      cursor: pointer;
-      border: 1px solid transparent;
-    }
-    .day-pill span {
-      display: block;
-      font-size: 11px;
-      font-weight: 500;
-      opacity: 0.85;
-    }
-    .day-pill.active {
-      background: #d90416;
-      color: #fff;
-      box-shadow: 0 2px 5px rgba(217, 4, 22, 0.3);
-    }
-    /* Update Button */
-    .btn-update {
-      width: 100%;
-      background-color: #c90412;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 13px;
-      font-size: 15.5px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 14px;
-      box-shadow: 0 3px 6px rgba(201, 4, 18, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    /* Cards */
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      border: 1px solid #ebebeb;
-    }
-    .card.next-day-card {
-      border: 2px solid #d90416;
-      background: linear-gradient(to bottom, #fff9f9, #ffffff);
-    }
-    .card-title {
-      color: #b81414;
-      font-size: 15.5px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      text-transform: uppercase;
-    }
-    .badge-date {
-      background: #d90416;
-      color: #fff;
-      font-size: 12px;
-      padding: 3px 8px;
-      border-radius: 6px;
-    }
-    /* Station Badges */
-    .station-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .station-badge {
-      background: #fff5f5;
-      color: #c90412;
-      border: 1px solid #ffc9c9;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 13.5px;
-    }
-    /* Bảng Kết Quả */
-    .kq-table-wrap {
-      overflow-x: auto;
-    }
-    .kq-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13.5px;
-      text-align: center;
-    }
-    .kq-table th, .kq-table td {
-      border: 1px solid #e0e0e0;
-      padding: 7px 5px;
-    }
-    .kq-table th {
-      background-color: #d90416;
-      color: #fff;
-      font-weight: 700;
-    }
-    .kq-table .giai-col {
-      background-color: #f8f9fa;
-      font-weight: 700;
-      width: 50px;
-      color: #444;
-    }
-    .kq-highlight {
-      color: #d90416;
-      font-weight: 800;
-      font-size: 15.5px;
-    }
-    /* Phân tích & Thống kê */
-    .analysis-item {
-      background: #fafafa;
-      border-left: 4px solid #d90416;
-      padding: 10px 12px;
-      margin-bottom: 10px;
-      border-radius: 4px;
-      font-size: 13.5px;
-      line-height: 1.55;
-    }
-    .analysis-item.tomorrow-item {
-      background: #fff;
-      border-left: 4px solid #e67700;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-    .analysis-item:last-child {
-      margin-bottom: 0;
-    }
-    .analysis-item strong {
-      color: #b81414;
-    }
-    .loto-2so {
-      margin-top: 8px;
-      font-size: 12.5px;
-      color: #444;
-      background: #fff8f8;
-      padding: 7px 9px;
-      border-radius: 6px;
-      border: 1px dashed #f5b5b5;
-    }
-    /* Đầu đuôi thống kê bảng nhỏ */
-    .dauduoi-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px;
-      margin-top: 8px;
-      font-size: 12.5px;
-    }
-    .dd-box {
-      background: #f8f9fa;
-      padding: 5px 8px;
-      border-radius: 4px;
-      border: 1px solid #eee;
-    }
-    /* 3 Con số tham khảo */
-    .vip-numbers {
-      display: flex;
-      justify-content: space-around;
-      gap: 10px;
-      margin-top: 8px;
-    }
-    .vip-ball {
-      flex: 1;
-      background: linear-gradient(135deg, #e00619, #a8000e);
-      color: #fff;
-      text-align: center;
-      padding: 14px 8px;
-      border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(217, 4, 22, 0.25);
-    }
-    .vip-ball .num {
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: 1px;
-    }
-    .vip-ball .lbl {
-      font-size: 11.5px;
-      opacity: 0.95;
-      margin-top: 4px;
-      font-weight: 600;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>VÉ SỐ PHÁT ĐẠT</title>
+
+<style>
+
+*{
+ box-sizing:border-box;
+ margin:0;
+ padding:0;
+ font-family:Arial,Helvetica,sans-serif
+}
+
+body{
+ background:#f2f3f5;
+ color:#222;
+ padding-bottom:40px
+}
+
+.header{
+ background:#d90416;
+ color:white;
+ text-align:center;
+ padding:16px 10px;
+ font-size:22px;
+ font-weight:900
+}
+
+.status{
+ background:white;
+ padding:9px;
+ text-align:center;
+ font-size:13px;
+ font-weight:bold;
+ color:#16833b;
+ border-bottom:1px solid #ddd
+}
+
+.tabs{
+ display:flex;
+ background:white;
+ border-bottom:1px solid #ddd
+}
+
+.tab{
+ flex:1;
+ padding:13px 4px;
+ text-align:center;
+ font-weight:bold;
+ font-size:14px;
+ cursor:pointer
+}
+
+.tab.active{
+ background:#d90416;
+ color:white
+}
+
+.container{
+ max-width:720px;
+ margin:auto;
+ padding:12px
+}
+
+.card{
+ background:white;
+ border-radius:12px;
+ padding:15px;
+ margin-bottom:14px;
+ box-shadow:0 2px 8px rgba(0,0,0,.06)
+}
+
+.title{
+ color:#b81414;
+ font-weight:900;
+ font-size:16px;
+ margin-bottom:12px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center
+}
+
+.badge{
+ background:#d90416;
+ color:white;
+ padding:4px 8px;
+ border-radius:6px;
+ font-size:11px
+}
+
+.api-box{
+ background:#fff8e8;
+ border:1px solid #f1c36a;
+ border-radius:10px;
+ padding:12px;
+ margin-bottom:14px
+}
+
+.api-box input{
+ width:100%;
+ padding:10px;
+ border:1px solid #ccc;
+ border-radius:7px;
+ margin-top:7px;
+ font-size:14px
+}
+
+.api-buttons{
+ display:flex;
+ gap:7px;
+ margin-top:8px
+}
+
+.btn{
+ border:0;
+ border-radius:7px;
+ padding:9px 12px;
+ font-weight:bold;
+ cursor:pointer
+}
+
+.btn-red{
+ background:#d90416;
+ color:white
+}
+
+.btn-gray{
+ background:#eee;
+ color:#333
+}
+
+.date-controls{
+ display:flex;
+ gap:6px;
+ flex-wrap:wrap
+}
+
+.date-controls button{
+ padding:9px;
+ border:1px solid #ddd;
+ border-radius:7px;
+ background:#f7f7f7;
+ font-weight:bold
+}
+
+.date-input{
+ flex:1;
+ min-width:150px;
+ padding:9px;
+ border:1px solid #d90416;
+ border-radius:7px;
+ font-weight:bold;
+ color:#b81414
+}
+
+.days{
+ display:flex;
+ overflow-x:auto;
+ gap:6px;
+ margin-top:10px
+}
+
+.day{
+ min-width:75px;
+ padding:7px;
+ background:#eee;
+ border-radius:8px;
+ text-align:center;
+ font-size:12px;
+ font-weight:bold;
+ cursor:pointer
+}
+
+.day.active{
+ background:#d90416;
+ color:white
+}
+
+.stations{
+ display:flex;
+ flex-wrap:wrap;
+ gap:7px
+}
+
+.station{
+ background:#fff3f3;
+ border:1px solid #ffcaca;
+ color:#c90412;
+ padding:7px 11px;
+ border-radius:20px;
+ font-weight:bold;
+ font-size:13px
+}
+
+.table-wrap{
+ overflow-x:auto
+}
+
+table{
+ width:100%;
+ min-width:520px;
+ border-collapse:collapse;
+ text-align:center;
+ font-size:13px
+}
+
+th,td{
+ border:1px solid #ddd;
+ padding:7px 5px
+}
+
+th{
+ background:#d90416;
+ color:white
+}
+
+.giai{
+ background:#f5f5f5;
+ font-weight:bold;
+ width:55px
+}
+
+.db{
+ color:#d90416;
+ font-weight:900;
+ font-size:16px
+}
+
+.stat{
+ background:#fafafa;
+ border-left:4px solid #d90416;
+ padding:10px;
+ margin-bottom:9px;
+ border-radius:5px;
+ line-height:1.55;
+ font-size:13px
+}
+
+.tomorrow{
+ border:2px solid #d90416;
+ background:#fffafa
+}
+
+.signal{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:7px;
+ margin-top:8px
+}
+
+.signal div{
+ background:#f7f7f7;
+ padding:8px;
+ border-radius:6px;
+ border:1px solid #eee
+}
+
+.numbers{
+ display:flex;
+ gap:8px;
+ margin-top:10px
+}
+
+.number{
+ flex:1;
+ background:linear-gradient(135deg,#e00619,#a8000e);
+ color:white;
+ padding:15px 5px;
+ text-align:center;
+ border-radius:9px
+}
+
+.number b{
+ display:block;
+ font-size:24px
+}
+
+.notice{
+ background:#fff8e8;
+ border-left:4px solid #e67700;
+ padding:10px;
+ font-size:12px;
+ line-height:1.5;
+ border-radius:5px
+}
+
+.error{
+ background:#fff0f0;
+ color:#b00000;
+ padding:12px;
+ border-radius:7px;
+ line-height:1.5
+}
+
+.loading{
+ text-align:center;
+ padding:20px;
+ color:#777
+}
+
+@media(max-width:480px){
+
+ .title{
+  font-size:14px
+ }
+
+ .numbers{
+  gap:5px
+ }
+
+ .number b{
+  font-size:21px
+ }
+
+}
+
+</style>
 </head>
+
 <body>
 
-  <div class="header">🎯 VÉ SỐ PHÁT ĐẠT</div>
-  <div id="statusBar" class="status-bar">⏳ Đang tải dữ liệu...</div>
+<div class="header">
+ 🎯 VÉ SỐ PHÁT ĐẠT
+</div>
 
-  <!-- TABS 3 MIỀN -->
-  <div class="tabs">
-    <div class="tab active" onclick="switchRegion('MN', this)">MIỀN NAM</div>
-    <div class="tab" onclick="switchRegion('MT', this)">MIỀN TRUNG</div>
-    <div class="tab" onclick="switchRegion('MB', this)">MIỀN BẮC</div>
+<div id="status" class="status">
+ ⏳ Đang chuẩn bị dữ liệu...
+</div>
+
+<div class="tabs">
+
+ <div class="tab active"
+      onclick="switchRegion('MN',this)">
+  MIỀN NAM
+ </div>
+
+ <div class="tab"
+      onclick="switchRegion('MT',this)">
+  MIỀN TRUNG
+ </div>
+
+ <div class="tab"
+      onclick="switchRegion('MB',this)">
+  MIỀN BẮC
+ </div>
+
+</div>
+
+<div class="container">
+
+
+<!-- API -->
+
+<div class="api-box">
+
+ <b>🔑 KẾT NỐI DỮ LIỆU THỰC</b>
+
+ <div style="font-size:12px;margin-top:5px">
+  Nhập API Key của bạn để tải kết quả
+  nhiều ngày và cả 3 miền.
+ </div>
+
+ <input
+   id="apiKey"
+   type="password"
+   placeholder="Dán API Key vào đây"
+ >
+
+ <div class="api-buttons">
+
+  <button
+   class="btn btn-red"
+   onclick="saveApiKey()">
+   💾 Lưu Key
+  </button>
+
+  <button
+   class="btn btn-gray"
+   onclick="clearApiKey()">
+   Xóa Key
+  </button>
+
+ </div>
+
+</div>
+
+
+<!-- CHỌN NGÀY -->
+
+<div class="card">
+
+ <div class="date-controls">
+
+  <button onclick="changeDay(-1)">
+   ◀ Hôm trước
+  </button>
+
+  <input
+   id="datePicker"
+   type="date"
+   class="date-input"
+   onchange="pickDate(this.value)"
+  >
+
+  <button onclick="changeDay(1)">
+   Hôm sau ▶
+  </button>
+
+ </div>
+
+ <div id="days"
+      class="days">
+ </div>
+
+</div>
+
+
+<button
+ class="btn btn-red"
+ style="width:100%;margin-bottom:14px"
+ onclick="loadEverything(true)">
+
+ 🔄 CẬP NHẬT DỮ LIỆU THỰC
+
+</button>
+
+
+<!-- ĐÀI -->
+
+<div class="card">
+
+ <div class="title">
+
+  <span>
+   🏆 CÁC ĐÀI MỞ THƯỞNG
+  </span>
+
+  <span
+   id="currentDateBadge"
+   class="badge">
+  </span>
+
+ </div>
+
+ <div
+   id="stations"
+   class="stations">
+ </div>
+
+</div>
+
+
+<!-- KẾT QUẢ -->
+
+<div class="card">
+
+ <div class="title">
+
+  <span>
+   📋 BẢNG KẾT QUẢ XỔ SỐ
+  </span>
+
+  <span
+   id="resultDate"
+   style="font-size:11px;color:#666">
+  </span>
+
+ </div>
+
+ <div
+   id="results"
+   class="table-wrap">
+
+  <div class="loading">
+   Chưa tải dữ liệu
   </div>
 
-  <div class="container">
-    <!-- BỘ CHỌN TỪNG NGÀY -->
-    <div class="date-nav-card">
-      <div class="date-controls">
-        <button class="btn-day-step" onclick="changeDay(-1)">◀ Hôm trước</button>
-        <input type="date" id="datePicker" class="date-input" onchange="onDatePick(this.value)">
-        <button class="btn-day-step" onclick="changeDay(1)">Hôm sau ▶</button>
-      </div>
-      <div id="dayStrip" class="day-strip"></div>
-    </div>
+ </div>
 
-    <button class="btn-update" onclick="loadAllData()">
-      🔄 CẬP NHẬT DỮ LIỆU & SOI CẦU
-    </button>
+</div>
 
-    <!-- 1. CÁC ĐÀI NGÀY ĐANG CHỌN -->
-    <div class="card">
-      <div class="card-title">
-        <span>🏆 CÁC ĐÀI MỞ THƯỞNG</span>
-        <span id="badgeCurrentDate" class="badge-date"></span>
-      </div>
-      <div id="stationsToday" class="station-list"></div>
-    </div>
 
-    <!-- 2. BẢNG KẾT QUẢ XỔ SỐ NGÀY ĐANG CHỌN -->
-    <div class="card">
-      <div class="card-title">
-        <span>📋 BẢNG KẾT QUẢ XỔ SỐ</span>
-        <span id="badgeKQDate" style="font-size:12px; color:#666;"></span>
-      </div>
-      <div id="kqxsContainer" class="kq-table-wrap"></div>
-    </div>
+<!-- THỐNG KÊ -->
 
-    <!-- 3. THỐNG KÊ KẾT QUẢ NGÀY ĐANG CHỌN -->
-    <div class="card">
-      <div class="card-title">📊 THỐNG KÊ CHI TIẾT NGÀY ĐANG XEM</div>
-      <div id="detailedStats"></div>
-    </div>
+<div class="card">
 
-    <!-- 4. PHÂN TÍCH & SOI CẦU CHO NGÀY HÔM SAU -->
-    <div class="card next-day-card">
-      <div class="card-title">
-        <span>🔮 PHÂN TÍCH CHO NGÀY HÔM SAU</span>
-        <span id="badgeNextDate" class="badge-date"></span>
-      </div>
-      <div id="nextDayStations" class="station-list" style="margin-bottom: 12px;"></div>
-      <div id="nextDayAnalysis"></div>
-    </div>
+ <div class="title">
+  📊 THỐNG KÊ CHI TIẾT
+ </div>
 
-    <!-- 5. GIAO THOA LIÊN ĐÀI (CHO NGÀY HÔM SAU) -->
-    <div class="card next-day-card">
-      <div class="card-title">🎯 GIAO THOA LIÊN ĐÀI (NGÀY HÔM SAU)</div>
-      <div id="crossStation"></div>
-    </div>
+ <div id="statistics">
 
-    <!-- 6. 3 CON SỐ THAM KHẢO (CHO NGÀY HÔM SAU) -->
-    <div class="card next-day-card">
-      <div class="card-title">
-        <span>🔥 3 CON SỐ THAM KHẢO</span>
-        <span id="badgeVipDate" class="badge-date"></span>
-      </div>
-      <div id="vipNumbers"></div>
-    </div>
+  <div class="loading">
+   Đang chờ dữ liệu
   </div>
 
-  <script>
-    let currentRegion = 'MN';
-    let selectedDate = new Date(); // Ngày đang chọn để xem
+ </div>
 
-    const DAY_NAMES = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+</div>
 
-    // Lịch mở thưởng các đài theo thứ trong tuần
-    const SCHEDULE = {
-      MN: {
-        0: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'],
-        1: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'],
-        2: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'],
-        3: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'],
-        4: ['Tây Ninh', 'An Giang', 'Bình Thuận'],
-        5: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'],
-        6: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang']
-      },
-      MT: {
-        0: ['Khánh Hòa', 'Kon Tum', 'Thừa Thiên Huế'],
-        1: ['Phú Yên', 'Thừa Thiên Huế'],
-        2: ['Đắk Lắk', 'Quảng Nam'],
-        3: ['Đà Nẵng', 'Khánh Hòa'],
-        4: ['Bình Định', 'Quảng Trị', 'Quảng Bình'],
-        5: ['Gia Lai', 'Ninh Thuận'],
-        6: ['Đà Nẵng', 'Quảng Ngãi', 'Đắk Nông']
-      },
-      MB: {
-        0: ['Thái Bình'],
-        1: ['Hà Nội'],
-        2: ['Quảng Ninh'],
-        3: ['Bắc Ninh'],
-        4: ['Hà Nội'],
-        5: ['Hải Phòng'],
-        6: ['Nam Định']
-      }
-    };
 
-    // Định dạng YYYY-MM-DD cho input date
-    function toInputDate(d) {
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${y}-${m}-${day}`;
+<!-- NGÀY HÔM SAU -->
+
+<div class="card tomorrow">
+
+ <div class="title">
+
+  <span>
+   🔮 PHÂN TÍCH NGÀY HÔM SAU
+  </span>
+
+  <span
+   id="nextDateBadge"
+   class="badge">
+  </span>
+
+ </div>
+
+ <div
+   id="tomorrowStations"
+   class="stations">
+ </div>
+
+ <div
+   id="tomorrowAnalysis"
+   style="margin-top:12px">
+
+  <div class="loading">
+   Chờ dữ liệu ngày hiện tại
+  </div>
+
+ </div>
+
+</div>
+
+
+<!-- GIAO THOA -->
+
+<div class="card tomorrow">
+
+ <div class="title">
+  🎯 GIAO THOA LIÊN ĐÀI
+ </div>
+
+ <div id="crossAnalysis">
+
+  <div class="loading">
+   Chưa có dữ liệu
+  </div>
+
+ </div>
+
+</div>
+
+
+<!-- 3 SỐ -->
+
+<div class="card tomorrow">
+
+ <div class="title">
+  🔥 3 CON SỐ THAM KHẢO
+ </div>
+
+ <div id="threeNumbers">
+
+  <div class="loading">
+   Chưa có dữ liệu
+  </div>
+
+ </div>
+
+</div>
+
+
+<div class="card">
+
+ <div class="notice">
+
+  ⚠️ Chỉ mang tính tham khảo giải trí.
+  Không khuyến khích lô đề và không đảm bảo
+  kết quả. Các phép tính thống kê không thể
+  đảm bảo kết quả kỳ quay tiếp theo.
+
+ </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* ==========================================
+   CẤU HÌNH
+========================================== */
+
+const API_BASE =
+ 'https://xosoapi.online';
+
+let API_KEY =
+ localStorage.getItem('VSPD_API_KEY') || '';
+
+let currentRegion = 'MN';
+
+/*
+   Mặc định ngày 01/10/2026
+*/
+let selectedDate =
+ new Date(2026,9,1);
+
+
+/* ==========================================
+   LỊCH MỞ THƯỞNG
+========================================== */
+
+const SCHEDULE = {
+
+ MN:{
+  0:['Tiền Giang','Kiên Giang','Đà Lạt'],
+  1:['TP.HCM','Đồng Tháp','Cà Mau'],
+  2:['Bến Tre','Vũng Tàu','Bạc Liêu'],
+  3:['Đồng Nai','Cần Thơ','Sóc Trăng'],
+  4:['Tây Ninh','An Giang','Bình Thuận'],
+  5:['Vĩnh Long','Bình Dương','Trà Vinh'],
+  6:['TP.HCM','Long An','Bình Phước','Hậu Giang']
+ },
+
+ MT:{
+  0:['Khánh Hòa','Kon Tum','Huế'],
+  1:['Phú Yên','Huế'],
+  2:['Đắk Lắk','Quảng Nam'],
+  3:['Đà Nẵng','Khánh Hòa'],
+  4:['Bình Định','Quảng Trị','Quảng Bình'],
+  5:['Gia Lai','Ninh Thuận'],
+  6:['Đà Nẵng','Quảng Ngãi','Đắk Nông']
+ },
+
+ MB:{
+  0:['Thái Bình'],
+  1:['Hà Nội'],
+  2:['Quảng Ninh'],
+  3:['Bắc Ninh'],
+  4:['Hà Nội'],
+  5:['Hải Phòng'],
+  6:['Nam Định']
+ }
+
+};
+
+
+/* ==========================================
+   HÀM NGÀY
+========================================== */
+
+const DAY_NAMES=[
+ 'Chủ Nhật',
+ 'Thứ 2',
+ 'Thứ 3',
+ 'Thứ 4',
+ 'Thứ 5',
+ 'Thứ 6',
+ 'Thứ 7'
+];
+
+
+function dateKey(d){
+
+ return d.getFullYear()+'-'+
+  String(d.getMonth()+1).padStart(2,'0')+'-'+
+  String(d.getDate()).padStart(2,'0');
+
+}
+
+
+function vnDate(d){
+
+ return String(d.getDate()).padStart(2,'0')+
+ '/'+
+ String(d.getMonth()+1).padStart(2,'0')+
+ '/'+
+ d.getFullYear();
+
+}
+
+
+function copyDate(d){
+
+ return new Date(
+  d.getFullYear(),
+  d.getMonth(),
+  d.getDate()
+ );
+
+}
+
+
+/* ==========================================
+   API KEY
+========================================== */
+
+function saveApiKey(){
+
+ const key =
+  document.getElementById('apiKey').value.trim();
+
+ if(!key){
+
+  alert('Bạn chưa nhập API Key');
+
+  return;
+
+ }
+
+ API_KEY=key;
+
+ localStorage.setItem(
+  'VSPD_API_KEY',
+  key
+ );
+
+ alert(
+  'Đã lưu API Key trên thiết bị này.'
+ );
+
+ loadEverything(true);
+
+}
+
+
+function clearApiKey(){
+
+ API_KEY='';
+
+ localStorage.removeItem(
+  'VSPD_API_KEY'
+ );
+
+ document.getElementById(
+  'apiKey'
+ ).value='';
+
+ alert('Đã xóa API Key');
+
+}
+
+
+function initKey(){
+
+ document.getElementById(
+  'apiKey'
+ ).value=API_KEY;
+
+}
+
+
+/* ==========================================
+   CHUYỂN MIỀN
+========================================== */
+
+function switchRegion(region,el){
+
+ currentRegion=region;
+
+ document
+  .querySelectorAll('.tab')
+  .forEach(x =>
+   x.classList.remove('active')
+  );
+
+ el.classList.add('active');
+
+ loadEverything(false);
+
+}
+
+
+/* ==========================================
+   CHỌN NGÀY
+========================================== */
+
+function changeDay(n){
+
+ selectedDate.setDate(
+  selectedDate.getDate()+n
+ );
+
+ loadEverything(false);
+
+}
+
+
+function pickDate(v){
+
+ if(!v)return;
+
+ const p=v.split('-');
+
+ selectedDate =
+  new Date(
+   Number(p[0]),
+   Number(p[1])-1,
+   Number(p[2])
+  );
+
+ loadEverything(false);
+
+}
+
+
+function selectDay(ts){
+
+ selectedDate =
+  new Date(ts);
+
+ loadEverything(false);
+
+}
+
+
+/* ==========================================
+   THANH 7 NGÀY
+========================================== */
+
+function renderDays(){
+
+ let html='';
+
+ for(let i=-3;i<=3;i++){
+
+  const d=copyDate(selectedDate);
+
+  d.setDate(
+   d.getDate()+i
+  );
+
+  html+=`
+
+   <div
+    class="day ${i===0?'active':''}"
+    onclick="selectDay(${d.getTime()})">
+
+    ${DAY_NAMES[d.getDay()]}
+
+    <br>
+
+    <span style="font-size:11px">
+     ${String(d.getDate()).padStart(2,'0')}/
+     ${String(d.getMonth()+1).padStart(2,'0')}
+    </span>
+
+   </div>
+
+  `;
+
+ }
+
+ document.getElementById(
+  'days'
+ ).innerHTML=html;
+
+ document.getElementById(
+  'datePicker'
+ ).value=dateKey(selectedDate);
+
+}
+
+
+/* ==========================================
+   FETCH API
+========================================== */
+
+async function fetchRegion(){
+
+ if(!API_KEY){
+
+  throw new Error(
+   'Chưa nhập API Key.'
+  );
+
+ }
+
+ const url =
+  API_BASE+
+  '/api/v1/vietnam/draws?region='+
+  currentRegion+
+  '&limit=100';
+
+ const response =
+  await fetch(
+   url,
+   {
+    headers:{
+     'X-API-Key':API_KEY,
+     'Content-Type':'application/json'
+    }
+   }
+  );
+
+ if(!response.ok){
+
+  if(response.status===401){
+
+   throw new Error(
+    'API Key không hợp lệ.'
+   );
+
+  }
+
+  if(response.status===429){
+
+   throw new Error(
+    'API đang giới hạn số lần gọi.'
+   );
+
+  }
+
+  throw new Error(
+   'API lỗi HTTP '+response.status
+  );
+
+ }
+
+ const json =
+  await response.json();
+
+ return json;
+
+}
+
+
+/* ==========================================
+   CHUẨN HÓA DỮ LIỆU API
+========================================== */
+
+function normalizeDraws(json){
+
+ let source=[];
+
+ if(Array.isArray(json?.data)){
+
+  source=json.data;
+
+ }
+
+ else if(Array.isArray(json?.results)){
+
+  source=json.results;
+
+ }
+
+ else if(Array.isArray(json)){
+
+  source=json;
+
+ }
+
+
+ let output=[];
+
+
+ source.forEach(item=>{
+
+  const date =
+   item.date ||
+   item.draw_date ||
+   item.formatted_date ||
+   '';
+
+  /*
+    API có thể trả:
+    data -> draws[]
+  */
+
+  if(Array.isArray(item.draws)){
+
+   item.draws.forEach(draw=>{
+
+    output.push(
+     normalizeOne(
+      date,
+      draw
+     )
+    );
+
+   });
+
+  }
+
+  else{
+
+   output.push(
+    normalizeOne(
+     date,
+     item
+    )
+   );
+
+  }
+
+ });
+
+
+ return output.filter(Boolean);
+
+}
+
+
+/* ==========================================
+   CHUẨN HÓA 1 KỲ
+========================================== */
+
+function normalizeOne(date,item){
+
+ if(!item)return null;
+
+ const province =
+  item.province || {};
+
+ const name =
+  province.name ||
+  item.province_name ||
+  item.name ||
+  item.station ||
+  '';
+
+
+ let prizes =
+  item.prizes ||
+  item.results ||
+  {};
+
+
+ /*
+   Một số API có results dạng mảng.
+ */
+
+ if(Array.isArray(prizes)){
+
+  return {
+   date:date,
+   name:name,
+   raw:prizes
+  };
+
+ }
+
+
+ return {
+
+  date:date,
+
+  name:name,
+
+  g8:arr(
+   prizes.g8 ||
+   prizes['g8'] ||
+   prizes['8']
+  ),
+
+  g7:arr(
+   prizes.g7 ||
+   prizes['g7'] ||
+   prizes['7']
+  ),
+
+  g6:arr(
+   prizes.g6 ||
+   prizes['g6'] ||
+   prizes['6']
+  ),
+
+  g5:arr(
+   prizes.g5 ||
+   prizes['g5'] ||
+   prizes['5']
+  ),
+
+  g4:arr(
+   prizes.g4 ||
+   prizes['g4'] ||
+   prizes['4']
+  ),
+
+  g3:arr(
+   prizes.g3 ||
+   prizes['g3'] ||
+   prizes['3']
+  ),
+
+  g2:arr(
+   prizes.g2 ||
+   prizes['g2'] ||
+   prizes['2']
+  ),
+
+  g1:arr(
+   prizes.g1 ||
+   prizes['g1'] ||
+   prizes['1'] ||
+   prizes.first
+  ),
+
+  db:arr(
+   prizes.db ||
+   prizes['db'] ||
+   prizes.special
+  )
+
+ };
+
+}
+
+
+function arr(v){
+
+ if(v===undefined ||
+    v===null){
+
+  return [];
+
+ }
+
+ if(Array.isArray(v)){
+
+  return v.map(String);
+
+ }
+
+ return [String(v)];
+
+}
+
+
+/* ==========================================
+   LẤY KỲ ĐÚNG NGÀY
+========================================== */
+
+function findForDate(all,date){
+
+ const wanted =
+  dateKey(date);
+
+ return all.filter(x=>{
+
+  if(!x.date)return false;
+
+  /*
+    chuẩn YYYY-MM-DD
+  */
+
+  const normalized =
+   String(x.date)
+    .replace(/\//g,'-')
+    .slice(0,10);
+
+  return normalized===wanted;
+
+ });
+
+}
+
+
+/* ==========================================
+   BẢNG KẾT QUẢ
+========================================== */
+
+function renderTable(results){
+
+ if(!results.length){
+
+  document.getElementById(
+   'results'
+  ).innerHTML=`
+
+   <div class="error">
+
+    Không tìm thấy kết quả thực tế
+    cho ngày này.
+
+    <br><br>
+
+    Website không tự sinh số giả.
+
+   </div>
+
+  `;
+
+  return;
+
+ }
+
+
+ let html=`
+
+ <table>
+
+ <thead>
+
+ <tr>
+
+ <th class="giai">
+  Giải
+ </th>
+ `;
+
+
+ results.forEach(r=>{
+
+  html+=`
+   <th>${r.name}</th>
+  `;
+
+ });
+
+
+ html+=`
+ </tr>
+ </thead>
+ <tbody>
+ `;
+
+
+ const rows=[
+
+  ['g8','G.8',true],
+  ['g7','G.7',false],
+  ['g6','G.6',false],
+  ['g5','G.5',false],
+  ['g4','G.4',false],
+  ['g3','G.3',false],
+  ['g2','G.2',false],
+  ['g1','G.1',false],
+  ['db','ĐB',true]
+
+ ];
+
+
+ rows.forEach(row=>{
+
+  html+=`
+
+   <tr>
+
+    <td class="giai">
+     ${row[1]}
+    </td>
+
+  `;
+
+
+  results.forEach(r=>{
+
+   html+=`
+
+    <td class="${row[2]?'db':''}">
+
+     ${(r[row[0]]||[])
+      .join('<br>')}
+
+    </td>
+
+   `;
+
+  });
+
+
+  html+=`
+   </tr>
+  `;
+
+ });
+
+
+ html+=`
+ </tbody>
+ </table>
+ `;
+
+
+ document.getElementById(
+  'results'
+ ).innerHTML=html;
+
+}
+
+
+/* ==========================================
+   LẤY TOÀN BỘ LÔ 2 SỐ
+========================================== */
+
+function getLoto(r){
+
+ let result=[];
+
+ [
+  'g8',
+  'g7',
+  'g6',
+  'g5',
+  'g4',
+  'g3',
+  'g2',
+  'g1',
+  'db'
+ ].forEach(k=>{
+
+  (r[k]||[]).forEach(v=>{
+
+   if(v){
+
+    result.push(
+     String(v).slice(-2)
+    );
+
+   }
+
+  });
+
+ });
+
+ return result;
+
+}
+
+
+/* ==========================================
+   THỐNG KÊ
+========================================== */
+
+function renderStatistics(results){
+
+ if(!results.length){
+
+  document.getElementById(
+   'statistics'
+  ).innerHTML=
+   '<div class="loading">Chưa có dữ liệu.</div>';
+
+  return;
+
+ }
+
+
+ let html='';
+
+
+ results.forEach(r=>{
+
+  const loto=getLoto(r);
+
+  const head={};
+  const tail={};
+  const pair={};
+
+  loto.forEach(n=>{
+
+   const a=n[0];
+   const b=n[1];
+
+   head[a]=(head[a]||0)+1;
+   tail[b]=(tail[b]||0)+1;
+   pair[n]=(pair[n]||0)+1;
+
+  });
+
+
+  const hotHead=
+   Object.entries(head)
+    .sort((a,b)=>b[1]-a[1])[0];
+
+  const hotTail=
+   Object.entries(tail)
+    .sort((a,b)=>b[1]-a[1])[0];
+
+  const hotPair=
+   Object.entries(pair)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,8);
+
+
+  html+=`
+
+   <div class="stat">
+
+    <b>📌 ${r.name}</b>
+
+    <div class="signal">
+
+     <div>
+      G8:
+      <b>${r.g8?.[0]||'--'}</b>
+     </div>
+
+     <div>
+      Đuôi ĐB:
+      <b>${r.db?.[0]
+       ? r.db[0].slice(-2)
+       :'--'}</b>
+     </div>
+
+     <div>
+      Đầu nhiều:
+      <b>
+       ${hotHead
+        ?hotHead[0]:'--'}
+      </b>
+      (${hotHead
+       ?hotHead[1]:0})
+     </div>
+
+     <div>
+      Đuôi nhiều:
+      <b>
+       ${hotTail
+        ?hotTail[0]:'--'}
+      </b>
+      (${hotTail
+       ?hotTail[1]:0})
+     </div>
+
+    </div>
+
+    <div style="margin-top:8px">
+
+     <b>Lô 2 số:</b>
+
+     ${loto.join(', ')}
+
+    </div>
+
+    <div style="margin-top:7px">
+
+     <b>Nhóm xuất hiện:</b>
+
+     ${hotPair
+       .map(x=>x[0]+' ('+x[1]+')')
+       .join(' - ')}
+
+    </div>
+
+   </div>
+
+  `;
+
+ });
+
+
+ document.getElementById(
+  'statistics'
+ ).innerHTML=html;
+
+}
+
+
+/* ==========================================
+   CẦU PASCAL
+========================================== */
+
+function pascal(str){
+
+ let a=
+  String(str)
+   .replace(/\D/g,'')
+   .split('')
+   .map(Number);
+
+ while(a.length>2){
+
+  let n=[];
+
+  for(let i=0;i<a.length-1;i++){
+
+   n.push(
+    (a[i]+a[i+1])%10
+   );
+
+  }
+
+  a=n;
+
+ }
+
+ return a.join('');
+
+}
+
+
+/* ==========================================
+   BÓNG DƯƠNG
+========================================== */
+
+function bong(n){
+
+ const map={
+  0:'5',
+  1:'6',
+  2:'7',
+  3:'8',
+  4:'9',
+  5:'0',
+  6:'1',
+  7:'2',
+  8:'3',
+  9:'4'
+ };
+
+ n=String(n)
+  .padStart(2,'0')
+  .slice(-2);
+
+ return map[n[0]]+
+        map[n[1]];
+
+}
+
+
+/* ==========================================
+   BÓNG ÂM
+========================================== */
+
+function bongAm(n){
+
+ const map={
+  0:'7',
+  1:'4',
+  2:'9',
+  3:'6',
+  4:'1',
+  5:'8',
+  6:'3',
+  7:'0',
+  8:'5',
+  9:'2'
+ };
+
+ n=String(n)
+  .padStart(2,'0')
+  .slice(-2);
+
+ return map[n[0]]+
+        map[n[1]];
+
+}
+
+
+/* ==========================================
+   PHÂN TÍCH NGÀY HÔM SAU
+========================================== */
+
+function analyzeTomorrow(
+ todayResults,
+ nextResults
+){
+
+ const nextDate =
+  new Date(selectedDate);
+
+ nextDate.setDate(
+  nextDate.getDate()+1
+ );
+
+
+ document.getElementById(
+  'nextDateBadge'
+ ).textContent=
+  vnDate(nextDate);
+
+
+ const tomorrowStations =
+  SCHEDULE[currentRegion]
+  [nextDate.getDay()] || [];
+
+
+ document.getElementById(
+  'tomorrowStations'
+ ).innerHTML=
+
+  tomorrowStations
+   .map(x=>`
+
+    <span class="station">
+     🎯 ${x}
+    </span>
+
+   `)
+   .join('');
+
+
+ if(!todayResults.length){
+
+  document.getElementById(
+   'tomorrowAnalysis'
+  ).innerHTML=`
+
+   <div class="error">
+
+    Cần có kết quả thực tế
+    của ngày hiện tại để tính
+    phân tích ngày hôm sau.
+
+   </div>
+
+  `;
+
+  return;
+
+ }
+
+
+ let signals=[];
+
+
+ todayResults.forEach((r,i)=>{
+
+  const db=
+   r.db?.[0] || '';
+
+  if(!db)return;
+
+
+  const p=
+   pascal(db);
+
+  const b=
+   bong(db.slice(-2));
+
+  const ba=
+   bongAm(db.slice(-2));
+
+  const kep=
+   db.length>=4
+    ?db[2]+db[3]
+    :db.slice(-2);
+
+
+  signals.push({
+
+   station:r.name,
+
+   pascal:p,
+
+   pascalReverse:
+    p.split('').reverse().join(''),
+
+   bong:b,
+
+   bongAm:ba,
+
+   kep:kep,
+
+   kepReverse:
+    kep.split('').reverse().join('')
+
+  });
+
+ });
+
+
+ let html='';
+
+
+ signals.forEach(s=>{
+
+  html+=`
+
+   <div class="stat">
+
+    <b>
+     🔮 ${s.station}
+    </b>
+
+    <div style="margin-top:6px">
+
+     • Pascal:
+     <b>${s.pascal}</b>
+     /
+     <b>${s.pascalReverse}</b>
+
+    </div>
+
+    <div>
+
+     • Bóng dương:
+     <b>${s.bong}</b>
+
+    </div>
+
+    <div>
+
+     • Bóng âm:
+     <b>${s.bongAm}</b>
+
+    </div>
+
+    <div>
+
+     • Kẹp:
+     <b>${s.kep}</b>
+     /
+     <b>${s.kepReverse}</b>
+
+    </div>
+
+   </div>
+
+  `;
+
+ });
+
+
+ document.getElementById(
+  'tomorrowAnalysis'
+ ).innerHTML=html;
+
+
+ buildCross(signals);
+
+}
+
+
+/* ==========================================
+   GIAO THOA
+========================================== */
+
+function buildCross(signals){
+
+ if(!signals.length){
+
+  return;
+
+ }
+
+
+ const count={};
+
+
+ signals.forEach(s=>{
+
+  [
+   s.pascal,
+   s.pascalReverse,
+   s.bong,
+   s.bongAm,
+   s.kep,
+   s.kepReverse
+  ].forEach(n=>{
+
+   if(!n)return;
+
+   const x=
+    String(n)
+     .padStart(2,'0')
+     .slice(-2);
+
+   count[x]=(count[x]||0)+1;
+
+  });
+
+ });
+
+
+ const overlap=
+  Object.entries(count)
+   .filter(x=>x[1]>=2)
+   .sort((a,b)=>b[1]-a[1])
+   .slice(0,10);
+
+
+ let html=`
+
+  <div class="stat">
+
+   <b>🎯 Điểm giao thoa:</b>
+
+   <div style="margin-top:8px">
+
+    ${
+     overlap.length
+      ?overlap
+       .map(x=>
+        '<b>'+x[0]+
+        '</b> ('+x[1]+' tín hiệu)'
+       )
+       .join(' • ')
+      :'Chưa có giao thoa rõ'
     }
 
-    // Định dạng DD/MM/YYYY hiển thị
-    function toVNDate(d) {
-      const day = String(d.getDate()).padStart(2, '0');
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const y = d.getFullYear();
-      return `${day}/${m}/${y}`;
-    }
+   </div>
 
-    // Chuyển miền
-    function switchRegion(region, el) {
-      currentRegion = region;
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-      loadAllData();
-    }
+  </div>
 
-    // Lùi / Tiến từng ngày
-    function changeDay(offset) {
-      selectedDate.setDate(selectedDate.getDate() + offset);
-      loadAllData();
-    }
+ `;
 
-    // Khi chọn trực tiếp từ lịch
-    function onDatePick(val) {
-      if (!val) return;
-      const parts = val.split('-');
-      selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
-      loadAllData();
-    }
 
-    // Chọn ngày trên thanh 7 ngày
-    function selectQuickDay(ts) {
-      selectedDate = new Date(ts);
-      loadAllData();
-    }
+ /*
+    Chỉ tạo 3 số tham khảo từ
+    các tín hiệu giao nhau.
+ */
 
-    // Render thanh chọn nhanh từng ngày (-3 ngày đến +3 ngày)
-    function renderDayStrip() {
-      const strip = document.getElementById('dayStrip');
-      let html = '';
-      for (let i = -3; i <= 3; i++) {
-        let d = new Date(selectedDate);
-        d.setDate(d.getDate() + i);
-        const isSelected = (i === 0);
-        const dayLabel = DAY_NAMES[d.getDay()];
-        const dateShort = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
-        html += `
-          <div class="day-pill ${isSelected ? 'active' : ''}" onclick="selectQuickDay(${d.getTime()})">
-            ${dayLabel}
-            <span>${dateShort}</span>
-          </div>
-        `;
-      }
-      strip.innerHTML = html;
-      document.getElementById('datePicker').value = toInputDate(selectedDate);
-    }
+ const nums=
+  overlap
+   .slice(0,3)
+   .map(x=>x[0]);
 
-    // Thuật toán tính cầu Pascal
-    function calcPascal(str) {
-      let arr = str.replace(/\D/g, '').split('').map(Number);
-      while (arr.length > 2) {
-        let next = [];
-        for (let i = 0; i < arr.length - 1; i++) {
-          next.push((arr[i] + arr[i + 1]) % 10);
-        }
-        arr = next;
-      }
-      return arr.join('');
-    }
 
-    // Bóng Âm Dương
-    function calcBong(numStr) {
-      const bongDuong = { '1':'6', '2':'7', '3':'8', '4':'9', '5':'0', '6':'1', '7':'2', '8':'3', '9':'4', '0':'5' };
-      let n = numStr.padStart(2, '0').slice(-2);
-      return bongDuong[n[0]] + bongDuong[n[1]];
-    }
+ while(nums.length<3){
 
-    // Bóng Âm
-    function calcBongAm(numStr) {
-      const bongAm = { '1':'4', '4':'1', '2':'9', '9':'2', '3':'6', '6':'3', '5':'8', '8':'5', '0':'7', '7':'0' };
-      let n = numStr.padStart(2, '0').slice(-2);
-      return bongAm[n[0]] + bongAm[n[1]];
-    }
+  const fallback=
+   signals[nums.length]
+    ?.pascal || '';
 
-    // Sinh dữ liệu kết quả theo ngày
-    function generateStationResults(stations, region, dateObj) {
-      const dateSeed = dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
-      function seededRandom(seed) {
-        let x = Math.sin(seed) * 10000;
-        return x - Math.floor(x);
-      }
-      function randDigits(len, s) {
-        let out = '';
-        for (let i = 0; i < len; i++) {
-          out += Math.floor(seededRandom(s + i * 19) * 10);
-        }
-        return out;
-      }
+  if(!fallback)break;
 
-      return stations.map((name, idx) => {
-        let base = dateSeed + idx * 130 + region.charCodeAt(1) * 1000;
-        if (region === 'MB') {
-          return {
-            name,
-            g7: [randDigits(2, base+1), randDigits(2, base+2), randDigits(2, base+3), randDigits(2, base+4)],
-            g6: [randDigits(3, base+5), randDigits(3, base+6), randDigits(3, base+7)],
-            g5: [randDigits(4, base+8), randDigits(4, base+9), randDigits(4, base+10), randDigits(4, base+11)],
-            g4: [randDigits(4, base+12), randDigits(4, base+13), randDigits(4, base+14), randDigits(4, base+15)],
-            g3: [randDigits(5, base+16), randDigits(5, base+17), randDigits(5, base+18), randDigits(5, base+19)],
-            g2: [randDigits(5, base+20), randDigits(5, base+21)],
-            g1: [randDigits(5, base+22)],
-            db: [randDigits(5, base+29)]
-          };
-        } else {
-          return {
-            name,
-            g8: [randDigits(2, base+1)],
-            g7: [randDigits(3, base+2)],
-            g6: [randDigits(4, base+3), randDigits(4, base+4), randDigits(4, base+5)],
-            g5: [randDigits(4, base+6)],
-            g4: [randDigits(5, base+7), randDigits(5, base+8), randDigits(5, base+9), randDigits(5, base+10), randDigits(5, base+11), randDigits(5, base+12), randDigits(5, base+13)],
-            g3: [randDigits(5, base+14), randDigits(5, base+15)],
-            g2: [randDigits(5, base+16)],
-            g1: [randDigits(5, base+17)],
-            db: [randDigits(6, base+18)]
-          };
-        }
-      });
-    }
+  nums.push(
+   String(fallback)
+    .padStart(2,'0')
+    .slice(-2)
+  );
 
-    // Hàm tổng hợp và hiển thị toàn bộ dữ liệu
-    function loadAllData() {
-      renderDayStrip();
+ }
 
-      // Ngày đang chọn (D) và Ngày hôm sau (D + 1)
-      const curDate = new Date(selectedDate);
-      const nextDate = new Date(selectedDate);
-      nextDate.setDate(nextDate.getDate() + 1);
 
-      const curDateStr = `${DAY_NAMES[curDate.getDay()]} - ${toVNDate(curDate)}`;
-      const nextDateStr = `${DAY_NAMES[nextDate.getDay()]} - ${toVNDate(nextDate)}`;
+ html+=`
 
-      // Cập nhật các nhãn ngày
-      document.getElementById('badgeCurrentDate').innerText = toVNDate(curDate);
-      document.getElementById('badgeKQDate').innerText = curDateStr;
-      document.getElementById('badgeNextDate').innerText = toVNDate(nextDate);
-      document.getElementById('badgeVipDate').innerText = toVNDate(nextDate);
+  <div class="notice">
 
-      const stationsToday = SCHEDULE[currentRegion][curDate.getDay()];
-      const stationsTomorrow = SCHEDULE[currentRegion][nextDate.getDay()];
+   Các số dưới đây chỉ là
+   kết quả lọc tín hiệu thống kê,
+   không phải đảm bảo kết quả.
 
-      // 1. Hiển thị các đài ngày đang chọn
-      document.getElementById('stationsToday').innerHTML = stationsToday
-        .map(s => `<span class="station-badge">📍 ${s}</span>`)
-        .join('');
+  </div>
 
-      // 2. Tạo & hiển thị Bảng kết quả ngày đang chọn
-      const resultsToday = generateStationResults(stationsToday, currentRegion, curDate);
-      renderResultTable(resultsToday, currentRegion);
+ `;
 
-      // 3. Thống kê chi tiết ngày đang chọn (Lô 2 số, Đầu/Đuôi)
-      renderDetailedStatsToday(resultsToday);
 
-      // 4. Phân tích & Soi cầu cho NGÀY HÔM SAU (kết hợp cầu ngày D và kỳ trước của đài D+1)
-      const prevWeekDate = new Date(nextDate);
-      prevWeekDate.setDate(prevWeekDate.getDate() - 7);
-      const resultsPrevWeekTomorrowStations = generateStationResults(stationsTomorrow, currentRegion, prevWeekDate);
+ document.getElementById(
+  'crossAnalysis'
+ ).innerHTML=html;
 
-      renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrowStations, nextDateStr);
 
-      // Cập nhật thanh trạng thái
-      const statusBar = document.getElementById('statusBar');
-      statusBar.innerHTML = `✅ Đang xem: ${curDateStr} | Dự đoán: ${nextDateStr}`;
-    }
+ document.getElementById(
+  'threeNumbers'
+ ).innerHTML=`
 
-    // Bảng kết quả
-    function renderResultTable(results, region) {
-      let html = `<table class="kq-table"><thead><tr><th class="giai-col">Giải</th>`;
-      results.forEach(r => {
-        html += `<th>${r.name}</th>`;
-      });
-      html += `</tr></thead><tbody>`;
+  <div class="numbers">
 
-      const prizeOrder = region === 'MB'
-        ? [
-            { key: 'db', label: 'ĐB', highlight: true },
-            { key: 'g1', label: 'G.1' },
-            { key: 'g2', label: 'G.2' },
-            { key: 'g3', label: 'G.3' },
-            { key: 'g4', label: 'G.4' },
-            { key: 'g5', label: 'G.5' },
-            { key: 'g6', label: 'G.6' },
-            { key: 'g7', label: 'G.7', highlight: true }
-          ]
-        : [
-            { key: 'g8', label: 'G.8', highlight: true },
-            { key: 'g7', label: 'G.7' },
-            { key: 'g6', label: 'G.6' },
-            { key: 'g5', label: 'G.5' },
-            { key: 'g4', label: 'G.4' },
-            { key: 'g3', label: 'G.3' },
-            { key: 'g2', label: 'G.2' },
-            { key: 'g1', label: 'G.1' },
-            { key: 'db', label: 'ĐB', highlight: true }
-          ];
+   ${
+    nums.map((n,i)=>`
 
-      prizeOrder.forEach(p => {
-        html += `<tr><td class="giai-col">${p.label}</td>`;
-        results.forEach(r => {
-          const vals = r[p.key] || [];
-          const cls = p.highlight ? 'kq-highlight' : '';
-          html += `<td class="${cls}">${vals.join('<br>')}</td>`;
-        });
-        html += `</tr>`;
-      });
+     <div class="number">
 
-      html += `</tbody></table>`;
-      document.getElementById('kqxsContainer').innerHTML = html;
-    }
+      <b>${n}</b>
 
-    // Thống kê ngày đang chọn
-    function renderDetailedStatsToday(results) {
-      let html = '';
-      results.forEach(r => {
-        const db = r.db[0];
-        const g8 = r.g8 ? r.g8[0] : r.g7[0];
-        const duoiDB = db.slice(-2);
+      <span>
+       ${i===0
+        ?'THAM KHẢO 1'
+        :i===1
+        ?'THAM KHẢO 2'
+        :'THAM KHẢO 3'}
+      </span>
 
-        let allLoto = [];
-        Object.keys(r).forEach(k => {
-          if (Array.isArray(r[k])) {
-            r[k].forEach(num => allLoto.push(num.slice(-2)));
-          }
-        });
+     </div>
 
-        // Thống kê đầu lô về nhiều nhất
-        let dauCount = {};
-        allLoto.forEach(l => {
-          let d = l[0];
-          dauCount[d] = (dauCount[d] || 0) + 1;
-        });
-        let hotDau = Object.keys(dauCount).sort((a,b) => dauCount[b] - dauCount[a])[0] || '0';
+    `).join('')
+   }
 
-        html += `
-          <div class="analysis-item">
-            <strong>📌 Đài ${r.name}:</strong>
-            <div class="dauduoi-grid">
-              <div class="dd-box">Giải 8/Đầu: <b style="color:#d90416">${g8}</b></div>
-              <div class="dd-box">Đuôi ĐB: <b style="color:#d90416">${duoiDB}</b></div>
-            </div>
-            <div style="margin-top:6px;">• Đầu lô về nhiều nhất: <b>Đầu ${hotDau}</b> (${dauCount[hotDau]} nháy)</div>
-            <div class="loto-2so"><b>Lô 2 số đã về:</b> ${allLoto.join(', ')}</div>
-          </div>
-        `;
-      });
-      document.getElementById('detailedStats').innerHTML = html;
-    }
+  </div>
 
-    // Phân tích & Soi cầu cho NGÀY HÔM SAU
-    function renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeek, nextDateStr) {
-      // Hiển thị các đài ngày hôm sau
-      document.getElementById('nextDayStations').innerHTML = stationsTomorrow
-        .map(s => `<span class="station-badge" style="background:#fff0f0; border-color:#d90416;">🎯 Đài ngày mai: ${s}</span>`)
-        .join('');
+ `;
 
-      let html = '';
-      let pascalsTomorrow = [];
-      let bongsTomorrow = [];
-      let kepsTomorrow = [];
+}
 
-      stationsTomorrow.forEach((stName, idx) => {
-        // Lấy kết quả kỳ trước của chính đài này + kết quả đài tương ứng hôm nay để bắt cầu giao thoa
-        const prevStationRes = resultsPrevWeek[idx] || resultsPrevWeek[0];
-        const todayRefRes = resultsToday[idx % resultsToday.length];
 
-        const dbPrev = prevStationRes.db[0];
-        const g1Prev = prevStationRes.g1[0];
-        const dbToday = todayRefRes.db[0];
+/* ==========================================
+   LOAD
+========================================== */
 
-        // 1. Cầu Pascal nối từ giải ĐB hôm nay + Giải Nhất kỳ trước của đài
-        const pascal = calcPascal(dbToday + g1Prev);
-        const pascalRev = pascal.split('').reverse().join('');
+async function loadEverything(force){
 
-        // 2. Bóng Âm Dương từ đuôi ĐB hôm nay chuyển sang ngày mai
-        const bongDuong = calcBong(dbToday.slice(-2));
-        const bongAm = calcBongAm(dbPrev.slice(-2));
+ renderDays();
 
-        // 3. Cầu Kẹp & Tam Giác
-        const cauKep = (dbToday[2] + dbPrev[3]);
 
-        pascalsTomorrow.push(pascal);
-        bongsTomorrow.push(bongDuong);
-        kepsTomorrow.push(cauKep);
+ document.getElementById(
+  'currentDateBadge'
+ ).textContent=
+  vnDate(selectedDate);
 
-        html += `
-          <div class="analysis-item tomorrow-item">
-            <strong>🔮 Dự đoán Đài ${stName} (${nextDateStr}):</strong><br>
-            • <b>Cầu Pascal (ĐB hôm nay + G1 kỳ trước):</b> <b style="color:#d90416; font-size:15px;">${pascal} - ${pascalRev}</b><br>
-            • <b>Cầu Bóng Âm Dương:</b> Bóng Dương <b>${bongDuong}</b> | Bóng Âm <b>${bongAm}</b><br>
-            • <b>Cầu Kẹp & Tam Giác:</b> <b>${cauKep} - ${cauKep.split('').reverse().join('')}</b><br>
-            • <b>Chạm đầu đuôi sáng nhất:</b> Chạm <b>${pascal[0]}</b> – Chạm <b>${bongDuong[1]}</b>
-          </div>
-        `;
-      });
 
-      document.getElementById('nextDayAnalysis').innerHTML = html;
+ document.getElementById(
+  'resultDate'
+ ).textContent=
+  DAY_NAMES[
+   selectedDate.getDay()
+  ]+
+  ' - '+
+  vnDate(selectedDate);
 
-      // Giao thoa liên đài cho ngày hôm sau
-      const vip1 = pascalsTomorrow[0];
-      const vip2 = bongsTomorrow[stationsTomorrow.length > 1 ? 1 : 0];
-      const vip3 = kepsTomorrow[stationsTomorrow.length - 1];
 
-      document.getElementById('crossStation').innerHTML = `
-        <div class="analysis-item">
-          • <b>Hội tụ Cầu Pascal (${stationsTomorrow.join(' - ')}):</b> <b>${pascalsTomorrow.join(' ↔ ')}</b><br>
-          • <b>Liên kết Bóng Âm Dương:</b> <b>${bongsTomorrow.join(' ↔ ')}</b><br>
-          • <b>Điểm rơi Cầu Kẹp liên đài:</b> <b>${kepsTomorrow.join(' ↔ ')}</b><br>
-          👉 <i>Nhận định ngày <b>${nextDateStr}</b>: Cầu báo mạnh nhất ở bộ số <b>${vip1}</b> và cặp xiên <b>${vip2} - ${vip3}</b>.</i>
-        </div>
-      `;
+ const stations=
+  SCHEDULE[currentRegion]
+  [selectedDate.getDay()] || [];
 
-      // 3 Con số tham khảo cho ngày hôm sau
-      document.getElementById('vipNumbers').innerHTML = `
-        <div class="vip-numbers">
-          <div class="vip-ball">
-            <div class="num">${vip1}</div>
-            <div class="lbl">BẠCH THỦ</div>
-          </div>
-          <div class="vip-ball">
-            <div class="num">${vip2}</div>
-            <div class="lbl">SONG THỦ</div>
-          </div>
-          <div class="vip-ball">
-            <div class="num">${vip3}</div>
-            <div class="lbl">LÔ ĐÁ / XIÊN</div>
-          </div>
-        </div>
-      `;
-    }
 
-    // Khởi chạy khi mở trang
-    window.onload = loadAllData;
-  </script>
+ document.getElementById(
+  'stations'
+ ).innerHTML=
+
+  stations
+   .map(x=>`
+
+    <span class="station">
+     📍 ${x}
+    </span>
+
+   `)
+   .join('');
+
+
+ if(!API_KEY){
+
+  document.getElementById(
+   'status'
+  ).textContent=
+   '🔑 Nhập API Key để tải dữ liệu thực';
+
+  document.getElementById(
+   'status'
+  ).style.color='#b26a00';
+
+  return;
+
+ }
+
+
+ document.getElementById(
+  'results'
+ ).innerHTML=
+  '<div class="loading">⏳ Đang tải kết quả thực...</div>';
+
+
+ try{
+
+  const json=
+   await fetchRegion();
+
+
+  const all=
+   normalizeDraws(json);
+
+
+  /*
+    Lưu tạm dữ liệu trên máy.
+    Khi mở lại vẫn có dữ liệu đã tải.
+  */
+
+  localStorage.setItem(
+   'VSPD_'+currentRegion,
+   JSON.stringify(all)
+  );
+
+
+  const current=
+   findForDate(
+    all,
+    selectedDate
+   );
+
+
+  renderTable(current);
+
+  renderStatistics(current);
+
+
+  /*
+    Phân tích ngày hôm sau:
+    dùng dữ liệu ngày hiện tại.
+  */
+
+  analyzeTomorrow(
+   current,
+   all
+  );
+
+
+  document.getElementById(
+   'status'
+  ).textContent=
+   '✅ Dữ liệu thực: '+
+   DAY_NAMES[selectedDate.getDay()]+
+   ' - '+
+   vnDate(selectedDate);
+
+
+  document.getElementById(
+   'status'
+  ).style.color='#16833b';
+
+
+ }catch(error){
+
+  console.error(error);
+
+
+  document.getElementById(
+   'results'
+  ).innerHTML=`
+
+   <div class="error">
+
+    ❌ ${error.message}
+
+    <br><br>
+
+    Kiểm tra API Key hoặc kết nối
+    Internet.
+
+   </div>
+
+  `;
+
+
+  document.getElementById(
+   'status'
+  ).textContent=
+   '❌ Không tải được dữ liệu thực';
+
+
+  document.getElementById(
+   'status'
+  ).style.color='#b00000';
+
+ }
+
+}
+
+
+/* ==========================================
+   START
+========================================== */
+
+window.onload=function(){
+
+ initKey();
+
+ renderDays();
+
+ loadEverything(false);
+
+};
+
+</script>
+
 </body>
 </html>
