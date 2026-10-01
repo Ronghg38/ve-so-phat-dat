@@ -2,13 +2,25 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VÉ SỐ PHÁT ĐẠT - Kết Quả & Soi Cầu Chuẩn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>VÉ SỐ PHÁT ĐẠT</title>
+
+  <!-- Cấu hình App Toàn Màn Hình (PWA) -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Vé Số Phát Đạt">
+  <meta name="theme-color" content="#d90416">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E">
+  <link rel="manifest" id="pwaManifest">
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-    body { background-color: #f2f3f5; color: #222; padding-bottom: 35px; }
-    .header { background-color: #d90416; color: #fff; text-align: center; padding: 15px 10px; font-size: 21px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; justify-content: center; align-items: center; gap: 10px; position: relative; }
-    .btn-key-toggle { position: absolute; right: 12px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5); color: #fff; padding: 5px 9px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f2f3f5; color: #222; padding-bottom: 35px; user-select: none; }
+    .header { background-color: #d90416; color: #fff; padding: 14px 10px; font-size: 19px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .header-actions { display: flex; gap: 6px; }
+    .btn-top { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.55); color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
     .status-bar { background-color: #fff; text-align: center; padding: 9px 10px; font-size: 13px; font-weight: 700; color: #1b8a3d; border-bottom: 1px solid #e0e0e0; }
     .status-bar.loading { color: #e67700; }
     .status-bar.warn { color: #c92a2a; }
@@ -21,34 +33,38 @@
     .card.next-day-card { border: 2px solid #d90416; background: linear-gradient(to bottom, #fff9f9, #ffffff); }
     .card-title { color: #b81414; font-size: 15px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; }
     .badge-date { background: #d90416; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 6px; }
-    /* Khung API Key */
-    #apiKeyBox { display: none; background: #fff8e6; border: 1px solid #ffc107; }
+    #apiKeyBox, #installGuideBox { display: none; background: #fff8e6; border: 1px solid #ffc107; }
     .key-row { display: flex; gap: 8px; margin-top: 8px; }
     .key-input { flex: 1; padding: 9px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13.5px; }
     .btn-save-key { background: #1b8a3d; color: #fff; border: none; padding: 9px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; }
-    /* Chọn từng ngày */
-    .date-controls { display: flex; gap: 6px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .btn-day-step { background: #f8f9fa; border: 1px solid #dadce0; color: #333; padding: 8px 10px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
-    .date-input { flex: 1; padding: 7px 8px; border: 1px solid #d90416; border-radius: 8px; font-size: 14px; font-weight: 700; text-align: center; color: #b81414; background: #fff5f5; }
-    .day-strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-    .day-strip::-webkit-scrollbar { display: none; }
-    .day-pill { flex: 0 0 auto; padding: 7px 12px; border-radius: 8px; background: #f1f3f5; color: #444; font-size: 12.5px; font-weight: 700; text-align: center; cursor: pointer; }
-    .day-pill span { display: block; font-size: 11px; font-weight: 500; opacity: 0.85; }
-    .day-pill.active { background: #d90416; color: #fff; }
-    .btn-update { width: 100%; background-color: #c90412; color: #fff; border: none; border-radius: 8px; padding: 13px; font-size: 15.5px; font-weight: 700; cursor: pointer; margin-bottom: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    /* Danh sách đài & Bảng KQ */
+    /* Chọn Tháng & Ngày */
+    .month-header { display: flex; gap: 5px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .btn-day-step { background: #f8f9fa; border: 1px solid #dadce0; color: #333; padding: 8px 9px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; }
+    .date-input { flex: 1; padding: 7px 6px; border: 1px solid #d90416; border-radius: 8px; font-size: 13.5px; font-weight: 700; text-align: center; color: #b81414; background: #fff5f5; }
+    .month-grid-label { font-size: 12px; font-weight: 700; color: #555; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .day-strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scroll-behavior: smooth; }
+    .day-pill { flex: 0 0 54px; padding: 7px 4px; border-radius: 8px; background: #f1f3f5; color: #333; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; border: 1px solid #e0e0e0; }
+    .day-pill span { display: block; font-size: 11px; font-weight: 600; margin-top: 2px; opacity: 0.85; }
+    .day-pill.cached { border-color: #2b8a3e; background: #ebfbee; }
+    .day-pill.future { opacity: 0.45; }
+    .day-pill.active { background: #d90416 !important; color: #fff !important; border-color: #d90416 !important; box-shadow: 0 2px 6px rgba(217, 4, 22, 0.35); }
+    .btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .btn-update { flex: 1; background-color: #c90412; color: #fff; border: none; border-radius: 8px; padding: 12px 8px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-sync-month { background-color: #1b8a3d; color: #fff; border: none; border-radius: 8px; padding: 12px 12px; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    /* Bảng KQ */
     .station-list { display: flex; flex-wrap: wrap; gap: 8px; }
     .station-badge { background: #fff5f5; color: #c90412; border: 1px solid #ffc9c9; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 13.5px; }
     .kq-table-wrap { overflow-x: auto; }
-    .kq-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; }
+    .kq-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; user-select: text; }
     .kq-table th, .kq-table td { border: 1px solid #e0e0e0; padding: 7px 4px; }
     .kq-table th { background-color: #d90416; color: #fff; font-weight: 700; }
     .kq-table .giai-col { background-color: #f8f9fa; font-weight: 700; width: 45px; color: #444; }
     .kq-highlight { color: #d90416; font-weight: 800; font-size: 16px; }
     /* Phân tích */
-    .analysis-item { background: #fafafa; border-left: 4px solid #d90416; padding: 10px 12px; margin-bottom: 10px; border-radius: 4px; font-size: 13.5px; line-height: 1.55; }
-    .analysis-item.tomorrow-item { background: #fff; border-left: 4px solid #e67700; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .analysis-item { background: #fafafa; border-left: 4px solid #d90416; padding: 10px 12px; margin-bottom: 10px; border-radius: 4px; font-size: 13.5px; line-height: 1.55; user-select: text; }
+    .analysis-item.tomorrow-item { background: #fff; border-left: 4px solid #e67700; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
     .analysis-item:last-child { margin-bottom: 0; }
+    .sub-tag { display: inline-block; background: #fff0f0; color: #b81414; font-size: 11.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-top: 4px; border: 1px solid #ffc9c9; }
     .loto-2so { margin-top: 8px; font-size: 12.5px; color: #444; background: #fff8f8; padding: 7px 9px; border-radius: 6px; border: 1px dashed #f5b5b5; }
     .dauduoi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px; font-size: 12.5px; }
     .dd-box { background: #f8f9fa; padding: 5px 8px; border-radius: 4px; border: 1px solid #eee; }
@@ -63,9 +79,12 @@
 
   <div class="header">
     <span>🎯 VÉ SỐ PHÁT ĐẠT</span>
-    <button class="btn-key-toggle" onclick="toggleKeyBox()">🔑 API Key</button>
+    <div class="header-actions">
+      <button class="btn-top" onclick="installApp()">📲 Cài App</button>
+      <button class="btn-top" onclick="toggleKeyBox()">🔑 API Key</button>
+    </div>
   </div>
-  <div id="statusBar" class="status-bar">⏳ Đang tải dữ liệu chuẩn...</div>
+  <div id="statusBar" class="status-bar">⏳ Đang tải dữ liệu...</div>
 
   <div class="tabs">
     <div class="tab active" onclick="switchRegion('MN', this)">MIỀN NAM</div>
@@ -74,29 +93,47 @@
   </div>
 
   <div class="container">
-    <!-- KHUNG NHẬP API KEY -->
+    <div id="installGuideBox" class="card">
+      <div class="card-title" style="margin-bottom:6px;">📲 CÀI APP VÉ SỐ PHÁT ĐẠT VỀ MÁY</div>
+      <div style="font-size:13px; line-height:1.5; color:#333;">
+        • <b>Trên Android (Chrome):</b> Bấm dấu <b>3 chấm dọc (⋮)</b> ở góc trên bên phải ➡️ chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào màn hình chính"</b>.<br>
+        • <b>Trên iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
+      </div>
+    </div>
+
     <div id="apiKeyBox" class="card">
       <div class="card-title" style="margin-bottom:4px;">🔑 CÀI ĐẶT GEMINI API KEY</div>
-      <div style="font-size:12.5px; color:#555;">Dán API Key bạn vừa tạo vào đây để lưu trên trình duyệt và kích hoạt AI phân tích cầu:</div>
+      <div style="font-size:12.5px; color:#555;">Nhập API Key để lưu vào máy và kích hoạt AI phân tích cầu:</div>
       <div class="key-row">
-        <input type="password" id="apiKeyInput" class="key-input" placeholder="Nhập API Key (AIzaSy...)">
+        <input type="password" id="apiKeyInput" class="key-input" placeholder="Dán API Key (AIzaSy...)">
         <button class="btn-save-key" onclick="saveApiKey()">Lưu Key</button>
       </div>
     </div>
 
-    <!-- CHỌN TỪNG NGÀY -->
+    <!-- CHỌN CÁC NGÀY TRONG THÁNG -->
     <div class="card">
-      <div class="date-controls">
-        <button class="btn-day-step" onclick="changeDay(-1)">◀ Hôm trước</button>
+      <div class="month-header">
+        <button class="btn-day-step" onclick="changeMonth(-1)">⏪ Tháng</button>
+        <button class="btn-day-step" onclick="changeDay(-1)">◀</button>
         <input type="date" id="datePicker" class="date-input" onchange="onDatePick(this.value)">
-        <button class="btn-day-step" onclick="changeDay(1)">Hôm sau ▶</button>
+        <button class="btn-day-step" onclick="changeDay(1)">▶</button>
+        <button class="btn-day-step" onclick="changeMonth(1)">Tháng ⏩</button>
+      </div>
+      <div class="month-grid-label">
+        <span id="monthLabelText">📅 Các ngày trong tháng:</span>
+        <span style="color:#1b8a3d; font-weight:600;">(Viền xanh: Đã lưu KQ)</span>
       </div>
       <div id="dayStrip" class="day-strip"></div>
     </div>
 
-    <button class="btn-update" onclick="loadAllData(true)">
-      🔄 CẬP NHẬT DỮ LIỆU & SOI CẦU
-    </button>
+    <div class="btn-row">
+      <button class="btn-update" onclick="loadAllData(true)">
+        🔄 CẬP NHẬT NGÀY ĐANG CHỌN
+      </button>
+      <button class="btn-sync-month" onclick="syncEntireMonth()">
+        ⚡ TẢI CẢ THÁNG
+      </button>
+    </div>
 
     <!-- 1. CÁC ĐÀI MỞ THƯỞNG -->
     <div class="card">
@@ -122,7 +159,7 @@
       <div id="detailedStats"></div>
     </div>
 
-    <!-- 4. PHÂN TÍCH CHO NGÀY HÔM SAU -->
+    <!-- 4. PHÂN TÍCH CHO NGÀY HÔM SAU (CHÍNH ĐÀI KỲ TRƯỚC + LIÊN NGÀY) -->
     <div class="card next-day-card">
       <div class="card-title">
         <span>🔮 PHÂN TÍCH CHO NGÀY HÔM SAU</span>
@@ -135,7 +172,7 @@
 
     <!-- 5. GIAO THOA LIÊN ĐÀI (NGÀY HÔM SAU) -->
     <div class="card next-day-card">
-      <div class="card-title">🎯 GIAO THOA LIÊN ĐÀI (NGÀY HÔM SAU)</div>
+      <div class="card-title">🎯 GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI</div>
       <div id="crossStation"></div>
     </div>
 
@@ -150,9 +187,39 @@
   </div>
 
   <script>
+    const manifestData = {
+      name: "Vé Số Phát Đạt - Kết Quả & Soi Cầu",
+      short_name: "Vé Số Phát Đạt",
+      start_url: location.href,
+      display: "standalone",
+      background_color: "#f2f3f5",
+      theme_color: "#d90416",
+      icons: [{
+        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E",
+        sizes: "192x192",
+        type: "image/svg+xml"
+      }]
+    };
+    document.getElementById('pwaManifest').setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestData)));
+
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+
+    async function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      } else {
+        const box = document.getElementById('installGuideBox');
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+      }
+    }
+
     let currentRegion = 'MN';
     let selectedDate = new Date();
-    const DAY_NAMES = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    const DAY_NAMES = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+    const FULL_DAY_NAMES = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
 
     const SCHEDULE = {
       MN: {
@@ -179,8 +246,7 @@
       }
     };
 
-    // DỮ LIỆU ĐỐI CHIẾU CHUẨN 100% XOSODAIPHAT.COM (Nén gọn)
-    // Định dạng: "TênĐài|g8|g7|g6|g5|g4|g3|g2|g1|db"
+    // DỮ LIỆU THẬT ĐỐI CHIẾU NHANH (Bao gồm cả kỳ trước 25/09 để bắt cầu chính đài cho 02/10)
     const COMPACT_DB = {
       "MN_01-10-2026": [
         "Tây Ninh|04|866|2102,6847,9663|9755|45546,75678,30698,38266,37991,33648,70127|31306,58213|55031|80777|348513",
@@ -192,10 +258,19 @@
         "Cần Thơ|36|587|2971,7027,2662|5952|29614,06587,40447,69545,05086,05661,53386|57775,49227|51271|25432|216556",
         "Sóc Trăng|51|344|9792,5605,0638|4713|67466,88093,63364,00906,89217,69660,80706|98451,38484|29411|33828|275034"
       ],
+      "MN_25-09-2026": [
+        "Vĩnh Long|42|917|4591,2561,2616|1048|16709,94790,36972,49885,43083,57459,77406|60896,08186|73017|88689|017299",
+        "Bình Dương|43|347|6509,7000,7699|9303|29521,09322,86169,63678,36024,35156,14658|81050,89385|96902|73243|475052",
+        "Trà Vinh|43|699|1089,8087,1366|5231|05961,95735,70344,26452,45816,49208,14440|79301,33093|04320|31703|107064"
+      ],
       "MT_01-10-2026": [
         "Quảng Bình|05|724|0785,9771,0548|8682|60667,98255,73940,69355,21523,25550,39683|81960,30912|54642|96546|382536",
         "Bình Định|03|958|8495,3765,4697|2470|91001,53074,92097,46306,81022,51437,89118|67244,46733|59112|43702|067632",
         "Quảng Trị|05|481|1112,0087,9786|8143|74386,42375,14734,06068,62498,84828,88279|36643,58437|16447|42669|114471"
+      ],
+      "MT_25-09-2026": [
+        "Gia Lai|13|217|1901,2099,2205|6015|57789,49892,59360,90601,19151,93388,84950|51688,71432|81957|90284|905589",
+        "Ninh Thuận|95|947|2029,4629,3509|8504|17615,04691,13353,24917,86677,62825,92946|60076,61855|97389|37378|783153"
       ],
       "MB_01-10-2026": [
         "Miền Bắc||50,15,07,04|390,655,395|3349,1896,5752,6691,6935,4650|6537,7453,7691,9434|16892,82700,92965,40504,68709,38492|24807,62639|92635|40208"
@@ -210,7 +285,6 @@
       return { name: p[0], g8: [p[1]], g7: [p[2]], g6: p[3].split(','), g5: [p[4]], g4: p[5].split(','), g3: p[6].split(','), g2: [p[7]], g1: [p[8]], db: [p[9]] };
     }
 
-    // Quản lý API Key
     function toggleKeyBox() {
       const box = document.getElementById('apiKeyBox');
       box.style.display = (box.style.display === 'block') ? 'none' : 'block';
@@ -219,7 +293,7 @@
       const key = document.getElementById('apiKeyInput').value.trim();
       if (key) {
         localStorage.setItem('PHATDAT_API_KEY', key);
-        alert('✅ Đã lưu API Key thành công!');
+        alert('✅ Đã lưu API Key!');
         document.getElementById('apiKeyBox').style.display = 'none';
         loadAllData(false);
       }
@@ -242,27 +316,54 @@
       selectedDate.setDate(selectedDate.getDate() + offset);
       loadAllData(false);
     }
+    function changeMonth(offset) {
+      selectedDate.setMonth(selectedDate.getMonth() + offset);
+      loadAllData(false);
+    }
     function onDatePick(val) {
       if (!val) return;
       const p = val.split('-');
       selectedDate = new Date(p[0], p[1] - 1, p[2]);
       loadAllData(false);
     }
-    function selectQuickDay(ts) {
-      selectedDate = new Date(ts);
+    function selectQuickDay(y, m, d) {
+      selectedDate = new Date(y, m, d);
       loadAllData(false);
     }
 
     function renderDayStrip() {
-      let html = '';
-      for (let i = -3; i <= 3; i++) {
-        let d = new Date(selectedDate);
-        d.setDate(d.getDate() + i);
-        const dateShort = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
-        html += `<div class="day-pill ${i===0?'active':''}" onclick="selectQuickDay(${d.getTime()})">${DAY_NAMES[d.getDay()]}<span>${dateShort}</span></div>`;
-      }
-      document.getElementById('dayStrip').innerHTML = html;
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      const selectedDay = selectedDate.getDate();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const now = new Date();
+
+      document.getElementById('monthLabelText').innerText = `📅 Các ngày Tháng ${month + 1}/${year}:`;
       document.getElementById('datePicker').value = toInputDate(selectedDate);
+
+      let html = '';
+      for (let day = 1; day <= daysInMonth; day++) {
+        const d = new Date(year, month, day);
+        const key = `${currentRegion}_${toVNDate(d, '-')}`;
+        const hasCache = !!(COMPACT_DB[key] || localStorage.getItem('KQ_' + key));
+        const isFuture = d > now;
+        const isActive = (day === selectedDay);
+        const dateShort = `${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`;
+
+        let cls = 'day-pill';
+        if (isActive) cls += ' active';
+        else if (hasCache) cls += ' cached';
+        else if (isFuture) cls += ' future';
+
+        html += `<div id="day_pill_${day}" class="${cls}" onclick="selectQuickDay(${year}, ${month}, ${day})">${DAY_NAMES[d.getDay()]}<span>${dateShort}</span></div>`;
+      }
+      const strip = document.getElementById('dayStrip');
+      strip.innerHTML = html;
+
+      setTimeout(() => {
+        const activeEl = document.getElementById(`day_pill_${selectedDay}`);
+        if (activeEl) strip.scrollLeft = activeEl.offsetLeft - strip.clientWidth / 2 + activeEl.clientWidth / 2;
+      }, 50);
     }
 
     function calcPascal(str) {
@@ -285,26 +386,30 @@
       return b[n[0]] + b[n[1]];
     }
 
-    // LẤY DỮ LIỆU THẬT TỪ XOSODAIPHAT.COM QUA PROXY
-    async function fetchRealKQXS(region, dateObj) {
+    async function fetchRealKQXS(region, dateObj, forceRefresh = false) {
       const key = `${region}_${toVNDate(dateObj, '-')}`;
-      if (COMPACT_DB[key]) {
-        return COMPACT_DB[key].map(s => unpackRow(s, region === 'MB'));
+      if (!forceRefresh && COMPACT_DB[key]) return COMPACT_DB[key].map(s => unpackRow(s, region === 'MB'));
+      if (!forceRefresh) {
+        const cached = localStorage.getItem('KQ_' + key);
+        if (cached) return JSON.parse(cached);
       }
-      const cached = localStorage.getItem('KQ_' + key);
-      if (cached) return JSON.parse(cached);
 
       const dStr = toVNDate(dateObj, '-');
       const rSlug = region === 'MN' ? 'xsmn' : (region === 'MT' ? 'xsmt' : 'xsmb');
       const targetUrl = `https://xosodaiphat.com/${rSlug}-${dStr}.html`;
+
       const proxies = [
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
         `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
+        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
       ];
 
       for (const pUrl of proxies) {
         try {
-          const res = await fetch(pUrl);
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 7000);
+          const res = await fetch(pUrl, { signal: controller.signal });
+          clearTimeout(timeoutId);
           if (!res.ok) continue;
           const html = await res.text();
           const parsed = parseXosoDaiPhatHTML(html, region);
@@ -317,62 +422,112 @@
       return null;
     }
 
-    // Bóc tách bảng HTML của Xổ Số Đại Phát
     function parseXosoDaiPhatHTML(html, region) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
       const table = doc.querySelector('table.table-xsmn, table.table-xsmt, table.table-result, table.table-bordered');
       if (!table) return null;
 
       if (region === 'MB') {
-        const getNums = (sel) => Array.from(table.querySelectorAll(sel)).map(e => e.innerText.trim()).filter(Boolean);
-        const allSpans = Array.from(table.querySelectorAll('td span, td div')).map(e => e.innerText.trim()).filter(v => /^\d{2,5}$/.test(v));
-        if (allSpans.length >= 27) {
-          return [{
-            name: 'Miền Bắc',
-            db: [allSpans[0]], g1: [allSpans[1]], g2: allSpans.slice(2, 4),
-            g3: allSpans.slice(4, 10), g4: allSpans.slice(10, 14),
-            g5: allSpans.slice(14, 20), g6: allSpans.slice(20, 23), g7: allSpans.slice(23, 27)
-          }];
-        }
-        return null;
+        const mbSpec = [
+          { key: 'db', len: 5, count: 1 }, { key: 'g1', len: 5, count: 1 },
+          { key: 'g2', len: 5, count: 2 }, { key: 'g3', len: 5, count: 6 },
+          { key: 'g4', len: 4, count: 4 }, { key: 'g5', len: 4, count: 6 },
+          { key: 'g6', len: 3, count: 3 }, { key: 'g7', len: 2, count: 4 }
+        ];
+        const mbObj = { name: 'Miền Bắc', db: [], g1: [], g2: [], g3: [], g4: [], g5: [], g6: [], g7: [] };
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        let sIdx = 0;
+        rows.forEach(tr => {
+          if (sIdx >= mbSpec.length) return;
+          const tds = Array.from(tr.querySelectorAll('td'));
+          if (tds.length >= 2) {
+            const rawDigits = tds[1].textContent.replace(/\D/g, '');
+            const spec = mbSpec[sIdx];
+            if (rawDigits.length === spec.len * spec.count) {
+              mbObj[spec.key] = rawDigits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
+              sIdx++;
+            }
+          }
+        });
+        return mbObj.db.length > 0 ? [mbObj] : null;
       }
 
       const ths = Array.from(table.querySelectorAll('thead th, tr:first-child th')).slice(1);
       if (ths.length === 0) return null;
+
       const stations = ths.map(th => ({
-        name: th.innerText.trim(),
+        name: th.textContent.trim(),
         g8: [], g7: [], g6: [], g5: [], g4: [], g3: [], g2: [], g1: [], db: []
       }));
 
-      const prizeKeys = ['g8', 'g7', 'g6', 'g5', 'g4', 'g3', 'g2', 'g1', 'db'];
+      const prizeSpecs = [
+        { key: 'g8', len: 2, count: 1 }, { key: 'g7', len: 3, count: 1 },
+        { key: 'g6', len: 4, count: 3 }, { key: 'g5', len: 4, count: 1 },
+        { key: 'g4', len: 5, count: 7 }, { key: 'g3', len: 5, count: 2 },
+        { key: 'g2', len: 5, count: 1 }, { key: 'g1', len: 5, count: 1 },
+        { key: 'db', len: 6, count: 1 }
+      ];
+
       const rows = Array.from(table.querySelectorAll('tbody tr'));
       let pIdx = 0;
       rows.forEach(tr => {
+        if (pIdx >= prizeSpecs.length) return;
         const tds = Array.from(tr.querySelectorAll('td'));
-        if (tds.length >= stations.length + 1 && pIdx < prizeKeys.length) {
-          const pKey = prizeKeys[pIdx++];
-          for (let i = 0; i < stations.length; i++) {
-            const cell = tds[i + 1];
-            const nums = cell.innerText.trim().split(/\s+/).filter(v => /^\d+$/.test(v));
-            stations[i][pKey] = nums;
+        if (tds.length >= stations.length + 1) {
+          const spec = prizeSpecs[pIdx];
+          const firstCellDigits = tds[1].textContent.replace(/\D/g, '');
+          if (firstCellDigits.length === spec.len * spec.count) {
+            for (let i = 0; i < stations.length; i++) {
+              const digits = tds[i + 1].textContent.replace(/\D/g, '');
+              stations[i][spec.key] = digits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
+            }
+            pIdx++;
           }
         }
       });
-      return stations[0].db.length > 0 ? stations : null;
+
+      return (stations[0] && stations[0].db.length > 0) ? stations : null;
+    }
+
+    async function syncEntireMonth() {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const now = new Date();
+      const statusBar = document.getElementById('statusBar');
+
+      let count = 0;
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cur = new Date(year, month, d);
+        if (cur > now) continue;
+        statusBar.className = 'status-bar loading';
+        statusBar.innerText = `⏳ Đang tải ngày ${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}...`;
+        const res = await fetchRealKQXS(currentRegion, cur, false);
+        if (res) count++;
+        renderDayStrip();
+      }
+      statusBar.className = 'status-bar';
+      statusBar.innerText = `✅ Đã cập nhật xong ${count} ngày trong Tháng ${month + 1}/${year}!`;
+      loadAllData(false);
     }
 
     async function loadAllData(forceRefresh) {
       renderDayStrip();
       const statusBar = document.getElementById('statusBar');
       statusBar.className = 'status-bar loading';
-      statusBar.innerText = '⏳ Đang đồng bộ kết quả từ Xổ Số Đại Phát...';
+      statusBar.innerText = '⏳ Đang tải kết quả thật & dữ liệu kỳ trước...';
 
       const curDate = new Date(selectedDate);
       const nextDate = new Date(selectedDate);
       nextDate.setDate(nextDate.getDate() + 1);
 
-      const curDateStr = `${DAY_NAMES[curDate.getDay()]} - ${toVNDate(curDate)}`;
-      const nextDateStr = `${DAY_NAMES[nextDate.getDay()]} - ${toVNDate(nextDate)}`;
+      // Ngày mở thưởng kỳ trước của các đài ngày mai (cách ngày mai 7 ngày)
+      const prevDrawOfNextDate = new Date(nextDate);
+      prevDrawOfNextDate.setDate(prevDrawOfNextDate.getDate() - 7);
+
+      const curDateStr = `${FULL_DAY_NAMES[curDate.getDay()]} - ${toVNDate(curDate)}`;
+      const nextDateStr = `${FULL_DAY_NAMES[nextDate.getDay()]} - ${toVNDate(nextDate)}`;
+      const prevDrawStr = toVNDate(prevDrawOfNextDate);
 
       document.getElementById('badgeCurrentDate').innerText = toVNDate(curDate);
       document.getElementById('badgeKQDate').innerText = curDateStr;
@@ -385,17 +540,22 @@
       document.getElementById('stationsToday').innerHTML = stationsSchedule
         .map(s => `<span class="station-badge">📍 ${s}</span>`).join('');
 
-      let resultsToday = await fetchRealKQXS(currentRegion, curDate);
+      // Tải song song KQXS ngày đang chọn & KQXS kỳ trước (cách 7 ngày) của đài ngày mai
+      const [resultsToday, resultsPrevWeekTomorrow] = await Promise.all([
+        fetchRealKQXS(currentRegion, curDate, forceRefresh),
+        fetchRealKQXS(currentRegion, prevDrawOfNextDate, false)
+      ]);
+      renderDayStrip();
 
       if (resultsToday && resultsToday.length > 0) {
         statusBar.className = 'status-bar';
         statusBar.innerText = `✅ Chuẩn Xổ Số Đại Phát (${curDateStr})`;
         renderResultTable(resultsToday, currentRegion);
         renderDetailedStatsToday(resultsToday);
-        renderNextDayAnalysis(stationsTomorrow, resultsToday, nextDateStr);
+        renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrow, nextDateStr, prevDrawStr);
       } else {
         statusBar.className = 'status-bar warn';
-        statusBar.innerText = `⚠️ Ngày ${toVNDate(curDate)} chưa mở thưởng hoặc đang chờ cập nhật`;
+        statusBar.innerText = `⚠️ Ngày ${toVNDate(curDate)} chưa có kết quả mở thưởng`;
         document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#c92a2a; font-weight:600;">Chưa có bảng kết quả mở thưởng cho ngày ${toVNDate(curDate)}.</div>`;
         document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px;">Đang chờ kết quả mở thưởng để thống kê.</div>`;
       }
@@ -463,60 +623,96 @@
       document.getElementById('detailedStats').innerHTML = html;
     }
 
-    async function renderNextDayAnalysis(stationsTomorrow, resultsToday, nextDateStr) {
+    // PHÂN TÍCH KẾT HỢP: CẦU CHÍNH ĐÀI (KỲ TRƯỚC -7 NGÀY) + CẦU LIÊN NGÀY (HÔM NAY)
+    async function renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeek, nextDateStr, prevDrawStr) {
       document.getElementById('nextDayStations').innerHTML = stationsTomorrow
         .map(s => `<span class="station-badge" style="background:#fff0f0; border-color:#d90416;">🎯 Đài ngày mai: ${s}</span>`).join('');
 
       let html = '';
-      let pascals = [], bongs = [], keps = [];
+      let pascalsChinhDai = [], pascalsLienNgay = [], bongsHop = [];
 
       stationsTomorrow.forEach((stName, idx) => {
-        const ref = resultsToday[idx % resultsToday.length];
-        const db = ref.db[0];
-        const g1 = ref.g1[0];
-        const pascal = calcPascal(db + g1);
-        const bongD = calcBong(db.slice(-2));
-        const bongA = calcBongAm(db.slice(-2));
-        const kep = db.slice(1, 3);
+        const todayRef = resultsToday[idx % resultsToday.length];
+        const dbToday = todayRef.db[0];
+        const g1Today = todayRef.g1[0];
+        const pasLienNgay = calcPascal(dbToday + g1Today);
 
-        pascals.push(pascal); bongs.push(bongD); keps.push(kep);
+        // Tìm đúng kết quả kỳ trước (cách 7 ngày) của chính đài này
+        let prevRef = null;
+        if (resultsPrevWeek && resultsPrevWeek.length > 0) {
+          prevRef = resultsPrevWeek.find(r => r.name.toLowerCase().includes(stName.toLowerCase())) || resultsPrevWeek[idx % resultsPrevWeek.length];
+        }
 
-        html += `
-          <div class="analysis-item tomorrow-item">
-            <strong>🔮 Dự đoán Đài ${stName} (${nextDateStr}):</strong><br>
-            • <b>Cầu Pascal (từ ĐB ${db} + G1 ${g1}):</b> <b style="color:#d90416; font-size:15px;">${pascal} - ${pascal.split('').reverse().join('')}</b><br>
-            • <b>Bóng Âm Dương (từ đuôi ĐB ${db.slice(-2)}):</b> Bóng Dương <b>${bongD}</b> | Bóng Âm <b>${bongA}</b><br>
-            • <b>Cầu Kẹp Sát ĐB:</b> <b>${kep} - ${kep.split('').reverse().join('')}</b>
-          </div>`;
+        if (prevRef && prevRef.db && prevRef.db[0]) {
+          const dbPrev = prevRef.db[0];
+          const g1Prev = prevRef.g1[0];
+          const g8Prev = (prevRef.g8 && prevRef.g8[0]) ? prevRef.g8[0] : dbPrev.slice(-2);
+
+          // 1. Cầu Chính Đài (từ ĐB + G1 kỳ trước của chính đài đó)
+          const pasChinhDai = calcPascal(dbPrev + g1Prev);
+          // 2. Cầu Giao Thoa (ĐB kỳ trước chính đài + ĐB hôm nay)
+          const pasGiaoThoa = calcPascal(dbPrev + dbToday);
+          // 3. Bóng Âm Dương chính đài
+          const bongD = calcBong(dbPrev.slice(-2));
+          const bongA = calcBongAm(g8Prev);
+
+          pascalsChinhDai.push(pasChinhDai);
+          pascalsLienNgay.push(pasLienNgay);
+          bongsHop.push(pasGiaoThoa);
+
+          html += `
+            <div class="analysis-item tomorrow-item">
+              <strong>🔮 Dự đoán Đài ${stName} (${nextDateStr}):</strong><br>
+              <span class="sub-tag">📌 Cầu Chính Đài (Kỳ trước ${prevDrawStr}: ĐB ${dbPrev} | G.1 ${g1Prev})</span><br>
+              • <b>Pascal Chính Đài:</b> <b style="color:#d90416; font-size:15px;">${pasChinhDai} - ${pasChinhDai.split('').reverse().join('')}</b> | <b>Bóng ĐB (${dbPrev.slice(-2)}):</b> Dương <b>${bongD}</b> - Âm <b>${bongA}</b><br>
+              <span class="sub-tag">⚡ Cầu Liên Ngày (Từ đài ${todayRef.name} ĐB ${dbToday})</span><br>
+              • <b>Pascal Liên Ngày:</b> <b>${pasLienNgay} - ${pasLienNgay.split('').reverse().join('')}</b> | <b>Giao thoa 2 kỳ:</b> <b style="color:#1b8a3d;">${pasGiaoThoa}</b>
+            </div>`;
+        } else {
+          // Nếu kỳ trước chưa tải kịp thì dùng cầu liên ngày
+          const bongD = calcBong(dbToday.slice(-2));
+          const kep = dbToday.slice(1, 3);
+          pascalsChinhDai.push(pasLienNgay);
+          pascalsLienNgay.push(bongD);
+          bongsHop.push(kep);
+
+          html += `
+            <div class="analysis-item tomorrow-item">
+              <strong>🔮 Dự đoán Đài ${stName} (${nextDateStr}):</strong><br>
+              • <b>Cầu Pascal Liên Ngày (ĐB ${dbToday} + G1 ${g1Today}):</b> <b style="color:#d90416; font-size:15px;">${pasLienNgay} - ${pasLienNgay.split('').reverse().join('')}</b><br>
+              • <b>Bóng Dương ĐB (${dbToday.slice(-2)}):</b> <b>${bongD}</b> | <b>Cầu Kẹp:</b> <b>${kep}</b>
+            </div>`;
+        }
       });
 
       document.getElementById('nextDayAnalysis').innerHTML = html;
 
-      const vip1 = pascals[0], vip2 = bongs[bongs.length > 1 ? 1 : 0], vip3 = keps[keps.length - 1];
+      const vip1 = pascalsChinhDai[0];
+      const vip2 = bongsHop[bongsHop.length > 1 ? 1 : 0];
+      const vip3 = pascalsLienNgay[pascalsLienNgay.length - 1];
 
       document.getElementById('crossStation').innerHTML = `
         <div class="analysis-item">
-          • <b>Hội tụ Cầu Pascal (${stationsTomorrow.join(' - ')}):</b> <b>${pascals.join(' ↔ ')}</b><br>
-          • <b>Liên kết Bóng Âm Dương:</b> <b>${bongs.join(' ↔ ')}</b><br>
-          • <b>Điểm rơi Cầu Kẹp liên đài:</b> <b>${keps.join(' ↔ ')}</b><br>
-          👉 <i>Nhận định ngày <b>${nextDateStr}</b>: Cầu báo mạnh nhất ở bộ <b>${vip1}</b> và cặp xiên <b>${vip2} - ${vip3}</b>.</i>
+          • <b>Hội tụ Pascal Chính Đài (${prevDrawStr} ➡ ${nextDateStr}):</b> <b style="color:#d90416">${pascalsChinhDai.join(' ↔ ')}</b><br>
+          • <b>Hội tụ Pascal Liên Ngày (Hôm nay ➡ Ngày mai):</b> <b>${pascalsLienNgay.join(' ↔ ')}</b><br>
+          • <b>Cầu Giao Thoa 2 Kỳ (Chính Đài + Liên Ngày):</b> <b style="color:#1b8a3d">${bongsHop.join(' ↔ ')}</b><br>
+          👉 <i>Chốt nhịp cầu thực tế cho <b>${nextDateStr}</b>: Ưu tiên Bạch thủ <b>${vip1}</b> (Cầu chính đài), Song thủ <b>${vip2}</b> và Xiên <b>${vip3}</b>.</i>
         </div>`;
 
       document.getElementById('vipNumbers').innerHTML = `
         <div class="vip-numbers">
-          <div class="vip-ball"><div class="num">${vip1}</div><div class="lbl">BẠCH THỦ</div></div>
-          <div class="vip-ball"><div class="num">${vip2}</div><div class="lbl">SONG THỦ</div></div>
-          <div class="vip-ball"><div class="num">${vip3}</div><div class="lbl">LÔ ĐÁ / XIÊN</div></div>
+          <div class="vip-ball"><div class="num">${vip1}</div><div class="lbl">BẠCH THỦ (CHÍNH ĐÀI)</div></div>
+          <div class="vip-ball"><div class="num">${vip2}</div><div class="lbl">SONG THỦ (GIAO THOA)</div></div>
+          <div class="vip-ball"><div class="num">${vip3}</div><div class="lbl">XIÊN (LIÊN NGÀY)</div></div>
         </div>`;
 
-      // Nếu đã nhập Gemini API Key thì gọi AI nhận định bổ sung
       const apiKey = localStorage.getItem('PHATDAT_API_KEY');
       const aiBox = document.getElementById('aiAnalysisBox');
       if (apiKey) {
         aiBox.style.display = 'block';
-        aiBox.innerHTML = '🤖 <b>Trợ lý AI đang phân tích nhịp cầu bằng API Key của bạn...</b>';
+        aiBox.innerHTML = '🤖 <b>Trợ lý AI đang phân tích kết hợp Cầu Chính Đài & Liên Ngày...</b>';
         try {
-          const prompt = `Dựa trên kết quả xổ số hôm nay (ĐB: ${resultsToday.map(r=>r.name+':'+r.db[0]).join(', ')}), hãy nhận định ngắn gọn 3 dòng nhịp cầu đẹp nhất cho ngày mai (${nextDateStr}) các đài ${stationsTomorrow.join(', ')}. Bộ số Pascal đang báo: ${pascals.join(', ')}.`;
+          const prompt = `Phân tích ngắn gọn 3 dòng soi cầu xổ số ngày ${nextDateStr} cho các đài ${stationsTomorrow.join(', ')}. Biết Pascal Chính Đài (kỳ trước ${prevDrawStr}) báo: ${pascalsChinhDai.join(', ')}; Pascal Liên Ngày (từ hôm nay) báo: ${pascalsLienNgay.join(', ')}; Giao thoa 2 kỳ báo: ${bongsHop.join(', ')}.`;
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -525,16 +721,10 @@
           const data = await res.json();
           const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
           if (reply) {
-            aiBox.innerHTML = `🤖 <b>Phân tích chuyên sâu AI (${nextDateStr}):</b><br>` + reply.replace(/\n/g, '<br>');
-          } else {
-            aiBox.style.display = 'none';
-          }
-        } catch (e) {
-          aiBox.style.display = 'none';
-        }
-      } else {
-        aiBox.style.display = 'none';
-      }
+            aiBox.innerHTML = `🤖 <b>Nhận định AI (${nextDateStr}):</b><br>` + reply.replace(/\n/g, '<br>');
+          } else { aiBox.style.display = 'none'; }
+        } catch (e) { aiBox.style.display = 'none'; }
+      } else { aiBox.style.display = 'none'; }
     }
 
     window.onload = () => {
