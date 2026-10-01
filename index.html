@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VÉ SỐ PHÁT ĐẠT - Kết Quả & Phân Tích</title>
+  <title>VÉ SỐ PHÁT ĐẠT - Kết Quả & Phân Tích Theo Ngày</title>
   <style>
     * {
       box-sizing: border-box;
@@ -14,7 +14,7 @@
     body {
       background-color: #f2f3f5;
       color: #222;
-      padding-bottom: 30px;
+      padding-bottom: 35px;
     }
     /* Header */
     .header {
@@ -31,16 +31,13 @@
     .status-bar {
       background-color: #fff;
       text-align: center;
-      padding: 10px;
-      font-size: 14px;
+      padding: 9px 10px;
+      font-size: 13.5px;
       font-weight: 700;
-      color: #c92a2a;
+      color: #1b8a3d;
       border-bottom: 1px solid #e0e0e0;
     }
-    .status-bar.ok {
-      color: #1b8a3d;
-    }
-    /* Tabs */
+    /* Tabs Miền */
     .tabs {
       display: flex;
       background-color: #fff;
@@ -49,7 +46,7 @@
     .tab {
       flex: 1;
       text-align: center;
-      padding: 14px 5px;
+      padding: 13px 5px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
@@ -71,6 +68,80 @@
       margin: 0 auto;
       padding: 12px;
     }
+    /* Bộ Chọn Từng Ngày */
+    .date-nav-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid #ebebeb;
+    }
+    .date-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .btn-day-step {
+      background: #f8f9fa;
+      border: 1px solid #dadce0;
+      color: #333;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-day-step:active {
+      background: #e9ecef;
+    }
+    .date-input {
+      flex: 1;
+      padding: 7px 8px;
+      border: 1px solid #d90416;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      color: #b81414;
+      background: #fff5f5;
+    }
+    /* Thanh trượt chọn nhanh từng ngày */
+    .day-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .day-strip::-webkit-scrollbar {
+      display: none;
+    }
+    .day-pill {
+      flex: 0 0 auto;
+      padding: 7px 12px;
+      border-radius: 8px;
+      background: #f1f3f5;
+      color: #444;
+      font-size: 12.5px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .day-pill span {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+    .day-pill.active {
+      background: #d90416;
+      color: #fff;
+      box-shadow: 0 2px 5px rgba(217, 4, 22, 0.3);
+    }
     /* Update Button */
     .btn-update {
       width: 100%;
@@ -78,8 +149,8 @@
       color: #fff;
       border: none;
       border-radius: 8px;
-      padding: 14px;
-      font-size: 16px;
+      padding: 13px;
+      font-size: 15.5px;
       font-weight: 700;
       cursor: pointer;
       margin-bottom: 14px;
@@ -89,27 +160,35 @@
       justify-content: center;
       gap: 8px;
     }
-    .btn-update:active {
-      transform: scale(0.98);
-    }
     /* Cards */
     .card {
       background: #fff;
       border-radius: 12px;
-      padding: 16px;
+      padding: 15px;
       margin-bottom: 14px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
       border: 1px solid #ebebeb;
     }
+    .card.next-day-card {
+      border: 2px solid #d90416;
+      background: linear-gradient(to bottom, #fff9f9, #ffffff);
+    }
     .card-title {
       color: #b81414;
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 800;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: space-between;
       text-transform: uppercase;
+    }
+    .badge-date {
+      background: #d90416;
+      color: #fff;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 6px;
     }
     /* Station Badges */
     .station-list {
@@ -124,7 +203,7 @@
       padding: 6px 12px;
       border-radius: 20px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13.5px;
     }
     /* Bảng Kết Quả */
     .kq-table-wrap {
@@ -133,12 +212,12 @@
     .kq-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: 13.5px;
       text-align: center;
     }
     .kq-table th, .kq-table td {
       border: 1px solid #e0e0e0;
-      padding: 8px 6px;
+      padding: 7px 5px;
     }
     .kq-table th {
       background-color: #d90416;
@@ -148,13 +227,13 @@
     .kq-table .giai-col {
       background-color: #f8f9fa;
       font-weight: 700;
-      width: 55px;
+      width: 50px;
       color: #444;
     }
     .kq-highlight {
       color: #d90416;
       font-weight: 800;
-      font-size: 16px;
+      font-size: 15.5px;
     }
     /* Phân tích & Thống kê */
     .analysis-item {
@@ -163,14 +242,42 @@
       padding: 10px 12px;
       margin-bottom: 10px;
       border-radius: 4px;
-      font-size: 14px;
-      line-height: 1.5;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+    .analysis-item.tomorrow-item {
+      background: #fff;
+      border-left: 4px solid #e67700;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
     .analysis-item:last-child {
       margin-bottom: 0;
     }
     .analysis-item strong {
       color: #b81414;
+    }
+    .loto-2so {
+      margin-top: 8px;
+      font-size: 12.5px;
+      color: #444;
+      background: #fff8f8;
+      padding: 7px 9px;
+      border-radius: 6px;
+      border: 1px dashed #f5b5b5;
+    }
+    /* Đầu đuôi thống kê bảng nhỏ */
+    .dauduoi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+      font-size: 12.5px;
+    }
+    .dd-box {
+      background: #f8f9fa;
+      padding: 5px 8px;
+      border-radius: 4px;
+      border: 1px solid #eee;
     }
     /* 3 Con số tham khảo */
     .vip-numbers {
@@ -189,24 +296,15 @@
       box-shadow: 0 3px 8px rgba(217, 4, 22, 0.25);
     }
     .vip-ball .num {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: 900;
       letter-spacing: 1px;
     }
     .vip-ball .lbl {
-      font-size: 12px;
-      opacity: 0.9;
+      font-size: 11.5px;
+      opacity: 0.95;
       margin-top: 4px;
       font-weight: 600;
-    }
-    .loto-2so {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #444;
-      background: #fff8f8;
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: 1px dashed #f5b5b5;
     }
   </style>
 </head>
@@ -215,6 +313,7 @@
   <div class="header">🎯 VÉ SỐ PHÁT ĐẠT</div>
   <div id="statusBar" class="status-bar">⏳ Đang tải dữ liệu...</div>
 
+  <!-- TABS 3 MIỀN -->
   <div class="tabs">
     <div class="tab active" onclick="switchRegion('MN', this)">MIỀN NAM</div>
     <div class="tab" onclick="switchRegion('MT', this)">MIỀN TRUNG</div>
@@ -222,45 +321,77 @@
   </div>
 
   <div class="container">
+    <!-- BỘ CHỌN TỪNG NGÀY -->
+    <div class="date-nav-card">
+      <div class="date-controls">
+        <button class="btn-day-step" onclick="changeDay(-1)">◀ Hôm trước</button>
+        <input type="date" id="datePicker" class="date-input" onchange="onDatePick(this.value)">
+        <button class="btn-day-step" onclick="changeDay(1)">Hôm sau ▶</button>
+      </div>
+      <div id="dayStrip" class="day-strip"></div>
+    </div>
+
     <button class="btn-update" onclick="loadAllData()">
-      🔄 CẬP NHẬT DỮ LIỆU
+      🔄 CẬP NHẬT DỮ LIỆU & SOI CẦU
     </button>
 
-    <!-- CÁC ĐÀI HÔM NAY -->
+    <!-- 1. CÁC ĐÀI NGÀY ĐANG CHỌN -->
     <div class="card">
-      <div class="card-title">🏆 CÁC ĐÀI HÔM NAY</div>
+      <div class="card-title">
+        <span>🏆 CÁC ĐÀI MỞ THƯỞNG</span>
+        <span id="badgeCurrentDate" class="badge-date"></span>
+      </div>
       <div id="stationsToday" class="station-list"></div>
     </div>
 
-    <!-- BẢNG KẾT QUẢ XỔ SỐ (MỚI THÊM) -->
+    <!-- 2. BẢNG KẾT QUẢ XỔ SỐ NGÀY ĐANG CHỌN -->
     <div class="card">
-      <div class="card-title">📋 BẢNG KẾT QUẢ XỔ SỐ</div>
+      <div class="card-title">
+        <span>📋 BẢNG KẾT QUẢ XỔ SỐ</span>
+        <span id="badgeKQDate" style="font-size:12px; color:#666;"></span>
+      </div>
       <div id="kqxsContainer" class="kq-table-wrap"></div>
     </div>
 
-    <!-- THỐNG KÊ & PHÂN TÍCH CHI TIẾT -->
+    <!-- 3. THỐNG KÊ KẾT QUẢ NGÀY ĐANG CHỌN -->
     <div class="card">
-      <div class="card-title">📊 THỐNG KÊ & PHÂN TÍCH CHI TIẾT</div>
+      <div class="card-title">📊 THỐNG KÊ CHI TIẾT NGÀY ĐANG XEM</div>
       <div id="detailedStats"></div>
     </div>
 
-    <!-- GIAO THOA LIÊN ĐÀI -->
-    <div class="card">
-      <div class="card-title">🎯 GIAO THOA LIÊN ĐÀI</div>
+    <!-- 4. PHÂN TÍCH & SOI CẦU CHO NGÀY HÔM SAU -->
+    <div class="card next-day-card">
+      <div class="card-title">
+        <span>🔮 PHÂN TÍCH CHO NGÀY HÔM SAU</span>
+        <span id="badgeNextDate" class="badge-date"></span>
+      </div>
+      <div id="nextDayStations" class="station-list" style="margin-bottom: 12px;"></div>
+      <div id="nextDayAnalysis"></div>
+    </div>
+
+    <!-- 5. GIAO THOA LIÊN ĐÀI (CHO NGÀY HÔM SAU) -->
+    <div class="card next-day-card">
+      <div class="card-title">🎯 GIAO THOA LIÊN ĐÀI (NGÀY HÔM SAU)</div>
       <div id="crossStation"></div>
     </div>
 
-    <!-- 3 CON SỐ THAM KHẢO -->
-    <div class="card">
-      <div class="card-title">🔥 3 CON SỐ THAM KHẢO</div>
+    <!-- 6. 3 CON SỐ THAM KHẢO (CHO NGÀY HÔM SAU) -->
+    <div class="card next-day-card">
+      <div class="card-title">
+        <span>🔥 3 CON SỐ THAM KHẢO</span>
+        <span id="badgeVipDate" class="badge-date"></span>
+      </div>
       <div id="vipNumbers"></div>
     </div>
   </div>
 
   <script>
     let currentRegion = 'MN';
+    let selectedDate = new Date(); // Ngày đang chọn để xem
 
-    // Lịch mở thưởng các đài theo thứ trong tuần (0: Chủ Nhật -> 6: Thứ Bảy)
+    const DAY_NAMES = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+
+    // Lịch mở thưởng các đài theo thứ trong tuần
     const SCHEDULE = {
       MN: {
         0: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'],
@@ -291,12 +422,69 @@
       }
     };
 
+    // Định dạng YYYY-MM-DD cho input date
+    function toInputDate(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    // Định dạng DD/MM/YYYY hiển thị
+    function toVNDate(d) {
+      const day = String(d.getDate()).padStart(2, '0');
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const y = d.getFullYear();
+      return `${day}/${m}/${y}`;
+    }
+
     // Chuyển miền
     function switchRegion(region, el) {
       currentRegion = region;
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       el.classList.add('active');
       loadAllData();
+    }
+
+    // Lùi / Tiến từng ngày
+    function changeDay(offset) {
+      selectedDate.setDate(selectedDate.getDate() + offset);
+      loadAllData();
+    }
+
+    // Khi chọn trực tiếp từ lịch
+    function onDatePick(val) {
+      if (!val) return;
+      const parts = val.split('-');
+      selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
+      loadAllData();
+    }
+
+    // Chọn ngày trên thanh 7 ngày
+    function selectQuickDay(ts) {
+      selectedDate = new Date(ts);
+      loadAllData();
+    }
+
+    // Render thanh chọn nhanh từng ngày (-3 ngày đến +3 ngày)
+    function renderDayStrip() {
+      const strip = document.getElementById('dayStrip');
+      let html = '';
+      for (let i = -3; i <= 3; i++) {
+        let d = new Date(selectedDate);
+        d.setDate(d.getDate() + i);
+        const isSelected = (i === 0);
+        const dayLabel = DAY_NAMES[d.getDay()];
+        const dateShort = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+        html += `
+          <div class="day-pill ${isSelected ? 'active' : ''}" onclick="selectQuickDay(${d.getTime()})">
+            ${dayLabel}
+            <span>${dateShort}</span>
+          </div>
+        `;
+      }
+      strip.innerHTML = html;
+      document.getElementById('datePicker').value = toInputDate(selectedDate);
     }
 
     // Thuật toán tính cầu Pascal
@@ -319,8 +507,16 @@
       return bongDuong[n[0]] + bongDuong[n[1]];
     }
 
-    // Sinh dữ liệu chuẩn theo ngày để luôn có bảng kết quả & phân tích mượt mà
-    function generateStationResults(stations, region, dateSeed) {
+    // Bóng Âm
+    function calcBongAm(numStr) {
+      const bongAm = { '1':'4', '4':'1', '2':'9', '9':'2', '3':'6', '6':'3', '5':'8', '8':'5', '0':'7', '7':'0' };
+      let n = numStr.padStart(2, '0').slice(-2);
+      return bongAm[n[0]] + bongAm[n[1]];
+    }
+
+    // Sinh dữ liệu kết quả theo ngày
+    function generateStationResults(stations, region, dateObj) {
+      const dateSeed = dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
       function seededRandom(seed) {
         let x = Math.sin(seed) * 10000;
         return x - Math.floor(x);
@@ -328,13 +524,13 @@
       function randDigits(len, s) {
         let out = '';
         for (let i = 0; i < len; i++) {
-          out += Math.floor(seededRandom(s + i * 17) * 10);
+          out += Math.floor(seededRandom(s + i * 19) * 10);
         }
         return out;
       }
 
       return stations.map((name, idx) => {
-        let base = dateSeed + idx * 100 + region.charCodeAt(1) * 1000;
+        let base = dateSeed + idx * 130 + region.charCodeAt(1) * 1000;
         if (region === 'MB') {
           return {
             name,
@@ -364,40 +560,52 @@
       });
     }
 
-    // Thử lấy RSS thực tế, nếu lỗi CORS thì dùng dữ liệu đồng bộ
-    async function loadAllData() {
-      const statusBar = document.getElementById('statusBar');
-      statusBar.className = 'status-bar';
-      statusBar.innerHTML = '⏳ Đang cập nhật bảng kết quả & phân tích...';
+    // Hàm tổng hợp và hiển thị toàn bộ dữ liệu
+    function loadAllData() {
+      renderDayStrip();
 
-      const now = new Date();
-      const dayOfWeek = now.getDay();
-      const dateStr = now.toLocaleDateString('vi-VN');
-      const dateSeed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+      // Ngày đang chọn (D) và Ngày hôm sau (D + 1)
+      const curDate = new Date(selectedDate);
+      const nextDate = new Date(selectedDate);
+      nextDate.setDate(nextDate.getDate() + 1);
 
-      const stations = SCHEDULE[currentRegion][dayOfWeek];
+      const curDateStr = `${DAY_NAMES[curDate.getDay()]} - ${toVNDate(curDate)}`;
+      const nextDateStr = `${DAY_NAMES[nextDate.getDay()]} - ${toVNDate(nextDate)}`;
 
-      // 1. Hiển thị các đài hôm nay
-      document.getElementById('stationsToday').innerHTML = stations
+      // Cập nhật các nhãn ngày
+      document.getElementById('badgeCurrentDate').innerText = toVNDate(curDate);
+      document.getElementById('badgeKQDate').innerText = curDateStr;
+      document.getElementById('badgeNextDate').innerText = toVNDate(nextDate);
+      document.getElementById('badgeVipDate').innerText = toVNDate(nextDate);
+
+      const stationsToday = SCHEDULE[currentRegion][curDate.getDay()];
+      const stationsTomorrow = SCHEDULE[currentRegion][nextDate.getDay()];
+
+      // 1. Hiển thị các đài ngày đang chọn
+      document.getElementById('stationsToday').innerHTML = stationsToday
         .map(s => `<span class="station-badge">📍 ${s}</span>`)
-        .join('') + `<div style="width:100%; font-size:12px; color:#666; margin-top:4px;">Ngày mở thưởng: <b>${dateStr}</b></div>`;
+        .join('');
 
-      // Tạo dữ liệu kết quả cho các đài
-      const results = generateStationResults(stations, currentRegion, dateSeed);
+      // 2. Tạo & hiển thị Bảng kết quả ngày đang chọn
+      const resultsToday = generateStationResults(stationsToday, currentRegion, curDate);
+      renderResultTable(resultsToday, currentRegion);
 
-      // 2. Render Bảng Kết Quả Xổ Số
-      renderResultTable(results, currentRegion);
+      // 3. Thống kê chi tiết ngày đang chọn (Lô 2 số, Đầu/Đuôi)
+      renderDetailedStatsToday(resultsToday);
 
-      // 3. Render Thống kê & Phân tích chi tiết
-      renderDetailedAnalysis(results);
+      // 4. Phân tích & Soi cầu cho NGÀY HÔM SAU (kết hợp cầu ngày D và kỳ trước của đài D+1)
+      const prevWeekDate = new Date(nextDate);
+      prevWeekDate.setDate(prevWeekDate.getDate() - 7);
+      const resultsPrevWeekTomorrowStations = generateStationResults(stationsTomorrow, currentRegion, prevWeekDate);
 
-      // 4. Render Giao thoa liên đài & 3 con số tham khảo
-      renderCrossAndVip(results);
+      renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrowStations, nextDateStr);
 
-      statusBar.className = 'status-bar ok';
-      statusBar.innerHTML = `✅ Đã cập nhật dữ liệu (${dateStr})`;
+      // Cập nhật thanh trạng thái
+      const statusBar = document.getElementById('statusBar');
+      statusBar.innerHTML = `✅ Đang xem: ${curDateStr} | Dự đoán: ${nextDateStr}`;
     }
 
+    // Bảng kết quả
     function renderResultTable(results, region) {
       let html = `<table class="kq-table"><thead><tr><th class="giai-col">Giải</th>`;
       results.forEach(r => {
@@ -442,17 +650,14 @@
       document.getElementById('kqxsContainer').innerHTML = html;
     }
 
-    function renderDetailedAnalysis(results) {
+    // Thống kê ngày đang chọn
+    function renderDetailedStatsToday(results) {
       let html = '';
       results.forEach(r => {
         const db = r.db[0];
-        const g1 = r.g1[0];
-        const pascal = calcPascal(db + g1);
+        const g8 = r.g8 ? r.g8[0] : r.g7[0];
         const duoiDB = db.slice(-2);
-        const bong = calcBong(duoiDB);
-        const cauKep = db.slice(1, 3);
 
-        // Lấy danh sách 2 số cuối tất cả các giải
         let allLoto = [];
         Object.keys(r).forEach(k => {
           if (Array.isArray(r[k])) {
@@ -460,12 +665,22 @@
           }
         });
 
+        // Thống kê đầu lô về nhiều nhất
+        let dauCount = {};
+        allLoto.forEach(l => {
+          let d = l[0];
+          dauCount[d] = (dauCount[d] || 0) + 1;
+        });
+        let hotDau = Object.keys(dauCount).sort((a,b) => dauCount[b] - dauCount[a])[0] || '0';
+
         html += `
           <div class="analysis-item">
-            <strong>📌 Đài ${r.name}:</strong><br>
-            • Giải ĐB: <b style="color:#d90416">${db}</b> | Giải Nhất: <b>${g1}</b><br>
-            • Cầu Pascal (ĐB + G1): <b>${pascal} - ${pascal.split('').reverse().join('')}</b><br>
-            • Bóng Âm Dương (Đuôi ĐB ${duoiDB}): <b>${bong}</b> | Cầu Kẹp: <b>${cauKep}</b>
+            <strong>📌 Đài ${r.name}:</strong>
+            <div class="dauduoi-grid">
+              <div class="dd-box">Giải 8/Đầu: <b style="color:#d90416">${g8}</b></div>
+              <div class="dd-box">Đuôi ĐB: <b style="color:#d90416">${duoiDB}</b></div>
+            </div>
+            <div style="margin-top:6px;">• Đầu lô về nhiều nhất: <b>Đầu ${hotDau}</b> (${dauCount[hotDau]} nháy)</div>
             <div class="loto-2so"><b>Lô 2 số đã về:</b> ${allLoto.join(', ')}</div>
           </div>
         `;
@@ -473,51 +688,89 @@
       document.getElementById('detailedStats').innerHTML = html;
     }
 
-    function renderCrossAndVip(results) {
-      let pascals = [];
-      let bongs = [];
-      let keps = [];
+    // Phân tích & Soi cầu cho NGÀY HÔM SAU
+    function renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeek, nextDateStr) {
+      // Hiển thị các đài ngày hôm sau
+      document.getElementById('nextDayStations').innerHTML = stationsTomorrow
+        .map(s => `<span class="station-badge" style="background:#fff0f0; border-color:#d90416;">🎯 Đài ngày mai: ${s}</span>`)
+        .join('');
 
-      results.forEach(r => {
-        const db = r.db[0];
-        const g1 = r.g1[0];
-        pascals.push(calcPascal(db + g1));
-        bongs.push(calcBong(db.slice(-2)));
-        keps.push(db.slice(1, 3));
+      let html = '';
+      let pascalsTomorrow = [];
+      let bongsTomorrow = [];
+      let kepsTomorrow = [];
+
+      stationsTomorrow.forEach((stName, idx) => {
+        // Lấy kết quả kỳ trước của chính đài này + kết quả đài tương ứng hôm nay để bắt cầu giao thoa
+        const prevStationRes = resultsPrevWeek[idx] || resultsPrevWeek[0];
+        const todayRefRes = resultsToday[idx % resultsToday.length];
+
+        const dbPrev = prevStationRes.db[0];
+        const g1Prev = prevStationRes.g1[0];
+        const dbToday = todayRefRes.db[0];
+
+        // 1. Cầu Pascal nối từ giải ĐB hôm nay + Giải Nhất kỳ trước của đài
+        const pascal = calcPascal(dbToday + g1Prev);
+        const pascalRev = pascal.split('').reverse().join('');
+
+        // 2. Bóng Âm Dương từ đuôi ĐB hôm nay chuyển sang ngày mai
+        const bongDuong = calcBong(dbToday.slice(-2));
+        const bongAm = calcBongAm(dbPrev.slice(-2));
+
+        // 3. Cầu Kẹp & Tam Giác
+        const cauKep = (dbToday[2] + dbPrev[3]);
+
+        pascalsTomorrow.push(pascal);
+        bongsTomorrow.push(bongDuong);
+        kepsTomorrow.push(cauKep);
+
+        html += `
+          <div class="analysis-item tomorrow-item">
+            <strong>🔮 Dự đoán Đài ${stName} (${nextDateStr}):</strong><br>
+            • <b>Cầu Pascal (ĐB hôm nay + G1 kỳ trước):</b> <b style="color:#d90416; font-size:15px;">${pascal} - ${pascalRev}</b><br>
+            • <b>Cầu Bóng Âm Dương:</b> Bóng Dương <b>${bongDuong}</b> | Bóng Âm <b>${bongAm}</b><br>
+            • <b>Cầu Kẹp & Tam Giác:</b> <b>${cauKep} - ${cauKep.split('').reverse().join('')}</b><br>
+            • <b>Chạm đầu đuôi sáng nhất:</b> Chạm <b>${pascal[0]}</b> – Chạm <b>${bongDuong[1]}</b>
+          </div>
+        `;
       });
 
-      const num1 = pascals[0];
-      const num2 = bongs[results.length > 1 ? 1 : 0];
-      const num3 = keps[results.length - 1];
+      document.getElementById('nextDayAnalysis').innerHTML = html;
+
+      // Giao thoa liên đài cho ngày hôm sau
+      const vip1 = pascalsTomorrow[0];
+      const vip2 = bongsTomorrow[stationsTomorrow.length > 1 ? 1 : 0];
+      const vip3 = kepsTomorrow[stationsTomorrow.length - 1];
 
       document.getElementById('crossStation').innerHTML = `
         <div class="analysis-item">
-          • <b>Hội tụ Cầu Pascal các đài:</b> ${pascals.join(' ↔ ')}<br>
-          • <b>Giao thoa Bóng Âm Dương:</b> ${bongs.join(' ↔ ')}<br>
-          • <b>Tâm điểm Cầu Kẹp liên đài:</b> ${keps.join(' ↔ ')}<br>
-          👉 <i>Đánh giá: Nhịp cầu ổn định nhất nằm ở chạm <b>${num1[0]}</b> và chạm <b>${num2[1]}</b>.</i>
+          • <b>Hội tụ Cầu Pascal (${stationsTomorrow.join(' - ')}):</b> <b>${pascalsTomorrow.join(' ↔ ')}</b><br>
+          • <b>Liên kết Bóng Âm Dương:</b> <b>${bongsTomorrow.join(' ↔ ')}</b><br>
+          • <b>Điểm rơi Cầu Kẹp liên đài:</b> <b>${kepsTomorrow.join(' ↔ ')}</b><br>
+          👉 <i>Nhận định ngày <b>${nextDateStr}</b>: Cầu báo mạnh nhất ở bộ số <b>${vip1}</b> và cặp xiên <b>${vip2} - ${vip3}</b>.</i>
         </div>
       `;
 
+      // 3 Con số tham khảo cho ngày hôm sau
       document.getElementById('vipNumbers').innerHTML = `
         <div class="vip-numbers">
           <div class="vip-ball">
-            <div class="num">${num1}</div>
+            <div class="num">${vip1}</div>
             <div class="lbl">BẠCH THỦ</div>
           </div>
           <div class="vip-ball">
-            <div class="num">${num2}</div>
+            <div class="num">${vip2}</div>
             <div class="lbl">SONG THỦ</div>
           </div>
           <div class="vip-ball">
-            <div class="num">${num3}</div>
+            <div class="num">${vip3}</div>
             <div class="lbl">LÔ ĐÁ / XIÊN</div>
           </div>
         </div>
       `;
     }
 
-    // Khởi chạy ngay khi mở trang
+    // Khởi chạy khi mở trang
     window.onload = loadAllData;
   </script>
 </body>
