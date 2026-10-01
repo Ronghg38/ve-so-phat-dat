@@ -96,7 +96,8 @@ button{
  border-radius:8px;
  font-size:16px;
  font-weight:bold;
- margin-bottom:10px
+ margin-bottom:10px;
+ cursor:pointer
 }
 table{
  width:100%;
@@ -259,44 +260,36 @@ let region="mn";
 let stations=[];
 let selected=0;
 
-/*
- Proxy đọc trang công khai.
- Không dùng API key.
-*/
 const PROXY="https://r.jina.ai/";
 
 const SCHEDULE={
-
-mn:{
-0:["Tiền Giang","Kiên Giang","Đà Lạt"],
-1:["TP.HCM","Đồng Tháp","Cà Mau"],
-2:["Bến Tre","Vũng Tàu","Bạc Liêu"],
-3:["Đồng Nai","Cần Thơ","Sóc Trăng"],
-4:["Tây Ninh","An Giang","Bình Thuận"],
-5:["Vĩnh Long","Bình Dương","Trà Vinh"],
-6:["TP.HCM","Long An","Bình Phước","Hậu Giang"]
-},
-
-mt:{
-0:["Khánh Hòa","Kon Tum"],
-1:["Phú Yên","Huế"],
-2:["Đà Nẵng","Khánh Hòa"],
-3:["Bình Định","Quảng Bình","Quảng Trị"],
-4:["Gia Lai","Ninh Thuận"],
-5:["Đà Nẵng","Quảng Ngãi","Đắk Nông"],
-6:["Khánh Hòa","Kon Tum"]
-},
-
-mb:{
-0:["Hà Nội"],
-1:["Hà Nội"],
-2:["Hà Nội"],
-3:["Hà Nội"],
-4:["Hà Nội"],
-5:["Hà Nội"],
-6:["Hà Nội"]
-}
-
+ mn:{
+  0:["Tiền Giang","Kiên Giang","Đà Lạt"],
+  1:["TP.HCM","Đồng Tháp","Cà Mau"],
+  2:["Bến Tre","Vũng Tàu","Bạc Liêu"],
+  3:["Đồng Nai","Cần Thơ","Sóc Trăng"],
+  4:["Tây Ninh","An Giang","Bình Thuận"],
+  5:["Vĩnh Long","Bình Dương","Trà Vinh"],
+  6:["TP.HCM","Long An","Bình Phước","Hậu Giang"]
+ },
+ mt:{
+  0:["Khánh Hòa","Kon Tum"],
+  1:["Phú Yên","Huế"],
+  2:["Đà Nẵng","Khánh Hòa"],
+  3:["Bình Định","Quảng Bình","Quảng Trị"],
+  4:["Gia Lai","Ninh Thuận"],
+  5:["Đà Nẵng","Quảng Ngãi","Đắk Nông"],
+  6:["Khánh Hòa","Kon Tum"]
+ },
+ mb:{
+  0:["Hà Nội"],
+  1:["Hà Nội"],
+  2:["Hà Nội"],
+  3:["Hà Nội"],
+  4:["Hà Nội"],
+  5:["Hà Nội"],
+  6:["Hà Nội"]
+ }
 };
 
 /* =========================
@@ -304,7 +297,6 @@ mb:{
 ========================= */
 
 function vietnamDate(){
-
  return new Intl.DateTimeFormat(
   "en-CA",
   {
@@ -314,30 +306,6 @@ function vietnamDate(){
    day:"2-digit"
   }
  ).format(new Date());
-
-}
-
-function vietnamDay(){
-
- return Number(
-  new Intl.DateTimeFormat(
-   "en-US",
-   {
-    timeZone:"Asia/Ho_Chi_Minh",
-    weekday:"short"
-   }
-  ).formatToParts(new Date())
-  .find(x=>x.type==="weekday")
-  .value
-  .replace("Sun","0")
-  .replace("Mon","1")
-  .replace("Tue","2")
-  .replace("Wed","3")
-  .replace("Thu","4")
-  .replace("Fri","5")
-  .replace("Sat","6")
- );
-
 }
 
 /* =========================
@@ -349,42 +317,29 @@ function digits(v){
 }
 
 function sumDigits(v){
-
  return digits(v)
  .split("")
  .reduce((a,b)=>a+Number(b),0);
-
 }
 
 function reduceOne(v){
-
  v=Number(v)||0;
-
  while(v>=10)
   v=sumDigits(v);
-
  return v;
-
 }
 
 function last2(v){
-
  let s=digits(v);
-
  if(!s)return "";
-
  return s.slice(-2).padStart(2,"0");
-
 }
 
 function reverse2(v){
-
  let s=last2(v);
-
  return s.length===2
  ? s[1]+s[0]
  : s;
-
 }
 
 /* =========================
@@ -392,24 +347,19 @@ function reverse2(v){
 ========================= */
 
 function cleanCell(v){
-
  return String(v||"")
  .replace(/<[^>]*>/g,"")
  .replace(/\u00a0/g," ")
  .trim();
-
 }
 
 function splitNumbers(cell){
-
  return cleanCell(cell)
  .split(/\s+/)
  .filter(x=>/^\d+$/.test(x));
-
 }
 
 function parseMarkdown(text){
-
  const lines=text
  .split("\n")
  .map(x=>x.trim())
@@ -417,13 +367,7 @@ function parseMarkdown(text){
 
  let result=[];
 
- /*
- Tìm bảng bắt đầu bằng:
- Tỉnh | ...
- */
-
  for(let i=0;i<lines.length;i++){
-
   if(!lines[i].startsWith("Tỉnh") ||
      !lines[i].includes("|"))
    continue;
@@ -437,11 +381,6 @@ function parseMarkdown(text){
    continue;
 
   let names=header.slice(1);
-
-  /*
-   Chỉ nhận bảng có giải G8/G7/ĐB.
-  */
-
   let foundDB=false;
 
   for(
@@ -449,17 +388,14 @@ function parseMarkdown(text){
    j<Math.min(i+35,lines.length);
    j++
   ){
-
    if(lines[j].startsWith("ĐB"))
     foundDB=true;
-
   }
 
   if(!foundDB)
    continue;
 
   let data=names.map(name=>({
-
    province:name,
    prizes:{
     specialPrize:"",
@@ -472,7 +408,6 @@ function parseMarkdown(text){
     seventhPrize:[],
     eighthPrize:[]
    }
-
   }));
 
   let map={
@@ -492,7 +427,6 @@ function parseMarkdown(text){
    j<Math.min(i+35,lines.length);
    j++
   ){
-
    let cells=
     lines[j]
     .split("|")
@@ -504,7 +438,6 @@ function parseMarkdown(text){
     continue;
 
    for(let c=1;c<cells.length;c++){
-
     if(!data[c-1])
      continue;
 
@@ -512,43 +445,27 @@ function parseMarkdown(text){
      splitNumbers(cells[c]);
 
     if(prize==="ĐB"){
-
      if(nums[0])
       data[c-1].prizes.specialPrize=
        nums[0];
-
     }else if(prize==="G1"){
-
      if(nums[0])
       data[c-1].prizes.firstPrize=
        nums[0];
-
     }else{
-
      data[c-1].prizes[map[prize]]
       .push(...nums);
-
     }
-
    }
-
   }
 
-  if(
-   data.some(
-    x=>x.prizes.specialPrize
-   )
-  ){
-
+  if(data.some(x=>x.prizes.specialPrize)){
    result=data;
    break;
-
   }
-
  }
 
  return result;
-
 }
 
 /* =========================
@@ -556,46 +473,28 @@ function parseMarkdown(text){
 ========================= */
 
 async function fetchRegion(){
-
- const date=vnToday();
+ const date=vietnamDate();
+ const dmy=date.split("-").reverse().join("-");
 
  let path="";
-
- if(region==="mn")
-  path="/xsmn/"+date.split("-").reverse().join("-");
-
- if(region==="mt")
-  path="/xsmt/"+date.split("-").reverse().join("-");
-
- if(region==="mb")
-  path="/xsmb/"+date.split("-").reverse().join("-");
+ if(region==="mn") path="/xsmn/"+dmy;
+ if(region==="mt") path="/xsmt/"+dmy;
+ if(region==="mb") path="/xsmb/"+dmy;
 
  const url=PROXY+"https://ketqua.vn"+path;
 
- const response=
-  await fetch(
-   url,
-   {cache:"no-store"}
-  );
+ const response=await fetch(url,{cache:"no-store"});
 
  if(!response.ok)
-  throw new Error(
-   "Không kết nối được nguồn dữ liệu."
-  );
+  throw new Error("Không kết nối được nguồn dữ liệu.");
 
- const text=
-  await response.text();
-
- const parsed=
-  parseMarkdown(text);
+ const text=await response.text();
+ const parsed=parseMarkdown(text);
 
  if(!parsed.length)
-  throw new Error(
-   "Nguồn dữ liệu chưa trả về bảng kết quả."
-  );
+  throw new Error("Nguồn dữ liệu chưa trả về bảng kết quả.");
 
  return parsed;
-
 }
 
 /* =========================
@@ -603,11 +502,8 @@ async function fetchRegion(){
 ========================= */
 
 function renderStations(){
-
  let html="";
-
  stations.forEach((st,i)=>{
-
   html+=`
    <span
     class="station ${i===selected?"active":""}"
@@ -615,21 +511,16 @@ function renderStations(){
     ${st.province}
    </span>
   `;
-
  });
 
  document.getElementById("stations").innerHTML=
   `<div class="station-tabs">${html}</div>`;
-
 }
 
 function selectStation(i){
-
  selected=i;
-
  renderStations();
  renderAnalysis();
-
 }
 
 /* =========================
@@ -637,23 +528,15 @@ function selectStation(i){
 ========================= */
 
 function allNumbers(st){
-
  let p=st.prizes;
-
  let arr=[];
-
  Object.values(p).forEach(v=>{
-
   if(Array.isArray(v))
    arr.push(...v);
-
   else if(v)
    arr.push(v);
-
  });
-
  return arr;
-
 }
 
 /* =========================
@@ -661,7 +544,6 @@ function allNumbers(st){
 ========================= */
 
 function headTail(st){
-
  let nums=
   allNumbers(st)
   .map(last2)
@@ -671,21 +553,11 @@ function headTail(st){
  let tails={};
 
  nums.forEach(n=>{
-
-  heads[n[0]]=
-   (heads[n[0]]||0)+1;
-
-  tails[n[1]]=
-   (tails[n[1]]||0)+1;
-
+  heads[n[0]]=(heads[n[0]]||0)+1;
+  tails[n[1]]=(tails[n[1]]||0)+1;
  });
 
- return {
-  nums,
-  heads,
-  tails
- };
-
+ return {nums,heads,tails};
 }
 
 /* =========================
@@ -693,30 +565,16 @@ function headTail(st){
 ========================= */
 
 function analyze(st){
-
  let p=st.prizes;
-
  let db=p.specialPrize||"";
  let g1=p.firstPrize||"";
-
  let db2=last2(db);
 
- let pascal=
-  reduceOne(
-   sumDigits(db)+sumDigits(g1)
-  );
-
- let tong=
-  reduceOne(
-   sumDigits(db2)
-  );
-
+ let pascal=reduceOne(sumDigits(db)+sumDigits(g1));
+ let tong=reduceOne(sumDigits(db2));
  let kep=db2;
-
  let ganh=reverse2(db2);
-
  let dau=db2 ? db2[0] : "";
-
  let duoi=db2 ? db2[1] : "";
 
  let ht=headTail(st);
@@ -732,18 +590,8 @@ function analyze(st){
   .slice(0,3);
 
  return {
-  db,
-  g1,
-  pascal,
-  tong,
-  kep,
-  ganh,
-  dau,
-  duoi,
-  topHead,
-  topTail
+  db,g1,pascal,tong,kep,ganh,dau,duoi,topHead,topTail
  };
-
 }
 
 /* =========================
@@ -751,83 +599,63 @@ function analyze(st){
 ========================= */
 
 function renderAnalysis(){
-
  if(!stations.length){
-  document.getElementById("analysis").innerHTML=
-   "Chưa có dữ liệu.";
+  document.getElementById("analysis").innerHTML="Chưa có dữ liệu.";
   return;
  }
 
  let st=stations[selected];
-
  let a=analyze(st);
 
  document.getElementById("analysis").innerHTML=`
-
  <table>
-
  <tr>
   <th>Nội dung</th>
   <th>Kết quả</th>
  </tr>
-
  <tr>
   <td>Đặc biệt</td>
   <td><b>${a.db}</b></td>
  </tr>
-
  <tr>
   <td>Giải nhất</td>
   <td>${a.g1}</td>
  </tr>
-
  <tr>
   <td>Pascal</td>
   <td class="num">${a.pascal}</td>
  </tr>
-
  <tr>
   <td>Tổng / Chạm</td>
   <td class="num">${a.tong}</td>
  </tr>
-
  <tr>
   <td>Kẹp</td>
   <td>${a.kep}</td>
  </tr>
-
  <tr>
   <td>Gánh</td>
   <td>${a.ganh}</td>
  </tr>
-
  <tr>
   <td>Đầu ĐB</td>
   <td class="num">${a.dau}</td>
  </tr>
-
  <tr>
   <td>Đuôi ĐB</td>
   <td class="num">${a.duoi}</td>
  </tr>
-
  </table>
-
  <br>
-
  <b>📌 Đầu xuất hiện nhiều:</b>
  ${a.topHead.map(x=>x[0]+" ("+x[1]+")").join(" – ")}
-
  <br><br>
-
  <b>📌 Đuôi xuất hiện nhiều:</b>
  ${a.topTail.map(x=>x[0]+" ("+x[1]+")").join(" – ")}
-
  `;
 
  renderCross();
  renderPicks();
-
 }
 
 /* =========================
@@ -835,27 +663,13 @@ function renderAnalysis(){
 ========================= */
 
 function renderCross(){
-
  let map={};
 
  stations.forEach(st=>{
-
-  let unique=
-   [...new Set(
-    allNumbers(st)
-    .map(last2)
-    .filter(Boolean)
-   )];
-
+  let unique=[...new Set(allNumbers(st).map(last2).filter(Boolean))];
   unique.forEach(n=>{
-
-   if(!map[n])
-    map[n]=0;
-
-   map[n]++;
-
+   map[n]=(map[n]||0)+1;
   });
-
  });
 
  let cross=
@@ -864,24 +678,16 @@ function renderCross(){
   .sort((a,b)=>b[1]-a[1]);
 
  if(!cross.length){
-
   document.getElementById("cross").innerHTML=
-   `<span class="small">
-    Chưa có số giao thoa giữa các đài.
-   </span>`;
-
+   `<span class="small">Chưa có số giao thoa giữa các đài.</span>`;
   return;
-
  }
 
  document.getElementById("cross").innerHTML=
   cross
   .slice(0,15)
-  .map(x=>
-   `<span class="pick">${x[0]}</span>`
-  )
+  .map(x=>`<span class="pick">${x[0]}</span>`)
   .join("");
-
 }
 
 /* =========================
@@ -889,83 +695,42 @@ function renderCross(){
 ========================= */
 
 function getPicks(){
-
  let score={};
 
- /*
-  Tần suất tất cả giải
- */
-
  stations.forEach(st=>{
-
-  let nums=
-   allNumbers(st)
-   .map(last2)
-   .filter(Boolean);
-
+  let nums=allNumbers(st).map(last2).filter(Boolean);
   nums.forEach(n=>{
-
-   score[n]=
-    (score[n]||0)+1;
-
+   score[n]=(score[n]||0)+1;
   });
-
  });
-
- /*
-  Giao thoa liên đài cộng điểm
- */
 
  let cross={};
-
  stations.forEach(st=>{
-
-  [...new Set(
-   allNumbers(st)
-   .map(last2)
-  )].forEach(n=>{
-
+  [...new Set(allNumbers(st).map(last2))].forEach(n=>{
    cross[n]=(cross[n]||0)+1;
-
   });
-
  });
 
- Object.entries(cross).forEach(
-  ([n,count])=>{
-
-   if(count>=2)
-    score[n]+=
-     count*8;
-
-  }
- );
-
- /*
-  Pascal + Kẹp/Gánh
- */
+ Object.entries(cross).forEach(([n,count])=>{
+  if(count>=2)
+   score[n]+=count*8;
+ });
 
  stations.forEach(st=>{
-
   let a=analyze(st);
-
   [
    String(a.pascal).padStart(2,"0"),
    a.kep,
    a.ganh
   ].forEach(n=>{
-
    if(n && n.length===2)
     score[n]=(score[n]||0)+5;
-
   });
-
  });
 
  return Object.keys(score)
   .sort((a,b)=>score[b]-score[a])
   .slice(0,3);
-
 }
 
 /* =========================
@@ -973,34 +738,22 @@ function getPicks(){
 ========================= */
 
 function renderPicks(){
-
  let picks=getPicks();
 
  while(picks.length<3){
-
-  let n=
-   String(
-    Math.floor(Math.random()*100)
-   ).padStart(2,"0");
-
+  let n=String(Math.floor(Math.random()*100)).padStart(2,"0");
   if(!picks.includes(n))
    picks.push(n);
-
  }
 
  document.getElementById("picks").innerHTML=
-  picks
-  .map(n=>
-   `<span class="pick">${n}</span>`
-  )
-  .join("");
+  picks.map(n=>`<span class="pick">${n}</span>`).join("");
 
  let n1=picks[0];
  let n2=picks[1];
  let n3=picks[2];
 
  document.getElementById("veo1").textContent=
-
 `Video dọc 9:16, thời lượng 10 giây.
 
 Bối cảnh Việt Nam về đêm, cinematic, ánh sáng đẹp,
@@ -1019,7 +772,6 @@ Dòng cảnh báo phải thật lớn, rõ và liên tục từ đầu đến cu
 Không hiển thị ngày tháng năm.`;
 
  document.getElementById("veo2").textContent=
-
 `Video nối tiếp trực tiếp đoạn 1, thời lượng 10 giây.
 
 Giữ cùng phong cách điện ảnh và chuyển động camera
@@ -1038,7 +790,6 @@ Dòng cảnh báo phải thật lớn, rõ và liên tục từ đầu đến cu
 "Chỉ mang tính tham khảo giải trí – không khuyến khích lô đề – không đảm bảo kết quả."
 
 Không hiển thị ngày tháng năm.`;
-
 }
 
 /* =========================
@@ -1046,7 +797,6 @@ Không hiển thị ngày tháng năm.`;
 ========================= */
 
 function renderSchedule(){
-
  let day=
   new Date(
    new Date().toLocaleString(
@@ -1055,8 +805,7 @@ function renderSchedule(){
    )
   ).getDay();
 
- let names=
-  SCHEDULE[region][day];
+ let names=SCHEDULE[region][day];
 
  document.getElementById("schedule").innerHTML=
  `
@@ -1071,7 +820,6 @@ function renderSchedule(){
  </tr>
  </table>
  `;
-
 }
 
 /* =========================
@@ -1079,22 +827,18 @@ function renderSchedule(){
 ========================= */
 
 function changeRegion(r){
-
  region=r;
  selected=0;
 
  document
   .querySelectorAll(".tab")
-  .forEach(x=>
-   x.classList.remove("active")
-  );
+  .forEach(x=>x.classList.remove("active"));
 
  document
   .getElementById("tab-"+r)
   .classList.add("active");
 
  loadData();
-
 }
 
 /* =========================
@@ -1102,6 +846,7 @@ function changeRegion(r){
 ========================= */
 
 async function loadData(){
+ renderSchedule();
 
  document.getElementById("dateBox").innerHTML=
   "🔄 Đang cập nhật dữ liệu...";
@@ -1110,32 +855,17 @@ async function loadData(){
   '<div class="loading">Đang lấy kết quả...</div>';
 
  try{
-
-  stations=
-   await fetchRegion();
-
+  stations=await fetchRegion();
   selected=0;
 
   document.getElementById("dateBox").innerHTML=
    "📅 KẾT QUẢ NGÀY "+
-   vietnamDate()
-   .split("-")
-   .reverse()
-   .join("/");
+   vietnamDate().split("-").reverse().join("/");
 
   renderStations();
   renderAnalysis();
-  renderSchedule();
 
  }catch(e){
-const now = new Date();
-
-const vnToday = new Intl.DateTimeFormat('vi-VN', {
-  timeZone: 'Asia/Ho_Chi_Minh',
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric'
-}).format(now);
   document.getElementById("dateBox").innerHTML=
    "⚠️ Chưa lấy được dữ liệu";
 
@@ -1150,9 +880,7 @@ const vnToday = new Intl.DateTimeFormat('vi-VN', {
   document.getElementById("picks").innerHTML="";
   document.getElementById("veo1").textContent="";
   document.getElementById("veo2").textContent="";
-
  }
-
 }
 
 /* =========================
@@ -1161,10 +889,7 @@ const vnToday = new Intl.DateTimeFormat('vi-VN', {
 
 loadData();
 
-setInterval(
- loadData,
- 10*60*1000
-);
+setInterval(loadData, 10*60*1000);
 
 </script>
 
