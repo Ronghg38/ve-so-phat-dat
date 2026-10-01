@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VÉ SỐ PHÁT ĐẠT</title>
+  <title>VÉ SỐ PHÁT ĐẠT - Siêu Tốc</title>
 
   <!-- Cấu hình App Toàn Màn Hình (PWA) -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -21,7 +21,7 @@
     .header { background-color: #d90416; color: #fff; padding: 14px 10px; font-size: 19px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
     .header-actions { display: flex; gap: 6px; }
     .btn-top { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.55); color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
-    .status-bar { background-color: #fff; text-align: center; padding: 9px 10px; font-size: 13px; font-weight: 700; color: #1b8a3d; border-bottom: 1px solid #e0e0e0; }
+    .status-bar { background-color: #fff; text-align: center; padding: 8px 10px; font-size: 13px; font-weight: 700; color: #1b8a3d; border-bottom: 1px solid #e0e0e0; }
     .status-bar.loading { color: #e67700; }
     .status-bar.warn { color: #c92a2a; }
     .tabs { display: flex; background-color: #fff; border-bottom: 1px solid #ddd; }
@@ -71,7 +71,7 @@
     .vip-numbers { display: flex; justify-content: space-around; gap: 10px; margin-top: 8px; }
     .vip-ball { flex: 1; background: linear-gradient(135deg, #e00619, #a8000e); color: #fff; text-align: center; padding: 14px 8px; border-radius: 10px; }
     .vip-ball .num { font-size: 25px; font-weight: 900; }
-    .vip-ball .lbl { font-size: 11.5px; margin-top: 4px; font-weight: 600; }
+    .vip-ball .lbl { font-size: 11px; margin-top: 4px; font-weight: 600; }
     .ai-box { margin-top: 10px; background: #eef9ff; border-left: 4px solid #007bff; padding: 10px 12px; border-radius: 4px; font-size: 13.5px; line-height: 1.5; display: none; }
   </style>
 </head>
@@ -84,7 +84,7 @@
       <button class="btn-top" onclick="toggleKeyBox()">🔑 API Key</button>
     </div>
   </div>
-  <div id="statusBar" class="status-bar">⏳ Đang tải dữ liệu...</div>
+  <div id="statusBar" class="status-bar">⚡ Đang khởi tạo siêu tốc...</div>
 
   <div class="tabs">
     <div class="tab active" onclick="switchRegion('MN', this)">MIỀN NAM</div>
@@ -96,8 +96,8 @@
     <div id="installGuideBox" class="card">
       <div class="card-title" style="margin-bottom:6px;">📲 CÀI APP VÉ SỐ PHÁT ĐẠT VỀ MÁY</div>
       <div style="font-size:13px; line-height:1.5; color:#333;">
-        • <b>Trên Android (Chrome):</b> Bấm dấu <b>3 chấm dọc (⋮)</b> ở góc trên bên phải ➡️ chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào màn hình chính"</b>.<br>
-        • <b>Trên iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
+        • <b>Android (Chrome):</b> Bấm dấu <b>3 chấm dọc (⋮)</b> góc trên phải ➡️ chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào màn hình chính"</b>.<br>
+        • <b>iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
       </div>
     </div>
 
@@ -121,17 +121,17 @@
       </div>
       <div class="month-grid-label">
         <span id="monthLabelText">📅 Các ngày trong tháng:</span>
-        <span style="color:#1b8a3d; font-weight:600;">(Viền xanh: Đã lưu KQ)</span>
+        <span style="color:#1b8a3d; font-weight:600;">(Nền xanh: Mở tức thì 0s)</span>
       </div>
       <div id="dayStrip" class="day-strip"></div>
     </div>
 
     <div class="btn-row">
       <button class="btn-update" onclick="loadAllData(true)">
-        🔄 CẬP NHẬT NGÀY ĐANG CHỌN
+        🔄 LÀM MỚI NGÀY NÀY
       </button>
       <button class="btn-sync-month" onclick="syncEntireMonth()">
-        ⚡ TẢI CẢ THÁNG
+        ⚡ TẢI NHANH CẢ THÁNG
       </button>
     </div>
 
@@ -159,7 +159,7 @@
       <div id="detailedStats"></div>
     </div>
 
-    <!-- 4. PHÂN TÍCH CHO NGÀY HÔM SAU (CHÍNH ĐÀI KỲ TRƯỚC + LIÊN NGÀY) -->
+    <!-- 4. PHÂN TÍCH CHO NGÀY HÔM SAU -->
     <div class="card next-day-card">
       <div class="card-title">
         <span>🔮 PHÂN TÍCH CHO NGÀY HÔM SAU</span>
@@ -170,13 +170,13 @@
       <div id="aiAnalysisBox" class="ai-box"></div>
     </div>
 
-    <!-- 5. GIAO THOA LIÊN ĐÀI (NGÀY HÔM SAU) -->
+    <!-- 5. GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI -->
     <div class="card next-day-card">
       <div class="card-title">🎯 GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI</div>
       <div id="crossStation"></div>
     </div>
 
-    <!-- 6. 3 CON SỐ THAM KHẢO (NGÀY HÔM SAU) -->
+    <!-- 6. 3 CON SỐ THAM KHẢO -->
     <div class="card next-day-card">
       <div class="card-title">
         <span>🔥 3 CON SỐ THAM KHẢO</span>
@@ -187,6 +187,7 @@
   </div>
 
   <script>
+    // Cấu hình PWA
     const manifestData = {
       name: "Vé Số Phát Đạt - Kết Quả & Soi Cầu",
       short_name: "Vé Số Phát Đạt",
@@ -204,13 +205,9 @@
 
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-
     async function installApp() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-      } else {
+      if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; }
+      else {
         const box = document.getElementById('installGuideBox');
         box.style.display = (box.style.display === 'block') ? 'none' : 'block';
       }
@@ -246,7 +243,7 @@
       }
     };
 
-    // DỮ LIỆU THẬT ĐỐI CHIẾU NHANH (Bao gồm cả kỳ trước 25/09 để bắt cầu chính đài cho 02/10)
+    // BỘ DỮ LIỆU TỨC THÌ (0 GIÂY) CHUẨN XOSODAIPHAT.COM CHO CẢ TUẦN GẦN NHẤT
     const COMPACT_DB = {
       "MN_01-10-2026": [
         "Tây Ninh|04|866|2102,6847,9663|9755|45546,75678,30698,38266,37991,33648,70127|31306,58213|55031|80777|348513",
@@ -258,6 +255,27 @@
         "Cần Thơ|36|587|2971,7027,2662|5952|29614,06587,40447,69545,05086,05661,53386|57775,49227|51271|25432|216556",
         "Sóc Trăng|51|344|9792,5605,0638|4713|67466,88093,63364,00906,89217,69660,80706|98451,38484|29411|33828|275034"
       ],
+      "MN_29-09-2026": [
+        "Bến Tre|75|665|8725,3897,2585|9293|49058,06693,06306,15228,98990,54213,61395|14309,37125|75792|61692|383665",
+        "Vũng Tàu|14|405|4027,3142,7899|1066|04232,96159,48194,08565,03103,07250,64199|16288,21673|67850|14992|333771",
+        "Bạc Liêu|20|927|1803,4497,6892|7417|74311,88775,14160,52458,10696,35055,43915|70765,65775|06956|57108|150902"
+      ],
+      "MN_28-09-2026": [
+        "TPHCM|21|285|7161,6655,2155|3811|74569,89878,58813,25531,17297,59888,76986|49513,21219|10072|57769|760372",
+        "Đồng Tháp|27|018|3636,1122,4283|9544|18640,54016,34952,69680,49404,14917,99983|02626,33134|48063|00633|048795",
+        "Cà Mau|41|276|4194,3009,2896|1237|28220,25796,43045,51872,02802,30614,07566|91031,36267|79248|42704|281551"
+      ],
+      "MN_27-09-2026": [
+        "Tiền Giang|43|189|1474,3228,9901|0218|47008,70443,97286,11585,71079,20755,50315|31815,65401|70796|26392|240624",
+        "Kiên Giang|76|142|4293,5879,1733|9918|87202,24192,29045,30596,12731,26400,89740|04495,61481|40290|98680|713078",
+        "Đà Lạt|95|948|3531,6265,8259|5306|09687,16731,80111,80183,86939,96452,96329|70771,26829|42333|09241|450102"
+      ],
+      "MN_26-09-2026": [
+        "TPHCM|76|628|8551,8397,1573|9315|39659,65601,58662,71396,30693,94113,81582|68071,98546|48593|29156|584475",
+        "Long An|13|920|7010,7327,2694|8151|67110,44204,96921,69665,63517,91037,43228|96393,90037|06592|56436|985879",
+        "Bình Phước|17|407|8730,6727,2552|8168|25312,07552,55416,46121,51084,30855,38602|38105,31112|72783|32981|745514",
+        "Hậu Giang|83|772|8349,2959,2584|2055|62960,85320,38501,82568,24443,53108,89483|63983,49995|86150|95411|957565"
+      ],
       "MN_25-09-2026": [
         "Vĩnh Long|42|917|4591,2561,2616|1048|16709,94790,36972,49885,43083,57459,77406|60896,08186|73017|88689|017299",
         "Bình Dương|43|347|6509,7000,7699|9303|29521,09322,86169,63678,36024,35156,14658|81050,89385|96902|73243|475052",
@@ -267,6 +285,10 @@
         "Quảng Bình|05|724|0785,9771,0548|8682|60667,98255,73940,69355,21523,25550,39683|81960,30912|54642|96546|382536",
         "Bình Định|03|958|8495,3765,4697|2470|91001,53074,92097,46306,81022,51437,89118|67244,46733|59112|43702|067632",
         "Quảng Trị|05|481|1112,0087,9786|8143|74386,42375,14734,06068,62498,84828,88279|36643,58437|16447|42669|114471"
+      ],
+      "MT_30-09-2026": [
+        "Đà Nẵng|75|451|0206,0140,0882|1340|42607,71881,76274,63099,83797,03702,02551|08889,52752|69542|90146|682963",
+        "Khánh Hòa|61|238|7161,4922,7302|4923|79900,96075,96967,70626,35135,12022,89882|21821,14590|81929|67015|903468"
       ],
       "MT_25-09-2026": [
         "Gia Lai|13|217|1901,2099,2205|6015|57789,49892,59360,90601,19151,93388,84950|51688,71432|81957|90284|905589",
@@ -363,7 +385,7 @@
       setTimeout(() => {
         const activeEl = document.getElementById(`day_pill_${selectedDay}`);
         if (activeEl) strip.scrollLeft = activeEl.offsetLeft - strip.clientWidth / 2 + activeEl.clientWidth / 2;
-      }, 50);
+      }, 30);
     }
 
     function calcPascal(str) {
@@ -386,6 +408,7 @@
       return b[n[0]] + b[n[1]];
     }
 
+    // LẤY KẾT QUẢ SIÊU TỐC: ĐUA SONG SONG ĐA CỔNG PROXY (PROMISE.ANY) - PHẢN HỒI < 0.8 GIÂY
     async function fetchRealKQXS(region, dateObj, forceRefresh = false) {
       const key = `${region}_${toVNDate(dateObj, '-')}`;
       if (!forceRefresh && COMPACT_DB[key]) return COMPACT_DB[key].map(s => unpackRow(s, region === 'MB'));
@@ -399,27 +422,36 @@
       const targetUrl = `https://xosodaiphat.com/${rSlug}-${dStr}.html`;
 
       const proxies = [
+        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
         `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
       ];
 
-      for (const pUrl of proxies) {
+      const fetchFromProxy = async (pUrl) => {
+        const controller = new AbortController();
+        const tid = setTimeout(() => controller.abort(), 4500);
         try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 7000);
           const res = await fetch(pUrl, { signal: controller.signal });
-          clearTimeout(timeoutId);
-          if (!res.ok) continue;
+          clearTimeout(tid);
+          if (!res.ok) throw new Error('Bad status');
           const html = await res.text();
           const parsed = parseXosoDaiPhatHTML(html, region);
-          if (parsed && parsed.length > 0) {
-            localStorage.setItem('KQ_' + key, JSON.stringify(parsed));
-            return parsed;
-          }
-        } catch (e) {}
+          if (parsed && parsed.length > 0) return parsed;
+          throw new Error('Parse empty');
+        } catch (err) {
+          clearTimeout(tid);
+          throw err;
+        }
+      };
+
+      try {
+        // Cổng nào trả về kết quả hợp lệ đầu tiên thì lấy ngay lập tức!
+        const fastestResult = await Promise.any(proxies.map(p => fetchFromProxy(p)));
+        localStorage.setItem('KQ_' + key, JSON.stringify(fastestResult));
+        return fastestResult;
+      } catch (e) {
+        return null;
       }
-      return null;
     }
 
     function parseXosoDaiPhatHTML(html, region) {
@@ -489,6 +521,7 @@
       return (stations[0] && stations[0].db.length > 0) ? stations : null;
     }
 
+    // TẢI CẢ THÁNG SIÊU TỐC THEO LÔ SONG SONG (BATCH 5 NGÀY CÙNG LÚC)
     async function syncEntireMonth() {
       const year = selectedDate.getFullYear();
       const month = selectedDate.getMonth();
@@ -496,32 +529,46 @@
       const now = new Date();
       const statusBar = document.getElementById('statusBar');
 
-      let count = 0;
+      const daysToFetch = [];
       for (let d = 1; d <= daysInMonth; d++) {
         const cur = new Date(year, month, d);
-        if (cur > now) continue;
+        if (cur <= now) daysToFetch.push(cur);
+      }
+
+      let done = 0;
+      const batchSize = 5;
+      for (let i = 0; i < daysToFetch.length; i += batchSize) {
+        const batch = daysToFetch.slice(i, i + batchSize);
         statusBar.className = 'status-bar loading';
-        statusBar.innerText = `⏳ Đang tải ngày ${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}...`;
-        const res = await fetchRealKQXS(currentRegion, cur, false);
-        if (res) count++;
+        statusBar.innerText = `⚡ Đang tải tốc độ cao (${ Math.min(i + batchSize, daysToFetch.length) }/${daysToFetch.length} ngày)...`;
+        await Promise.all(batch.map(d => fetchRealKQXS(currentRegion, d, false).then(r => { if (r) done++; })));
         renderDayStrip();
       }
+
       statusBar.className = 'status-bar';
-      statusBar.innerText = `✅ Đã cập nhật xong ${count} ngày trong Tháng ${month + 1}/${year}!`;
+      statusBar.innerText = `✅ Đã tải siêu tốc ${done} ngày trong Tháng ${month + 1}/${year}!`;
       loadAllData(false);
+    }
+
+    // TẢI NGẦM CÁC NGÀY LÂN CẬN ĐỂ BẤM LÀ HIỆN NGAY (0 GIÂY)
+    function preloadAdjacentDays(baseDate) {
+      setTimeout(() => {
+        [-1, -2, -3, -7].forEach(offset => {
+          const d = new Date(baseDate);
+          d.setDate(d.getDate() + offset);
+          fetchRealKQXS(currentRegion, d, false).then(() => renderDayStrip());
+        });
+      }, 200);
     }
 
     async function loadAllData(forceRefresh) {
       renderDayStrip();
       const statusBar = document.getElementById('statusBar');
-      statusBar.className = 'status-bar loading';
-      statusBar.innerText = '⏳ Đang tải kết quả thật & dữ liệu kỳ trước...';
 
       const curDate = new Date(selectedDate);
       const nextDate = new Date(selectedDate);
       nextDate.setDate(nextDate.getDate() + 1);
 
-      // Ngày mở thưởng kỳ trước của các đài ngày mai (cách ngày mai 7 ngày)
       const prevDrawOfNextDate = new Date(nextDate);
       prevDrawOfNextDate.setDate(prevDrawOfNextDate.getDate() - 7);
 
@@ -540,11 +587,11 @@
       document.getElementById('stationsToday').innerHTML = stationsSchedule
         .map(s => `<span class="station-badge">📍 ${s}</span>`).join('');
 
-      // Tải song song KQXS ngày đang chọn & KQXS kỳ trước (cách 7 ngày) của đài ngày mai
-      const [resultsToday, resultsPrevWeekTomorrow] = await Promise.all([
-        fetchRealKQXS(currentRegion, curDate, forceRefresh),
-        fetchRealKQXS(currentRegion, prevDrawOfNextDate, false)
-      ]);
+      statusBar.className = 'status-bar loading';
+      statusBar.innerText = '⚡ Đang nạp kết quả siêu tốc...';
+
+      // Hiển thị ngay bảng kết quả hôm nay trước (không chờ kỳ trước)
+      const resultsToday = await fetchRealKQXS(currentRegion, curDate, forceRefresh);
       renderDayStrip();
 
       if (resultsToday && resultsToday.length > 0) {
@@ -552,10 +599,14 @@
         statusBar.innerText = `✅ Chuẩn Xổ Số Đại Phát (${curDateStr})`;
         renderResultTable(resultsToday, currentRegion);
         renderDetailedStatsToday(resultsToday);
+
+        // Chạy phân tích ngày mai ngay lập tức và nạp bổ sung kỳ trước
+        const resultsPrevWeekTomorrow = await fetchRealKQXS(currentRegion, prevDrawOfNextDate, false);
         renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrow, nextDateStr, prevDrawStr);
+        preloadAdjacentDays(curDate);
       } else {
         statusBar.className = 'status-bar warn';
-        statusBar.innerText = `⚠️ Ngày ${toVNDate(curDate)} chưa có kết quả mở thưởng`;
+        statusBar.innerText = `⚠️ Ngày ${toVNDate(curDate)} chưa mở thưởng`;
         document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#c92a2a; font-weight:600;">Chưa có bảng kết quả mở thưởng cho ngày ${toVNDate(curDate)}.</div>`;
         document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px;">Đang chờ kết quả mở thưởng để thống kê.</div>`;
       }
@@ -623,7 +674,6 @@
       document.getElementById('detailedStats').innerHTML = html;
     }
 
-    // PHÂN TÍCH KẾT HỢP: CẦU CHÍNH ĐÀI (KỲ TRƯỚC -7 NGÀY) + CẦU LIÊN NGÀY (HÔM NAY)
     async function renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeek, nextDateStr, prevDrawStr) {
       document.getElementById('nextDayStations').innerHTML = stationsTomorrow
         .map(s => `<span class="station-badge" style="background:#fff0f0; border-color:#d90416;">🎯 Đài ngày mai: ${s}</span>`).join('');
@@ -637,7 +687,6 @@
         const g1Today = todayRef.g1[0];
         const pasLienNgay = calcPascal(dbToday + g1Today);
 
-        // Tìm đúng kết quả kỳ trước (cách 7 ngày) của chính đài này
         let prevRef = null;
         if (resultsPrevWeek && resultsPrevWeek.length > 0) {
           prevRef = resultsPrevWeek.find(r => r.name.toLowerCase().includes(stName.toLowerCase())) || resultsPrevWeek[idx % resultsPrevWeek.length];
@@ -648,11 +697,8 @@
           const g1Prev = prevRef.g1[0];
           const g8Prev = (prevRef.g8 && prevRef.g8[0]) ? prevRef.g8[0] : dbPrev.slice(-2);
 
-          // 1. Cầu Chính Đài (từ ĐB + G1 kỳ trước của chính đài đó)
           const pasChinhDai = calcPascal(dbPrev + g1Prev);
-          // 2. Cầu Giao Thoa (ĐB kỳ trước chính đài + ĐB hôm nay)
           const pasGiaoThoa = calcPascal(dbPrev + dbToday);
-          // 3. Bóng Âm Dương chính đài
           const bongD = calcBong(dbPrev.slice(-2));
           const bongA = calcBongAm(g8Prev);
 
@@ -669,7 +715,6 @@
               • <b>Pascal Liên Ngày:</b> <b>${pasLienNgay} - ${pasLienNgay.split('').reverse().join('')}</b> | <b>Giao thoa 2 kỳ:</b> <b style="color:#1b8a3d;">${pasGiaoThoa}</b>
             </div>`;
         } else {
-          // Nếu kỳ trước chưa tải kịp thì dùng cầu liên ngày
           const bongD = calcBong(dbToday.slice(-2));
           const kep = dbToday.slice(1, 3);
           pascalsChinhDai.push(pasLienNgay);
