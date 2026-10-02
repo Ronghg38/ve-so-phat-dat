@@ -107,7 +107,7 @@
       line-height: 1.1;
     }
 
-    /* Bảng kết quả (Tự động co giãn khít 100% chiều cao còn lại) */
+    /* Bảng kết quả */
     .table-wrapper {
       flex: 1;
       min-height: 0;
@@ -332,11 +332,14 @@
     let currentStations = stationSchedules.t6;
     let isSpinning = false;
     let spinTimeout = null;
+    let pauseTimeout = null;
     let animInterval = null;
     let totalSteps = 0;
 
-    // Tổng thời gian quay 18 giải ~ 30 giây (mỗi bước ~ 1670ms)
-    const STEP_DURATION_MS = 1670;
+    // CẤU HÌNH TỐC ĐỘ CHẬM TỪ TỪ (~32 giây cho 18 hàng):
+    const TICK_SPEED_MS = 220;    // Tốc độ nhảy từng con số: 220ms (nhảy chậm từ từ, rõ số)
+    const STEP_SPIN_MS = 1550;    // Thời gian quay 1 hàng: 1.55 giây
+    const STEP_PAUSE_MS = 250;    // Nghỉ 0.25 giây sau khi chốt số rồi mới xuống hàng tiếp theo
 
     function initTable() {
       const wrapper = document.getElementById('tableWrapper');
@@ -451,6 +454,7 @@
     function stopSpin() {
       isSpinning = false;
       clearTimeout(spinTimeout);
+      clearTimeout(pauseTimeout);
       clearInterval(animInterval);
       const btn = document.getElementById('spinBtn');
       btn.textContent = 'QUAY THỬ';
@@ -472,16 +476,21 @@
       }
 
       const digits = parseInt(currentCells[0].dataset.digits, 10);
-      currentCells.forEach(cell => cell.classList.add('active-spin'));
 
-      // Hiệu ứng nhảy số từ từ (mỗi 80ms đổi số 1 lần)
+      // Bật nền vàng và hiển thị số đầu tiên ngay lập tức
+      currentCells.forEach(cell => {
+        cell.classList.add('active-spin');
+        cell.textContent = formatByMode(randomNum(digits));
+      });
+
+      // Số nhảy từ từ, nhịp nhàng mỗi 220ms
       animInterval = setInterval(() => {
         currentCells.forEach(cell => {
           cell.textContent = formatByMode(randomNum(digits));
         });
-      }, 80);
+      }, TICK_SPEED_MS);
 
-      // Chốt từng hàng sau 1.67 giây -> 18 hàng mất đúng 30 giây
+      // Chốt kết quả của hàng sau 1.55 giây
       spinTimeout = setTimeout(() => {
         clearInterval(animInterval);
         currentCells.forEach(cell => {
@@ -490,8 +499,12 @@
           cell.textContent = formatByMode(finalVal);
           cell.classList.remove('active-spin');
         });
-        runStep(step + 1);
-      }, STEP_DURATION_MS);
+
+        // Nghỉ nhẹ 0.25 giây trước khi chuyển xuống hàng kế tiếp
+        pauseTimeout = setTimeout(() => {
+          runStep(step + 1);
+        }, STEP_PAUSE_MS);
+      }, STEP_SPIN_MS);
     }
 
     initTable();
