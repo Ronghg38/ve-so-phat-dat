@@ -25,7 +25,7 @@
       flex-direction: column;
     }
 
-    /* Thanh tiêu đề trên cùng (Thu gọn) */
+    /* Thanh tiêu đề trên cùng */
     .app-bar {
       background-color: #0b4a92;
       color: #fff;
@@ -44,7 +44,7 @@
       cursor: pointer;
     }
 
-    /* Thanh chọn đài & nút Quay thử (Thu gọn) */
+    /* Thanh chọn đài & nút Quay thử */
     .control-bar {
       background-color: #ebebeb;
       display: flex;
@@ -85,7 +85,7 @@
       background-color: #d9430f;
     }
 
-    /* Tiêu đề chính (Thu gọn khoảng trống) */
+    /* Tiêu đề chính */
     .title-area {
       background-color: #fff;
       text-align: center;
@@ -184,7 +184,7 @@
     .row-g1 { flex: 1; }
     .row-db { flex: 1.15; border-bottom: none; }
 
-    /* Ô chứa con số: Chữ to và đậm hơn */
+    /* Ô chứa con số: Chữ to và đậm */
     .num-cell {
       flex: 1;
       min-height: 0;
@@ -225,7 +225,7 @@
       background-color: #fff176;
     }
 
-    /* Thanh lọc chế độ xem (Đầy đủ / 2 Số / 3 Số) luôn nằm gọn ở đáy */
+    /* Thanh lọc chế độ xem (Đầy đủ / 2 Số / 3 Số) */
     .footer-bar {
       background-color: #f9f9f9;
       border-top: 1px solid #ccc;
@@ -267,8 +267,7 @@
   <div class="control-bar">
     <select id="daySelect" class="station-select" onchange="changeDay()">
       <option value="t6">Thứ 6 (Vĩnh Long, Bình Dương, Trà Vinh)</option>
-      <option value="t7_3">Thứ 7 (TP.HCM, Long An, Hậu Giang)</option>
-      <option value="t7_4">Thứ 7 - 4 Đài (HCM, Long An, B.Phước, Hậu Giang)</option>
+      <option value="t7">Thứ 7 (TP.HCM, Long An, Bình Phước, Hậu Giang)</option>
       <option value="cn">Chủ Nhật (Tiền Giang, Kiên Giang, Đà Lạt)</option>
       <option value="t2">Thứ 2 (TP.HCM, Đồng Tháp, Cà Mau)</option>
       <option value="t3">Thứ 3 (Bến Tre, Vũng Tàu, Bạc Liêu)</option>
@@ -322,8 +321,7 @@
 
     const stationSchedules = {
       t6: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'],
-      t7_3: ['TP.HCM', 'Long An', 'Hậu Giang'],
-      t7_4: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang'],
+      t7: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang'],
       cn: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'],
       t2: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'],
       t3: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'],
@@ -337,19 +335,20 @@
     let animInterval = null;
     let totalSteps = 0;
 
+    // Tổng thời gian quay 18 giải ~ 30 giây (mỗi bước ~ 1670ms)
+    const STEP_DURATION_MS = 1670;
+
     function initTable() {
       const wrapper = document.getElementById('tableWrapper');
       const thead = document.getElementById('tableHeader');
       const tbody = document.getElementById('tableBody');
 
-      // Tự động chỉnh class nếu là 4 đài Thứ 7
       if (currentStations.length === 4) {
         wrapper.classList.add('mode-4-cols');
       } else {
         wrapper.classList.remove('mode-4-cols');
       }
 
-      // Tạo Header tên đài
       thead.innerHTML = '<div class="col-giai">Giải</div>';
       currentStations.forEach((stName) => {
         const div = document.createElement('div');
@@ -358,7 +357,6 @@
         thead.appendChild(div);
       });
 
-      // Tạo các hàng giải
       tbody.innerHTML = '';
       let stepIndex = 0;
 
@@ -476,12 +474,14 @@
       const digits = parseInt(currentCells[0].dataset.digits, 10);
       currentCells.forEach(cell => cell.classList.add('active-spin'));
 
+      // Hiệu ứng nhảy số từ từ (mỗi 80ms đổi số 1 lần)
       animInterval = setInterval(() => {
         currentCells.forEach(cell => {
           cell.textContent = formatByMode(randomNum(digits));
         });
-      }, 60);
+      }, 80);
 
+      // Chốt từng hàng sau 1.67 giây -> 18 hàng mất đúng 30 giây
       spinTimeout = setTimeout(() => {
         clearInterval(animInterval);
         currentCells.forEach(cell => {
@@ -491,7 +491,7 @@
           cell.classList.remove('active-spin');
         });
         runStep(step + 1);
-      }, 850);
+      }, STEP_DURATION_MS);
     }
 
     initTable();
