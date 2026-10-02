@@ -62,9 +62,9 @@
       border-radius: 4px;
       padding: 3px 6px;
       font-size: 13px;
-      font-weight: 500;
-      width: 62%;
-      color: #222;
+      font-weight: 600;
+      width: 64%;
+      color: #0b4a92;
       outline: none;
     }
 
@@ -266,13 +266,7 @@
   <!-- Thanh điều khiển -->
   <div class="control-bar">
     <select id="daySelect" class="station-select" onchange="changeDay()">
-      <option value="t6">Thứ 6 (Vĩnh Long, Bình Dương, Trà Vinh)</option>
-      <option value="t7">Thứ 7 (TP.HCM, Long An, Bình Phước, Hậu Giang)</option>
-      <option value="cn">Chủ Nhật (Tiền Giang, Kiên Giang, Đà Lạt)</option>
-      <option value="t2">Thứ 2 (TP.HCM, Đồng Tháp, Cà Mau)</option>
-      <option value="t3">Thứ 3 (Bến Tre, Vũng Tàu, Bạc Liêu)</option>
-      <option value="t4">Thứ 4 (Đồng Nai, Cần Thơ, Sóc Trăng)</option>
-      <option value="t5">Thứ 5 (Tây Ninh, An Giang, Bình Thuận)</option>
+      <!-- Danh sách Hôm nay / Ngày mai và các thứ được tạo tự động -->
     </select>
     <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
   </div>
@@ -280,17 +274,13 @@
   <!-- Tiêu đề bảng -->
   <div class="title-area">
     <h1>Tham khảo Xổ Số miền Nam</h1>
-    <p>Thông tin chỉ mang tính tham khảo</p>
+    <p id="subTitle">Thông tin chỉ mang tính tham khảo</p>
   </div>
 
   <!-- Bảng kết quả -->
   <div class="table-wrapper" id="tableWrapper">
-    <div class="table-header" id="tableHeader">
-      <!-- Tiêu đề đài được tạo tự động -->
-    </div>
-    <div class="table-body" id="tableBody">
-      <!-- Các hàng giải được tạo tự động -->
-    </div>
+    <div class="table-header" id="tableHeader"></div>
+    <div class="table-body" id="tableBody"></div>
   </div>
 
   <!-- Tùy chọn hiển thị -->
@@ -319,17 +309,18 @@
       { label: 'ĐB', class: 'row-db', count: 1, digits: 6 }
     ];
 
-    const stationSchedules = {
-      t6: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'],
-      t7: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang'],
-      cn: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'],
-      t2: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'],
-      t3: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'],
-      t4: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'],
-      t5: ['Tây Ninh', 'An Giang', 'Bình Thuận']
+    // Dữ liệu lịch quay theo getDay() của JavaScript (0: Chủ Nhật -> 6: Thứ 7)
+    const scheduleByDayIndex = {
+      0: { name: 'Chủ Nhật', stations: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'] },
+      1: { name: 'Thứ 2', stations: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'] },
+      2: { name: 'Thứ 3', stations: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'] },
+      3: { name: 'Thứ 4', stations: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'] },
+      4: { name: 'Thứ 5', stations: ['Tây Ninh', 'An Giang', 'Bình Thuận'] },
+      5: { name: 'Thứ 6', stations: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'] },
+      6: { name: 'Thứ 7', stations: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang'] }
     };
 
-    let currentStations = stationSchedules.t6;
+    let currentStations = [];
     let isSpinning = false;
     let spinTimeout = null;
     let pauseTimeout = null;
@@ -337,9 +328,48 @@
     let totalSteps = 0;
 
     // CẤU HÌNH TỐC ĐỘ CHẬM TỪ TỪ (~32 giây cho 18 hàng):
-    const TICK_SPEED_MS = 220;    // Tốc độ nhảy từng con số: 220ms (nhảy chậm từ từ, rõ số)
+    const TICK_SPEED_MS = 220;    // Tốc độ nhảy từng con số: 220ms
     const STEP_SPIN_MS = 1550;    // Thời gian quay 1 hàng: 1.55 giây
-    const STEP_PAUSE_MS = 250;    // Nghỉ 0.25 giây sau khi chốt số rồi mới xuống hàng tiếp theo
+    const STEP_PAUSE_MS = 250;    // Nghỉ 0.25 giây trước khi xuống hàng tiếp theo
+
+    // Khởi tạo danh sách chọn ngày (Tự động nhận diện Hôm nay & Ngày mai)
+    function initDaySelector() {
+      const select = document.getElementById('daySelect');
+      select.innerHTML = '';
+
+      const now = new Date();
+      const todayIdx = now.getDay();
+      const tomorrowIdx = (todayIdx + 1) % 7;
+
+      // Kiểm tra nếu đã qua 16h35 chiều thì ưu tiên chọn sẵn Ngày mai
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const isAfterDraw = currentMinutes >= (16 * 60 + 35);
+
+      // Đưa Hôm nay và Ngày mai lên đầu danh sách để dễ chọn nhất
+      const orderedIndices = [todayIdx, tomorrowIdx];
+      for (let i = 0; i < 7; i++) {
+        if (i !== todayIdx && i !== tomorrowIdx) {
+          orderedIndices.push(i);
+        }
+      }
+
+      orderedIndices.forEach(idx => {
+        const info = scheduleByDayIndex[idx];
+        const opt = document.createElement('option');
+        opt.value = idx;
+
+        let prefix = '';
+        if (idx === todayIdx) prefix = '[Hôm nay] ';
+        else if (idx === tomorrowIdx) prefix = '[Ngày mai] ';
+
+        opt.textContent = `${prefix}${info.name} (${info.stations.join(', ')})`;
+        select.appendChild(opt);
+      });
+
+      // Tự động chọn Ngày mai nếu đã qua giờ xổ, ngược lại chọn Hôm nay
+      select.value = isAfterDraw ? tomorrowIdx : todayIdx;
+      currentStations = scheduleByDayIndex[select.value].stations;
+    }
 
     function initTable() {
       const wrapper = document.getElementById('tableWrapper');
@@ -422,7 +452,7 @@
     function changeDay() {
       if (isSpinning) stopSpin();
       const val = document.getElementById('daySelect').value;
-      currentStations = stationSchedules[val];
+      currentStations = scheduleByDayIndex[val].stations;
       initTable();
     }
 
@@ -477,20 +507,17 @@
 
       const digits = parseInt(currentCells[0].dataset.digits, 10);
 
-      // Bật nền vàng và hiển thị số đầu tiên ngay lập tức
       currentCells.forEach(cell => {
         cell.classList.add('active-spin');
         cell.textContent = formatByMode(randomNum(digits));
       });
 
-      // Số nhảy từ từ, nhịp nhàng mỗi 220ms
       animInterval = setInterval(() => {
         currentCells.forEach(cell => {
           cell.textContent = formatByMode(randomNum(digits));
         });
       }, TICK_SPEED_MS);
 
-      // Chốt kết quả của hàng sau 1.55 giây
       spinTimeout = setTimeout(() => {
         clearInterval(animInterval);
         currentCells.forEach(cell => {
@@ -500,13 +527,14 @@
           cell.classList.remove('active-spin');
         });
 
-        // Nghỉ nhẹ 0.25 giây trước khi chuyển xuống hàng kế tiếp
         pauseTimeout = setTimeout(() => {
           runStep(step + 1);
         }, STEP_PAUSE_MS);
       }, STEP_SPIN_MS);
     }
 
+    // Khởi chạy ứng dụng
+    initDaySelector();
     initTable();
   </script>
 </body>
