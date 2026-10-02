@@ -13,42 +13,45 @@
       user-select: none;
     }
 
-    body {
-      background-color: #f5f5f5;
-      height: 100dvh;
-      width: 100vw;
+    /* Khóa chặt khung nhìn trong màn hình thực tế, chống tràn đáy */
+    html, body {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
 
-    /* Thanh tiêu đề trên cùng */
+    /* Thanh tiêu đề trên cùng (Thu gọn) */
     .app-bar {
       background-color: #0b4a92;
       color: #fff;
       display: flex;
       align-items: center;
-      padding: 0 12px;
-      height: 40px;
+      padding: 0 10px;
+      height: 32px;
       flex-shrink: 0;
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 600;
     }
 
     .app-bar .back-btn {
-      margin-right: 14px;
-      font-size: 18px;
+      margin-right: 12px;
+      font-size: 17px;
       cursor: pointer;
     }
 
-    /* Thanh chọn đài & nút Quay thử */
+    /* Thanh chọn đài & nút Quay thử (Thu gọn) */
     .control-bar {
       background-color: #ebebeb;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 5px 10px;
-      height: 42px;
+      padding: 3px 8px;
+      height: 34px;
       flex-shrink: 0;
       border-bottom: 1px solid #dcdcdc;
     }
@@ -57,10 +60,11 @@
       background: #fff;
       border: 1px solid #ccc;
       border-radius: 4px;
-      padding: 4px 8px;
-      font-size: 14px;
-      width: 55%;
-      color: #333;
+      padding: 3px 6px;
+      font-size: 13px;
+      font-weight: 500;
+      width: 62%;
+      color: #222;
       outline: none;
     }
 
@@ -69,80 +73,86 @@
       color: #fff;
       border: none;
       border-radius: 4px;
-      padding: 6px 18px;
-      font-size: 14px;
-      font-weight: bold;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      min-width: 115px;
+      min-width: 100px;
       text-align: center;
-      transition: background 0.2s;
     }
 
     .btn-spin.spinning {
-      background-color: #e0530c;
+      background-color: #d9430f;
     }
 
-    /* Tiêu đề chính */
+    /* Tiêu đề chính (Thu gọn khoảng trống) */
     .title-area {
       background-color: #fff;
       text-align: center;
-      padding: 4px 0;
-      border-bottom: 1px solid #e0e0e0;
+      padding: 2px 0;
+      border-bottom: 1px solid #ddd;
       flex-shrink: 0;
     }
 
     .title-area h1 {
       color: #d32f2f;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1.15;
     }
 
     .title-area p {
-      color: #555;
-      font-size: 11.5px;
-      margin-top: 1px;
+      color: #666;
+      font-size: 10.5px;
+      line-height: 1.1;
     }
 
-    /* Bảng kết quả (co giãn tự động vừa màn hình) */
+    /* Bảng kết quả (Tự động co giãn khít 100% chiều cao còn lại) */
     .table-wrapper {
       flex: 1;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       background: #fff;
-      overflow: hidden;
     }
 
     .table-header {
       display: flex;
-      background-color: #fafafa;
-      border-bottom: 1px solid #ddd;
-      height: 28px;
+      background-color: #f5f5f5;
+      border-bottom: 1px solid #ccc;
+      height: 24px;
       flex-shrink: 0;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 13px;
-      color: #222;
+      color: #111;
     }
 
     .col-giai {
-      width: 12%;
+      width: 10%;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-right: 1px solid #e5e5e5;
+      border-right: 1px solid #e0e0e0;
       font-size: 13px;
+      font-weight: 600;
       color: #333;
-      background-color: #f7f7f7;
+      background-color: #fafafa;
+      flex-shrink: 0;
     }
 
     .col-station {
-      width: 29.333%;
+      flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-right: 1px solid #e5e5e5;
+      border-right: 1px solid #e0e0e0;
       text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding: 0 2px;
     }
 
     .col-station:last-child {
@@ -151,78 +161,96 @@
 
     .table-body {
       flex: 1;
+      min-height: 0;
       display: flex;
       flex-direction: column;
     }
 
     .prize-row {
       display: flex;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e0e0e0;
       width: 100%;
+      min-height: 0;
     }
 
-    /* Chia tỷ lệ chiều cao theo đúng số lượng hàng của từng giải (tổng 18 lô) */
-    .row-g8 { flex: 1; }
+    /* Chia tỷ lệ chiều cao ngắn gọn, ưu tiên Giải 8 và ĐB rõ ràng */
+    .row-g8 { flex: 1.05; }
     .row-g7 { flex: 1; }
-    .row-g6 { flex: 3; }
+    .row-g6 { flex: 2.85; }
     .row-g5 { flex: 1; }
-    .row-g4 { flex: 7; }
-    .row-g3 { flex: 2; }
+    .row-g4 { flex: 6.4; }
+    .row-g3 { flex: 1.9; }
     .row-g2 { flex: 1; }
     .row-g1 { flex: 1; }
     .row-db { flex: 1.15; border-bottom: none; }
 
-    /* Ô chứa từng con số */
+    /* Ô chứa con số: Chữ to và đậm hơn */
     .num-cell {
       flex: 1;
+      min-height: 0;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(12px, 2.2vh, 17px);
+      font-size: clamp(15px, 2.55vh, 21px);
       font-weight: 700;
       color: #111;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       line-height: 1;
     }
 
-    /* Màu chữ đỏ cho Giải 8 và Giải Đặc Biệt */
+    /* Khi hiển thị 4 đài (Thứ 7), tự động cân chỉnh cỡ chữ vừa cột */
+    .mode-4-cols .num-cell {
+      font-size: clamp(13.5px, 2.3vh, 18px);
+      letter-spacing: 0px;
+    }
+    .mode-4-cols .table-header {
+      font-size: 12px;
+    }
+
+    /* Chữ đỏ nổi bật cho Giải 8 và Giải Đặc Biệt */
     .row-g8 .num-cell,
     .row-db .num-cell,
     .row-db .col-giai {
       color: #d32f2f;
+      font-size: clamp(16px, 2.7vh, 22px);
     }
 
-    /* Hiệu ứng nền vàng khi đang quay tới hàng đó */
+    .mode-4-cols .row-db .num-cell {
+      font-size: clamp(14px, 2.4vh, 19px);
+    }
+
+    /* Hiệu ứng nền vàng khi đang quay */
     .num-cell.active-spin {
       background-color: #fff176;
     }
 
-    /* Thanh lọc chế độ xem (Đầy đủ / 2 Số / 3 Số) */
+    /* Thanh lọc chế độ xem (Đầy đủ / 2 Số / 3 Số) luôn nằm gọn ở đáy */
     .footer-bar {
-      background-color: #fff;
+      background-color: #f9f9f9;
       border-top: 1px solid #ccc;
-      height: 36px;
+      height: 30px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-around;
-      padding: 0 15px;
-      font-size: 13.5px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 500;
       color: #222;
     }
 
     .radio-label {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
     }
 
     .radio-label input[type="radio"] {
       accent-color: #0b4a92;
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       cursor: pointer;
     }
   </style>
@@ -238,13 +266,14 @@
   <!-- Thanh điều khiển -->
   <div class="control-bar">
     <select id="daySelect" class="station-select" onchange="changeDay()">
-      <option value="t6">Miền Nam (Vĩnh Long, Bình Dương, Trà Vinh)</option>
+      <option value="t6">Thứ 6 (Vĩnh Long, Bình Dương, Trà Vinh)</option>
+      <option value="t7_3">Thứ 7 (TP.HCM, Long An, Hậu Giang)</option>
+      <option value="t7_4">Thứ 7 - 4 Đài (HCM, Long An, B.Phước, Hậu Giang)</option>
+      <option value="cn">Chủ Nhật (Tiền Giang, Kiên Giang, Đà Lạt)</option>
       <option value="t2">Thứ 2 (TP.HCM, Đồng Tháp, Cà Mau)</option>
       <option value="t3">Thứ 3 (Bến Tre, Vũng Tàu, Bạc Liêu)</option>
       <option value="t4">Thứ 4 (Đồng Nai, Cần Thơ, Sóc Trăng)</option>
       <option value="t5">Thứ 5 (Tây Ninh, An Giang, Bình Thuận)</option>
-      <option value="t7">Thứ 7 (TP.HCM, Long An, Bình Phước)</option>
-      <option value="cn">Chủ Nhật (Tiền Giang, Kiên Giang, Đà Lạt)</option>
     </select>
     <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
   </div>
@@ -255,16 +284,13 @@
     <p>Thông tin chỉ mang tính tham khảo</p>
   </div>
 
-  <!-- Bảng kết quả 3 đài -->
-  <div class="table-wrapper">
-    <div class="table-header">
-      <div class="col-giai">Giải</div>
-      <div class="col-station" id="st-0">Vĩnh Long</div>
-      <div class="col-station" id="st-1">Bình Dương</div>
-      <div class="col-station" id="st-2">Trà Vinh</div>
+  <!-- Bảng kết quả -->
+  <div class="table-wrapper" id="tableWrapper">
+    <div class="table-header" id="tableHeader">
+      <!-- Tiêu đề đài được tạo tự động -->
     </div>
     <div class="table-body" id="tableBody">
-      <!-- Dữ liệu các giải sẽ được khởi tạo bằng JS -->
+      <!-- Các hàng giải được tạo tự động -->
     </div>
   </div>
 
@@ -282,7 +308,6 @@
   </div>
 
   <script>
-    // Cấu hình các giải Xổ Số Miền Nam (từ Giải 8 đến Đặc Biệt)
     const prizeConfig = [
       { label: '8', class: 'row-g8', count: 1, digits: 2 },
       { label: '7', class: 'row-g7', count: 1, digits: 3 },
@@ -297,22 +322,43 @@
 
     const stationSchedules = {
       t6: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'],
+      t7_3: ['TP.HCM', 'Long An', 'Hậu Giang'],
+      t7_4: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang'],
+      cn: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'],
       t2: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'],
       t3: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'],
       t4: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'],
-      t5: ['Tây Ninh', 'An Giang', 'Bình Thuận'],
-      t7: ['TP.HCM', 'Long An', 'Bình Phước'],
-      cn: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt']
+      t5: ['Tây Ninh', 'An Giang', 'Bình Thuận']
     };
 
+    let currentStations = stationSchedules.t6;
     let isSpinning = false;
     let spinTimeout = null;
     let animInterval = null;
-    let totalSteps = 0; // Tổng 18 hàng từ trên xuống dưới
+    let totalSteps = 0;
 
-    // Tạo bảng HTML
     function initTable() {
+      const wrapper = document.getElementById('tableWrapper');
+      const thead = document.getElementById('tableHeader');
       const tbody = document.getElementById('tableBody');
+
+      // Tự động chỉnh class nếu là 4 đài Thứ 7
+      if (currentStations.length === 4) {
+        wrapper.classList.add('mode-4-cols');
+      } else {
+        wrapper.classList.remove('mode-4-cols');
+      }
+
+      // Tạo Header tên đài
+      thead.innerHTML = '<div class="col-giai">Giải</div>';
+      currentStations.forEach((stName) => {
+        const div = document.createElement('div');
+        div.className = 'col-station';
+        div.textContent = stName;
+        thead.appendChild(div);
+      });
+
+      // Tạo các hàng giải
       tbody.innerHTML = '';
       let stepIndex = 0;
 
@@ -320,14 +366,12 @@
         const row = document.createElement('div');
         row.className = `prize-row ${prize.class}`;
 
-        // Cột tên giải
         const colGiai = document.createElement('div');
         colGiai.className = 'col-giai';
         colGiai.textContent = prize.label;
         row.appendChild(colGiai);
 
-        // 3 cột cho 3 đài
-        for (let s = 0; s < 3; s++) {
+        for (let s = 0; s < currentStations.length; s++) {
           const colSt = document.createElement('div');
           colSt.className = 'col-station';
 
@@ -347,10 +391,9 @@
         tbody.appendChild(row);
       });
 
-      totalSteps = stepIndex; // 18 bước
+      totalSteps = stepIndex;
     }
 
-    // Sinh số ngẫu nhiên theo độ dài chữ số
     function randomNum(digits) {
       let res = '';
       for (let i = 0; i < digits; i++) {
@@ -359,7 +402,6 @@
       return res;
     }
 
-    // Hiển thị số theo chế độ Đầy đủ / 2 Số / 3 Số
     function formatByMode(val) {
       if (!val) return '•••';
       const mode = document.querySelector('input[name="viewMode"]:checked').value;
@@ -369,36 +411,28 @@
     }
 
     function updateDisplayMode() {
-      const cells = document.querySelectorAll('.num-cell');
-      cells.forEach(cell => {
+      document.querySelectorAll('.num-cell').forEach(cell => {
         if (cell.dataset.fullval) {
           cell.textContent = formatByMode(cell.dataset.fullval);
         }
       });
     }
 
-    // Đổi lịch đài
     function changeDay() {
       if (isSpinning) stopSpin();
       const val = document.getElementById('daySelect').value;
-      const names = stationSchedules[val];
-      for (let i = 0; i < 3; i++) {
-        document.getElementById(`st-${i}`).textContent = names[i];
-      }
-      resetBoard();
+      currentStations = stationSchedules[val];
+      initTable();
     }
 
-    // Đặt lại toàn bộ bảng về dấu ba chấm
     function resetBoard() {
-      const cells = document.querySelectorAll('.num-cell');
-      cells.forEach(cell => {
+      document.querySelectorAll('.num-cell').forEach(cell => {
         cell.classList.remove('active-spin');
         cell.dataset.fullval = '';
         cell.textContent = '•••';
       });
     }
 
-    // Bật / Tắt quay thử
     function toggleSpin() {
       if (isSpinning) {
         stopSpin();
@@ -423,40 +457,31 @@
       const btn = document.getElementById('spinBtn');
       btn.textContent = 'QUAY THỬ';
       btn.classList.remove('spinning');
-
-      // Xóa nền vàng ở các ô đang quay dở
       document.querySelectorAll('.num-cell.active-spin').forEach(c => {
         c.classList.remove('active-spin');
       });
     }
 
-    // Quay lần lượt từng hàng của cả 3 đài cùng lúc (giống trong video)
     function runStep(step) {
       if (!isSpinning || step >= totalSteps) {
         stopSpin();
         return;
       }
 
-      const currentCells = [
-        document.getElementById(`cell-s0-step${step}`),
-        document.getElementById(`cell-s1-step${step}`),
-        document.getElementById(`cell-s2-step${step}`)
-      ];
+      const currentCells = [];
+      for (let s = 0; s < currentStations.length; s++) {
+        currentCells.push(document.getElementById(`cell-s${s}-step${step}`));
+      }
 
       const digits = parseInt(currentCells[0].dataset.digits, 10);
-
-      // Bật nền vàng cho hàng đang quay
       currentCells.forEach(cell => cell.classList.add('active-spin'));
 
-      // Hiệu ứng nhảy số liên tục trước khi chốt
       animInterval = setInterval(() => {
         currentCells.forEach(cell => {
-          const tempVal = randomNum(digits);
-          cell.textContent = formatByMode(tempVal);
+          cell.textContent = formatByMode(randomNum(digits));
         });
       }, 60);
 
-      // Chốt kết quả của hàng hiện tại sau 900ms và chuyển sang hàng kế tiếp
       spinTimeout = setTimeout(() => {
         clearInterval(animInterval);
         currentCells.forEach(cell => {
@@ -466,10 +491,9 @@
           cell.classList.remove('active-spin');
         });
         runStep(step + 1);
-      }, 900);
+      }, 850);
     }
 
-    // Khởi tạo bảng khi tải trang
     initTable();
   </script>
 </body>
