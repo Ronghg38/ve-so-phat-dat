@@ -31,11 +31,17 @@
       color: #fff;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 10px;
       height: 32px;
       flex-shrink: 0;
       font-size: 15px;
       font-weight: 600;
+    }
+
+    .app-bar-left {
+      display: flex;
+      align-items: center;
     }
 
     .app-bar .back-btn {
@@ -44,13 +50,44 @@
       cursor: pointer;
     }
 
-    /* Thanh chọn đài & nút Quay thử */
+    /* Đèn báo đang ghi hình video */
+    .rec-badge {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 2px 8px;
+      border-radius: 10px;
+      color: #ffeb3b;
+      font-weight: 600;
+    }
+
+    .rec-badge.recording {
+      display: flex;
+    }
+
+    .rec-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #ff1744;
+      border-radius: 50%;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    /* Thanh chọn đài & nút Quay thử + Tải video */
     .control-bar {
       background-color: #ebebeb;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 3px 8px;
+      gap: 5px;
+      padding: 3px 6px;
       height: 34px;
       flex-shrink: 0;
       border-bottom: 1px solid #dcdcdc;
@@ -60,12 +97,19 @@
       background: #fff;
       border: 1px solid #ccc;
       border-radius: 4px;
-      padding: 3px 6px;
-      font-size: 13px;
+      padding: 3px 4px;
+      font-size: 12.5px;
       font-weight: 600;
-      width: 64%;
+      flex: 1;
+      min-width: 0;
       color: #0b4a92;
       outline: none;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
     }
 
     .btn-spin {
@@ -73,16 +117,36 @@
       color: #fff;
       border: none;
       border-radius: 4px;
-      padding: 4px 12px;
-      font-size: 13px;
+      padding: 4px 10px;
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
-      min-width: 100px;
+      min-width: 86px;
       text-align: center;
     }
 
     .btn-spin.spinning {
       background-color: #d9430f;
+    }
+
+    .btn-download {
+      display: none;
+      background-color: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .btn-download.ready {
+      display: inline-flex;
     }
 
     /* Tiêu đề chính */
@@ -259,8 +323,14 @@
 
   <!-- Thanh tiêu đề -->
   <div class="app-bar">
-    <span class="back-btn">&#8592;</span>
-    <span>Quay thử</span>
+    <div class="app-bar-left">
+      <span class="back-btn">&#8592;</span>
+      <span>Quay thử</span>
+    </div>
+    <div id="recBadge" class="rec-badge">
+      <span class="rec-dot"></span>
+      <span>ĐANG GHI VIDEO</span>
+    </div>
   </div>
 
   <!-- Thanh điều khiển -->
@@ -268,7 +338,10 @@
     <select id="daySelect" class="station-select" onchange="changeDay()">
       <!-- Danh sách Hôm nay / Ngày mai và các thứ được tạo tự động -->
     </select>
-    <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
+    <div class="btn-group">
+      <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
+      <a id="downloadBtn" class="btn-download" href="#" download="quay-thu-xsmn.webm">⬇ TẢI VIDEO</a>
+    </div>
   </div>
 
   <!-- Tiêu đề bảng -->
@@ -296,6 +369,9 @@
     </label>
   </div>
 
+  <!-- Canvas ẩn dùng để xuất video chất lượng cao -->
+  <canvas id="videoCanvas" width="720" height="1280" style="display:none;"></canvas>
+
   <script>
     const prizeConfig = [
       { label: '8', class: 'row-g8', count: 1, digits: 2 },
@@ -309,7 +385,6 @@
       { label: 'ĐB', class: 'row-db', count: 1, digits: 6 }
     ];
 
-    // Dữ liệu lịch quay theo getDay() của JavaScript (0: Chủ Nhật -> 6: Thứ 7)
     const scheduleByDayIndex = {
       0: { name: 'Chủ Nhật', stations: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'] },
       1: { name: 'Thứ 2', stations: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'] },
@@ -322,6 +397,7 @@
 
     let currentStations = [];
     let isSpinning = false;
+    let activeStep = -1;
     let spinTimeout = null;
     let pauseTimeout = null;
     let animInterval = null;
@@ -332,7 +408,12 @@
     const STEP_SPIN_MS = 1550;    // Thời gian quay 1 hàng: 1.55 giây
     const STEP_PAUSE_MS = 250;    // Nghỉ 0.25 giây trước khi xuống hàng tiếp theo
 
-    // Khởi tạo danh sách chọn ngày (Tự động nhận diện Hôm nay & Ngày mai)
+    // BIẾN GHI VIDEO
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let renderLoopId = null;
+    let currentVideoUrl = null;
+
     function initDaySelector() {
       const select = document.getElementById('daySelect');
       select.innerHTML = '';
@@ -341,11 +422,9 @@
       const todayIdx = now.getDay();
       const tomorrowIdx = (todayIdx + 1) % 7;
 
-      // Kiểm tra nếu đã qua 16h35 chiều thì ưu tiên chọn sẵn Ngày mai
       const currentMinutes = now.getHours() * 60 + now.getMinutes();
       const isAfterDraw = currentMinutes >= (16 * 60 + 35);
 
-      // Đưa Hôm nay và Ngày mai lên đầu danh sách để dễ chọn nhất
       const orderedIndices = [todayIdx, tomorrowIdx];
       for (let i = 0; i < 7; i++) {
         if (i !== todayIdx && i !== tomorrowIdx) {
@@ -366,7 +445,6 @@
         select.appendChild(opt);
       });
 
-      // Tự động chọn Ngày mai nếu đã qua giờ xổ, ngược lại chọn Hôm nay
       select.value = isAfterDraw ? tomorrowIdx : todayIdx;
       currentStations = scheduleByDayIndex[select.value].stations;
     }
@@ -450,9 +528,10 @@
     }
 
     function changeDay() {
-      if (isSpinning) stopSpin();
+      if (isSpinning) stopSpin(false);
       const val = document.getElementById('daySelect').value;
       currentStations = scheduleByDayIndex[val].stations;
+      document.getElementById('downloadBtn').classList.remove('ready');
       initTable();
     }
 
@@ -464,9 +543,281 @@
       });
     }
 
+    // ================= TÍNH NĂNG VẼ & GHI VIDEO TỰ ĐỘNG =================
+    function drawVideoFrame() {
+      const canvas = document.getElementById('videoCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // Nền trắng toàn màn hình
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      // 1. Vẽ Thanh App Bar trên cùng
+      ctx.fillStyle = '#0b4a92';
+      ctx.fillRect(0, 0, W, 62);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 28px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('←   Quay thử', 24, 31);
+
+      // 2. Vẽ Thanh điều khiển
+      ctx.fillStyle = '#ebebeb';
+      ctx.fillRect(0, 62, W, 66);
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#cccccc';
+      ctx.lineWidth = 2;
+      ctx.fillRect(16, 72, 460, 46);
+      ctx.strokeRect(16, 72, 460, 46);
+
+      const sel = document.getElementById('daySelect');
+      const dayText = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text.replace(/\[.*?\]\s*/, '') : '';
+      ctx.fillStyle = '#222222';
+      ctx.font = '600 22px sans-serif';
+      ctx.fillText(dayText.substring(0, 28), 28, 95);
+
+      // Nút DỪNG / QUAY THỬ trong video
+      ctx.fillStyle = isSpinning ? '#d9430f' : '#f37021';
+      ctx.fillRect(496, 72, 208, 46);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 23px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(isSpinning ? 'DỪNG' : 'QUAY THỬ', 600, 95);
+
+      // 3. Vẽ Tiêu đề Tham khảo Xổ Số miền Nam
+      ctx.fillStyle = '#d32f2f';
+      ctx.font = 'bold 29px sans-serif';
+      ctx.fillText('Tham khảo Xổ Số miền Nam', W / 2, 152);
+      ctx.fillStyle = '#666666';
+      ctx.font = '21px sans-serif';
+      ctx.fillText('Thông tin chỉ mang tính tham khảo', W / 2, 180);
+
+      ctx.strokeStyle = '#dddddd';
+      ctx.beginPath();
+      ctx.moveTo(0, 196);
+      ctx.lineTo(W, 196);
+      ctx.stroke();
+
+      // 4. Vẽ Header Bảng (Giải + Tên các đài)
+      const headerY = 196;
+      const headerH = 46;
+      ctx.fillStyle = '#f5f5f5';
+      ctx.fillRect(0, headerY, W, headerH);
+
+      const giaiW = W * 0.11;
+      const numStations = currentStations.length;
+      const stW = (W - giaiW) / numStations;
+
+      ctx.fillStyle = '#111111';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillText('Giải', giaiW / 2, headerY + headerH / 2);
+
+      currentStations.forEach((st, i) => {
+        ctx.fillText(st, giaiW + i * stW + stW / 2, headerY + headerH / 2);
+      });
+
+      ctx.strokeStyle = '#cccccc';
+      ctx.beginPath();
+      ctx.moveTo(0, headerY + headerH);
+      ctx.lineTo(W, headerY + headerH);
+      ctx.stroke();
+
+      // 5. Vẽ 18 hàng số từ Giải 8 đến Giải ĐB
+      const bodyTop = headerY + headerH;
+      const footerH = 56;
+      const bodyH = H - bodyTop - footerH;
+      const stepH = bodyH / 18;
+
+      let stepIdx = 0;
+      prizeConfig.forEach(prize => {
+        const rowTop = bodyTop + stepIdx * stepH;
+        const rowH = prize.count * stepH;
+
+        // Nền cột Giải
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(0, rowTop, giaiW, rowH);
+
+        // Chữ cột Giải
+        ctx.fillStyle = (prize.label === 'ĐB') ? '#d32f2f' : '#333333';
+        ctx.font = 'bold 24px sans-serif';
+        ctx.fillText(prize.label, giaiW / 2, rowTop + rowH / 2);
+
+        // Vẽ từng hàng số của từng đài
+        for (let c = 0; c < prize.count; c++) {
+          const curStep = stepIdx + c;
+          const cellTop = rowTop + c * stepH;
+
+          // Nền vàng nếu đang quay tới hàng này
+          if (curStep === activeStep) {
+            ctx.fillStyle = '#fff176';
+            ctx.fillRect(giaiW, cellTop, W - giaiW, stepH);
+          }
+
+          for (let s = 0; s < numStations; s++) {
+            const domCell = document.getElementById(`cell-s${s}-step${curStep}`);
+            const textVal = domCell ? domCell.textContent : '•••';
+            const cellX = giaiW + s * stW + stW / 2;
+            const cellY = cellTop + stepH / 2;
+
+            if (prize.label === '8' || prize.label === 'ĐB') {
+              ctx.fillStyle = '#d32f2f';
+              ctx.font = numStations === 4 ? 'bold 31px sans-serif' : 'bold 36px sans-serif';
+            } else {
+              ctx.fillStyle = '#111111';
+              ctx.font = numStations === 4 ? 'bold 29px sans-serif' : 'bold 33px sans-serif';
+            }
+            ctx.fillText(textVal, cellX, cellY);
+          }
+        }
+
+        // Đường kẻ ngang phân cách giải
+        ctx.strokeStyle = '#dcdcdc';
+        ctx.beginPath();
+        ctx.moveTo(0, rowTop + rowH);
+        ctx.lineTo(W, rowTop + rowH);
+        ctx.stroke();
+
+        stepIdx += prize.count;
+      });
+
+      // Đường kẻ dọc phân cách các cột đài
+      ctx.strokeStyle = '#dcdcdc';
+      ctx.beginPath();
+      ctx.moveTo(giaiW, headerY);
+      ctx.lineTo(giaiW, H - footerH);
+      for (let s = 1; s < numStations; s++) {
+        const x = giaiW + s * stW;
+        ctx.moveTo(x, headerY);
+        ctx.lineTo(x, H - footerH);
+      }
+      ctx.stroke();
+
+      // 6. Vẽ Thanh Footer (Đầy đủ / 2 Số / 3 Số)
+      const footerTop = H - footerH;
+      ctx.fillStyle = '#f9f9f9';
+      ctx.fillRect(0, footerTop, W, footerH);
+      ctx.strokeStyle = '#cccccc';
+      ctx.beginPath();
+      ctx.moveTo(0, footerTop);
+      ctx.lineTo(W, footerTop);
+      ctx.stroke();
+
+      const mode = document.querySelector('input[name="viewMode"]:checked').value;
+      const opts = [
+        { k: 'all', l: 'Đầy đủ', x: W * 0.2 },
+        { k: '2', l: '2 Số', x: W * 0.5 },
+        { k: '3', l: '3 Số', x: W * 0.8 }
+      ];
+
+      opts.forEach(o => {
+        const cy = footerTop + footerH / 2;
+        ctx.strokeStyle = '#0b4a92';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(o.x - 45, cy, 11, 0, Math.PI * 2);
+        ctx.stroke();
+
+        if (mode === o.k) {
+          ctx.fillStyle = '#0b4a92';
+          ctx.beginPath();
+          ctx.arc(o.x - 45, cy, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = '#222222';
+        ctx.font = '500 23px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(o.l, o.x - 26, cy);
+      });
+    }
+
+    function startVideoRecording() {
+      const canvas = document.getElementById('videoCanvas');
+      if (!canvas.captureStream || typeof MediaRecorder === 'undefined') return;
+
+      const dlBtn = document.getElementById('downloadBtn');
+      dlBtn.classList.remove('ready');
+      if (currentVideoUrl) {
+        URL.revokeObjectURL(currentVideoUrl);
+        currentVideoUrl = null;
+      }
+
+      drawVideoFrame();
+      const stream = canvas.captureStream(30); // 30 FPS mượt mà
+      recordedChunks = [];
+
+      // Ưu tiên định dạng MP4 hoặc WebM tùy thiết bị hỗ trợ
+      const mimeTypes = [
+        'video/mp4',
+        'video/webm;codecs=vp9',
+        'video/webm;codecs=vp8',
+        'video/webm'
+      ];
+      let selectedMime = '';
+      for (const m of mimeTypes) {
+        if (MediaRecorder.isTypeSupported(m)) {
+          selectedMime = m;
+          break;
+        }
+      }
+
+      try {
+        mediaRecorder = selectedMime
+          ? new MediaRecorder(stream, { mimeType: selectedMime, videoBitsPerSecond: 2500000 })
+          : new MediaRecorder(stream);
+      } catch (e) {
+        return;
+      }
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) {
+          recordedChunks.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: selectedMime || 'video/webm' });
+        currentVideoUrl = URL.createObjectURL(blob);
+        const ext = (selectedMime && selectedMime.includes('mp4')) ? 'mp4' : 'webm';
+        const fileName = `quay-thu-xsmn-${Date.now()}.${ext}`;
+
+        dlBtn.href = currentVideoUrl;
+        dlBtn.download = fileName;
+        dlBtn.classList.add('ready');
+
+        // Tự động tải video về máy khi quay xong
+        dlBtn.click();
+      };
+
+      mediaRecorder.start(200);
+      document.getElementById('recBadge').classList.add('recording');
+
+      function loop() {
+        drawVideoFrame();
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+          renderLoopId = requestAnimationFrame(loop);
+        }
+      }
+      loop();
+    }
+
+    function stopVideoRecording() {
+      document.getElementById('recBadge').classList.remove('recording');
+      if (renderLoopId) {
+        cancelAnimationFrame(renderLoopId);
+        renderLoopId = null;
+      }
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+      }
+    }
+    // =====================================================================
+
     function toggleSpin() {
       if (isSpinning) {
-        stopSpin();
+        stopSpin(true);
       } else {
         startSpin();
       }
@@ -474,15 +825,18 @@
 
     function startSpin() {
       isSpinning = true;
+      activeStep = 0;
       const btn = document.getElementById('spinBtn');
       btn.textContent = 'DỪNG';
       btn.classList.add('spinning');
       resetBoard();
+      startVideoRecording();
       runStep(0);
     }
 
-    function stopSpin() {
+    function stopSpin(saveVideo = true) {
       isSpinning = false;
+      activeStep = -1;
       clearTimeout(spinTimeout);
       clearTimeout(pauseTimeout);
       clearInterval(animInterval);
@@ -492,14 +846,25 @@
       document.querySelectorAll('.num-cell.active-spin').forEach(c => {
         c.classList.remove('active-spin');
       });
+
+      if (saveVideo) {
+        // Vẽ thêm 1.5 giây bảng kết quả cuối cùng vào video trước khi xuất file
+        drawVideoFrame();
+        setTimeout(() => {
+          stopVideoRecording();
+        }, 1500);
+      } else {
+        stopVideoRecording();
+      }
     }
 
     function runStep(step) {
       if (!isSpinning || step >= totalSteps) {
-        stopSpin();
+        stopSpin(true);
         return;
       }
 
+      activeStep = step;
       const currentCells = [];
       for (let s = 0; s < currentStations.length; s++) {
         currentCells.push(document.getElementById(`cell-s${s}-step${step}`));
@@ -526,6 +891,7 @@
           cell.textContent = formatByMode(finalVal);
           cell.classList.remove('active-spin');
         });
+        activeStep = -1;
 
         pauseTimeout = setTimeout(() => {
           runStep(step + 1);
