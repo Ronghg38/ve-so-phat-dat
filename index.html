@@ -13,7 +13,6 @@
       user-select: none;
     }
 
-    /* Khóa chặt khung nhìn trong màn hình thực tế, chống tràn đáy */
     html, body {
       position: fixed;
       inset: 0;
@@ -56,7 +55,7 @@
       align-items: center;
       gap: 5px;
       font-size: 11px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.18);
       padding: 2px 8px;
       border-radius: 10px;
       color: #ffeb3b;
@@ -121,7 +120,7 @@
       font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
-      min-width: 86px;
+      min-width: 84px;
       text-align: center;
     }
 
@@ -139,7 +138,6 @@
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      text-decoration: none;
       align-items: center;
       justify-content: center;
       white-space: nowrap;
@@ -237,7 +235,6 @@
       min-height: 0;
     }
 
-    /* Chia tỷ lệ chiều cao ngắn gọn, ưu tiên Giải 8 và ĐB rõ ràng */
     .row-g8 { flex: 1.05; }
     .row-g7 { flex: 1; }
     .row-g6 { flex: 2.85; }
@@ -248,7 +245,6 @@
     .row-g1 { flex: 1; }
     .row-db { flex: 1.15; border-bottom: none; }
 
-    /* Ô chứa con số: Chữ to và đậm */
     .num-cell {
       flex: 1;
       min-height: 0;
@@ -263,7 +259,6 @@
       line-height: 1;
     }
 
-    /* Khi hiển thị 4 đài (Thứ 7), tự động cân chỉnh cỡ chữ vừa cột */
     .mode-4-cols .num-cell {
       font-size: clamp(13.5px, 2.3vh, 18px);
       letter-spacing: 0px;
@@ -272,7 +267,6 @@
       font-size: 12px;
     }
 
-    /* Chữ đỏ nổi bật cho Giải 8 và Giải Đặc Biệt */
     .row-g8 .num-cell,
     .row-db .num-cell,
     .row-db .col-giai {
@@ -284,12 +278,11 @@
       font-size: clamp(14px, 2.4vh, 19px);
     }
 
-    /* Hiệu ứng nền vàng khi đang quay */
     .num-cell.active-spin {
       background-color: #fff176;
     }
 
-    /* Thanh lọc chế độ xem (Đầy đủ / 2 Số / 3 Số) */
+    /* Thanh lọc chế độ xem */
     .footer-bar {
       background-color: #f9f9f9;
       border-top: 1px solid #ccc;
@@ -317,6 +310,75 @@
       height: 15px;
       cursor: pointer;
     }
+
+    /* Hộp thoại Lưu Video hiện lên sau khi quay xong */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px 16px;
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    .modal-box h3 {
+      color: #0b4a92;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .modal-box p {
+      color: #444;
+      font-size: 13px;
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-save-main {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 11px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-close-modal {
+      background: #e0e0e0;
+      color: #333;
+      border: none;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -329,18 +391,16 @@
     </div>
     <div id="recBadge" class="rec-badge">
       <span class="rec-dot"></span>
-      <span>ĐANG GHI VIDEO</span>
+      <span>ĐANG GHI HÌNH</span>
     </div>
   </div>
 
   <!-- Thanh điều khiển -->
   <div class="control-bar">
-    <select id="daySelect" class="station-select" onchange="changeDay()">
-      <!-- Danh sách Hôm nay / Ngày mai và các thứ được tạo tự động -->
-    </select>
+    <select id="daySelect" class="station-select" onchange="changeDay()"></select>
     <div class="btn-group">
       <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
-      <a id="downloadBtn" class="btn-download" href="#" download="quay-thu-xsmn.webm">⬇ TẢI VIDEO</a>
+      <button id="downloadBtn" class="btn-download" onclick="saveVideoToDevice()">⬇ LƯU VIDEO</button>
     </div>
   </div>
 
@@ -367,6 +427,18 @@
     <label class="radio-label">
       <input type="radio" name="viewMode" value="3" onchange="updateDisplayMode()"> 3 Số
     </label>
+  </div>
+
+  <!-- Hộp thoại thông báo tải video khi quay xong -->
+  <div id="videoModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Đã quay xong kết quả!</h3>
+      <p>Video quay thử 30 giây đã sẵn sàng. Bấm nút bên dưới để lưu về điện thoại:</p>
+      <div class="modal-actions">
+        <button class="btn-save-main" onclick="saveVideoToDevice()">⬇ LƯU / TẢI VIDEO VỀ MÁY</button>
+        <button class="btn-close-modal" onclick="closeModal()">Đóng (Xem bảng số)</button>
+      </div>
+    </div>
   </div>
 
   <!-- Canvas ẩn dùng để xuất video chất lượng cao -->
@@ -403,16 +475,17 @@
     let animInterval = null;
     let totalSteps = 0;
 
-    // CẤU HÌNH TỐC ĐỘ CHẬM TỪ TỪ (~32 giây cho 18 hàng):
-    const TICK_SPEED_MS = 220;    // Tốc độ nhảy từng con số: 220ms
-    const STEP_SPIN_MS = 1550;    // Thời gian quay 1 hàng: 1.55 giây
-    const STEP_PAUSE_MS = 250;    // Nghỉ 0.25 giây trước khi xuống hàng tiếp theo
+    // TỐC ĐỘ CHẬM TỪ TỪ (~32 giây cho 18 hàng)
+    const TICK_SPEED_MS = 220;
+    const STEP_SPIN_MS = 1550;
+    const STEP_PAUSE_MS = 250;
 
-    // BIẾN GHI VIDEO
+    // BIẾN LƯU VIDEO
     let mediaRecorder = null;
     let recordedChunks = [];
     let renderLoopId = null;
-    let currentVideoUrl = null;
+    let lastVideoBlob = null;
+    let lastVideoExt = 'mp4';
 
     function initDaySelector() {
       const select = document.getElementById('daySelect');
@@ -543,18 +616,21 @@
       });
     }
 
-    // ================= TÍNH NĂNG VẼ & GHI VIDEO TỰ ĐỘNG =================
+    function closeModal() {
+      document.getElementById('videoModal').classList.remove('show');
+    }
+
+    // ================= VẼ KHUNG HÌNH & LƯU VIDEO VỀ ĐIỆN THOẠI =================
     function drawVideoFrame() {
       const canvas = document.getElementById('videoCanvas');
       const ctx = canvas.getContext('2d');
       const W = canvas.width;
       const H = canvas.height;
 
-      // Nền trắng toàn màn hình
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, W, H);
 
-      // 1. Vẽ Thanh App Bar trên cùng
+      // 1. Thanh App Bar
       ctx.fillStyle = '#0b4a92';
       ctx.fillRect(0, 0, W, 62);
       ctx.fillStyle = '#ffffff';
@@ -563,7 +639,7 @@
       ctx.textBaseline = 'middle';
       ctx.fillText('←   Quay thử', 24, 31);
 
-      // 2. Vẽ Thanh điều khiển
+      // 2. Thanh điều khiển
       ctx.fillStyle = '#ebebeb';
       ctx.fillRect(0, 62, W, 66);
       ctx.fillStyle = '#ffffff';
@@ -578,7 +654,6 @@
       ctx.font = '600 22px sans-serif';
       ctx.fillText(dayText.substring(0, 28), 28, 95);
 
-      // Nút DỪNG / QUAY THỬ trong video
       ctx.fillStyle = isSpinning ? '#d9430f' : '#f37021';
       ctx.fillRect(496, 72, 208, 46);
       ctx.fillStyle = '#ffffff';
@@ -586,7 +661,7 @@
       ctx.textAlign = 'center';
       ctx.fillText(isSpinning ? 'DỪNG' : 'QUAY THỬ', 600, 95);
 
-      // 3. Vẽ Tiêu đề Tham khảo Xổ Số miền Nam
+      // 3. Tiêu đề
       ctx.fillStyle = '#d32f2f';
       ctx.font = 'bold 29px sans-serif';
       ctx.fillText('Tham khảo Xổ Số miền Nam', W / 2, 152);
@@ -600,7 +675,7 @@
       ctx.lineTo(W, 196);
       ctx.stroke();
 
-      // 4. Vẽ Header Bảng (Giải + Tên các đài)
+      // 4. Header Bảng
       const headerY = 196;
       const headerH = 46;
       ctx.fillStyle = '#f5f5f5';
@@ -624,7 +699,7 @@
       ctx.lineTo(W, headerY + headerH);
       ctx.stroke();
 
-      // 5. Vẽ 18 hàng số từ Giải 8 đến Giải ĐB
+      // 5. Nội dung 18 hàng giải
       const bodyTop = headerY + headerH;
       const footerH = 56;
       const bodyH = H - bodyTop - footerH;
@@ -635,21 +710,17 @@
         const rowTop = bodyTop + stepIdx * stepH;
         const rowH = prize.count * stepH;
 
-        // Nền cột Giải
         ctx.fillStyle = '#fafafa';
         ctx.fillRect(0, rowTop, giaiW, rowH);
 
-        // Chữ cột Giải
         ctx.fillStyle = (prize.label === 'ĐB') ? '#d32f2f' : '#333333';
         ctx.font = 'bold 24px sans-serif';
         ctx.fillText(prize.label, giaiW / 2, rowTop + rowH / 2);
 
-        // Vẽ từng hàng số của từng đài
         for (let c = 0; c < prize.count; c++) {
           const curStep = stepIdx + c;
           const cellTop = rowTop + c * stepH;
 
-          // Nền vàng nếu đang quay tới hàng này
           if (curStep === activeStep) {
             ctx.fillStyle = '#fff176';
             ctx.fillRect(giaiW, cellTop, W - giaiW, stepH);
@@ -672,7 +743,6 @@
           }
         }
 
-        // Đường kẻ ngang phân cách giải
         ctx.strokeStyle = '#dcdcdc';
         ctx.beginPath();
         ctx.moveTo(0, rowTop + rowH);
@@ -682,7 +752,6 @@
         stepIdx += prize.count;
       });
 
-      // Đường kẻ dọc phân cách các cột đài
       ctx.strokeStyle = '#dcdcdc';
       ctx.beginPath();
       ctx.moveTo(giaiW, headerY);
@@ -694,7 +763,7 @@
       }
       ctx.stroke();
 
-      // 6. Vẽ Thanh Footer (Đầy đủ / 2 Số / 3 Số)
+      // 6. Thanh Footer
       const footerTop = H - footerH;
       ctx.fillStyle = '#f9f9f9';
       ctx.fillRect(0, footerTop, W, footerH);
@@ -737,20 +806,19 @@
       const canvas = document.getElementById('videoCanvas');
       if (!canvas.captureStream || typeof MediaRecorder === 'undefined') return;
 
-      const dlBtn = document.getElementById('downloadBtn');
-      dlBtn.classList.remove('ready');
-      if (currentVideoUrl) {
-        URL.revokeObjectURL(currentVideoUrl);
-        currentVideoUrl = null;
-      }
+      document.getElementById('downloadBtn').classList.remove('ready');
+      closeModal();
+      lastVideoBlob = null;
 
       drawVideoFrame();
-      const stream = canvas.captureStream(30); // 30 FPS mượt mà
+      const stream = canvas.captureStream(30);
       recordedChunks = [];
 
-      // Ưu tiên định dạng MP4 hoặc WebM tùy thiết bị hỗ trợ
+      // Ưu tiên chuẩn MP4 trước để dễ lưu vào Thư viện ảnh trên điện thoại
       const mimeTypes = [
+        'video/mp4;codecs=avc1',
         'video/mp4',
+        'video/webm;codecs=h264',
         'video/webm;codecs=vp9',
         'video/webm;codecs=vp8',
         'video/webm'
@@ -778,17 +846,13 @@
       };
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(recordedChunks, { type: selectedMime || 'video/webm' });
-        currentVideoUrl = URL.createObjectURL(blob);
-        const ext = (selectedMime && selectedMime.includes('mp4')) ? 'mp4' : 'webm';
-        const fileName = `quay-thu-xsmn-${Date.now()}.${ext}`;
+        const finalType = selectedMime || 'video/mp4';
+        lastVideoExt = finalType.includes('mp4') ? 'mp4' : 'webm';
+        lastVideoBlob = new Blob(recordedChunks, { type: finalType });
 
-        dlBtn.href = currentVideoUrl;
-        dlBtn.download = fileName;
-        dlBtn.classList.add('ready');
-
-        // Tự động tải video về máy khi quay xong
-        dlBtn.click();
+        // Hiện nút Lưu Video trên thanh công cụ và bật hộp thoại cho người dùng bấm
+        document.getElementById('downloadBtn').classList.add('ready');
+        document.getElementById('videoModal').classList.add('show');
       };
 
       mediaRecorder.start(200);
@@ -813,7 +877,50 @@
         mediaRecorder.stop();
       }
     }
-    // =====================================================================
+
+    // Hàm Lưu Video tương thích cả Trình duyệt lẫn Menu Chia sẻ gốc của Điện thoại
+    async function saveVideoToDevice() {
+      if (!lastVideoBlob) {
+        alert('Chưa có video nào được ghi. Hãy bấm QUAY THỬ trước!');
+        return;
+      }
+
+      const fileName = `xsmn-quay-thu-${Date.now()}.${lastVideoExt}`;
+      const file = new File([lastVideoBlob], fileName, { type: lastVideoBlob.type });
+
+      // Cách 1: Tải trực tiếp bằng thẻ <a> khi người dùng chạm tay trực tiếp (User Gesture)
+      try {
+        const url = URL.createObjectURL(lastVideoBlob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 3000);
+      } catch (err) {
+        console.log(err);
+      }
+
+      // Cách 2: Mở bảng Lưu / Chia sẻ gốc của điện thoại (nếu trình duyệt chặn tải thường)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'Tham khảo Xổ Số miền Nam',
+            text: 'Video quay thử Xổ Số Miền Nam'
+          });
+        } catch (shareErr) {
+          // Người dùng đóng bảng chia sẻ
+        }
+      }
+
+      closeModal();
+    }
+    // =========================================================================
 
     function toggleSpin() {
       if (isSpinning) {
@@ -848,7 +955,6 @@
       });
 
       if (saveVideo) {
-        // Vẽ thêm 1.5 giây bảng kết quả cuối cùng vào video trước khi xuất file
         drawVideoFrame();
         setTimeout(() => {
           stopVideoRecording();
@@ -899,7 +1005,6 @@
       }, STEP_SPIN_MS);
     }
 
-    // Khởi chạy ứng dụng
     initDaySelector();
     initTable();
   </script>
