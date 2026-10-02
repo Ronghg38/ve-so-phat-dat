@@ -1,822 +1,476 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tham Khảo Xổ Số Miền Nam</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tham khảo Xổ Số miền Nam</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
 
-<style>
-*{box-sizing:border-box}
+    body {
+      background-color: #f5f5f5;
+      height: 100dvh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
 
-body{
- margin:0;
- background:#f3f3f3;
- font-family:Arial,sans-serif;
- color:#222
-}
+    /* Thanh tiêu đề trên cùng */
+    .app-bar {
+      background-color: #0b4a92;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      height: 40px;
+      flex-shrink: 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
 
-.header{
- background:linear-gradient(135deg,#b40000,#ed1717);
- color:#fff;
- text-align:center;
- padding:18px 10px;
- box-shadow:0 3px 10px #999
-}
+    .app-bar .back-btn {
+      margin-right: 14px;
+      font-size: 18px;
+      cursor: pointer;
+    }
 
-.header h1{
- margin:0;
- font-size:22px
-}
+    /* Thanh chọn đài & nút Quay thử */
+    .control-bar {
+      background-color: #ebebeb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 10px;
+      height: 42px;
+      flex-shrink: 0;
+      border-bottom: 1px solid #dcdcdc;
+    }
 
-.header .date{
- margin-top:7px;
- font-size:16px;
- font-weight:bold
-}
+    .station-select {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 14px;
+      width: 55%;
+      color: #333;
+      outline: none;
+    }
 
-.container{
- max-width:700px;
- margin:auto;
- padding:12px
-}
+    .btn-spin {
+      background-color: #f37021;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 18px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      min-width: 115px;
+      text-align: center;
+      transition: background 0.2s;
+    }
 
-.notice{
- background:#fff3cd;
- border:1px solid #ffe69c;
- color:#664d03;
- padding:11px;
- border-radius:10px;
- margin-bottom:12px;
- text-align:center;
- font-size:13px
-}
+    .btn-spin.spinning {
+      background-color: #e0530c;
+    }
 
-.box{
- background:#fff;
- border-radius:12px;
- padding:14px;
- margin-bottom:12px;
- box-shadow:0 2px 8px #ddd
-}
+    /* Tiêu đề chính */
+    .title-area {
+      background-color: #fff;
+      text-align: center;
+      padding: 4px 0;
+      border-bottom: 1px solid #e0e0e0;
+      flex-shrink: 0;
+    }
 
-label{
- display:block;
- font-weight:bold;
- margin-bottom:8px
-}
+    .title-area h1 {
+      color: #d32f2f;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
 
-input[type=date]{
- width:100%;
- padding:12px;
- border:1px solid #ccc;
- border-radius:8px;
- font-size:16px
-}
+    .title-area p {
+      color: #555;
+      font-size: 11.5px;
+      margin-top: 1px;
+    }
 
-.station-list{
- display:flex;
- flex-wrap:wrap;
- gap:8px
-}
+    /* Bảng kết quả (co giãn tự động vừa màn hình) */
+    .table-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      overflow: hidden;
+    }
 
-.station{
- padding:9px 12px;
- border:1px solid #ccc;
- border-radius:22px;
- background:#fafafa;
- font-weight:bold;
- cursor:pointer
-}
+    .table-header {
+      display: flex;
+      background-color: #fafafa;
+      border-bottom: 1px solid #ddd;
+      height: 28px;
+      flex-shrink: 0;
+      font-weight: 600;
+      font-size: 13px;
+      color: #222;
+    }
 
-.station.active{
- background:#c90000;
- color:#fff;
- border-color:#c90000
-}
+    .col-giai {
+      width: 12%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid #e5e5e5;
+      font-size: 13px;
+      color: #333;
+      background-color: #f7f7f7;
+    }
 
-.controls{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:8px
-}
+    .col-station {
+      width: 29.333%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid #e5e5e5;
+      text-align: center;
+    }
 
-button{
- border:0;
- border-radius:9px;
- padding:14px 8px;
- font-size:15px;
- font-weight:bold;
- cursor:pointer
-}
+    .col-station:last-child {
+      border-right: none;
+    }
 
-button:disabled{
- opacity:.5
-}
+    .table-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
-#spinAll{
- background:#c90000;
- color:white
-}
+    .prize-row {
+      display: flex;
+      border-bottom: 1px solid #e5e5e5;
+      width: 100%;
+    }
 
-#spinOne{
- background:#e38b00;
- color:white
-}
+    /* Chia tỷ lệ chiều cao theo đúng số lượng hàng của từng giải (tổng 18 lô) */
+    .row-g8 { flex: 1; }
+    .row-g7 { flex: 1; }
+    .row-g6 { flex: 3; }
+    .row-g5 { flex: 1; }
+    .row-g4 { flex: 7; }
+    .row-g3 { flex: 2; }
+    .row-g2 { flex: 1; }
+    .row-g1 { flex: 1; }
+    .row-db { flex: 1.15; border-bottom: none; }
 
-#reset{
- background:#555;
- color:white
-}
+    /* Ô chứa từng con số */
+    .num-cell {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(12px, 2.2vh, 17px);
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
 
-#sound{
- background:#1769aa;
- color:white
-}
+    /* Màu chữ đỏ cho Giải 8 và Giải Đặc Biệt */
+    .row-g8 .num-cell,
+    .row-db .num-cell,
+    .row-db .col-giai {
+      color: #d32f2f;
+    }
 
-.result-title{
- text-align:center;
- color:#c90000;
- font-size:20px;
- font-weight:bold
-}
+    /* Hiệu ứng nền vàng khi đang quay tới hàng đó */
+    .num-cell.active-spin {
+      background-color: #fff176;
+    }
 
-.result-date{
- text-align:center;
- margin:7px 0 14px;
- font-weight:bold
-}
+    /* Thanh lọc chế độ xem (Đầy đủ / 2 Số / 3 Số) */
+    .footer-bar {
+      background-color: #fff;
+      border-top: 1px solid #ccc;
+      height: 36px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 15px;
+      font-size: 13.5px;
+      color: #222;
+    }
 
-.station-result{
- border:1px solid #ddd;
- border-radius:10px;
- overflow:hidden;
- margin-bottom:15px
-}
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
 
-.station-name{
- background:#eee;
- padding:10px;
- text-align:center;
- font-size:18px;
- font-weight:bold
-}
-
-.row{
- display:grid;
- grid-template-columns:90px 1fr;
- min-height:45px;
- border-top:1px solid #eee
-}
-
-.prize{
- display:flex;
- align-items:center;
- justify-content:center;
- background:#fafafa;
- font-weight:bold
-}
-
-.number{
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:20px;
- font-weight:bold;
- letter-spacing:2px;
- min-height:45px
-}
-
-.number.spinning{
- animation:flash .09s infinite
-}
-
-@keyframes flash{
- 50%{opacity:.35;transform:scale(1.04)}
-}
-
-.special{
- color:#c90000;
- font-size:27px;
- font-weight:900
-}
-
-.special.done{
- background:#fff1f1;
- animation:pulse .7s infinite alternate
-}
-
-@keyframes pulse{
- from{transform:scale(1)}
- to{transform:scale(1.05)}
-}
-
-.status{
- text-align:center;
- padding:10px;
- color:#777;
- font-size:13px
-}
-
-.footer{
- text-align:center;
- color:#777;
- font-size:12px;
- padding:15px
-}
-
-.small{
- font-size:12px;
- color:#777;
- margin-top:8px
-}
-
-@media(max-width:430px){
- .header h1{font-size:19px}
- .controls{grid-template-columns:1fr 1fr}
- .row{grid-template-columns:75px 1fr}
- .number{font-size:18px}
-}
-</style>
+    .radio-label input[type="radio"] {
+      accent-color: #0b4a92;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
 
-<header class="header">
- <h1>🎯 THAM KHẢO XỔ SỐ MIỀN NAM</h1>
- <div class="date" id="headerDate"></div>
-</header>
-
-<main class="container">
-
- <div class="notice">
-  ⚠️ <b>Kết quả mô phỏng ngẫu nhiên.</b><br>
-  Chỉ mang tính tham khảo giải trí – không phải kết quả xổ số thực tế,
-  không đảm bảo kết quả.
- </div>
-
- <section class="box">
-  <label>📅 Ngày quay thử</label>
-  <input type="date" id="dateInput">
-  <div class="small">
-   Chọn ngày để hệ thống tự đổi danh sách đài theo thứ.
+  <!-- Thanh tiêu đề -->
+  <div class="app-bar">
+    <span class="back-btn">&#8592;</span>
+    <span>Quay thử</span>
   </div>
- </section>
 
- <section class="box">
-  <label>🎟️ Chọn đài</label>
-  <div id="stationList" class="station-list"></div>
- </section>
-
- <section class="box">
-  <div class="controls">
-   <button id="spinAll">🎰 QUAY TẤT CẢ</button>
-   <button id="spinOne">▶️ QUAY TỪNG GIẢI</button>
-   <button id="sound">🔊 ÂM THANH: BẬT</button>
-   <button id="reset">🔄 LÀM LẠI</button>
+  <!-- Thanh điều khiển -->
+  <div class="control-bar">
+    <select id="daySelect" class="station-select" onchange="changeDay()">
+      <option value="t6">Miền Nam (Vĩnh Long, Bình Dương, Trà Vinh)</option>
+      <option value="t2">Thứ 2 (TP.HCM, Đồng Tháp, Cà Mau)</option>
+      <option value="t3">Thứ 3 (Bến Tre, Vũng Tàu, Bạc Liêu)</option>
+      <option value="t4">Thứ 4 (Đồng Nai, Cần Thơ, Sóc Trăng)</option>
+      <option value="t5">Thứ 5 (Tây Ninh, An Giang, Bình Thuận)</option>
+      <option value="t7">Thứ 7 (TP.HCM, Long An, Bình Phước)</option>
+      <option value="cn">Chủ Nhật (Tiền Giang, Kiên Giang, Đà Lạt)</option>
+    </select>
+    <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
   </div>
- </section>
 
- <section class="box">
-  <div class="result-title">KẾT QUẢ QUAY THỬ</div>
-  <div id="resultDate" class="result-date"></div>
-  <div id="status" class="status">
-   Chọn đài rồi nhấn QUAY TẤT CẢ.
+  <!-- Tiêu đề bảng -->
+  <div class="title-area">
+    <h1>Tham khảo Xổ Số miền Nam</h1>
+    <p>Thông tin chỉ mang tính tham khảo</p>
   </div>
-  <div id="results"></div>
- </section>
 
-</main>
-
-<footer class="footer">
- THAM KHẢO XỔ SỐ MIỀN NAM<br>
- Mô phỏng ngẫu nhiên – không phải kết quả xổ số thực tế.
-</footer>
-
-<script>
-/* =========================
-   LỊCH XỔ SỐ MIỀN NAM
-========================= */
-
-const schedule={
-  1:["TP.HCM","Đồng Tháp","Cà Mau"],
-  2:["Bến Tre","Vũng Tàu","Bạc Liêu"],
-  3:["Đồng Nai","Cần Thơ","Sóc Trăng"],
-  4:["Tây Ninh","An Giang","Bình Thuận"],
-  5:["Vĩnh Long","Bình Dương","Trà Vinh"],
-  6:["TP.HCM","Long An","Bình Phước","Hậu Giang"],
-  0:["Tiền Giang","Kiên Giang","Đà Lạt"]
-};
-
-/* =========================
-   CÁC GIẢI
-========================= */
-
-const prizes=[
- ["G.8",1,2],
- ["G.7",1,3],
- ["G.6",3,4],
- ["G.5",1,4],
- ["G.4",7,5],
- ["G.3",2,5],
- ["G.2",1,5],
- ["G.1",1,5],
- ["ĐẶC BIỆT",1,6]
-];
-
-let selectedStations=[];
-let spinning=false;
-let soundOn=true;
-let currentPrizeIndex=0;
-let audioCtx=null;
-
-/* =========================
-   TIỆN ÍCH
-========================= */
-
-function pad(n){
- return String(n).padStart(2,"0");
-}
-
-function localToday(){
- const d=new Date();
- return new Date(
-  d.getFullYear(),
-  d.getMonth(),
-  d.getDate()
- );
-}
-
-function formatDate(d){
- const days=[
-  "Chủ Nhật",
-  "Thứ Hai",
-  "Thứ Ba",
-  "Thứ Tư",
-  "Thứ Năm",
-  "Thứ Sáu",
-  "Thứ Bảy"
- ];
-
- return `${days[d.getDay()]}, ngày ${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
-}
-
-function dateObject(){
- const [y,m,d]=dateInput.value.split("-").map(Number);
- return new Date(y,m-1,d);
-}
-
-function randomNumber(length){
- let s="";
- for(let i=0;i<length;i++){
-  s+=Math.floor(Math.random()*10);
- }
- return s;
-}
-
-function generateFinal(length){
- return randomNumber(length);
-}
-
-function sleep(ms){
- return new Promise(resolve=>setTimeout(resolve,ms));
-}
-
-/* =========================
-   ÂM THANH
-   TẠO TRỰC TIẾP BẰNG WEB AUDIO
-========================= */
-
-function initAudio(){
- if(!audioCtx){
-  const AudioContext=
-   window.AudioContext ||
-   window.webkitAudioContext;
-
-  if(AudioContext){
-   audioCtx=new AudioContext();
-  }
- }
-
- if(audioCtx && audioCtx.state==="suspended"){
-  audioCtx.resume();
- }
-}
-
-function beep(freq=600,duration=.045,type="square"){
- if(!soundOn)return;
-
- initAudio();
-
- if(!audioCtx)return;
-
- const osc=audioCtx.createOscillator();
- const gain=audioCtx.createGain();
-
- osc.type=type;
- osc.frequency.value=freq;
-
- gain.gain.setValueAtTime(
-  .0001,
-  audioCtx.currentTime
- );
-
- gain.gain.exponentialRampToValueAtTime(
-  .07,
-  audioCtx.currentTime+.005
- );
-
- gain.gain.exponentialRampToValueAtTime(
-  .0001,
-  audioCtx.currentTime+duration
- );
-
- osc.connect(gain);
- gain.connect(audioCtx.destination);
-
- osc.start();
- osc.stop(audioCtx.currentTime+duration+.01);
-}
-
-function winSound(){
- if(!soundOn)return;
-
- beep(523,.12,"sine");
-
- setTimeout(()=>beep(659,.12,"sine"),130);
- setTimeout(()=>beep(784,.18,"sine"),260);
-}
-
-/* =========================
-   NGÀY / ĐÀI
-========================= */
-
-function updateDate(){
- const d=dateObject();
-
- headerDate.textContent=formatDate(d);
- resultDate.textContent=formatDate(d);
-}
-
-function loadStations(){
- const d=dateObject();
- const stations=schedule[d.getDay()]||[];
-
- stationList.innerHTML="";
- selectedStations=[];
-
- stations.forEach(name=>{
-  const el=document.createElement("div");
-
-  el.className="station active";
-  el.textContent=name;
-
-  selectedStations.push(name);
-
-  el.onclick=()=>{
-   if(spinning)return;
-
-   if(selectedStations.includes(name)){
-    selectedStations=
-     selectedStations.filter(x=>x!==name);
-
-    el.classList.remove("active");
-   }else{
-    selectedStations.push(name);
-    el.classList.add("active");
-   }
-  };
-
-  stationList.appendChild(el);
- });
-
- updateDate();
-}
-
-/* =========================
-   TẠO BẢNG KẾT QUẢ
-========================= */
-
-function createStation(station){
-
- const box=document.createElement("div");
- box.className="station-result";
- box.dataset.station=station;
-
- const title=document.createElement("div");
- title.className="station-name";
- title.textContent="🎟️ "+station;
-
- box.appendChild(title);
-
- prizes.forEach((item,index)=>{
-
-  const prize=item[0];
-
-  const row=document.createElement("div");
-  row.className="row";
-  row.dataset.index=index;
-
-  const p=document.createElement("div");
-  p.className="prize";
-  p.textContent=prize;
-
-  const number=document.createElement("div");
-  number.className="number";
-  number.textContent="••••••";
-
-  if(prize==="ĐẶC BIỆT"){
-   number.classList.add("special");
-  }
-
-  row.appendChild(p);
-  row.appendChild(number);
-
-  box.appendChild(row);
- });
-
- return box;
-}
-
-function createAllResults(){
-
- results.innerHTML="";
-
- selectedStations.forEach(station=>{
-  results.appendChild(
-   createStation(station)
-  );
- });
-}
-
-/* =========================
-   QUAY 1 SỐ
-========================= */
-
-async function spinElement(el,length,duration){
-
- el.classList.add("spinning");
-
- const start=Date.now();
-
- while(Date.now()-start<duration){
-
-  el.textContent=randomNumber(length);
-
-  beep(
-   300+Math.random()*500,
-   .025,
-   "square"
-  );
-
-  await sleep(65);
- }
-
- const finalNumber=generateFinal(length);
-
- el.textContent=finalNumber;
- el.classList.remove("spinning");
-
- return finalNumber;
-}
-
-/* =========================
-   QUAY 1 GIẢI
-========================= */
-
-async function spinPrize(index){
-
- if(spinning)return;
-
- if(selectedStations.length===0){
-  alert("Vui lòng chọn ít nhất 1 đài.");
-  return;
- }
-
- spinning=true;
- disableButtons(true);
-
- if(results.children.length===0){
-  createAllResults();
- }
-
- const item=prizes[index];
- const length=item[2];
- const prize=item[0];
-
- status.textContent=
-  "🎰 Đang quay "+prize+"...";
-
- const rows=
-  document.querySelectorAll(
-   `.row[data-index="${index}"]`
-  );
-
- for(const row of rows){
-
-  const number=row.querySelector(".number");
-
-  await spinElement(
-   number,
-   length,
-   prize==="ĐẶC BIỆT" ? 1600 : 800
-  );
-
-  if(prize==="ĐẶC BIỆT"){
-   number.classList.add("done");
-  }
- }
-
- winSound();
-
- status.textContent=
-  "✅ Đã hoàn tất "+prize+".";
-
- spinning=false;
- disableButtons(false);
-}
-
-/* =========================
-   QUAY TOÀN BỘ
-========================= */
-
-async function spinAll(){
-
- if(spinning)return;
-
- if(selectedStations.length===0){
-  alert("Vui lòng chọn ít nhất 1 đài.");
-  return;
- }
-
- initAudio();
-
- spinning=true;
- disableButtons(true);
-
- createAllResults();
-
- for(let i=0;i<prizes.length;i++){
-
-  currentPrizeIndex=i;
-
-  const item=prizes[i];
-  const prize=item[0];
-  const length=item[2];
-
-  status.textContent=
-   `🎰 Đang quay ${prize}...`;
-
-  const rows=
-   document.querySelectorAll(
-    `.row[data-index="${i}"]`
-   );
-
-  for(const row of rows){
-
-   const number=
-    row.querySelector(".number");
-
-   await spinElement(
-    number,
-    length,
-    prize==="ĐẶC BIỆT" ? 1600 : 800
-   );
-
-   if(prize==="ĐẶC BIỆT"){
-    number.classList.add("done");
-   }
-  }
-
-  await sleep(120);
- }
-
- winSound();
-
- status.textContent=
-  "🎉 Đã hoàn tất toàn bộ kết quả mô phỏng.";
-
- spinning=false;
- disableButtons(false);
-}
-
-function disableButtons(disabled){
-
- spinAllBtn.disabled=disabled;
- spinOneBtn.disabled=disabled;
- resetBtn.disabled=disabled;
-}
-
-/* =========================
-   LÀM LẠI
-========================= */
-
-function reset(){
-
- if(spinning)return;
-
- results.innerHTML="";
-
- status.textContent=
-  "Chọn đài rồi nhấn QUAY TẤT CẢ.";
-
- currentPrizeIndex=0;
-}
-
-/* =========================
-   ÂM THANH
-========================= */
-
-function toggleSound(){
-
- soundOn=!soundOn;
-
- soundBtn.textContent=
-  soundOn
-  ? "🔊 ÂM THANH: BẬT"
-  : "🔇 ÂM THANH: TẮT";
-
- if(soundOn){
-  initAudio();
-  beep(700,.08,"sine");
- }
-}
-
-/* =========================
-   KHỞI TẠO
-========================= */
-
-const dateInput=
- document.getElementById("dateInput");
-
-const headerDate=
- document.getElementById("headerDate");
-
-const resultDate=
- document.getElementById("resultDate");
-
-const stationList=
- document.getElementById("stationList");
-
-const results=
- document.getElementById("results");
-
-const status=
- document.getElementById("status");
-
-const spinAllBtn=
- document.getElementById("spinAll");
-
-const spinOneBtn=
- document.getElementById("spinOne");
-
-const resetBtn=
- document.getElementById("reset");
-
-const soundBtn=
- document.getElementById("sound");
-
-const d=localToday();
-
-dateInput.value=
- `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-
-dateInput.addEventListener("change",()=>{
- if(spinning)return;
-
- loadStations();
- reset();
-});
-
-spinAllBtn.addEventListener(
- "click",
- spinAll
-);
-
-spinOneBtn.addEventListener(
- "click",
- ()=>{
-  spinPrize(currentPrizeIndex);
-
-  currentPrizeIndex++;
-
-  if(currentPrizeIndex>=prizes.length){
-   currentPrizeIndex=0;
-  }
- }
-);
-
-resetBtn.addEventListener(
- "click",
- reset
-);
-
-soundBtn.addEventListener(
- "click",
- toggleSound
-);
-
-loadStations();
-</script>
-
+  <!-- Bảng kết quả 3 đài -->
+  <div class="table-wrapper">
+    <div class="table-header">
+      <div class="col-giai">Giải</div>
+      <div class="col-station" id="st-0">Vĩnh Long</div>
+      <div class="col-station" id="st-1">Bình Dương</div>
+      <div class="col-station" id="st-2">Trà Vinh</div>
+    </div>
+    <div class="table-body" id="tableBody">
+      <!-- Dữ liệu các giải sẽ được khởi tạo bằng JS -->
+    </div>
+  </div>
+
+  <!-- Tùy chọn hiển thị -->
+  <div class="footer-bar">
+    <label class="radio-label">
+      <input type="radio" name="viewMode" value="all" checked onchange="updateDisplayMode()"> Đầy đủ
+    </label>
+    <label class="radio-label">
+      <input type="radio" name="viewMode" value="2" onchange="updateDisplayMode()"> 2 Số
+    </label>
+    <label class="radio-label">
+      <input type="radio" name="viewMode" value="3" onchange="updateDisplayMode()"> 3 Số
+    </label>
+  </div>
+
+  <script>
+    // Cấu hình các giải Xổ Số Miền Nam (từ Giải 8 đến Đặc Biệt)
+    const prizeConfig = [
+      { label: '8', class: 'row-g8', count: 1, digits: 2 },
+      { label: '7', class: 'row-g7', count: 1, digits: 3 },
+      { label: '6', class: 'row-g6', count: 3, digits: 4 },
+      { label: '5', class: 'row-g5', count: 1, digits: 4 },
+      { label: '4', class: 'row-g4', count: 7, digits: 5 },
+      { label: '3', class: 'row-g3', count: 2, digits: 5 },
+      { label: '2', class: 'row-g2', count: 1, digits: 5 },
+      { label: '1', class: 'row-g1', count: 1, digits: 5 },
+      { label: 'ĐB', class: 'row-db', count: 1, digits: 6 }
+    ];
+
+    const stationSchedules = {
+      t6: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'],
+      t2: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'],
+      t3: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'],
+      t4: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'],
+      t5: ['Tây Ninh', 'An Giang', 'Bình Thuận'],
+      t7: ['TP.HCM', 'Long An', 'Bình Phước'],
+      cn: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt']
+    };
+
+    let isSpinning = false;
+    let spinTimeout = null;
+    let animInterval = null;
+    let totalSteps = 0; // Tổng 18 hàng từ trên xuống dưới
+
+    // Tạo bảng HTML
+    function initTable() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      let stepIndex = 0;
+
+      prizeConfig.forEach(prize => {
+        const row = document.createElement('div');
+        row.className = `prize-row ${prize.class}`;
+
+        // Cột tên giải
+        const colGiai = document.createElement('div');
+        colGiai.className = 'col-giai';
+        colGiai.textContent = prize.label;
+        row.appendChild(colGiai);
+
+        // 3 cột cho 3 đài
+        for (let s = 0; s < 3; s++) {
+          const colSt = document.createElement('div');
+          colSt.className = 'col-station';
+
+          for (let c = 0; c < prize.count; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'num-cell';
+            cell.id = `cell-s${s}-step${stepIndex + c}`;
+            cell.dataset.digits = prize.digits;
+            cell.dataset.fullval = '';
+            cell.textContent = '•••';
+            colSt.appendChild(cell);
+          }
+          row.appendChild(colSt);
+        }
+
+        stepIndex += prize.count;
+        tbody.appendChild(row);
+      });
+
+      totalSteps = stepIndex; // 18 bước
+    }
+
+    // Sinh số ngẫu nhiên theo độ dài chữ số
+    function randomNum(digits) {
+      let res = '';
+      for (let i = 0; i < digits; i++) {
+        res += Math.floor(Math.random() * 10);
+      }
+      return res;
+    }
+
+    // Hiển thị số theo chế độ Đầy đủ / 2 Số / 3 Số
+    function formatByMode(val) {
+      if (!val) return '•••';
+      const mode = document.querySelector('input[name="viewMode"]:checked').value;
+      if (mode === '2') return val.slice(-2);
+      if (mode === '3') return val.slice(-3);
+      return val;
+    }
+
+    function updateDisplayMode() {
+      const cells = document.querySelectorAll('.num-cell');
+      cells.forEach(cell => {
+        if (cell.dataset.fullval) {
+          cell.textContent = formatByMode(cell.dataset.fullval);
+        }
+      });
+    }
+
+    // Đổi lịch đài
+    function changeDay() {
+      if (isSpinning) stopSpin();
+      const val = document.getElementById('daySelect').value;
+      const names = stationSchedules[val];
+      for (let i = 0; i < 3; i++) {
+        document.getElementById(`st-${i}`).textContent = names[i];
+      }
+      resetBoard();
+    }
+
+    // Đặt lại toàn bộ bảng về dấu ba chấm
+    function resetBoard() {
+      const cells = document.querySelectorAll('.num-cell');
+      cells.forEach(cell => {
+        cell.classList.remove('active-spin');
+        cell.dataset.fullval = '';
+        cell.textContent = '•••';
+      });
+    }
+
+    // Bật / Tắt quay thử
+    function toggleSpin() {
+      if (isSpinning) {
+        stopSpin();
+      } else {
+        startSpin();
+      }
+    }
+
+    function startSpin() {
+      isSpinning = true;
+      const btn = document.getElementById('spinBtn');
+      btn.textContent = 'DỪNG';
+      btn.classList.add('spinning');
+      resetBoard();
+      runStep(0);
+    }
+
+    function stopSpin() {
+      isSpinning = false;
+      clearTimeout(spinTimeout);
+      clearInterval(animInterval);
+      const btn = document.getElementById('spinBtn');
+      btn.textContent = 'QUAY THỬ';
+      btn.classList.remove('spinning');
+
+      // Xóa nền vàng ở các ô đang quay dở
+      document.querySelectorAll('.num-cell.active-spin').forEach(c => {
+        c.classList.remove('active-spin');
+      });
+    }
+
+    // Quay lần lượt từng hàng của cả 3 đài cùng lúc (giống trong video)
+    function runStep(step) {
+      if (!isSpinning || step >= totalSteps) {
+        stopSpin();
+        return;
+      }
+
+      const currentCells = [
+        document.getElementById(`cell-s0-step${step}`),
+        document.getElementById(`cell-s1-step${step}`),
+        document.getElementById(`cell-s2-step${step}`)
+      ];
+
+      const digits = parseInt(currentCells[0].dataset.digits, 10);
+
+      // Bật nền vàng cho hàng đang quay
+      currentCells.forEach(cell => cell.classList.add('active-spin'));
+
+      // Hiệu ứng nhảy số liên tục trước khi chốt
+      animInterval = setInterval(() => {
+        currentCells.forEach(cell => {
+          const tempVal = randomNum(digits);
+          cell.textContent = formatByMode(tempVal);
+        });
+      }, 60);
+
+      // Chốt kết quả của hàng hiện tại sau 900ms và chuyển sang hàng kế tiếp
+      spinTimeout = setTimeout(() => {
+        clearInterval(animInterval);
+        currentCells.forEach(cell => {
+          const finalVal = randomNum(digits);
+          cell.dataset.fullval = finalVal;
+          cell.textContent = formatByMode(finalVal);
+          cell.classList.remove('active-spin');
+        });
+        runStep(step + 1);
+      }, 900);
+    }
+
+    // Khởi tạo bảng khi tải trang
+    initTable();
+  </script>
 </body>
 </html>
