@@ -1,782 +1,822 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VÉ SỐ PHÁT ĐẠT - Siêu Tốc</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tham Khảo Xổ Số Miền Nam</title>
 
-  <!-- Cấu hình App Toàn Màn Hình (PWA) -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Vé Số Phát Đạt">
-  <meta name="theme-color" content="#d90416">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E">
-  <link rel="manifest" id="pwaManifest">
+<style>
+*{box-sizing:border-box}
 
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f2f3f5; color: #222; padding-bottom: 35px; user-select: none; }
-    .header { background-color: #d90416; color: #fff; padding: 14px 10px; font-size: 19px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-    .header-actions { display: flex; gap: 6px; }
-    .btn-top { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.55); color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
-    .status-bar { background-color: #fff; text-align: center; padding: 8px 10px; font-size: 13px; font-weight: 700; color: #1b8a3d; border-bottom: 1px solid #e0e0e0; }
-    .status-bar.loading { color: #e67700; }
-    .status-bar.warn { color: #c92a2a; }
-    .tabs { display: flex; background-color: #fff; border-bottom: 1px solid #ddd; }
-    .tab { flex: 1; text-align: center; padding: 13px 5px; font-size: 15px; font-weight: 700; cursor: pointer; color: #222; background-color: #fff; border-right: 1px solid #eee; }
-    .tab:last-child { border-right: none; }
-    .tab.active { background-color: #d90416; color: #fff; }
-    .container { max-width: 600px; margin: 0 auto; padding: 12px; }
-    .card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #ebebeb; }
-    .card.next-day-card { border: 2px solid #d90416; background: linear-gradient(to bottom, #fff9f9, #ffffff); }
-    .card-title { color: #b81414; font-size: 15px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; }
-    .badge-date { background: #d90416; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 6px; }
-    #apiKeyBox, #installGuideBox { display: none; background: #fff8e6; border: 1px solid #ffc107; }
-    .key-row { display: flex; gap: 8px; margin-top: 8px; }
-    .key-input { flex: 1; padding: 9px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13.5px; }
-    .btn-save-key { background: #1b8a3d; color: #fff; border: none; padding: 9px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; }
-    /* Chọn Tháng & Ngày */
-    .month-header { display: flex; gap: 5px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .btn-day-step { background: #f8f9fa; border: 1px solid #dadce0; color: #333; padding: 8px 9px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; }
-    .date-input { flex: 1; padding: 7px 6px; border: 1px solid #d90416; border-radius: 8px; font-size: 13.5px; font-weight: 700; text-align: center; color: #b81414; background: #fff5f5; }
-    .month-grid-label { font-size: 12px; font-weight: 700; color: #555; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-    .day-strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scroll-behavior: smooth; }
-    .day-pill { flex: 0 0 54px; padding: 7px 4px; border-radius: 8px; background: #f1f3f5; color: #333; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; border: 1px solid #e0e0e0; }
-    .day-pill span { display: block; font-size: 11px; font-weight: 600; margin-top: 2px; opacity: 0.85; }
-    .day-pill.cached { border-color: #2b8a3e; background: #ebfbee; }
-    .day-pill.future { opacity: 0.45; }
-    .day-pill.active { background: #d90416 !important; color: #fff !important; border-color: #d90416 !important; box-shadow: 0 2px 6px rgba(217, 4, 22, 0.35); }
-    .btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
-    .btn-update { flex: 1; background-color: #c90412; color: #fff; border: none; border-radius: 8px; padding: 12px 8px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
-    .btn-sync-month { background-color: #1b8a3d; color: #fff; border: none; border-radius: 8px; padding: 12px 12px; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-    /* Bảng KQ */
-    .station-list { display: flex; flex-wrap: wrap; gap: 8px; }
-    .station-badge { background: #fff5f5; color: #c90412; border: 1px solid #ffc9c9; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 13.5px; }
-    .kq-table-wrap { overflow-x: auto; }
-    .kq-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; user-select: text; }
-    .kq-table th, .kq-table td { border: 1px solid #e0e0e0; padding: 7px 4px; }
-    .kq-table th { background-color: #d90416; color: #fff; font-weight: 700; }
-    .kq-table .giai-col { background-color: #f8f9fa; font-weight: 700; width: 45px; color: #444; }
-    .kq-highlight { color: #d90416; font-weight: 800; font-size: 16px; }
-    /* Phân tích */
-    .analysis-item { background: #fafafa; border-left: 4px solid #d90416; padding: 10px 12px; margin-bottom: 10px; border-radius: 4px; font-size: 13.5px; line-height: 1.55; user-select: text; }
-    .analysis-item.tomorrow-item { background: #fff; border-left: 4px solid #e67700; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-    .analysis-item:last-child { margin-bottom: 0; }
-    .sub-tag { display: inline-block; background: #fff0f0; color: #b81414; font-size: 11.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-top: 4px; border: 1px solid #ffc9c9; }
-    .loto-2so { margin-top: 8px; font-size: 12.5px; color: #444; background: #fff8f8; padding: 7px 9px; border-radius: 6px; border: 1px dashed #f5b5b5; }
-    .dauduoi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px; font-size: 12.5px; }
-    .dd-box { background: #f8f9fa; padding: 5px 8px; border-radius: 4px; border: 1px solid #eee; }
-    .vip-numbers { display: flex; justify-content: space-around; gap: 10px; margin-top: 8px; }
-    .vip-ball { flex: 1; background: linear-gradient(135deg, #e00619, #a8000e); color: #fff; text-align: center; padding: 14px 8px; border-radius: 10px; }
-    .vip-ball .num { font-size: 25px; font-weight: 900; }
-    .vip-ball .lbl { font-size: 11px; margin-top: 4px; font-weight: 600; }
-    .ai-box { margin-top: 10px; background: #eef9ff; border-left: 4px solid #007bff; padding: 10px 12px; border-radius: 4px; font-size: 13.5px; line-height: 1.5; display: none; }
-  </style>
+body{
+ margin:0;
+ background:#f3f3f3;
+ font-family:Arial,sans-serif;
+ color:#222
+}
+
+.header{
+ background:linear-gradient(135deg,#b40000,#ed1717);
+ color:#fff;
+ text-align:center;
+ padding:18px 10px;
+ box-shadow:0 3px 10px #999
+}
+
+.header h1{
+ margin:0;
+ font-size:22px
+}
+
+.header .date{
+ margin-top:7px;
+ font-size:16px;
+ font-weight:bold
+}
+
+.container{
+ max-width:700px;
+ margin:auto;
+ padding:12px
+}
+
+.notice{
+ background:#fff3cd;
+ border:1px solid #ffe69c;
+ color:#664d03;
+ padding:11px;
+ border-radius:10px;
+ margin-bottom:12px;
+ text-align:center;
+ font-size:13px
+}
+
+.box{
+ background:#fff;
+ border-radius:12px;
+ padding:14px;
+ margin-bottom:12px;
+ box-shadow:0 2px 8px #ddd
+}
+
+label{
+ display:block;
+ font-weight:bold;
+ margin-bottom:8px
+}
+
+input[type=date]{
+ width:100%;
+ padding:12px;
+ border:1px solid #ccc;
+ border-radius:8px;
+ font-size:16px
+}
+
+.station-list{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px
+}
+
+.station{
+ padding:9px 12px;
+ border:1px solid #ccc;
+ border-radius:22px;
+ background:#fafafa;
+ font-weight:bold;
+ cursor:pointer
+}
+
+.station.active{
+ background:#c90000;
+ color:#fff;
+ border-color:#c90000
+}
+
+.controls{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px
+}
+
+button{
+ border:0;
+ border-radius:9px;
+ padding:14px 8px;
+ font-size:15px;
+ font-weight:bold;
+ cursor:pointer
+}
+
+button:disabled{
+ opacity:.5
+}
+
+#spinAll{
+ background:#c90000;
+ color:white
+}
+
+#spinOne{
+ background:#e38b00;
+ color:white
+}
+
+#reset{
+ background:#555;
+ color:white
+}
+
+#sound{
+ background:#1769aa;
+ color:white
+}
+
+.result-title{
+ text-align:center;
+ color:#c90000;
+ font-size:20px;
+ font-weight:bold
+}
+
+.result-date{
+ text-align:center;
+ margin:7px 0 14px;
+ font-weight:bold
+}
+
+.station-result{
+ border:1px solid #ddd;
+ border-radius:10px;
+ overflow:hidden;
+ margin-bottom:15px
+}
+
+.station-name{
+ background:#eee;
+ padding:10px;
+ text-align:center;
+ font-size:18px;
+ font-weight:bold
+}
+
+.row{
+ display:grid;
+ grid-template-columns:90px 1fr;
+ min-height:45px;
+ border-top:1px solid #eee
+}
+
+.prize{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:#fafafa;
+ font-weight:bold
+}
+
+.number{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:20px;
+ font-weight:bold;
+ letter-spacing:2px;
+ min-height:45px
+}
+
+.number.spinning{
+ animation:flash .09s infinite
+}
+
+@keyframes flash{
+ 50%{opacity:.35;transform:scale(1.04)}
+}
+
+.special{
+ color:#c90000;
+ font-size:27px;
+ font-weight:900
+}
+
+.special.done{
+ background:#fff1f1;
+ animation:pulse .7s infinite alternate
+}
+
+@keyframes pulse{
+ from{transform:scale(1)}
+ to{transform:scale(1.05)}
+}
+
+.status{
+ text-align:center;
+ padding:10px;
+ color:#777;
+ font-size:13px
+}
+
+.footer{
+ text-align:center;
+ color:#777;
+ font-size:12px;
+ padding:15px
+}
+
+.small{
+ font-size:12px;
+ color:#777;
+ margin-top:8px
+}
+
+@media(max-width:430px){
+ .header h1{font-size:19px}
+ .controls{grid-template-columns:1fr 1fr}
+ .row{grid-template-columns:75px 1fr}
+ .number{font-size:18px}
+}
+</style>
 </head>
+
 <body>
 
-  <div class="header">
-    <span>🎯 VÉ SỐ PHÁT ĐẠT</span>
-    <div class="header-actions">
-      <button class="btn-top" onclick="installApp()">📲 Cài App</button>
-      <button class="btn-top" onclick="toggleKeyBox()">🔑 API Key</button>
-    </div>
+<header class="header">
+ <h1>🎯 THAM KHẢO XỔ SỐ MIỀN NAM</h1>
+ <div class="date" id="headerDate"></div>
+</header>
+
+<main class="container">
+
+ <div class="notice">
+  ⚠️ <b>Kết quả mô phỏng ngẫu nhiên.</b><br>
+  Chỉ mang tính tham khảo giải trí – không phải kết quả xổ số thực tế,
+  không đảm bảo kết quả.
+ </div>
+
+ <section class="box">
+  <label>📅 Ngày quay thử</label>
+  <input type="date" id="dateInput">
+  <div class="small">
+   Chọn ngày để hệ thống tự đổi danh sách đài theo thứ.
   </div>
-  <div id="statusBar" class="status-bar">⚡ Đang khởi tạo siêu tốc...</div>
+ </section>
 
-  <div class="tabs">
-    <div class="tab active" onclick="switchRegion('MN', this)">MIỀN NAM</div>
-    <div class="tab" onclick="switchRegion('MT', this)">MIỀN TRUNG</div>
-    <div class="tab" onclick="switchRegion('MB', this)">MIỀN BẮC</div>
+ <section class="box">
+  <label>🎟️ Chọn đài</label>
+  <div id="stationList" class="station-list"></div>
+ </section>
+
+ <section class="box">
+  <div class="controls">
+   <button id="spinAll">🎰 QUAY TẤT CẢ</button>
+   <button id="spinOne">▶️ QUAY TỪNG GIẢI</button>
+   <button id="sound">🔊 ÂM THANH: BẬT</button>
+   <button id="reset">🔄 LÀM LẠI</button>
   </div>
+ </section>
 
-  <div class="container">
-    <div id="installGuideBox" class="card">
-      <div class="card-title" style="margin-bottom:6px;">📲 CÀI APP VÉ SỐ PHÁT ĐẠT VỀ MÁY</div>
-      <div style="font-size:13px; line-height:1.5; color:#333;">
-        • <b>Android (Chrome):</b> Bấm dấu <b>3 chấm dọc (⋮)</b> góc trên phải ➡️ chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào màn hình chính"</b>.<br>
-        • <b>iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
-      </div>
-    </div>
-
-    <div id="apiKeyBox" class="card">
-      <div class="card-title" style="margin-bottom:4px;">🔑 CÀI ĐẶT GEMINI API KEY</div>
-      <div style="font-size:12.5px; color:#555;">Nhập API Key để lưu vào máy và kích hoạt AI phân tích cầu:</div>
-      <div class="key-row">
-        <input type="password" id="apiKeyInput" class="key-input" placeholder="Dán API Key (AIzaSy...)">
-        <button class="btn-save-key" onclick="saveApiKey()">Lưu Key</button>
-      </div>
-    </div>
-
-    <!-- CHỌN CÁC NGÀY TRONG THÁNG -->
-    <div class="card">
-      <div class="month-header">
-        <button class="btn-day-step" onclick="changeMonth(-1)">⏪ Tháng</button>
-        <button class="btn-day-step" onclick="changeDay(-1)">◀</button>
-        <input type="date" id="datePicker" class="date-input" onchange="onDatePick(this.value)">
-        <button class="btn-day-step" onclick="changeDay(1)">▶</button>
-        <button class="btn-day-step" onclick="changeMonth(1)">Tháng ⏩</button>
-      </div>
-      <div class="month-grid-label">
-        <span id="monthLabelText">📅 Các ngày trong tháng:</span>
-        <span style="color:#1b8a3d; font-weight:600;">(Nền xanh: Mở tức thì 0s)</span>
-      </div>
-      <div id="dayStrip" class="day-strip"></div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn-update" onclick="loadAllData(true)">
-        🔄 LÀM MỚI NGÀY NÀY
-      </button>
-      <button class="btn-sync-month" onclick="syncEntireMonth()">
-        ⚡ TẢI NHANH CẢ THÁNG
-      </button>
-    </div>
-
-    <!-- 1. CÁC ĐÀI MỞ THƯỞNG -->
-    <div class="card">
-      <div class="card-title">
-        <span>🏆 CÁC ĐÀI MỞ THƯỞNG</span>
-        <span id="badgeCurrentDate" class="badge-date"></span>
-      </div>
-      <div id="stationsToday" class="station-list"></div>
-    </div>
-
-    <!-- 2. BẢNG KẾT QUẢ XỔ SỐ -->
-    <div class="card">
-      <div class="card-title">
-        <span>📋 BẢNG KẾT QUẢ XỔ SỐ</span>
-        <span id="badgeKQDate" style="font-size:12px; color:#666;"></span>
-      </div>
-      <div id="kqxsContainer" class="kq-table-wrap"></div>
-    </div>
-
-    <!-- 3. THỐNG KÊ CHI TIẾT NGÀY ĐANG XEM -->
-    <div class="card">
-      <div class="card-title">📊 THỐNG KÊ CHI TIẾT NGÀY ĐANG XEM</div>
-      <div id="detailedStats"></div>
-    </div>
-
-    <!-- 4. PHÂN TÍCH CHO NGÀY HÔM SAU -->
-    <div class="card next-day-card">
-      <div class="card-title">
-        <span>🔮 PHÂN TÍCH CHO NGÀY HÔM SAU</span>
-        <span id="badgeNextDate" class="badge-date"></span>
-      </div>
-      <div id="nextDayStations" class="station-list" style="margin-bottom: 12px;"></div>
-      <div id="nextDayAnalysis"></div>
-      <div id="aiAnalysisBox" class="ai-box"></div>
-    </div>
-
-    <!-- 5. GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI -->
-    <div class="card next-day-card">
-      <div class="card-title">🎯 GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI</div>
-      <div id="crossStation"></div>
-    </div>
-
-    <!-- 6. 3 CON SỐ THAM KHẢO -->
-    <div class="card next-day-card">
-      <div class="card-title">
-        <span>🔥 3 CON SỐ THAM KHẢO</span>
-        <span id="badgeVipDate" class="badge-date"></span>
-      </div>
-      <div id="vipNumbers"></div>
-    </div>
+ <section class="box">
+  <div class="result-title">KẾT QUẢ QUAY THỬ</div>
+  <div id="resultDate" class="result-date"></div>
+  <div id="status" class="status">
+   Chọn đài rồi nhấn QUAY TẤT CẢ.
   </div>
+  <div id="results"></div>
+ </section>
+
+</main>
+
+<footer class="footer">
+ THAM KHẢO XỔ SỐ MIỀN NAM<br>
+ Mô phỏng ngẫu nhiên – không phải kết quả xổ số thực tế.
+</footer>
+
+<script>
+/* =========================
+   LỊCH XỔ SỐ MIỀN NAM
+========================= */
+
+const schedule={
+  1:["TP.HCM","Đồng Tháp","Cà Mau"],
+  2:["Bến Tre","Vũng Tàu","Bạc Liêu"],
+  3:["Đồng Nai","Cần Thơ","Sóc Trăng"],
+  4:["Tây Ninh","An Giang","Bình Thuận"],
+  5:["Vĩnh Long","Bình Dương","Trà Vinh"],
+  6:["TP.HCM","Long An","Bình Phước","Hậu Giang"],
+  0:["Tiền Giang","Kiên Giang","Đà Lạt"]
+};
+
+/* =========================
+   CÁC GIẢI
+========================= */
+
+const prizes=[
+ ["G.8",1,2],
+ ["G.7",1,3],
+ ["G.6",3,4],
+ ["G.5",1,4],
+ ["G.4",7,5],
+ ["G.3",2,5],
+ ["G.2",1,5],
+ ["G.1",1,5],
+ ["ĐẶC BIỆT",1,6]
+];
+
+let selectedStations=[];
+let spinning=false;
+let soundOn=true;
+let currentPrizeIndex=0;
+let audioCtx=null;
+
+/* =========================
+   TIỆN ÍCH
+========================= */
+
+function pad(n){
+ return String(n).padStart(2,"0");
+}
+
+function localToday(){
+ const d=new Date();
+ return new Date(
+  d.getFullYear(),
+  d.getMonth(),
+  d.getDate()
+ );
+}
+
+function formatDate(d){
+ const days=[
+  "Chủ Nhật",
+  "Thứ Hai",
+  "Thứ Ba",
+  "Thứ Tư",
+  "Thứ Năm",
+  "Thứ Sáu",
+  "Thứ Bảy"
+ ];
+
+ return `${days[d.getDay()]}, ngày ${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+}
+
+function dateObject(){
+ const [y,m,d]=dateInput.value.split("-").map(Number);
+ return new Date(y,m-1,d);
+}
+
+function randomNumber(length){
+ let s="";
+ for(let i=0;i<length;i++){
+  s+=Math.floor(Math.random()*10);
+ }
+ return s;
+}
+
+function generateFinal(length){
+ return randomNumber(length);
+}
+
+function sleep(ms){
+ return new Promise(resolve=>setTimeout(resolve,ms));
+}
+
+/* =========================
+   ÂM THANH
+   TẠO TRỰC TIẾP BẰNG WEB AUDIO
+========================= */
 
-  <script>
-    // Cấu hình PWA
-    const manifestData = {
-      name: "Vé Số Phát Đạt - Kết Quả & Soi Cầu",
-      short_name: "Vé Số Phát Đạt",
-      start_url: location.href,
-      display: "standalone",
-      background_color: "#f2f3f5",
-      theme_color: "#d90416",
-      icons: [{
-        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E",
-        sizes: "192x192",
-        type: "image/svg+xml"
-      }]
-    };
-    document.getElementById('pwaManifest').setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestData)));
-
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-    async function installApp() {
-      if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; }
-      else {
-        const box = document.getElementById('installGuideBox');
-        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-      }
-    }
-
-    let currentRegion = 'MN';
-    let selectedDate = new Date();
-    const DAY_NAMES = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-    const FULL_DAY_NAMES = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
-
-    const SCHEDULE = {
-      MN: {
-        0: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'],
-        1: ['TPHCM', 'Đồng Tháp', 'Cà Mau'],
-        2: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'],
-        3: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'],
-        4: ['Tây Ninh', 'An Giang', 'Bình Thuận'],
-        5: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'],
-        6: ['TPHCM', 'Long An', 'Bình Phước', 'Hậu Giang']
-      },
-      MT: {
-        0: ['Khánh Hòa', 'Kon Tum', 'Huế'],
-        1: ['Phú Yên', 'Huế'],
-        2: ['Đắk Lắk', 'Quảng Nam'],
-        3: ['Đà Nẵng', 'Khánh Hòa'],
-        4: ['Quảng Bình', 'Bình Định', 'Quảng Trị'],
-        5: ['Gia Lai', 'Ninh Thuận'],
-        6: ['Đà Nẵng', 'Quảng Ngãi', 'Đắk Nông']
-      },
-      MB: {
-        0: ['Miền Bắc'], 1: ['Miền Bắc'], 2: ['Miền Bắc'],
-        3: ['Miền Bắc'], 4: ['Miền Bắc'], 5: ['Miền Bắc'], 6: ['Miền Bắc']
-      }
-    };
-
-    // BỘ DỮ LIỆU TỨC THÌ (0 GIÂY) CHUẨN XOSODAIPHAT.COM CHO CẢ TUẦN GẦN NHẤT
-    const COMPACT_DB = {
-      "MN_01-10-2026": [
-        "Tây Ninh|04|866|2102,6847,9663|9755|45546,75678,30698,38266,37991,33648,70127|31306,58213|55031|80777|348513",
-        "An Giang|69|840|1812,3049,8786|0077|18346,98300,44793,37823,57354,67415,68623|63805,49007|70855|57382|016473",
-        "Bình Thuận|00|861|7307,4203,7496|7649|78624,77552,59117,20761,25785,40077,58621|06279,80247|48760|57496|247346"
-      ],
-      "MN_30-09-2026": [
-        "Đồng Nai|87|956|1983,1429,8180|7819|60110,70505,04633,99206,41977,48756,79224|17078,10583|64114|46177|470822",
-        "Cần Thơ|36|587|2971,7027,2662|5952|29614,06587,40447,69545,05086,05661,53386|57775,49227|51271|25432|216556",
-        "Sóc Trăng|51|344|9792,5605,0638|4713|67466,88093,63364,00906,89217,69660,80706|98451,38484|29411|33828|275034"
-      ],
-      "MN_29-09-2026": [
-        "Bến Tre|75|665|8725,3897,2585|9293|49058,06693,06306,15228,98990,54213,61395|14309,37125|75792|61692|383665",
-        "Vũng Tàu|14|405|4027,3142,7899|1066|04232,96159,48194,08565,03103,07250,64199|16288,21673|67850|14992|333771",
-        "Bạc Liêu|20|927|1803,4497,6892|7417|74311,88775,14160,52458,10696,35055,43915|70765,65775|06956|57108|150902"
-      ],
-      "MN_28-09-2026": [
-        "TPHCM|21|285|7161,6655,2155|3811|74569,89878,58813,25531,17297,59888,76986|49513,21219|10072|57769|760372",
-        "Đồng Tháp|27|018|3636,1122,4283|9544|18640,54016,34952,69680,49404,14917,99983|02626,33134|48063|00633|048795",
-        "Cà Mau|41|276|4194,3009,2896|1237|28220,25796,43045,51872,02802,30614,07566|91031,36267|79248|42704|281551"
-      ],
-      "MN_27-09-2026": [
-        "Tiền Giang|43|189|1474,3228,9901|0218|47008,70443,97286,11585,71079,20755,50315|31815,65401|70796|26392|240624",
-        "Kiên Giang|76|142|4293,5879,1733|9918|87202,24192,29045,30596,12731,26400,89740|04495,61481|40290|98680|713078",
-        "Đà Lạt|95|948|3531,6265,8259|5306|09687,16731,80111,80183,86939,96452,96329|70771,26829|42333|09241|450102"
-      ],
-      "MN_26-09-2026": [
-        "TPHCM|76|628|8551,8397,1573|9315|39659,65601,58662,71396,30693,94113,81582|68071,98546|48593|29156|584475",
-        "Long An|13|920|7010,7327,2694|8151|67110,44204,96921,69665,63517,91037,43228|96393,90037|06592|56436|985879",
-        "Bình Phước|17|407|8730,6727,2552|8168|25312,07552,55416,46121,51084,30855,38602|38105,31112|72783|32981|745514",
-        "Hậu Giang|83|772|8349,2959,2584|2055|62960,85320,38501,82568,24443,53108,89483|63983,49995|86150|95411|957565"
-      ],
-      "MN_25-09-2026": [
-        "Vĩnh Long|42|917|4591,2561,2616|1048|16709,94790,36972,49885,43083,57459,77406|60896,08186|73017|88689|017299",
-        "Bình Dương|43|347|6509,7000,7699|9303|29521,09322,86169,63678,36024,35156,14658|81050,89385|96902|73243|475052",
-        "Trà Vinh|43|699|1089,8087,1366|5231|05961,95735,70344,26452,45816,49208,14440|79301,33093|04320|31703|107064"
-      ],
-      "MT_01-10-2026": [
-        "Quảng Bình|05|724|0785,9771,0548|8682|60667,98255,73940,69355,21523,25550,39683|81960,30912|54642|96546|382536",
-        "Bình Định|03|958|8495,3765,4697|2470|91001,53074,92097,46306,81022,51437,89118|67244,46733|59112|43702|067632",
-        "Quảng Trị|05|481|1112,0087,9786|8143|74386,42375,14734,06068,62498,84828,88279|36643,58437|16447|42669|114471"
-      ],
-      "MT_30-09-2026": [
-        "Đà Nẵng|75|451|0206,0140,0882|1340|42607,71881,76274,63099,83797,03702,02551|08889,52752|69542|90146|682963",
-        "Khánh Hòa|61|238|7161,4922,7302|4923|79900,96075,96967,70626,35135,12022,89882|21821,14590|81929|67015|903468"
-      ],
-      "MT_25-09-2026": [
-        "Gia Lai|13|217|1901,2099,2205|6015|57789,49892,59360,90601,19151,93388,84950|51688,71432|81957|90284|905589",
-        "Ninh Thuận|95|947|2029,4629,3509|8504|17615,04691,13353,24917,86677,62825,92946|60076,61855|97389|37378|783153"
-      ],
-      "MB_01-10-2026": [
-        "Miền Bắc||50,15,07,04|390,655,395|3349,1896,5752,6691,6935,4650|6537,7453,7691,9434|16892,82700,92965,40504,68709,38492|24807,62639|92635|40208"
-      ]
-    };
-
-    function unpackRow(str, isMB) {
-      const p = str.split('|');
-      if (isMB) {
-        return { name: p[0], g7: p[2].split(','), g6: p[3].split(','), g5: p[4].split(','), g4: p[5].split(','), g3: p[6].split(','), g2: p[7].split(','), g1: [p[8]], db: [p[9]] };
-      }
-      return { name: p[0], g8: [p[1]], g7: [p[2]], g6: p[3].split(','), g5: [p[4]], g4: p[5].split(','), g3: p[6].split(','), g2: [p[7]], g1: [p[8]], db: [p[9]] };
-    }
-
-    function toggleKeyBox() {
-      const box = document.getElementById('apiKeyBox');
-      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-    }
-    function saveApiKey() {
-      const key = document.getElementById('apiKeyInput').value.trim();
-      if (key) {
-        localStorage.setItem('PHATDAT_API_KEY', key);
-        alert('✅ Đã lưu API Key!');
-        document.getElementById('apiKeyBox').style.display = 'none';
-        loadAllData(false);
-      }
-    }
-
-    function toInputDate(d) {
-      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    }
-    function toVNDate(d, sep = '/') {
-      return `${String(d.getDate()).padStart(2,'0')}${sep}${String(d.getMonth()+1).padStart(2,'0')}${sep}${d.getFullYear()}`;
-    }
-
-    function switchRegion(region, el) {
-      currentRegion = region;
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      el.classList.add('active');
-      loadAllData(false);
-    }
-    function changeDay(offset) {
-      selectedDate.setDate(selectedDate.getDate() + offset);
-      loadAllData(false);
-    }
-    function changeMonth(offset) {
-      selectedDate.setMonth(selectedDate.getMonth() + offset);
-      loadAllData(false);
-    }
-    function onDatePick(val) {
-      if (!val) return;
-      const p = val.split('-');
-      selectedDate = new Date(p[0], p[1] - 1, p[2]);
-      loadAllData(false);
-    }
-    function selectQuickDay(y, m, d) {
-      selectedDate = new Date(y, m, d);
-      loadAllData(false);
-    }
-
-    function renderDayStrip() {
-      const year = selectedDate.getFullYear();
-      const month = selectedDate.getMonth();
-      const selectedDay = selectedDate.getDate();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const now = new Date();
-
-      document.getElementById('monthLabelText').innerText = `📅 Các ngày Tháng ${month + 1}/${year}:`;
-      document.getElementById('datePicker').value = toInputDate(selectedDate);
-
-      let html = '';
-      for (let day = 1; day <= daysInMonth; day++) {
-        const d = new Date(year, month, day);
-        const key = `${currentRegion}_${toVNDate(d, '-')}`;
-        const hasCache = !!(COMPACT_DB[key] || localStorage.getItem('KQ_' + key));
-        const isFuture = d > now;
-        const isActive = (day === selectedDay);
-        const dateShort = `${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`;
-
-        let cls = 'day-pill';
-        if (isActive) cls += ' active';
-        else if (hasCache) cls += ' cached';
-        else if (isFuture) cls += ' future';
-
-        html += `<div id="day_pill_${day}" class="${cls}" onclick="selectQuickDay(${year}, ${month}, ${day})">${DAY_NAMES[d.getDay()]}<span>${dateShort}</span></div>`;
-      }
-      const strip = document.getElementById('dayStrip');
-      strip.innerHTML = html;
-
-      setTimeout(() => {
-        const activeEl = document.getElementById(`day_pill_${selectedDay}`);
-        if (activeEl) strip.scrollLeft = activeEl.offsetLeft - strip.clientWidth / 2 + activeEl.clientWidth / 2;
-      }, 30);
-    }
-
-    function calcPascal(str) {
-      let arr = str.replace(/\D/g, '').split('').map(Number);
-      while (arr.length > 2) {
-        let next = [];
-        for (let i = 0; i < arr.length - 1; i++) next.push((arr[i] + arr[i + 1]) % 10);
-        arr = next;
-      }
-      return arr.join('');
-    }
-    function calcBong(numStr) {
-      const b = { '1':'6','2':'7','3':'8','4':'9','5':'0','6':'1','7':'2','8':'3','9':'4','0':'5' };
-      let n = numStr.padStart(2, '0').slice(-2);
-      return b[n[0]] + b[n[1]];
-    }
-    function calcBongAm(numStr) {
-      const b = { '1':'4','4':'1','2':'9','9':'2','3':'6','6':'3','5':'8','8':'5','0':'7','7':'0' };
-      let n = numStr.padStart(2, '0').slice(-2);
-      return b[n[0]] + b[n[1]];
-    }
-
-    // LẤY KẾT QUẢ SIÊU TỐC: ĐUA SONG SONG ĐA CỔNG PROXY (PROMISE.ANY) - PHẢN HỒI < 0.8 GIÂY
-    async function fetchRealKQXS(region, dateObj, forceRefresh = false) {
-      const key = `${region}_${toVNDate(dateObj, '-')}`;
-      if (!forceRefresh && COMPACT_DB[key]) return COMPACT_DB[key].map(s => unpackRow(s, region === 'MB'));
-      if (!forceRefresh) {
-        const cached = localStorage.getItem('KQ_' + key);
-        if (cached) return JSON.parse(cached);
-      }
-
-      const dStr = toVNDate(dateObj, '-');
-      const rSlug = region === 'MN' ? 'xsmn' : (region === 'MT' ? 'xsmt' : 'xsmb');
-      const targetUrl = `https://xosodaiphat.com/${rSlug}-${dStr}.html`;
-
-      const proxies = [
-        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
-      ];
-
-      const fetchFromProxy = async (pUrl) => {
-        const controller = new AbortController();
-        const tid = setTimeout(() => controller.abort(), 4500);
-        try {
-          const res = await fetch(pUrl, { signal: controller.signal });
-          clearTimeout(tid);
-          if (!res.ok) throw new Error('Bad status');
-          const html = await res.text();
-          const parsed = parseXosoDaiPhatHTML(html, region);
-          if (parsed && parsed.length > 0) return parsed;
-          throw new Error('Parse empty');
-        } catch (err) {
-          clearTimeout(tid);
-          throw err;
-        }
-      };
-
-      try {
-        // Cổng nào trả về kết quả hợp lệ đầu tiên thì lấy ngay lập tức!
-        const fastestResult = await Promise.any(proxies.map(p => fetchFromProxy(p)));
-        localStorage.setItem('KQ_' + key, JSON.stringify(fastestResult));
-        return fastestResult;
-      } catch (e) {
-        return null;
-      }
-    }
-
-    function parseXosoDaiPhatHTML(html, region) {
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const table = doc.querySelector('table.table-xsmn, table.table-xsmt, table.table-result, table.table-bordered');
-      if (!table) return null;
-
-      if (region === 'MB') {
-        const mbSpec = [
-          { key: 'db', len: 5, count: 1 }, { key: 'g1', len: 5, count: 1 },
-          { key: 'g2', len: 5, count: 2 }, { key: 'g3', len: 5, count: 6 },
-          { key: 'g4', len: 4, count: 4 }, { key: 'g5', len: 4, count: 6 },
-          { key: 'g6', len: 3, count: 3 }, { key: 'g7', len: 2, count: 4 }
-        ];
-        const mbObj = { name: 'Miền Bắc', db: [], g1: [], g2: [], g3: [], g4: [], g5: [], g6: [], g7: [] };
-        const rows = Array.from(table.querySelectorAll('tbody tr'));
-        let sIdx = 0;
-        rows.forEach(tr => {
-          if (sIdx >= mbSpec.length) return;
-          const tds = Array.from(tr.querySelectorAll('td'));
-          if (tds.length >= 2) {
-            const rawDigits = tds[1].textContent.replace(/\D/g, '');
-            const spec = mbSpec[sIdx];
-            if (rawDigits.length === spec.len * spec.count) {
-              mbObj[spec.key] = rawDigits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
-              sIdx++;
-            }
-          }
-        });
-        return mbObj.db.length > 0 ? [mbObj] : null;
-      }
-
-      const ths = Array.from(table.querySelectorAll('thead th, tr:first-child th')).slice(1);
-      if (ths.length === 0) return null;
-
-      const stations = ths.map(th => ({
-        name: th.textContent.trim(),
-        g8: [], g7: [], g6: [], g5: [], g4: [], g3: [], g2: [], g1: [], db: []
-      }));
-
-      const prizeSpecs = [
-        { key: 'g8', len: 2, count: 1 }, { key: 'g7', len: 3, count: 1 },
-        { key: 'g6', len: 4, count: 3 }, { key: 'g5', len: 4, count: 1 },
-        { key: 'g4', len: 5, count: 7 }, { key: 'g3', len: 5, count: 2 },
-        { key: 'g2', len: 5, count: 1 }, { key: 'g1', len: 5, count: 1 },
-        { key: 'db', len: 6, count: 1 }
-      ];
-
-      const rows = Array.from(table.querySelectorAll('tbody tr'));
-      let pIdx = 0;
-      rows.forEach(tr => {
-        if (pIdx >= prizeSpecs.length) return;
-        const tds = Array.from(tr.querySelectorAll('td'));
-        if (tds.length >= stations.length + 1) {
-          const spec = prizeSpecs[pIdx];
-          const firstCellDigits = tds[1].textContent.replace(/\D/g, '');
-          if (firstCellDigits.length === spec.len * spec.count) {
-            for (let i = 0; i < stations.length; i++) {
-              const digits = tds[i + 1].textContent.replace(/\D/g, '');
-              stations[i][spec.key] = digits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
-            }
-            pIdx++;
-          }
-        }
-      });
-
-      return (stations[0] && stations[0].db.length > 0) ? stations : null;
-    }
-
-    // TẢI CẢ THÁNG SIÊU TỐC THEO LÔ SONG SONG (BATCH 5 NGÀY CÙNG LÚC)
-    async function syncEntireMonth() {
-      const year = selectedDate.getFullYear();
-      const month = selectedDate.getMonth();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const now = new Date();
-      const statusBar = document.getElementById('statusBar');
-
-      const daysToFetch = [];
-      for (let d = 1; d <= daysInMonth; d++) {
-        const cur = new Date(year, month, d);
-        if (cur <= now) daysToFetch.push(cur);
-      }
-
-      let done = 0;
-      const batchSize = 5;
-      for (let i = 0; i < daysToFetch.length; i += batchSize) {
-        const batch = daysToFetch.slice(i, i + batchSize);
-        statusBar.className = 'status-bar loading';
-        statusBar.innerText = `⚡ Đang tải tốc độ cao (${ Math.min(i + batchSize, daysToFetch.length) }/${daysToFetch.length} ngày)...`;
-        await Promise.all(batch.map(d => fetchRealKQXS(currentRegion, d, false).then(r => { if (r) done++; })));
-        renderDayStrip();
-      }
-
-      statusBar.className = 'status-bar';
-      statusBar.innerText = `✅ Đã tải siêu tốc ${done} ngày trong Tháng ${month + 1}/${year}!`;
-      loadAllData(false);
-    }
-
-    // TẢI NGẦM CÁC NGÀY LÂN CẬN ĐỂ BẤM LÀ HIỆN NGAY (0 GIÂY)
-    function preloadAdjacentDays(baseDate) {
-      setTimeout(() => {
-        [-1, -2, -3, -7].forEach(offset => {
-          const d = new Date(baseDate);
-          d.setDate(d.getDate() + offset);
-          fetchRealKQXS(currentRegion, d, false).then(() => renderDayStrip());
-        });
-      }, 200);
-    }
-
-    async function loadAllData(forceRefresh) {
-      renderDayStrip();
-      const statusBar = document.getElementById('statusBar');
-
-      const curDate = new Date(selectedDate);
-      const nextDate = new Date(selectedDate);
-      nextDate.setDate(nextDate.getDate() + 1);
-
-      const prevDrawOfNextDate = new Date(nextDate);
-      prevDrawOfNextDate.setDate(prevDrawOfNextDate.getDate() - 7);
-
-      const curDateStr = `${FULL_DAY_NAMES[curDate.getDay()]} - ${toVNDate(curDate)}`;
-      const nextDateStr = `${FULL_DAY_NAMES[nextDate.getDay()]} - ${toVNDate(nextDate)}`;
-      const prevDrawStr = toVNDate(prevDrawOfNextDate);
-
-      document.getElementById('badgeCurrentDate').innerText = toVNDate(curDate);
-      document.getElementById('badgeKQDate').innerText = curDateStr;
-      document.getElementById('badgeNextDate').innerText = toVNDate(nextDate);
-      document.getElementById('badgeVipDate').innerText = toVNDate(nextDate);
-
-      const stationsSchedule = SCHEDULE[currentRegion][curDate.getDay()];
-      const stationsTomorrow = SCHEDULE[currentRegion][nextDate.getDay()];
-
-      document.getElementById('stationsToday').innerHTML = stationsSchedule
-        .map(s => `<span class="station-badge">📍 ${s}</span>`).join('');
-
-      statusBar.className = 'status-bar loading';
-      statusBar.innerText = '⚡ Đang nạp kết quả siêu tốc...';
-
-      // Hiển thị ngay bảng kết quả hôm nay trước (không chờ kỳ trước)
-      const resultsToday = await fetchRealKQXS(currentRegion, curDate, forceRefresh);
-      renderDayStrip();
-
-      if (resultsToday && resultsToday.length > 0) {
-        statusBar.className = 'status-bar';
-        statusBar.innerText = `✅ Chuẩn Xổ Số Đại Phát (${curDateStr})`;
-        renderResultTable(resultsToday, currentRegion);
-        renderDetailedStatsToday(resultsToday);
-
-        // Chạy phân tích ngày mai ngay lập tức và nạp bổ sung kỳ trước
-        const resultsPrevWeekTomorrow = await fetchRealKQXS(currentRegion, prevDrawOfNextDate, false);
-        renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrow, nextDateStr, prevDrawStr);
-        preloadAdjacentDays(curDate);
-      } else {
-        statusBar.className = 'status-bar warn';
-        statusBar.innerText = `⚠️ Ngày ${toVNDate(curDate)} chưa mở thưởng`;
-        document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#c92a2a; font-weight:600;">Chưa có bảng kết quả mở thưởng cho ngày ${toVNDate(curDate)}.</div>`;
-        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px;">Đang chờ kết quả mở thưởng để thống kê.</div>`;
-      }
-    }
-
-    function renderResultTable(results, region) {
-      let html = `<table class="kq-table"><thead><tr><th class="giai-col">Giải</th>`;
-      results.forEach(r => html += `<th>${r.name}</th>`);
-      html += `</tr></thead><tbody>`;
-
-      const prizeOrder = region === 'MB'
-        ? [
-            { key: 'db', label: 'ĐB', highlight: true }, { key: 'g1', label: 'G.1' },
-            { key: 'g2', label: 'G.2' }, { key: 'g3', label: 'G.3' },
-            { key: 'g4', label: 'G.4' }, { key: 'g5', label: 'G.5' },
-            { key: 'g6', label: 'G.6' }, { key: 'g7', label: 'G.7', highlight: true }
-          ]
-        : [
-            { key: 'g8', label: 'G.8', highlight: true }, { key: 'g7', label: 'G.7' },
-            { key: 'g6', label: 'G.6' }, { key: 'g5', label: 'G.5' },
-            { key: 'g4', label: 'G.4' }, { key: 'g3', label: 'G.3' },
-            { key: 'g2', label: 'G.2' }, { key: 'g1', label: 'G.1' },
-            { key: 'db', label: 'G.ĐB', highlight: true }
-          ];
-
-      prizeOrder.forEach(p => {
-        html += `<tr><td class="giai-col">${p.label}</td>`;
-        results.forEach(r => {
-          const vals = r[p.key] || [];
-          html += `<td class="${p.highlight ? 'kq-highlight' : ''}">${vals.join('<br>')}</td>`;
-        });
-        html += `</tr>`;
-      });
-      html += `</tbody></table>`;
-      document.getElementById('kqxsContainer').innerHTML = html;
-    }
-
-    function renderDetailedStatsToday(results) {
-      let html = '';
-      results.forEach(r => {
-        const db = r.db[0] || '00';
-        const g8 = (r.g8 && r.g8[0]) ? r.g8[0] : (r.g7 ? r.g7.join(', ') : '');
-        const duoiDB = db.slice(-2);
-
-        let allLoto = [];
-        Object.keys(r).forEach(k => {
-          if (Array.isArray(r[k])) r[k].forEach(num => allLoto.push(num.slice(-2)));
-        });
-
-        let dauCount = {};
-        allLoto.forEach(l => { dauCount[l[0]] = (dauCount[l[0]] || 0) + 1; });
-        let hotDau = Object.keys(dauCount).sort((a,b) => dauCount[b] - dauCount[a])[0] || '0';
-
-        html += `
-          <div class="analysis-item">
-            <strong>📌 Đài ${r.name}:</strong>
-            <div class="dauduoi-grid">
-              <div class="dd-box">Giải 8/Đầu: <b style="color:#d90416">${g8}</b></div>
-              <div class="dd-box">Đuôi ĐB: <b style="color:#d90416">${duoiDB}</b></div>
-            </div>
-            <div style="margin-top:6px;">• Đầu lô về nhiều nhất: <b>Đầu ${hotDau}</b> (${dauCount[hotDau]} nháy)</div>
-            <div class="loto-2so"><b>Lô 2 số đã về:</b> ${allLoto.join(', ')}</div>
-          </div>`;
-      });
-      document.getElementById('detailedStats').innerHTML = html;
-    }
-
-    async function renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeek, nextDateStr, prevDrawStr) {
-      document.getElementById('nextDayStations').innerHTML = stationsTomorrow
-        .map(s => `<span class="station-badge" style="background:#fff0f0; border-color:#d90416;">🎯 Đài ngày mai: ${s}</span>`).join('');
-
-      let html = '';
-      let pascalsChinhDai = [], pascalsLienNgay = [], bongsHop = [];
-
-      stationsTomorrow.forEach((stName, idx) => {
-        const todayRef = resultsToday[idx % resultsToday.length];
-        const dbToday = todayRef.db[0];
-        const g1Today = todayRef.g1[0];
-        const pasLienNgay = calcPascal(dbToday + g1Today);
-
-        let prevRef = null;
-        if (resultsPrevWeek && resultsPrevWeek.length > 0) {
-          prevRef = resultsPrevWeek.find(r => r.name.toLowerCase().includes(stName.toLowerCase())) || resultsPrevWeek[idx % resultsPrevWeek.length];
-        }
-
-        if (prevRef && prevRef.db && prevRef.db[0]) {
-          const dbPrev = prevRef.db[0];
-          const g1Prev = prevRef.g1[0];
-          const g8Prev = (prevRef.g8 && prevRef.g8[0]) ? prevRef.g8[0] : dbPrev.slice(-2);
-
-          const pasChinhDai = calcPascal(dbPrev + g1Prev);
-          const pasGiaoThoa = calcPascal(dbPrev + dbToday);
-          const bongD = calcBong(dbPrev.slice(-2));
-          const bongA = calcBongAm(g8Prev);
-
-          pascalsChinhDai.push(pasChinhDai);
-          pascalsLienNgay.push(pasLienNgay);
-          bongsHop.push(pasGiaoThoa);
-
-          html += `
-            <div class="analysis-item tomorrow-item">
-              <strong>🔮 Dự đoán Đài ${stName} (${nextDateStr}):</strong><br>
-              <span class="sub-tag">📌 Cầu Chính Đài (Kỳ trước ${prevDrawStr}: ĐB ${dbPrev} | G.1 ${g1Prev})</span><br>
-              • <b>Pascal Chính Đài:</b> <b style="color:#d90416; font-size:15px;">${pasChinhDai} - ${pasChinhDai.split('').reverse().join('')}</b> | <b>Bóng ĐB (${dbPrev.slice(-2)}):</b> Dương <b>${bongD}</b> - Âm <b>${bongA}</b><br>
-              <span class="sub-tag">⚡ Cầu Liên Ngày (Từ đài ${todayRef.name} ĐB ${dbToday})</span><br>
-              • <b>Pascal Liên Ngày:</b> <b>${pasLienNgay} - ${pasLienNgay.split('').reverse().join('')}</b> | <b>Giao thoa 2 kỳ:</b> <b style="color:#1b8a3d;">${pasGiaoThoa}</b>
-            </div>`;
-        } else {
-          const bongD = calcBong(dbToday.slice(-2));
-          const kep = dbToday.slice(1, 3);
-          pascalsChinhDai.push(pasLienNgay);
-          pascalsLienNgay.push(bongD);
-          bongsHop.push(kep);
-
-          html += `
-            <div class="analysis-item tomorrow-item">
-              <strong>🔮 Dự đoán Đài ${stName} (${nextDateStr}):</strong><br>
-              • <b>Cầu Pascal Liên Ngày (ĐB ${dbToday} + G1 ${g1Today}):</b> <b style="color:#d90416; font-size:15px;">${pasLienNgay} - ${pasLienNgay.split('').reverse().join('')}</b><br>
-              • <b>Bóng Dương ĐB (${dbToday.slice(-2)}):</b> <b>${bongD}</b> | <b>Cầu Kẹp:</b> <b>${kep}</b>
-            </div>`;
-        }
-      });
-
-      document.getElementById('nextDayAnalysis').innerHTML = html;
-
-      const vip1 = pascalsChinhDai[0];
-      const vip2 = bongsHop[bongsHop.length > 1 ? 1 : 0];
-      const vip3 = pascalsLienNgay[pascalsLienNgay.length - 1];
-
-      document.getElementById('crossStation').innerHTML = `
-        <div class="analysis-item">
-          • <b>Hội tụ Pascal Chính Đài (${prevDrawStr} ➡ ${nextDateStr}):</b> <b style="color:#d90416">${pascalsChinhDai.join(' ↔ ')}</b><br>
-          • <b>Hội tụ Pascal Liên Ngày (Hôm nay ➡ Ngày mai):</b> <b>${pascalsLienNgay.join(' ↔ ')}</b><br>
-          • <b>Cầu Giao Thoa 2 Kỳ (Chính Đài + Liên Ngày):</b> <b style="color:#1b8a3d">${bongsHop.join(' ↔ ')}</b><br>
-          👉 <i>Chốt nhịp cầu thực tế cho <b>${nextDateStr}</b>: Ưu tiên Bạch thủ <b>${vip1}</b> (Cầu chính đài), Song thủ <b>${vip2}</b> và Xiên <b>${vip3}</b>.</i>
-        </div>`;
-
-      document.getElementById('vipNumbers').innerHTML = `
-        <div class="vip-numbers">
-          <div class="vip-ball"><div class="num">${vip1}</div><div class="lbl">BẠCH THỦ (CHÍNH ĐÀI)</div></div>
-          <div class="vip-ball"><div class="num">${vip2}</div><div class="lbl">SONG THỦ (GIAO THOA)</div></div>
-          <div class="vip-ball"><div class="num">${vip3}</div><div class="lbl">XIÊN (LIÊN NGÀY)</div></div>
-        </div>`;
-
-      const apiKey = localStorage.getItem('PHATDAT_API_KEY');
-      const aiBox = document.getElementById('aiAnalysisBox');
-      if (apiKey) {
-        aiBox.style.display = 'block';
-        aiBox.innerHTML = '🤖 <b>Trợ lý AI đang phân tích kết hợp Cầu Chính Đài & Liên Ngày...</b>';
-        try {
-          const prompt = `Phân tích ngắn gọn 3 dòng soi cầu xổ số ngày ${nextDateStr} cho các đài ${stationsTomorrow.join(', ')}. Biết Pascal Chính Đài (kỳ trước ${prevDrawStr}) báo: ${pascalsChinhDai.join(', ')}; Pascal Liên Ngày (từ hôm nay) báo: ${pascalsLienNgay.join(', ')}; Giao thoa 2 kỳ báo: ${bongsHop.join(', ')}.`;
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-          });
-          const data = await res.json();
-          const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (reply) {
-            aiBox.innerHTML = `🤖 <b>Nhận định AI (${nextDateStr}):</b><br>` + reply.replace(/\n/g, '<br>');
-          } else { aiBox.style.display = 'none'; }
-        } catch (e) { aiBox.style.display = 'none'; }
-      } else { aiBox.style.display = 'none'; }
-    }
-
-    window.onload = () => {
-      const savedKey = localStorage.getItem('PHATDAT_API_KEY');
-      if (savedKey) document.getElementById('apiKeyInput').value = savedKey;
-      loadAllData(false);
-    };
-  </script>
+function initAudio(){
+ if(!audioCtx){
+  const AudioContext=
+   window.AudioContext ||
+   window.webkitAudioContext;
+
+  if(AudioContext){
+   audioCtx=new AudioContext();
+  }
+ }
+
+ if(audioCtx && audioCtx.state==="suspended"){
+  audioCtx.resume();
+ }
+}
+
+function beep(freq=600,duration=.045,type="square"){
+ if(!soundOn)return;
+
+ initAudio();
+
+ if(!audioCtx)return;
+
+ const osc=audioCtx.createOscillator();
+ const gain=audioCtx.createGain();
+
+ osc.type=type;
+ osc.frequency.value=freq;
+
+ gain.gain.setValueAtTime(
+  .0001,
+  audioCtx.currentTime
+ );
+
+ gain.gain.exponentialRampToValueAtTime(
+  .07,
+  audioCtx.currentTime+.005
+ );
+
+ gain.gain.exponentialRampToValueAtTime(
+  .0001,
+  audioCtx.currentTime+duration
+ );
+
+ osc.connect(gain);
+ gain.connect(audioCtx.destination);
+
+ osc.start();
+ osc.stop(audioCtx.currentTime+duration+.01);
+}
+
+function winSound(){
+ if(!soundOn)return;
+
+ beep(523,.12,"sine");
+
+ setTimeout(()=>beep(659,.12,"sine"),130);
+ setTimeout(()=>beep(784,.18,"sine"),260);
+}
+
+/* =========================
+   NGÀY / ĐÀI
+========================= */
+
+function updateDate(){
+ const d=dateObject();
+
+ headerDate.textContent=formatDate(d);
+ resultDate.textContent=formatDate(d);
+}
+
+function loadStations(){
+ const d=dateObject();
+ const stations=schedule[d.getDay()]||[];
+
+ stationList.innerHTML="";
+ selectedStations=[];
+
+ stations.forEach(name=>{
+  const el=document.createElement("div");
+
+  el.className="station active";
+  el.textContent=name;
+
+  selectedStations.push(name);
+
+  el.onclick=()=>{
+   if(spinning)return;
+
+   if(selectedStations.includes(name)){
+    selectedStations=
+     selectedStations.filter(x=>x!==name);
+
+    el.classList.remove("active");
+   }else{
+    selectedStations.push(name);
+    el.classList.add("active");
+   }
+  };
+
+  stationList.appendChild(el);
+ });
+
+ updateDate();
+}
+
+/* =========================
+   TẠO BẢNG KẾT QUẢ
+========================= */
+
+function createStation(station){
+
+ const box=document.createElement("div");
+ box.className="station-result";
+ box.dataset.station=station;
+
+ const title=document.createElement("div");
+ title.className="station-name";
+ title.textContent="🎟️ "+station;
+
+ box.appendChild(title);
+
+ prizes.forEach((item,index)=>{
+
+  const prize=item[0];
+
+  const row=document.createElement("div");
+  row.className="row";
+  row.dataset.index=index;
+
+  const p=document.createElement("div");
+  p.className="prize";
+  p.textContent=prize;
+
+  const number=document.createElement("div");
+  number.className="number";
+  number.textContent="••••••";
+
+  if(prize==="ĐẶC BIỆT"){
+   number.classList.add("special");
+  }
+
+  row.appendChild(p);
+  row.appendChild(number);
+
+  box.appendChild(row);
+ });
+
+ return box;
+}
+
+function createAllResults(){
+
+ results.innerHTML="";
+
+ selectedStations.forEach(station=>{
+  results.appendChild(
+   createStation(station)
+  );
+ });
+}
+
+/* =========================
+   QUAY 1 SỐ
+========================= */
+
+async function spinElement(el,length,duration){
+
+ el.classList.add("spinning");
+
+ const start=Date.now();
+
+ while(Date.now()-start<duration){
+
+  el.textContent=randomNumber(length);
+
+  beep(
+   300+Math.random()*500,
+   .025,
+   "square"
+  );
+
+  await sleep(65);
+ }
+
+ const finalNumber=generateFinal(length);
+
+ el.textContent=finalNumber;
+ el.classList.remove("spinning");
+
+ return finalNumber;
+}
+
+/* =========================
+   QUAY 1 GIẢI
+========================= */
+
+async function spinPrize(index){
+
+ if(spinning)return;
+
+ if(selectedStations.length===0){
+  alert("Vui lòng chọn ít nhất 1 đài.");
+  return;
+ }
+
+ spinning=true;
+ disableButtons(true);
+
+ if(results.children.length===0){
+  createAllResults();
+ }
+
+ const item=prizes[index];
+ const length=item[2];
+ const prize=item[0];
+
+ status.textContent=
+  "🎰 Đang quay "+prize+"...";
+
+ const rows=
+  document.querySelectorAll(
+   `.row[data-index="${index}"]`
+  );
+
+ for(const row of rows){
+
+  const number=row.querySelector(".number");
+
+  await spinElement(
+   number,
+   length,
+   prize==="ĐẶC BIỆT" ? 1600 : 800
+  );
+
+  if(prize==="ĐẶC BIỆT"){
+   number.classList.add("done");
+  }
+ }
+
+ winSound();
+
+ status.textContent=
+  "✅ Đã hoàn tất "+prize+".";
+
+ spinning=false;
+ disableButtons(false);
+}
+
+/* =========================
+   QUAY TOÀN BỘ
+========================= */
+
+async function spinAll(){
+
+ if(spinning)return;
+
+ if(selectedStations.length===0){
+  alert("Vui lòng chọn ít nhất 1 đài.");
+  return;
+ }
+
+ initAudio();
+
+ spinning=true;
+ disableButtons(true);
+
+ createAllResults();
+
+ for(let i=0;i<prizes.length;i++){
+
+  currentPrizeIndex=i;
+
+  const item=prizes[i];
+  const prize=item[0];
+  const length=item[2];
+
+  status.textContent=
+   `🎰 Đang quay ${prize}...`;
+
+  const rows=
+   document.querySelectorAll(
+    `.row[data-index="${i}"]`
+   );
+
+  for(const row of rows){
+
+   const number=
+    row.querySelector(".number");
+
+   await spinElement(
+    number,
+    length,
+    prize==="ĐẶC BIỆT" ? 1600 : 800
+   );
+
+   if(prize==="ĐẶC BIỆT"){
+    number.classList.add("done");
+   }
+  }
+
+  await sleep(120);
+ }
+
+ winSound();
+
+ status.textContent=
+  "🎉 Đã hoàn tất toàn bộ kết quả mô phỏng.";
+
+ spinning=false;
+ disableButtons(false);
+}
+
+function disableButtons(disabled){
+
+ spinAllBtn.disabled=disabled;
+ spinOneBtn.disabled=disabled;
+ resetBtn.disabled=disabled;
+}
+
+/* =========================
+   LÀM LẠI
+========================= */
+
+function reset(){
+
+ if(spinning)return;
+
+ results.innerHTML="";
+
+ status.textContent=
+  "Chọn đài rồi nhấn QUAY TẤT CẢ.";
+
+ currentPrizeIndex=0;
+}
+
+/* =========================
+   ÂM THANH
+========================= */
+
+function toggleSound(){
+
+ soundOn=!soundOn;
+
+ soundBtn.textContent=
+  soundOn
+  ? "🔊 ÂM THANH: BẬT"
+  : "🔇 ÂM THANH: TẮT";
+
+ if(soundOn){
+  initAudio();
+  beep(700,.08,"sine");
+ }
+}
+
+/* =========================
+   KHỞI TẠO
+========================= */
+
+const dateInput=
+ document.getElementById("dateInput");
+
+const headerDate=
+ document.getElementById("headerDate");
+
+const resultDate=
+ document.getElementById("resultDate");
+
+const stationList=
+ document.getElementById("stationList");
+
+const results=
+ document.getElementById("results");
+
+const status=
+ document.getElementById("status");
+
+const spinAllBtn=
+ document.getElementById("spinAll");
+
+const spinOneBtn=
+ document.getElementById("spinOne");
+
+const resetBtn=
+ document.getElementById("reset");
+
+const soundBtn=
+ document.getElementById("sound");
+
+const d=localToday();
+
+dateInput.value=
+ `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+
+dateInput.addEventListener("change",()=>{
+ if(spinning)return;
+
+ loadStations();
+ reset();
+});
+
+spinAllBtn.addEventListener(
+ "click",
+ spinAll
+);
+
+spinOneBtn.addEventListener(
+ "click",
+ ()=>{
+  spinPrize(currentPrizeIndex);
+
+  currentPrizeIndex++;
+
+  if(currentPrizeIndex>=prizes.length){
+   currentPrizeIndex=0;
+  }
+ }
+);
+
+resetBtn.addEventListener(
+ "click",
+ reset
+);
+
+soundBtn.addEventListener(
+ "click",
+ toggleSound
+);
+
+loadStations();
+</script>
+
 </body>
 </html>
