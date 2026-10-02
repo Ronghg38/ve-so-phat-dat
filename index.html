@@ -49,17 +49,17 @@
       cursor: pointer;
     }
 
-    /* Đèn báo đang ghi hình video */
+    /* Đèn báo đang ghi hình kèm đồng hồ đếm giây */
     .rec-badge {
       display: none;
       align-items: center;
       gap: 5px;
-      font-size: 11px;
-      background: rgba(255, 255, 255, 0.18);
+      font-size: 11.5px;
+      background: rgba(0, 0, 0, 0.35);
       padding: 2px 8px;
       border-radius: 10px;
       color: #ffeb3b;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .rec-badge.recording {
@@ -391,7 +391,7 @@
     </div>
     <div id="recBadge" class="rec-badge">
       <span class="rec-dot"></span>
-      <span>ĐANG GHI HÌNH</span>
+      <span id="recTimerText">REC 00:00</span>
     </div>
   </div>
 
@@ -432,8 +432,8 @@
   <!-- Hộp thoại thông báo tải video khi quay xong -->
   <div id="videoModal" class="modal-overlay">
     <div class="modal-box">
-      <h3>Đã quay xong kết quả!</h3>
-      <p>Video quay thử 30 giây đã sẵn sàng. Bấm nút bên dưới để lưu về điện thoại:</p>
+      <h3>Đã quay xong 18 giải!</h3>
+      <p id="modalDesc">Video đầy đủ (~34 giây) đã hoàn tất. Bấm nút bên dưới để lưu về máy:</p>
       <div class="modal-actions">
         <button class="btn-save-main" onclick="saveVideoToDevice()">⬇ LƯU / TẢI VIDEO VỀ MÁY</button>
         <button class="btn-close-modal" onclick="closeModal()">Đóng (Xem bảng số)</button>
@@ -441,8 +441,8 @@
     </div>
   </div>
 
-  <!-- Canvas ẩn dùng để xuất video chất lượng cao -->
-  <canvas id="videoCanvas" width="720" height="1280" style="display:none;"></canvas>
+  <!-- Canvas đặt kích thước chuẩn HD dọc, giữ hoạt động liên tục không bị trình duyệt ngắt -->
+  <canvas id="videoCanvas" width="720" height="1280" style="position:fixed; left:-9999px; top:0; pointer-events:none;"></canvas>
 
   <script>
     const prizeConfig = [
@@ -472,18 +472,21 @@
     let activeStep = -1;
     let spinTimeout = null;
     let pauseTimeout = null;
+    let finishRecTimeout = null;
     let animInterval = null;
     let totalSteps = 0;
 
-    // TỐC ĐỘ CHẬM TỪ TỪ (~32 giây cho 18 hàng)
+    // CẤU HÌNH TỐC ĐỘ CHẬM TỪ TỪ (~32 giây cho 18 giải)
     const TICK_SPEED_MS = 220;
     const STEP_SPIN_MS = 1550;
     const STEP_PAUSE_MS = 250;
 
-    // BIẾN LƯU VIDEO
+    // BIẾN GHI VIDEO LIÊN TỤC 30 FPS
     let mediaRecorder = null;
     let recordedChunks = [];
-    let renderLoopId = null;
+    let frameIntervalId = null;
+    let recStartTime = 0;
+    let audioCtx = null;
     let lastVideoBlob = null;
     let lastVideoExt = 'mp4';
 
@@ -620,7 +623,7 @@
       document.getElementById('videoModal').classList.remove('show');
     }
 
-    // ================= VẼ KHUNG HÌNH & LƯU VIDEO VỀ ĐIỆN THOẠI =================
+    // ================= VẼ KHUNG HÌNH & GHI VIDEO ĐỦ 32 GIÂY =================
     function drawVideoFrame() {
       const canvas = document.getElementById('videoCanvas');
       const ctx = canvas.getContext('2d');
@@ -811,11 +814,37 @@
       lastVideoBlob = null;
 
       drawVideoFrame();
-      const stream = canvas.captureStream(30);
+
+      // Tạo luồng hình ảnh 30 FPS từ Canvas
+      const videoStream = canvas.captureStream(30);
+      const combinedTracks = [...videoStream.getVideoTracks()];
+
+      // Thêm kênh âm thanh tĩnh (Silent Audio Track) để Facebook nhận chuẩn 100% thời lượng video
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          if (!audioCtx) audioCtx = new AudioContextClass();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          const dst = audioCtx.createMediaStreamDestination();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          gain.gain.value = 0.0001; // Âm lượng gần như bằng 0 nhưng giữ luồng thời gian chuẩn cho Facebook
+          osc.connect(gain);
+          gain.connect(dst);
+          osc.start();
+          const audioTracks = dst.stream.getAudioTracks();
+          if (audioTracks.length > 0) {
+            combinedTracks.push(audioTracks[0]);
+          }
+        }
+      } catch (e) {}
+
+      const finalStream = new MediaStream(combinedTracks);
       recordedChunks = [];
 
-      // Ưu tiên chuẩn MP4 trước để dễ lưu vào Thư viện ảnh trên điện thoại
+      // Ưu tiên định dạng MP4 chuẩn cho Facebook
       const mimeTypes = [
+        'video/mp4;codecs=avc1,mp4a.40.2',
         'video/mp4;codecs=avc1',
         'video/mp4',
         'video/webm;codecs=h264',
@@ -833,8 +862,8 @@
 
       try {
         mediaRecorder = selectedMime
-          ? new MediaRecorder(stream, { mimeType: selectedMime, videoBitsPerSecond: 2500000 })
-          : new MediaRecorder(stream);
+          ? new MediaRecorder(finalStream, { mimeType: selectedMime, videoBitsPerSecond: 3000000 })
+          : new MediaRecorder(finalStream);
       } catch (e) {
         return;
       }
@@ -850,45 +879,55 @@
         lastVideoExt = finalType.includes('mp4') ? 'mp4' : 'webm';
         lastVideoBlob = new Blob(recordedChunks, { type: finalType });
 
-        // Hiện nút Lưu Video trên thanh công cụ và bật hộp thoại cho người dùng bấm
+        const durationSec = Math.round((Date.now() - recStartTime) / 1000);
+        document.getElementById('modalDesc').textContent =
+          `Video dài ${durationSec} giây (đủ từ Giải 8 đến Giải ĐB) đã sẵn sàng để đăng Facebook / tải về máy:`;
+
         document.getElementById('downloadBtn').classList.add('ready');
         document.getElementById('videoModal').classList.add('show');
       };
 
-      mediaRecorder.start(200);
+      // QUAN TRỌNG: Gọi start() không truyền số mili-giây để trình duyệt đóng gói chuẩn Header thời lượng 32s
+      mediaRecorder.start();
+      recStartTime = Date.now();
       document.getElementById('recBadge').classList.add('recording');
+      document.getElementById('recTimerText').textContent = 'REC 00:00';
 
-      function loop() {
+      // Dùng setInterval 33ms (30 FPS) thay cho requestAnimationFrame để không bao giờ bị ngắt sau 3 giây
+      if (frameIntervalId) clearInterval(frameIntervalId);
+      frameIntervalId = setInterval(() => {
         drawVideoFrame();
-        if (mediaRecorder && mediaRecorder.state === 'recording') {
-          renderLoopId = requestAnimationFrame(loop);
-        }
-      }
-      loop();
+        const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
+        const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
+        const ss = String(elapsed % 60).padStart(2, '0');
+        document.getElementById('recTimerText').textContent = `REC ${mm}:${ss}`;
+      }, 33);
     }
 
-    function stopVideoRecording() {
+    function stopVideoRecording(showPopup = true) {
       document.getElementById('recBadge').classList.remove('recording');
-      if (renderLoopId) {
-        cancelAnimationFrame(renderLoopId);
-        renderLoopId = null;
+      if (frameIntervalId) {
+        clearInterval(frameIntervalId);
+        frameIntervalId = null;
       }
       if (mediaRecorder && mediaRecorder.state === 'recording') {
+        if (!showPopup) {
+          mediaRecorder.onstop = null;
+        }
         mediaRecorder.stop();
       }
     }
 
-    // Hàm Lưu Video tương thích cả Trình duyệt lẫn Menu Chia sẻ gốc của Điện thoại
     async function saveVideoToDevice() {
       if (!lastVideoBlob) {
-        alert('Chưa có video nào được ghi. Hãy bấm QUAY THỬ trước!');
+        alert('Chưa có video nào được ghi. Hãy bấm QUAY THỬ và đợi quay xong!');
         return;
       }
 
       const fileName = `xsmn-quay-thu-${Date.now()}.${lastVideoExt}`;
       const file = new File([lastVideoBlob], fileName, { type: lastVideoBlob.type });
 
-      // Cách 1: Tải trực tiếp bằng thẻ <a> khi người dùng chạm tay trực tiếp (User Gesture)
+      // Tải trực tiếp về thư mục Tệp đã tải xuống (Downloads)
       try {
         const url = URL.createObjectURL(lastVideoBlob);
         const a = document.createElement('a');
@@ -900,12 +939,10 @@
         setTimeout(() => {
           document.body.removeChild(a);
           URL.revokeObjectURL(url);
-        }, 3000);
-      } catch (err) {
-        console.log(err);
-      }
+        }, 4000);
+      } catch (err) {}
 
-      // Cách 2: Mở bảng Lưu / Chia sẻ gốc của điện thoại (nếu trình duyệt chặn tải thường)
+      // Bật thêm menu Chia sẻ gốc nếu thiết bị hỗ trợ
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
@@ -913,9 +950,7 @@
             title: 'Tham khảo Xổ Số miền Nam',
             text: 'Video quay thử Xổ Số Miền Nam'
           });
-        } catch (shareErr) {
-          // Người dùng đóng bảng chia sẻ
-        }
+        } catch (shareErr) {}
       }
 
       closeModal();
@@ -931,6 +966,7 @@
     }
 
     function startSpin() {
+      clearTimeout(finishRecTimeout);
       isSpinning = true;
       activeStep = 0;
       const btn = document.getElementById('spinBtn');
@@ -946,6 +982,7 @@
       activeStep = -1;
       clearTimeout(spinTimeout);
       clearTimeout(pauseTimeout);
+      clearTimeout(finishRecTimeout);
       clearInterval(animInterval);
       const btn = document.getElementById('spinBtn');
       btn.textContent = 'QUAY THỬ';
@@ -955,12 +992,13 @@
       });
 
       if (saveVideo) {
+        // Quay thêm 2.5 giây màn hình kết quả cuối cùng để người xem trên Facebook kịp nhìn Giải ĐB
         drawVideoFrame();
-        setTimeout(() => {
-          stopVideoRecording();
-        }, 1500);
+        finishRecTimeout = setTimeout(() => {
+          stopVideoRecording(true);
+        }, 2500);
       } else {
-        stopVideoRecording();
+        stopVideoRecording(false);
       }
     }
 
