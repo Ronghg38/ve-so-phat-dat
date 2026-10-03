@@ -54,7 +54,7 @@
     .app-bar-right {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
     .sound-btn {
@@ -63,7 +63,7 @@
       border: none;
       border-radius: 4px;
       padding: 2px 7px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
     }
@@ -408,7 +408,7 @@
 </head>
 <body>
 
-  <!-- Thanh tiêu đề kèm nút Bật/Tắt tiếng và Chọn nhạc MP3 -->
+  <!-- Thanh tiêu đề -->
   <div class="app-bar">
     <div class="app-bar-left">
       <span class="back-btn">&#8592;</span>
@@ -420,7 +420,7 @@
         <span id="recTimerText">00:00</span>
       </div>
       <button id="muteBtn" class="sound-btn" onclick="toggleMute()">🔊 Bật tiếng</button>
-      <button class="sound-btn" onclick="document.getElementById('mp3Input').click()">🎵 Nhạc MP3</button>
+      <button id="mp3Btn" class="sound-btn" onclick="document.getElementById('mp3Input').click()">🎵 Đổi nhạc</button>
       <input type="file" id="mp3Input" accept="audio/*" style="display:none" onchange="loadCustomMp3(event)">
     </div>
   </div>
@@ -462,8 +462,8 @@
   <!-- Hộp thoại Xuất Video Chuẩn MP4 có âm thanh -->
   <div id="videoModal" class="modal-overlay">
     <div class="modal-box">
-      <h3>Đã xuất Video + Âm thanh!</h3>
-      <p id="modalDesc">Video chuẩn MP4 (có tiếng nhạc xổ số) dài 34 giây đã sẵn sàng đăng Facebook / TikTok:</p>
+      <h3>Đã xuất Video + Nhạc Xổ Số!</h3>
+      <p id="modalDesc">Video chuẩn MP4 (có nhạc hiệu xổ số) dài 34 giây đã sẵn sàng đăng Facebook / TikTok:</p>
       <div class="modal-actions">
         <button class="btn-save-main" onclick="shareVideoNow()">📤 CHIA SẺ LÊN FACEBOOK / ZALO</button>
         <button class="btn-save-dl" onclick="downloadVideoNow()">⬇ TẢI FILE MP4 VỀ MÁY</button>
@@ -506,27 +506,62 @@
     let animInterval = null;
     let totalSteps = 0;
 
-    // TỐC ĐỘ QUAY TỪ TỪ (~32 giây cho 18 giải)
     const TICK_SPEED_MS = 220;
     const STEP_SPIN_MS = 1550;
     const STEP_PAUSE_MS = 250;
 
-    // ================= HỆ THỐNG ÂM THANH XỔ SỐ MIỀN NAM =================
+    // ================= DÀN NHẠC HIỆU XỔ SỐ TRUYỀN THỐNG TRONG CODE =================
     let audioCtx = null;
     let masterGain = null;
     let streamDest = null;
     let isMuted = false;
     let melodyTimer = null;
-    let noteIdx = 0;
+    let stepBeat = 0;
     let customAudioBuffer = null;
     let customAudioSource = null;
 
-    // Giai điệu nhạc Xổ Số rộn ràng (tần số Hz của các nốt nhạc)
-    const lotteryMelodyNotes = [
-      523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50,
-      880.00, 698.46, 587.33, 783.99, 659.25, 523.25,
-      587.33, 659.25, 698.46, 783.99, 880.00, 987.77,
-      1046.50, 783.99, 659.25, 783.99, 1046.50, 0
+    // Bản phối Giai điệu Kèn Đồng Xổ Số ("Tèn ten tén ten... Tèn tén ten...")
+    // Mỗi nhịp gồm: [Nốt chính (Hz), Nốt bè hòa âm (Hz), Nốt Bass trầm (Hz), Độ ngân (giây)]
+    const traditionalLotteryScore = [
+      // Câu 1: Đồ Mi Sol Đố - Đố Sol Đố
+      [523.25, 392.00, 130.81, 0.16],
+      [659.25, 523.25, 0,      0.16],
+      [783.99, 659.25, 196.00, 0.16],
+      [1046.50,783.99, 130.81, 0.30],
+      [0,      0,      0,      0.12],
+      [783.99, 659.25, 196.00, 0.16],
+      [1046.50,783.99, 130.81, 0.34],
+      [0,      0,      0,      0.14],
+
+      // Câu 2: La Đố La Sol - Mi Sol Mi Đồ
+      [880.00, 698.46, 174.61, 0.16],
+      [1046.50,880.00, 0,      0.16],
+      [880.00, 698.46, 174.61, 0.16],
+      [783.99, 659.25, 130.81, 0.30],
+      [659.25, 523.25, 196.00, 0.16],
+      [783.99, 659.25, 0,      0.16],
+      [659.25, 523.25, 196.00, 0.16],
+      [523.25, 392.00, 130.81, 0.34],
+
+      // Câu 3: Rê Fa La Rế - Си Sol Rế
+      [587.33, 440.00, 146.83, 0.16],
+      [698.46, 587.33, 0,      0.16],
+      [880.00, 698.46, 146.83, 0.16],
+      [1174.66,880.00, 196.00, 0.30],
+      [0,      0,      0,      0.12],
+      [987.77, 783.99, 196.00, 0.16],
+      [783.99, 587.33, 0,      0.16],
+      [1174.66,987.77, 196.00, 0.32],
+
+      // Câu 4: Đố Sol Mi Sol - Đố (Hợp âm kết)
+      [1046.50,783.99, 130.81, 0.18],
+      [783.99, 659.25, 196.00, 0.16],
+      [659.25, 523.25, 130.81, 0.16],
+      [783.99, 587.33, 196.00, 0.18],
+      [1046.50,783.99, 130.81, 0.42],
+      [0,      0,      196.00, 0.15],
+      [1046.50,659.25, 130.81, 0.42],
+      [0,      0,      0,      0.15]
     ];
 
     function ensureAudioContext() {
@@ -535,9 +570,8 @@
       if (!audioCtx) {
         audioCtx = new AudioContextClass({ sampleRate: 44100 });
         masterGain = audioCtx.createGain();
-        masterGain.gain.value = isMuted ? 0 : 0.85;
+        masterGain.gain.value = isMuted ? 0 : 0.9;
         streamDest = audioCtx.createMediaStreamDestination();
-        // Vừa phát ra loa điện thoại, vừa đưa vào luồng ghi Video
         masterGain.connect(audioCtx.destination);
         masterGain.connect(streamDest);
       }
@@ -547,123 +581,121 @@
       return audioCtx;
     }
 
-    function toggleMute() {
-      isMuted = !isMuted;
-      const btn = document.getElementById('muteBtn');
-      btn.textContent = isMuted ? '🔇 Tắt tiếng' : '🔊 Bật tiếng';
-      if (masterGain && audioCtx) {
-        masterGain.gain.setValueAtTime(isMuted ? 0 : 0.85, audioCtx.currentTime);
-      }
+    // Phát 1 nốt Kèn Đồng ấm (Kết hợp sóng răng cưa + bộ lọc âm trầm Lowpass)
+    function playBrassNote(freq, duration, vol = 0.14) {
+      if (!audioCtx || freq <= 0) return;
+      const now = audioCtx.currentTime;
+
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const filter = audioCtx.createBiquadFilter();
+      const gain = audioCtx.createGain();
+
+      osc1.type = 'sawtooth';
+      osc2.type = 'triangle';
+      osc1.frequency.setValueAtTime(freq, now);
+      osc2.frequency.setValueAtTime(freq * 1.003, now); // Tạo độ dày cho tiếng kèn
+
+      // Bộ lọc khử tiếng chói điện tử, giữ âm sắc ấm như kèn đồng thật
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(freq * 2.8, now);
+      filter.Q.value = 2.5;
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(vol, now + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + duration + 0.02);
+      osc2.stop(now + duration + 0.02);
     }
 
-    // Cho phép người dùng nạp file nhạc MP3 Xổ Số từ điện thoại nếu thích
-    function loadCustomMp3(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const ctx = ensureAudioContext();
-      if (!ctx) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        ctx.decodeAudioData(e.target.result, function(buffer) {
-          customAudioBuffer = buffer;
-          document.getElementById('subTitle').textContent = `Đã nạp nhạc: ${file.name}`;
-        }, function() {
-          alert('Không đọc được file âm thanh này, hệ thống sẽ dùng nhạc mặc định.');
-        });
-      };
-      reader.readAsArrayBuffer(file);
+    // Tiếng Trống + Bass đệm nhịp hành khúc Xổ Số
+    function playBassDrum(freq) {
+      if (!audioCtx || freq <= 0) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq * 1.5, now);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.14);
+      gain.gain.setValueAtTime(0.22, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 0.17);
     }
 
-    // Tiếng "tạch tạch" khi các con số nhảy
+    // Tiếng lồng cầu quay "lách cách" êm tai
     function playTickSound() {
       if (isMuted || !audioCtx) return;
       const now = audioCtx.currentTime;
       const osc = audioCtx.createOscillator();
       const g = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(950, now);
-      osc.frequency.exponentialRampToValueAtTime(420, now + 0.045);
-      g.gain.setValueAtTime(0.18, now);
-      g.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(680, now);
+      osc.frequency.exponentialRampToValueAtTime(320, now + 0.035);
+      g.gain.setValueAtTime(0.10, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
       osc.connect(g);
       g.connect(masterGain);
       osc.start(now);
-      osc.stop(now + 0.05);
+      osc.stop(now + 0.04);
     }
 
-    // Tiếng "Ting!" khi chốt kết quả mỗi hàng (Giải ĐB kêu vang hơn)
+    // Tiếng chuông chốt giải
     function playLockSound(isSpecial = false) {
       if (isMuted || !audioCtx) return;
-      const now = audioCtx.currentTime;
       if (isSpecial) {
-        // Nhạc hiệu chúc mừng Giải Đặc Biệt
-        const chord = [523.25, 659.25, 783.99, 1046.50];
-        chord.forEach((freq, idx) => {
-          const osc = audioCtx.createOscillator();
-          const g = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + idx * 0.09);
-          g.gain.setValueAtTime(0.28, now + idx * 0.09);
-          g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.9);
-          osc.connect(g);
-          g.connect(masterGain);
-          osc.start(now + idx * 0.09);
-          osc.stop(now + idx * 0.09 + 0.95);
+        const fanfare = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        fanfare.forEach((f, idx) => {
+          setTimeout(() => {
+            playBrassNote(f, 0.75, 0.22);
+            playBrassNote(f * 0.5, 0.75, 0.15);
+          }, idx * 85);
         });
       } else {
-        const osc = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, now);
-        osc.frequency.setValueAtTime(1318.5, now + 0.06);
-        g.gain.setValueAtTime(0.22, now);
-        g.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-        osc.connect(g);
-        g.connect(masterGain);
-        osc.start(now);
-        osc.stop(now + 0.24);
+        playBrassNote(1046.50, 0.22, 0.16);
       }
     }
 
-    // Bắt đầu phát nhạc nền Xổ Số
     function startBackgroundMusic() {
       const ctx = ensureAudioContext();
       if (!ctx) return;
       stopBackgroundMusic();
 
+      // Nếu đã từng nạp file MP3 thì ưu tiên phát file MP3 đó
       if (customAudioBuffer) {
         customAudioSource = ctx.createBufferSource();
         customAudioSource.buffer = customAudioBuffer;
         customAudioSource.loop = true;
         const bgGain = ctx.createGain();
-        bgGain.gain.value = 0.65;
+        bgGain.gain.value = 0.75;
         customAudioSource.connect(bgGain);
         bgGain.connect(masterGain);
         customAudioSource.start(0);
         return;
       }
 
-      // Phát nhạc hiệu Xổ Số tự động
-      noteIdx = 0;
+      // Phát Dàn nhạc Kèn Đồng Xổ Số mặc định trong code
+      stepBeat = 0;
       melodyTimer = setInterval(() => {
         if (isMuted || !audioCtx || !isSpinning) return;
-        const freq = lotteryMelodyNotes[noteIdx % lotteryMelodyNotes.length];
-        noteIdx++;
-        if (freq > 0) {
-          const now = audioCtx.currentTime;
-          const osc = audioCtx.createOscillator();
-          const g = audioCtx.createGain();
-          osc.type = 'square';
-          osc.frequency.setValueAtTime(freq, now);
-          g.gain.setValueAtTime(0.075, now);
-          g.gain.exponentialRampToValueAtTime(0.005, now + 0.19);
-          osc.connect(g);
-          g.connect(masterGain);
-          osc.start(now);
-          osc.stop(now + 0.2);
-        }
-      }, 210);
+        const [leadFreq, harmonyFreq, bassFreq, dur] =
+          traditionalLotteryScore[stepBeat % traditionalLotteryScore.length];
+        stepBeat++;
+
+        if (leadFreq > 0) playBrassNote(leadFreq, dur, 0.15);
+        if (harmonyFreq > 0) playBrassNote(harmonyFreq, dur, 0.09);
+        if (bassFreq > 0) playBassDrum(bassFreq);
+      }, 185);
     }
 
     function stopBackgroundMusic() {
@@ -675,6 +707,74 @@
         try { customAudioSource.stop(); } catch (e) {}
         customAudioSource = null;
       }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      const btn = document.getElementById('muteBtn');
+      btn.textContent = isMuted ? '🔇 Tắt tiếng' : '🔊 Bật tiếng';
+      if (masterGain && audioCtx) {
+        masterGain.gain.setValueAtTime(isMuted ? 0 : 0.9, audioCtx.currentTime);
+      }
+    }
+
+    // Lưu vĩnh viễn file MP3 vào bộ nhớ trình duyệt (IndexedDB) để không cần nạp lại lần sau
+    function saveMp3ToStorage(arrayBuffer, fileName) {
+      try {
+        const req = indexedDB.open('XSMNAudioDB', 1);
+        req.onupgradeneeded = (e) => {
+          e.target.result.createObjectStore('files');
+        };
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          const tx = db.transaction('files', 'readwrite');
+          tx.objectStore('files').put({ data: arrayBuffer, name: fileName }, 'savedMp3');
+        };
+      } catch (e) {}
+    }
+
+    function loadSavedMp3FromStorage() {
+      try {
+        const req = indexedDB.open('XSMNAudioDB', 1);
+        req.onupgradeneeded = (e) => {
+          e.target.result.createObjectStore('files');
+        };
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          const tx = db.transaction('files', 'readonly');
+          const getReq = tx.objectStore('files').get('savedMp3');
+          getReq.onsuccess = () => {
+            if (getReq.result && getReq.result.data) {
+              const ctx = ensureAudioContext();
+              if (ctx) {
+                ctx.decodeAudioData(getReq.result.data.slice(0), (buffer) => {
+                  customAudioBuffer = buffer;
+                  document.getElementById('mp3Btn').textContent = '🎵 Đã lưu MP3';
+                });
+              }
+            }
+          };
+        };
+      } catch (e) {}
+    }
+
+    function loadCustomMp3(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const ctx = ensureAudioContext();
+      if (!ctx) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const rawBuffer = e.target.result;
+        saveMp3ToStorage(rawBuffer.slice(0), file.name);
+        ctx.decodeAudioData(rawBuffer, function(buffer) {
+          customAudioBuffer = buffer;
+          document.getElementById('mp3Btn').textContent = '🎵 Đã lưu MP3';
+          document.getElementById('subTitle').textContent = `Đang dùng nhạc: ${file.name} (Đã lưu tự động)`;
+        });
+      };
+      reader.readAsArrayBuffer(file);
     }
 
     // ================= BIẾN GHI VIDEO MP4 + ÂM THANH =================
@@ -1009,7 +1109,7 @@
       });
     }
 
-    // ================= GHI VIDEO MP4 KÈM ÂM THANH CHUẨN FACEBOOK =================
+    // ================= GHI VIDEO MP4 KÈM ÂM THANH =================
     async function startVideoRecording() {
       const canvas = document.getElementById('videoCanvas');
       const ctxAudio = ensureAudioContext();
@@ -1040,7 +1140,6 @@
             }
           }
 
-          // Kiểm tra xem máy có hỗ trợ nén âm thanh AAC vào MP4 không
           let hasAACSupport = false;
           if (typeof window.AudioEncoder !== 'undefined' && ctxAudio) {
             try {
@@ -1091,7 +1190,6 @@
               framerate: FPS
             });
 
-            // Thu âm thanh trực tiếp vào file MP4
             if (hasAACSupport && ctxAudio) {
               audioEncoder = new AudioEncoder({
                 output: (chunk, meta) => mp4Muxer.addAudioChunk(chunk, meta),
@@ -1154,7 +1252,6 @@
         }
       }
 
-      // Dự phòng MediaRecorder kèm kênh âm thanh
       useHardwareMp4 = false;
       if (!canvas.captureStream || typeof MediaRecorder === 'undefined') return;
 
@@ -1258,7 +1355,7 @@
 
     function showReadyUI(durationSec) {
       document.getElementById('modalDesc').textContent =
-        `Video MP4 có âm thanh dài ${durationSec} giây (đủ 18 giải) đã sẵn sàng đăng Facebook / TikTok:`;
+        `Video MP4 kèm Nhạc hiệu Xổ Số dài ${durationSec} giây đã sẵn sàng đăng Facebook / TikTok:`;
       document.getElementById('downloadBtn').classList.add('ready');
       document.getElementById('videoModal').classList.add('show');
     }
@@ -1379,7 +1476,6 @@
           cell.classList.remove('active-spin');
         });
 
-        // Phát tiếng chốt số (nếu là bước cuối - Giải ĐB thì phát nhạc chiến thắng)
         playLockSound(step === totalSteps - 1);
         activeStep = -1;
 
@@ -1391,6 +1487,7 @@
 
     initDaySelector();
     initTable();
+    loadSavedMp3FromStorage();
   </script>
 </body>
 </html>
