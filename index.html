@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tham khảo Xổ Số miền Nam</title>
-  <!-- Thư viện đóng gói MP4 chuẩn H.264 giúp Facebook nhận chuẩn 100% thời lượng 34s -->
+  <!-- Thư viện đóng gói MP4 chuẩn H.264 + AAC Audio cho Facebook -->
   <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.min.js"></script>
-  <!-- Thư viện gắn nhãn thời lượng dự phòng nếu máy đời cũ dùng WebM -->
   <script src="https://cdn.jsdelivr.net/npm/fix-webm-duration@1.0.6/fix-webm-duration.js"></script>
   <style>
     * {
@@ -34,7 +33,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 10px;
+      padding: 0 8px;
       height: 32px;
       flex-shrink: 0;
       font-size: 15px;
@@ -47,18 +46,35 @@
     }
 
     .app-bar .back-btn {
-      margin-right: 12px;
+      margin-right: 10px;
       font-size: 17px;
+      cursor: pointer;
+    }
+
+    .app-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sound-btn {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 11.5px;
+      font-weight: 600;
       cursor: pointer;
     }
 
     .rec-badge {
       display: none;
       align-items: center;
-      gap: 5px;
-      font-size: 11.5px;
+      gap: 4px;
+      font-size: 11px;
       background: rgba(0, 0, 0, 0.35);
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 10px;
       color: #ffeb3b;
       font-weight: 700;
@@ -69,8 +85,8 @@
     }
 
     .rec-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       background-color: #ff1744;
       border-radius: 50%;
       animation: blink 1s infinite;
@@ -86,7 +102,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       padding: 3px 6px;
       height: 34px;
       flex-shrink: 0;
@@ -98,7 +114,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       padding: 3px 4px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       flex: 1;
       min-width: 0;
@@ -121,7 +137,7 @@
       font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
-      min-width: 84px;
+      min-width: 82px;
       text-align: center;
     }
 
@@ -135,8 +151,8 @@
       color: #fff;
       border: none;
       border-radius: 4px;
-      padding: 4px 8px;
-      font-size: 12px;
+      padding: 4px 7px;
+      font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
       align-items: center;
@@ -392,17 +408,24 @@
 </head>
 <body>
 
+  <!-- Thanh tiêu đề kèm nút Bật/Tắt tiếng và Chọn nhạc MP3 -->
   <div class="app-bar">
     <div class="app-bar-left">
       <span class="back-btn">&#8592;</span>
       <span>Quay thử</span>
     </div>
-    <div id="recBadge" class="rec-badge">
-      <span class="rec-dot"></span>
-      <span id="recTimerText">REC 00:00</span>
+    <div class="app-bar-right">
+      <div id="recBadge" class="rec-badge">
+        <span class="rec-dot"></span>
+        <span id="recTimerText">00:00</span>
+      </div>
+      <button id="muteBtn" class="sound-btn" onclick="toggleMute()">🔊 Bật tiếng</button>
+      <button class="sound-btn" onclick="document.getElementById('mp3Input').click()">🎵 Nhạc MP3</button>
+      <input type="file" id="mp3Input" accept="audio/*" style="display:none" onchange="loadCustomMp3(event)">
     </div>
   </div>
 
+  <!-- Thanh điều khiển -->
   <div class="control-bar">
     <select id="daySelect" class="station-select" onchange="changeDay()"></select>
     <div class="btn-group">
@@ -411,16 +434,19 @@
     </div>
   </div>
 
+  <!-- Tiêu đề bảng -->
   <div class="title-area">
     <h1>Tham khảo Xổ Số miền Nam</h1>
     <p id="subTitle">Thông tin chỉ mang tính tham khảo</p>
   </div>
 
+  <!-- Bảng kết quả -->
   <div class="table-wrapper" id="tableWrapper">
     <div class="table-header" id="tableHeader"></div>
     <div class="table-body" id="tableBody"></div>
   </div>
 
+  <!-- Tùy chọn hiển thị -->
   <div class="footer-bar">
     <label class="radio-label">
       <input type="radio" name="viewMode" value="all" checked onchange="updateDisplayMode()"> Đầy đủ
@@ -433,11 +459,11 @@
     </label>
   </div>
 
-  <!-- Hộp thoại Xuất Video Chuẩn MP4 cho Facebook -->
+  <!-- Hộp thoại Xuất Video Chuẩn MP4 có âm thanh -->
   <div id="videoModal" class="modal-overlay">
     <div class="modal-box">
-      <h3>Đã xuất Video MP4 hoàn tất!</h3>
-      <p id="modalDesc">Video chuẩn MP4 (H.264) dài 34 giây đã sẵn sàng đăng Facebook / TikTok không bị cắt:</p>
+      <h3>Đã xuất Video + Âm thanh!</h3>
+      <p id="modalDesc">Video chuẩn MP4 (có tiếng nhạc xổ số) dài 34 giây đã sẵn sàng đăng Facebook / TikTok:</p>
       <div class="modal-actions">
         <button class="btn-save-main" onclick="shareVideoNow()">📤 CHIA SẺ LÊN FACEBOOK / ZALO</button>
         <button class="btn-save-dl" onclick="downloadVideoNow()">⬇ TẢI FILE MP4 VỀ MÁY</button>
@@ -485,14 +511,182 @@
     const STEP_SPIN_MS = 1550;
     const STEP_PAUSE_MS = 250;
 
-    // BIẾN GHI VIDEO MP4 CHUẨN H.264 (WEBCODECS + MP4-MUXER)
+    // ================= HỆ THỐNG ÂM THANH XỔ SỐ MIỀN NAM =================
+    let audioCtx = null;
+    let masterGain = null;
+    let streamDest = null;
+    let isMuted = false;
+    let melodyTimer = null;
+    let noteIdx = 0;
+    let customAudioBuffer = null;
+    let customAudioSource = null;
+
+    // Giai điệu nhạc Xổ Số rộn ràng (tần số Hz của các nốt nhạc)
+    const lotteryMelodyNotes = [
+      523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50,
+      880.00, 698.46, 587.33, 783.99, 659.25, 523.25,
+      587.33, 659.25, 698.46, 783.99, 880.00, 987.77,
+      1046.50, 783.99, 659.25, 783.99, 1046.50, 0
+    ];
+
+    function ensureAudioContext() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return null;
+      if (!audioCtx) {
+        audioCtx = new AudioContextClass({ sampleRate: 44100 });
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = isMuted ? 0 : 0.85;
+        streamDest = audioCtx.createMediaStreamDestination();
+        // Vừa phát ra loa điện thoại, vừa đưa vào luồng ghi Video
+        masterGain.connect(audioCtx.destination);
+        masterGain.connect(streamDest);
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      const btn = document.getElementById('muteBtn');
+      btn.textContent = isMuted ? '🔇 Tắt tiếng' : '🔊 Bật tiếng';
+      if (masterGain && audioCtx) {
+        masterGain.gain.setValueAtTime(isMuted ? 0 : 0.85, audioCtx.currentTime);
+      }
+    }
+
+    // Cho phép người dùng nạp file nhạc MP3 Xổ Số từ điện thoại nếu thích
+    function loadCustomMp3(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const ctx = ensureAudioContext();
+      if (!ctx) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        ctx.decodeAudioData(e.target.result, function(buffer) {
+          customAudioBuffer = buffer;
+          document.getElementById('subTitle').textContent = `Đã nạp nhạc: ${file.name}`;
+        }, function() {
+          alert('Không đọc được file âm thanh này, hệ thống sẽ dùng nhạc mặc định.');
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    // Tiếng "tạch tạch" khi các con số nhảy
+    function playTickSound() {
+      if (isMuted || !audioCtx) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(950, now);
+      osc.frequency.exponentialRampToValueAtTime(420, now + 0.045);
+      g.gain.setValueAtTime(0.18, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 0.05);
+    }
+
+    // Tiếng "Ting!" khi chốt kết quả mỗi hàng (Giải ĐB kêu vang hơn)
+    function playLockSound(isSpecial = false) {
+      if (isMuted || !audioCtx) return;
+      const now = audioCtx.currentTime;
+      if (isSpecial) {
+        // Nhạc hiệu chúc mừng Giải Đặc Biệt
+        const chord = [523.25, 659.25, 783.99, 1046.50];
+        chord.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+          g.gain.setValueAtTime(0.28, now + idx * 0.09);
+          g.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.9);
+          osc.connect(g);
+          g.connect(masterGain);
+          osc.start(now + idx * 0.09);
+          osc.stop(now + idx * 0.09 + 0.95);
+        });
+      } else {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.setValueAtTime(1318.5, now + 0.06);
+        g.gain.setValueAtTime(0.22, now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        osc.connect(g);
+        g.connect(masterGain);
+        osc.start(now);
+        osc.stop(now + 0.24);
+      }
+    }
+
+    // Bắt đầu phát nhạc nền Xổ Số
+    function startBackgroundMusic() {
+      const ctx = ensureAudioContext();
+      if (!ctx) return;
+      stopBackgroundMusic();
+
+      if (customAudioBuffer) {
+        customAudioSource = ctx.createBufferSource();
+        customAudioSource.buffer = customAudioBuffer;
+        customAudioSource.loop = true;
+        const bgGain = ctx.createGain();
+        bgGain.gain.value = 0.65;
+        customAudioSource.connect(bgGain);
+        bgGain.connect(masterGain);
+        customAudioSource.start(0);
+        return;
+      }
+
+      // Phát nhạc hiệu Xổ Số tự động
+      noteIdx = 0;
+      melodyTimer = setInterval(() => {
+        if (isMuted || !audioCtx || !isSpinning) return;
+        const freq = lotteryMelodyNotes[noteIdx % lotteryMelodyNotes.length];
+        noteIdx++;
+        if (freq > 0) {
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(freq, now);
+          g.gain.setValueAtTime(0.075, now);
+          g.gain.exponentialRampToValueAtTime(0.005, now + 0.19);
+          osc.connect(g);
+          g.connect(masterGain);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        }
+      }, 210);
+    }
+
+    function stopBackgroundMusic() {
+      if (melodyTimer) {
+        clearInterval(melodyTimer);
+        melodyTimer = null;
+      }
+      if (customAudioSource) {
+        try { customAudioSource.stop(); } catch (e) {}
+        customAudioSource = null;
+      }
+    }
+
+    // ================= BIẾN GHI VIDEO MP4 + ÂM THANH =================
     let useHardwareMp4 = false;
     let mp4Muxer = null;
     let videoEncoder = null;
+    let audioEncoder = null;
+    let audioScriptProcessor = null;
     let frameCount = 0;
+    let audioSampleCount = 0;
     const FPS = 30;
 
-    // Dự phòng MediaRecorder nếu trình duyệt không hỗ trợ WebCodecs
     let mediaRecorder = null;
     let recordedChunks = [];
     let frameIntervalId = null;
@@ -649,7 +843,6 @@
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, W, H);
 
-      // 1. Thanh App Bar
       ctx.fillStyle = '#0b4a92';
       ctx.fillRect(0, 0, W, 62);
       ctx.fillStyle = '#ffffff';
@@ -658,7 +851,6 @@
       ctx.textBaseline = 'middle';
       ctx.fillText('←   Quay thử', 24, 31);
 
-      // 2. Thanh điều khiển
       ctx.fillStyle = '#ebebeb';
       ctx.fillRect(0, 62, W, 66);
       ctx.fillStyle = '#ffffff';
@@ -680,7 +872,6 @@
       ctx.textAlign = 'center';
       ctx.fillText(isSpinning ? 'DỪNG' : 'QUAY THỬ', 600, 95);
 
-      // 3. Tiêu đề
       ctx.fillStyle = '#d32f2f';
       ctx.font = 'bold 29px sans-serif';
       ctx.fillText('Tham khảo Xổ Số miền Nam', W / 2, 152);
@@ -694,7 +885,6 @@
       ctx.lineTo(W, 196);
       ctx.stroke();
 
-      // 4. Header Bảng
       const headerY = 196;
       const headerH = 46;
       ctx.fillStyle = '#f5f5f5';
@@ -718,7 +908,6 @@
       ctx.lineTo(W, headerY + headerH);
       ctx.stroke();
 
-      // 5. Nội dung 18 hàng giải
       const bodyTop = headerY + headerH;
       const footerH = 56;
       const bodyH = H - bodyTop - footerH;
@@ -782,7 +971,6 @@
       }
       ctx.stroke();
 
-      // 6. Thanh Footer
       const footerTop = H - footerH;
       ctx.fillStyle = '#f9f9f9';
       ctx.fillRect(0, footerTop, W, footerH);
@@ -821,22 +1009,23 @@
       });
     }
 
-    // ================= BỘ ĐÓNG GÓI MP4 CHUẨN CHO FACEBOOK =================
+    // ================= GHI VIDEO MP4 KÈM ÂM THANH CHUẨN FACEBOOK =================
     async function startVideoRecording() {
       const canvas = document.getElementById('videoCanvas');
+      const ctxAudio = ensureAudioContext();
       document.getElementById('downloadBtn').classList.remove('ready');
       closeModal();
       lastVideoBlob = null;
       frameCount = 0;
+      audioSampleCount = 0;
       recStartTime = Date.now();
 
       drawVideoFrame();
 
-      // Kiểm tra thiết bị có hỗ trợ nén MP4 H.264 phần cứng (WebCodecs + Mp4Muxer) không
       if (typeof window.Mp4Muxer !== 'undefined' && typeof window.VideoEncoder !== 'undefined') {
         try {
           const codecsToTry = ['avc1.42001f', 'avc1.4d001f', 'avc1.64001f'];
-          let supportedCodec = null;
+          let supportedVideoCodec = null;
           for (const c of codecsToTry) {
             const sup = await VideoEncoder.isConfigSupported({
               codec: c,
@@ -846,22 +1035,48 @@
               framerate: FPS
             });
             if (sup.supported) {
-              supportedCodec = c;
+              supportedVideoCodec = c;
               break;
             }
           }
 
-          if (supportedCodec) {
+          // Kiểm tra xem máy có hỗ trợ nén âm thanh AAC vào MP4 không
+          let hasAACSupport = false;
+          if (typeof window.AudioEncoder !== 'undefined' && ctxAudio) {
+            try {
+              const aSup = await AudioEncoder.isConfigSupported({
+                codec: 'mp4a.40.2',
+                sampleRate: ctxAudio.sampleRate,
+                numberOfChannels: 1,
+                bitrate: 128000
+              });
+              hasAACSupport = aSup.supported;
+            } catch (e) {
+              hasAACSupport = false;
+            }
+          }
+
+          if (supportedVideoCodec) {
             useHardwareMp4 = true;
-            mp4Muxer = new Mp4Muxer.Muxer({
+            const muxerConfig = {
               target: new Mp4Muxer.ArrayBufferTarget(),
               video: {
                 codec: 'avc',
                 width: canvas.width,
                 height: canvas.height
               },
-              fastStart: 'in-memory' // Đặt bảng thời lượng moov ngay đầu file để Facebook nhận 100%
-            });
+              fastStart: 'in-memory'
+            };
+
+            if (hasAACSupport && ctxAudio) {
+              muxerConfig.audio = {
+                codec: 'aac',
+                sampleRate: ctxAudio.sampleRate,
+                numberOfChannels: 1
+              };
+            }
+
+            mp4Muxer = new Mp4Muxer.Muxer(muxerConfig);
 
             videoEncoder = new VideoEncoder({
               output: (chunk, meta) => mp4Muxer.addVideoChunk(chunk, meta),
@@ -869,15 +1084,51 @@
             });
 
             videoEncoder.configure({
-              codec: supportedCodec,
+              codec: supportedVideoCodec,
               width: canvas.width,
               height: canvas.height,
               bitrate: 2500000,
               framerate: FPS
             });
 
+            // Thu âm thanh trực tiếp vào file MP4
+            if (hasAACSupport && ctxAudio) {
+              audioEncoder = new AudioEncoder({
+                output: (chunk, meta) => mp4Muxer.addAudioChunk(chunk, meta),
+                error: (e) => console.error(e)
+              });
+              audioEncoder.configure({
+                codec: 'mp4a.40.2',
+                sampleRate: ctxAudio.sampleRate,
+                numberOfChannels: 1,
+                bitrate: 128000
+              });
+
+              audioScriptProcessor = ctxAudio.createScriptProcessor(4096, 1, 1);
+              masterGain.connect(audioScriptProcessor);
+              audioScriptProcessor.connect(ctxAudio.destination);
+              audioScriptProcessor.onaudioprocess = (e) => {
+                if (!audioEncoder || audioEncoder.state !== 'configured') return;
+                const inputData = e.inputBuffer.getChannelData(0);
+                const dataCopy = new Float32Array(inputData);
+                const timestampUs = Math.round((audioSampleCount * 1000000) / ctxAudio.sampleRate);
+                audioSampleCount += dataCopy.length;
+
+                const audioData = new AudioData({
+                  format: 'f32-planar',
+                  sampleRate: ctxAudio.sampleRate,
+                  numberOfFrames: dataCopy.length,
+                  numberOfChannels: 1,
+                  timestamp: timestampUs,
+                  data: dataCopy
+                });
+                audioEncoder.encode(audioData);
+                audioData.close();
+              };
+            }
+
             document.getElementById('recBadge').classList.add('recording');
-            document.getElementById('recTimerText').textContent = 'REC 00:00';
+            document.getElementById('recTimerText').textContent = '00:00';
 
             if (frameIntervalId) clearInterval(frameIntervalId);
             frameIntervalId = setInterval(() => {
@@ -893,7 +1144,7 @@
               const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
               const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
               const ss = String(elapsed % 60).padStart(2, '0');
-              document.getElementById('recTimerText').textContent = `REC ${mm}:${ss}`;
+              document.getElementById('recTimerText').textContent = `${mm}:${ss}`;
             }, 1000 / FPS);
 
             return;
@@ -903,13 +1154,19 @@
         }
       }
 
-      // Dự phòng nếu máy không có WebCodecs: dùng MediaRecorder kèm fix-webm-duration
+      // Dự phòng MediaRecorder kèm kênh âm thanh
       useHardwareMp4 = false;
       if (!canvas.captureStream || typeof MediaRecorder === 'undefined') return;
 
-      const stream = canvas.captureStream(FPS);
+      const vStream = canvas.captureStream(FPS);
+      const tracks = [...vStream.getVideoTracks()];
+      if (streamDest && streamDest.stream.getAudioTracks().length > 0) {
+        tracks.push(streamDest.stream.getAudioTracks()[0]);
+      }
+      const combinedStream = new MediaStream(tracks);
+
       recordedChunks = [];
-      const mimeTypes = ['video/mp4', 'video/webm;codecs=h264', 'video/webm;codecs=vp8', 'video/webm'];
+      const mimeTypes = ['video/mp4', 'video/webm;codecs=h264,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
       let selectedMime = '';
       for (const m of mimeTypes) {
         if (MediaRecorder.isTypeSupported(m)) {
@@ -919,8 +1176,8 @@
       }
 
       mediaRecorder = selectedMime
-        ? new MediaRecorder(stream, { mimeType: selectedMime, videoBitsPerSecond: 2500000 })
-        : new MediaRecorder(stream);
+        ? new MediaRecorder(combinedStream, { mimeType: selectedMime, videoBitsPerSecond: 2500000 })
+        : new MediaRecorder(combinedStream);
 
       mediaRecorder.ondataavailable = (e) => {
         if (e.data && e.data.size > 0) recordedChunks.push(e.data);
@@ -952,21 +1209,34 @@
         const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
         const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
         const ss = String(elapsed % 60).padStart(2, '0');
-        document.getElementById('recTimerText').textContent = `REC ${mm}:${ss}`;
+        document.getElementById('recTimerText').textContent = `${mm}:${ss}`;
       }, 1000 / FPS);
     }
 
     async function stopVideoRecording(showPopup = true) {
       document.getElementById('recBadge').classList.remove('recording');
+      stopBackgroundMusic();
+
       if (frameIntervalId) {
         clearInterval(frameIntervalId);
         frameIntervalId = null;
+      }
+
+      if (audioScriptProcessor) {
+        try {
+          audioScriptProcessor.disconnect();
+          masterGain.disconnect(audioScriptProcessor);
+        } catch (e) {}
+        audioScriptProcessor = null;
       }
 
       if (useHardwareMp4 && videoEncoder) {
         try {
           if (showPopup) {
             await videoEncoder.flush();
+            if (audioEncoder && audioEncoder.state === 'configured') {
+              await audioEncoder.flush();
+            }
             mp4Muxer.finalize();
             const { buffer } = mp4Muxer.target;
             lastVideoBlob = new Blob([buffer], { type: 'video/mp4' });
@@ -975,8 +1245,10 @@
             showReadyUI(totalSec);
           }
           videoEncoder.close();
+          if (audioEncoder) audioEncoder.close();
         } catch (e) {}
         videoEncoder = null;
+        audioEncoder = null;
         mp4Muxer = null;
       } else if (mediaRecorder && mediaRecorder.state === 'recording') {
         if (!showPopup) mediaRecorder.onstop = null;
@@ -986,12 +1258,11 @@
 
     function showReadyUI(durationSec) {
       document.getElementById('modalDesc').textContent =
-        `Video chuẩn MP4 dài ${durationSec} giây (từ Giải 8 đến Giải ĐB) đã đóng gói xong. Đăng lên Facebook sẽ hiển thị đủ ${durationSec} giây:`;
+        `Video MP4 có âm thanh dài ${durationSec} giây (đủ 18 giải) đã sẵn sàng đăng Facebook / TikTok:`;
       document.getElementById('downloadBtn').classList.add('ready');
       document.getElementById('videoModal').classList.add('show');
     }
 
-    // Nút 1: Chia sẻ trực tiếp lên Facebook / Zalo / TikTok
     async function shareVideoNow() {
       if (!lastVideoBlob) return;
       const fileName = `xsmn-quay-thu-${Date.now()}.${lastVideoExt}`;
@@ -1006,11 +1277,9 @@
           return;
         } catch (err) {}
       }
-      // Nếu trình duyệt không hỗ trợ menu share thì tự động tải về máy
       downloadVideoNow();
     }
 
-    // Nút 2: Tải file MP4 trực tiếp về bộ nhớ máy
     function downloadVideoNow() {
       if (!lastVideoBlob) return;
       const fileName = `xsmn-quay-thu-${Date.now()}.${lastVideoExt}`;
@@ -1027,8 +1296,8 @@
       }, 5000);
       closeModal();
     }
-    // =====================================================================
 
+    // ================= ĐIỀU KHIỂN QUAY THỬ =================
     function toggleSpin() {
       if (isSpinning) {
         stopSpin(true);
@@ -1045,6 +1314,7 @@
       btn.textContent = 'DỪNG';
       btn.classList.add('spinning');
       resetBoard();
+      startBackgroundMusic();
       startVideoRecording();
       runStep(0);
     }
@@ -1064,7 +1334,6 @@
       });
 
       if (saveVideo) {
-        // Giữ màn hình kết quả cuối cùng thêm 2.5 giây trước khi đóng gói MP4
         drawVideoFrame();
         finishRecTimeout = setTimeout(() => {
           stopVideoRecording(true);
@@ -1092,11 +1361,13 @@
         cell.classList.add('active-spin');
         cell.textContent = formatByMode(randomNum(digits));
       });
+      playTickSound();
 
       animInterval = setInterval(() => {
         currentCells.forEach(cell => {
           cell.textContent = formatByMode(randomNum(digits));
         });
+        playTickSound();
       }, TICK_SPEED_MS);
 
       spinTimeout = setTimeout(() => {
@@ -1107,6 +1378,9 @@
           cell.textContent = formatByMode(finalVal);
           cell.classList.remove('active-spin');
         });
+
+        // Phát tiếng chốt số (nếu là bước cuối - Giải ĐB thì phát nhạc chiến thắng)
+        playLockSound(step === totalSteps - 1);
         activeStep = -1;
 
         pauseTimeout = setTimeout(() => {
