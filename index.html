@@ -29,31 +29,37 @@
     .tab:last-child { border-right: none; }
     .tab.active { background-color: #d90416; color: #fff; }
     .container { max-width: 600px; margin: 0 auto; padding: 12px; }
-    .card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #ebebeb; }
+    .card { background: #fff; border-radius: 12px; padding: 13px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #ebebeb; }
     .card.next-day-card { border: 2px solid #d90416; background: linear-gradient(to bottom, #fff9f9, #ffffff); }
-    .card-title { color: #b81414; font-size: 15px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; }
+    .card-title { color: #b81414; font-size: 14.5px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; }
     .badge-date { background: #d90416; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 6px; }
     #apiKeyBox, #installGuideBox { display: none; background: #fff8e6; border: 1px solid #ffc107; }
     .key-row { display: flex; gap: 8px; margin-top: 8px; }
     .key-input { flex: 1; padding: 9px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13.5px; }
     .btn-save-key { background: #1b8a3d; color: #fff; border: none; padding: 9px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; }
-    /* Chọn Tháng & Ngày */
-    .month-header { display: flex; gap: 5px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .btn-day-step { background: #f8f9fa; border: 1px solid #dadce0; color: #333; padding: 8px 9px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; }
-    .date-input { flex: 1; padding: 7px 6px; border: 1px solid #d90416; border-radius: 8px; font-size: 13.5px; font-weight: 700; text-align: center; color: #b81414; background: #fff5f5; }
-    .month-grid-label { font-size: 12px; font-weight: 700; color: #555; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-    .day-strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scroll-behavior: smooth; }
-    .day-pill { flex: 0 0 54px; padding: 7px 4px; border-radius: 8px; background: #f1f3f5; color: #333; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; border: 1px solid #e0e0e0; }
-    .day-pill span { display: block; font-size: 11px; font-weight: 600; margin-top: 2px; opacity: 0.85; }
-    .day-pill.cached { border-color: #2b8a3e; background: #ebfbee; }
+
+    /* THANH TUẦN & GÓC CHỌN THÁNG GỌN GÀNG */
+    .cal-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 6px; }
+    .week-nav { display: flex; align-items: center; gap: 5px; }
+    .btn-week-step { background: #f1f3f5; border: 1px solid #dadce0; color: #222; padding: 6px 9px; border-radius: 7px; font-weight: 700; font-size: 12px; cursor: pointer; }
+    .btn-week-step:active { background: #dee2e6; }
+    .month-corner { display: flex; align-items: center; gap: 5px; background: #fff5f5; border: 1px solid #ffc9c9; padding: 3px 6px; border-radius: 8px; }
+    .date-input-compact { border: none; background: transparent; color: #b81414; font-weight: 800; font-size: 12.5px; width: 112px; outline: none; text-align: center; }
+    .btn-corner-sync { background: #1b8a3d; color: #fff; border: none; border-radius: 6px; padding: 5px 7px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
+    /* Lưới 7 ngày trong tuần (T2 -> CN) vừa khít màn hình */
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .day-pill { padding: 7px 2px; border-radius: 8px; background: #f1f3f5; color: #333; font-size: 12px; font-weight: 800; text-align: center; cursor: pointer; border: 1px solid #e0e0e0; }
+    .day-pill span { display: block; font-size: 10.5px; font-weight: 600; margin-top: 2px; opacity: 0.85; }
+    .day-pill.cached { border-color: #2b8a3e; background: #ebfbee; color: #1b8a3d; }
     .day-pill.future { opacity: 0.45; }
     .day-pill.active { background: #d90416 !important; color: #fff !important; border-color: #d90416 !important; box-shadow: 0 2px 6px rgba(217, 4, 22, 0.35); }
-    .btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
-    .btn-update { flex: 1; background-color: #c90412; color: #fff; border: none; border-radius: 8px; padding: 12px 8px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
-    .btn-sync-month { background-color: #1b8a3d; color: #fff; border: none; border-radius: 8px; padding: 12px 12px; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
+    .btn-update { width: 100%; background-color: #c90412; color: #fff; border: none; border-radius: 8px; padding: 11px 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
     /* Bảng KQ & Bảng Đầu Đuôi 0-9 */
     .station-list { display: flex; flex-wrap: wrap; gap: 8px; }
-    .station-badge { background: #fff5f5; color: #c90412; border: 1px solid #ffc9c9; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 13.5px; }
+    .station-badge { background: #fff5f5; color: #c90412; border: 1px solid #ffc9c9; padding: 5px 11px; border-radius: 20px; font-weight: 700; font-size: 13px; }
     .kq-table-wrap { overflow-x: auto; }
     .kq-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; user-select: text; }
     .kq-table th, .kq-table td { border: 1px solid #e0e0e0; padding: 7px 4px; }
@@ -62,12 +68,14 @@
     .kq-highlight { color: #d90416; font-weight: 800; font-size: 16px; }
     .mb-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
     .mb-grid span { display: inline-block; padding: 2px 6px; background: #f8f9fa; border-radius: 4px; border: 1px solid #eee; font-weight: 600; }
+
     /* Bảng Lô Đầu 0-9 dọc theo từng đài */
     .loto-table td { font-size: 13.5px; line-height: 1.5; padding: 6px 5px; text-align: left; }
-    .loto-table .dau-col { text-align: center; font-weight: 900; background: #fff5f5; color: #d90416; width: 44px; font-size: 14.5px; }
+    .loto-table .dau-col { text-align: center; font-weight: 900; background: #fff5f5; color: #d90416; width: 42px; font-size: 14px; }
     .loto-hit { color: #d90416; font-weight: 800; text-decoration: underline; }
-    .loto-cam { color: #aaa; font-style: italic; }
-    .summary-row td { background: #fafafa; font-size: 12.5px; text-align: center; line-height: 1.45; }
+    .loto-cam { color: #aaa; font-style: italic; text-align: center !important; }
+    .summary-row td { background: #fafafa; font-size: 12px; text-align: center !important; line-height: 1.45; }
+
     /* Phân tích */
     .analysis-item { background: #fafafa; border-left: 4px solid #d90416; padding: 10px 12px; margin-bottom: 10px; border-radius: 4px; font-size: 13.5px; line-height: 1.55; user-select: text; }
     .analysis-item.tomorrow-item { background: #fff; border-left: 4px solid #e67700; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
@@ -115,30 +123,27 @@
       </div>
     </div>
 
-    <!-- CHỌN CÁC NGÀY TRONG THÁNG -->
+    <!-- THANH NGÀY THEO TUẦN (7 NGÀY) & GÓC CẬP NHẬT THÁNG -->
     <div class="card">
-      <div class="month-header">
-        <button class="btn-day-step" onclick="changeMonth(-1)">⏪ Tháng</button>
-        <button class="btn-day-step" onclick="changeDay(-1)">◀</button>
-        <input type="date" id="datePicker" class="date-input" onchange="onDatePick(this.value)">
-        <button class="btn-day-step" onclick="changeDay(1)">▶</button>
-        <button class="btn-day-step" onclick="changeMonth(1)">Tháng ⏩</button>
+      <div class="cal-top-bar">
+        <div class="week-nav">
+          <button class="btn-week-step" onclick="changeDay(-7)">◀ Tuần</button>
+          <button class="btn-week-step" onclick="changeDay(-1)">‹</button>
+          <button class="btn-week-step" onclick="changeDay(1)">›</button>
+          <button class="btn-week-step" onclick="changeDay(7)">Tuần ▶</button>
+        </div>
+        <!-- Góc chọn ngày/tháng & Tải tháng gọn 1 góc -->
+        <div class="month-corner">
+          <input type="date" id="datePicker" class="date-input-compact" onchange="onDatePick(this.value)">
+          <button class="btn-corner-sync" onclick="syncEntireMonth()" title="Tải nhanh cả tháng">⚡Tháng</button>
+        </div>
       </div>
-      <div class="month-grid-label">
-        <span id="monthLabelText">📅 Các ngày trong tháng:</span>
-        <span style="color:#1b8a3d; font-weight:600;">(Nền xanh: Đã có KQ)</span>
-      </div>
-      <div id="dayStrip" class="day-strip"></div>
+      <div id="dayStrip" class="week-grid"></div>
     </div>
 
-    <div class="btn-row">
-      <button class="btn-update" onclick="loadAllData(true)">
-        🔄 LÀM MỚI NGÀY NÀY
-      </button>
-      <button class="btn-sync-month" onclick="syncEntireMonth()">
-        ⚡ TẢI NHANH CẢ THÁNG
-      </button>
-    </div>
+    <button class="btn-update" onclick="loadAllData(true)">
+      🔄 CẬP NHẬT KẾT QUẢ & SOI CẦU NGÀY NÀY
+    </button>
 
     <!-- 1. CÁC ĐÀI MỞ THƯỞNG -->
     <div class="card">
@@ -256,7 +261,6 @@
       }
     };
 
-    // KHO DỮ LIỆU TỨC THÌ 3 MIỀN
     const COMPACT_DB = {
       "MN_04-10-2026": [
         "Tiền Giang|38|519|4261,8053,1947|6382|51824,70391,84625,19304,62748,39517,48206|73915,28460|61938|40582|836149",
@@ -379,10 +383,6 @@
       selectedDate.setDate(selectedDate.getDate() + offset);
       loadAllData(false);
     }
-    function changeMonth(offset) {
-      selectedDate.setMonth(selectedDate.getMonth() + offset);
-      loadAllData(false);
-    }
     function onDatePick(val) {
       if (!val) return;
       const p = val.split('-');
@@ -404,36 +404,38 @@
       return (now.getHours() > drawHour) || (now.getHours() === drawHour && now.getMinutes() >= 30);
     }
 
+    // HIỂN THỊ 7 NGÀY THEO TUẦN (THỨ 2 ➔ CHỦ NHẬT)
     function renderDayStrip() {
-      const year = selectedDate.getFullYear();
-      const month = selectedDate.getMonth();
-      const selectedDay = selectedDate.getDate();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-      document.getElementById('monthLabelText').innerText = `📅 ${REGION_LABELS[currentRegion]} - Tháng ${month + 1}/${year}:`;
       document.getElementById('datePicker').value = toInputDate(selectedDate);
 
+      // Tìm ngày Thứ 2 đầu tuần của ngày đang chọn
+      const curDayOfWeek = selectedDate.getDay(); // 0 (CN) -> 6 (T7)
+      const diffToMonday = curDayOfWeek === 0 ? -6 : (1 - curDayOfWeek);
+      const monday = new Date(selectedDate);
+      monday.setDate(selectedDate.getDate() + diffToMonday);
+
       let html = '';
-      for (let day = 1; day <= daysInMonth; day++) {
-        const d = new Date(year, month, day);
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        const y = d.getFullYear(), m = d.getMonth(), day = d.getDate();
+
+        const isActive = (d.toDateString() === selectedDate.toDateString());
         const isPastOrReady = hasDrawHappened(d, currentRegion);
-        const isActive = (day === selectedDay);
-        const dateShort = `${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`;
+        const dateShort = `${String(day).padStart(2,'0')}/${String(m+1).padStart(2,'0')}`;
 
         let cls = 'day-pill';
         if (isActive) cls += ' active';
         else if (isPastOrReady) cls += ' cached';
         else cls += ' future';
 
-        html += `<div id="day_pill_${day}" class="${cls}" onclick="selectQuickDay(${year}, ${month}, ${day})">${DAY_NAMES[d.getDay()]}<span>${dateShort}</span></div>`;
+        html += `
+          <div class="${cls}" onclick="selectQuickDay(${y}, ${m}, ${day})">
+            ${DAY_NAMES[d.getDay()]}
+            <span>${dateShort}</span>
+          </div>`;
       }
-      const strip = document.getElementById('dayStrip');
-      strip.innerHTML = html;
-
-      setTimeout(() => {
-        const activeEl = document.getElementById(`day_pill_${selectedDay}`);
-        if (activeEl) strip.scrollLeft = activeEl.offsetLeft - strip.clientWidth / 2 + activeEl.clientWidth / 2;
-      }, 30);
+      document.getElementById('dayStrip').innerHTML = html;
     }
 
     function calcPascal(str) {
@@ -524,7 +526,7 @@
 
       const fetchFromProxy = async (pUrl) => {
         const controller = new AbortController();
-        const tid = setTimeout(() => controller.abort(), 3200);
+        const tid = setTimeout(() => controller.abort(), 3000);
         try {
           const res = await fetch(pUrl, { signal: controller.signal });
           clearTimeout(tid);
@@ -641,7 +643,7 @@
       }
       renderDayStrip();
       statusBar.className = 'status-bar';
-      statusBar.innerText = `✅ Đã đồng bộ tức thì ${done} ngày ${REGION_LABELS[currentRegion]} Tháng ${month + 1}/${year}!`;
+      statusBar.innerText = `✅ Đã đồng bộ xong ${done} ngày ${REGION_LABELS[currentRegion]} Tháng ${month + 1}/${year}!`;
       loadAllData(false);
     }
 
@@ -731,7 +733,6 @@
 
     // BẢNG THỐNG KÊ ĐẦU LÔ TỪ 0 ĐẾN 9 XẾP DỌC THEO TỪNG ĐÀI
     function renderDetailedStatsToday(results) {
-      // Chuẩn bị dữ liệu từng đài: gom nhóm lô theo đầu 0 -> 9
       const stationData = results.map(r => {
         const db2 = (r.db && r.db[0]) ? r.db[0].slice(-2) : '';
         const g8List = (r.g8 && r.g8.length) ? r.g8 : (r.g7 || []);
@@ -754,7 +755,6 @@
           }
         });
 
-        // Sắp xếp thứ tự tăng dần trong từng đầu số cho dễ nhìn
         let hotHead = 0, maxCount = -1, camHeads = [];
         for (let d = 0; d <= 9; d++) {
           buckets[d].sort((a, b) => a.val.localeCompare(b.val));
@@ -782,7 +782,6 @@
       });
       html += `</tr></thead><tbody>`;
 
-      // Dòng từ Đầu 0 đến Đầu 9
       for (let d = 0; d <= 9; d++) {
         html += `<tr><td class="dau-col">${d}</td>`;
         stationData.forEach(st => {
@@ -797,14 +796,13 @@
         html += `</tr>`;
       }
 
-      // Dòng tổng kết nhanh Đầu/Đuôi & Đầu về nhiều nhất dưới chân từng đài
-      html += `<tr class="summary-row"><td class="dau-col" style="font-size:12px;">T.Kết</td>`;
+      html += `<tr class="summary-row"><td class="dau-col" style="font-size:11.5px;">T.Kết</td>`;
       stationData.forEach(st => {
-        const camText = st.camHeads.length > 0 ? `Đầu câm: <b>${st.camHeads.join(', ')}</b>` : `Không có đầu câm`;
+        const camText = st.camHeads.length > 0 ? `Câm: <b>Đầu ${st.camHeads.join(', ')}</b>` : `Đủ 10 đầu`;
         html += `
           <td>
             Đầu: <b style="color:#d90416">${st.g8}</b> | ĐB: <b style="color:#d90416">${st.db2}</b><br>
-            Nhiều nhất: <b>Đầu ${st.hotHead}</b> (${st.maxCount} nháy)<br>
+            Mạnh: <b>Đầu ${st.hotHead}</b> (${st.maxCount} nháy)<br>
             <span style="color:#666;">${camText}</span>
           </td>`;
       });
@@ -879,7 +877,7 @@
         <div class="analysis-item">
           • <b>Hội tụ Pascal Chính Đài (${prevDrawStr} ➡ ${nextDateStr}):</b> <b style="color:#d90416">${pascalsChinhDai.join(' ↔ ')}</b><br>
           • <b>Hội tụ Pascal Liên Ngày (Hôm nay ➡ Ngày mai):</b> <b>${pascalsLienNgay.join(' ↔ ')}</b><br>
-          • <b>Cầu Giao Thoa 2 Kỳ (Chính Đài + Liên Ngày):</b> <b style="color:#1b8a3d">${bongsHop.join(' ↔ ' ↔ ')}</b><br>
+          • <b>Cầu Giao Thoa 2 Kỳ (Chính Đài + Liên Ngày):</b> <b style="color:#1b8a3d">${bongsHop.join(' ↔ ')}</b><br>
           👉 <i>Chốt nhịp cầu <b>${REGION_LABELS[currentRegion]} (${nextDateStr})</b>: Bạch thủ <b>${vip1}</b>, Song thủ <b>${vip2}</b>, Xiên <b>${vip3}</b>.</i>
         </div>`;
 
