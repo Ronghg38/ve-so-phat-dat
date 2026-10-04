@@ -1,1493 +1,658 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Tham khảo Xổ Số miền Nam</title>
-  <!-- Thư viện đóng gói MP4 chuẩn H.264 + AAC Audio cho Facebook -->
-  <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fix-webm-duration@1.0.6/fix-webm-duration.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      user-select: none;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tham Khảo & Quay Thử Xổ Số 3 Miền Hiện Đại</title>
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --card-bg: #151c2c;
+            --card-border: #26334d;
+            --gold: #fbbf24;
+            --gold-light: #fde68a;
+            --red-vip: #e11d48;
+            --red-dark: #9f1239;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
 
-    html, body {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #fff;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 0%, #2a1225 0%, #0b0f19 65%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
 
-    .app-bar {
-      background-color: #0b4a92;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 8px;
-      height: 32px;
-      flex-shrink: 0;
-      font-size: 15px;
-      font-weight: 600;
-    }
+        /* HEADER */
+        .hero-header {
+            text-align: center;
+            padding: 26px 15px 20px;
+            border-bottom: 1px solid rgba(251, 191, 36, 0.25);
+            background: linear-gradient(180deg, rgba(225, 29, 72, 0.2) 0%, rgba(11, 15, 25, 0) 100%);
+        }
+        .badge-top {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--red-vip), #be123c);
+            color: #fff;
+            padding: 4px 14px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 15px rgba(225, 29, 72, 0.6);
+        }
+        .hero-header h1 {
+            font-size: clamp(22px, 4vw, 32px);
+            font-weight: 900;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #fff, var(--gold), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-header p { color: var(--text-sub); font-size: 14px; margin-top: 6px; }
 
-    .app-bar-left {
-      display: flex;
-      align-items: center;
-    }
+        .main-wrap { max-width: 1140px; margin: 20px auto; padding: 0 15px; }
 
-    .app-bar .back-btn {
-      margin-right: 10px;
-      font-size: 17px;
-      cursor: pointer;
-    }
+        /* THANH CHỌN 3 MIỀN (NAM - TRUNG - BẮC) */
+        .region-switch {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .region-btn {
+            flex: 1;
+            min-width: 150px;
+            max-width: 260px;
+            padding: 13px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--card-border);
+            background: var(--card-bg);
+            color: var(--text-sub);
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .region-btn:hover { border-color: var(--gold); color: #fff; }
+        .region-btn.active {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            border-color: #fef08a;
+            box-shadow: 0 0 22px rgba(245, 158, 11, 0.5);
+        }
 
-    .app-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
+        /* THANH CHỌN THỨ TRONG TUẦN */
+        .day-nav {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 768px) {
+            .day-nav { grid-template-columns: repeat(4, 1fr); }
+        }
+        .day-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-sub);
+            padding: 10px 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            text-align: center;
+            transition: 0.25s;
+        }
+        .day-btn span { display: block; font-size: 11px; font-weight: normal; margin-top: 3px; opacity: 0.8; }
+        .day-btn:hover { border-color: var(--gold); color: #fff; }
+        .day-btn.active {
+            background: linear-gradient(135deg, var(--red-vip), var(--red-dark));
+            border-color: var(--gold);
+            color: #fff;
+            box-shadow: 0 6px 18px rgba(225, 29, 72, 0.4);
+        }
+        .day-btn.active span { color: var(--gold-light); opacity: 1; }
 
-    .sound-btn {
-      background: rgba(255, 255, 255, 0.18);
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 2px 7px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+        /* TIÊU ĐỀ KHU VỰC */
+        .sec-head {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .sec-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .rec-badge {
-      display: none;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 2px 7px;
-      border-radius: 10px;
-      color: #ffeb3b;
-      font-weight: 700;
-    }
+        /* KHU VỰC 1: THẺ THAM KHẢO SỐ ĐẸP */
+        .ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .vip-card {
+            background: linear-gradient(155deg, #1b2438 0%, #111726 100%);
+            border: 1px solid rgba(251, 191, 36, 0.35);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        }
+        .vip-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed rgba(255,255,255,0.12);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+        .station-name { font-size: 18px; font-weight: 900; color: #fff; }
+        .tag-vip {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        .balls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-sub);
+        }
+        .ball-vip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff4d6d, #be123c);
+            color: #fff;
+            font-size: 19px;
+            font-weight: 900;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.6), inset 0 2px 4px rgba(255,255,255,0.4);
+            border: 2px solid var(--gold);
+        }
+        .pill-gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            font-weight: 900;
+            font-size: 15px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            letter-spacing: 1px;
+        }
+        .pill-sub {
+            background: rgba(255,255,255,0.06);
+            color: #38bdf8;
+            font-weight: 800;
+            font-size: 15px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
 
-    .rec-badge.recording {
-      display: flex;
-    }
+        /* KHU VỰC 2: BẢNG QUAY THỬ */
+        .spin-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+            margin-bottom: 30px;
+        }
+        .spin-toolbar {
+            background: linear-gradient(90deg, #1e293b, #0f172a);
+            padding: 16px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid var(--card-border);
+        }
+        .btn-action {
+            background: linear-gradient(135deg, var(--gold), #f59e0b);
+            color: #000;
+            border: none;
+            padding: 12px 26px;
+            border-radius: 10px;
+            font-weight: 900;
+            font-size: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.45);
+            transition: 0.2s;
+        }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(251, 191, 36, 0.75); }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    .rec-dot {
-      width: 7px;
-      height: 7px;
-      background-color: #ff1744;
-      border-radius: 50%;
-      animation: blink 1s infinite;
-    }
+        .btn-secondary {
+            background: rgba(255,255,255,0.07);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .btn-secondary:hover { background: var(--gold); color: #000; }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
+        .table-scroll { overflow-x: auto; }
+        table.kq-board { width: 100%; border-collapse: collapse; text-align: center; }
+        table.kq-board th {
+            background: #0f172a;
+            color: var(--gold);
+            padding: 14px 10px;
+            font-size: 16px;
+            font-weight: 900;
+            border: 1px solid var(--card-border);
+            text-transform: uppercase;
+        }
+        table.kq-board td {
+            border: 1px solid var(--card-border);
+            padding: 10px 8px;
+        }
+        .col-prize {
+            width: 80px;
+            background: #0b0f19;
+            color: var(--text-sub);
+            font-weight: 800;
+            font-size: 13px;
+        }
+        .num-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 18px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .num-hl {
+            color: #fb7185;
+            font-size: 24px;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(251, 113, 133, 0.35);
+        }
+        .rolling { color: var(--gold) !important; opacity: 0.85; }
 
-    .control-bar {
-      background-color: #ebebeb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 6px;
-      height: 34px;
-      flex-shrink: 0;
-      border-bottom: 1px solid #dcdcdc;
-    }
-
-    .station-select {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding: 3px 4px;
-      font-size: 12px;
-      font-weight: 600;
-      flex: 1;
-      min-width: 0;
-      color: #0b4a92;
-      outline: none;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-
-    .btn-spin {
-      background-color: #f37021;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 10px;
-      font-size: 12.5px;
-      font-weight: 700;
-      cursor: pointer;
-      min-width: 82px;
-      text-align: center;
-    }
-
-    .btn-spin.spinning {
-      background-color: #d9430f;
-    }
-
-    .btn-download {
-      display: none;
-      background-color: #2e7d32;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 7px;
-      font-size: 11.5px;
-      font-weight: 700;
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-    }
-
-    .btn-download.ready {
-      display: inline-flex;
-    }
-
-    .title-area {
-      background-color: #fff;
-      text-align: center;
-      padding: 2px 0;
-      border-bottom: 1px solid #ddd;
-      flex-shrink: 0;
-    }
-
-    .title-area h1 {
-      color: #d32f2f;
-      font-size: 14.5px;
-      font-weight: 700;
-      line-height: 1.15;
-    }
-
-    .title-area p {
-      color: #666;
-      font-size: 10.5px;
-      line-height: 1.1;
-    }
-
-    .table-wrapper {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-    }
-
-    .table-header {
-      display: flex;
-      background-color: #f5f5f5;
-      border-bottom: 1px solid #ccc;
-      height: 24px;
-      flex-shrink: 0;
-      font-weight: 700;
-      font-size: 13px;
-      color: #111;
-    }
-
-    .col-giai {
-      width: 10%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid #e0e0e0;
-      font-size: 13px;
-      font-weight: 600;
-      color: #333;
-      background-color: #fafafa;
-      flex-shrink: 0;
-    }
-
-    .col-station {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid #e0e0e0;
-      text-align: center;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      padding: 0 2px;
-    }
-
-    .col-station:last-child {
-      border-right: none;
-    }
-
-    .table-body {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .prize-row {
-      display: flex;
-      border-bottom: 1px solid #e0e0e0;
-      width: 100%;
-      min-height: 0;
-    }
-
-    .row-g8 { flex: 1.05; }
-    .row-g7 { flex: 1; }
-    .row-g6 { flex: 2.85; }
-    .row-g5 { flex: 1; }
-    .row-g4 { flex: 6.4; }
-    .row-g3 { flex: 1.9; }
-    .row-g2 { flex: 1; }
-    .row-g1 { flex: 1; }
-    .row-db { flex: 1.15; border-bottom: none; }
-
-    .num-cell {
-      flex: 1;
-      min-height: 0;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(15px, 2.55vh, 21px);
-      font-weight: 700;
-      color: #111;
-      letter-spacing: 0.3px;
-      line-height: 1;
-    }
-
-    .mode-4-cols .num-cell {
-      font-size: clamp(13.5px, 2.3vh, 18px);
-      letter-spacing: 0px;
-    }
-    .mode-4-cols .table-header {
-      font-size: 12px;
-    }
-
-    .row-g8 .num-cell,
-    .row-db .num-cell,
-    .row-db .col-giai {
-      color: #d32f2f;
-      font-size: clamp(16px, 2.7vh, 22px);
-    }
-
-    .mode-4-cols .row-db .num-cell {
-      font-size: clamp(14px, 2.4vh, 19px);
-    }
-
-    .num-cell.active-spin {
-      background-color: #fff176;
-    }
-
-    .footer-bar {
-      background-color: #f9f9f9;
-      border-top: 1px solid #ccc;
-      height: 30px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 10px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #222;
-    }
-
-    .radio-label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-    }
-
-    .radio-label input[type="radio"] {
-      accent-color: #0b4a92;
-      width: 15px;
-      height: 15px;
-      cursor: pointer;
-    }
-
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 999;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .modal-overlay.show {
-      display: flex;
-    }
-
-    .modal-box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 18px 16px;
-      width: 100%;
-      max-width: 330px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-    }
-
-    .modal-box h3 {
-      color: #0b4a92;
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-
-    .modal-box p {
-      color: #444;
-      font-size: 13px;
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
-
-    .modal-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .btn-save-main {
-      background: #1877f2;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 11px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .btn-save-dl {
-      background: #2e7d32;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px;
-      font-size: 13.5px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .btn-close-modal {
-      background: #e0e0e0;
-      color: #333;
-      border: none;
-      border-radius: 6px;
-      padding: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-    }
-  </style>
+        /* KHU VỰC 3: BẢNG ĐẦU ĐUÔI LOTO */
+        .loto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .loto-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .loto-box-head {
+            background: #1e293b;
+            color: var(--gold);
+            padding: 10px;
+            font-weight: 800;
+            text-align: center;
+            font-size: 15px;
+        }
+        table.loto-tb { width: 100%; border-collapse: collapse; font-size: 14px; }
+        table.loto-tb td { border-top: 1px solid var(--card-border); padding: 6px 12px; }
+        .td-dau { width: 65px; font-weight: 800; color: var(--gold); background: rgba(0,0,0,0.25); text-align: center; }
+        .td-duoi { font-weight: 700; color: #e2e8f0; letter-spacing: 0.5px; }
+    </style>
 </head>
 <body>
 
-  <!-- Thanh tiêu đề -->
-  <div class="app-bar">
-    <div class="app-bar-left">
-      <span class="back-btn">&#8592;</span>
-      <span>Quay thử</span>
+<header class="hero-header">
+    <div class="badge-top">★ HỆ THỐNG SOI CẦU & QUAY THỬ 3 MIỀN VIP ★</div>
+    <h1>THAM KHẢO SỐ ĐẸP & QUAY THỬ XỔ SỐ 3 MIỀN</h1>
+    <p id="todayText">Đang tải lịch mở thưởng...</p>
+</header>
+
+<div class="main-wrap">
+    <!-- NÚT CHỌN 3 MIỀN -->
+    <div class="region-switch">
+        <button class="region-btn active" onclick="selectRegion('MN', this)">🌴 Xổ Số Miền Nam</button>
+        <button class="region-btn" onclick="selectRegion('MT', this)">🌊 Xổ Số Miền Trung</button>
+        <button class="region-btn" onclick="selectRegion('MB', this)">🏛️ Xổ Số Miền Bắc</button>
     </div>
-    <div class="app-bar-right">
-      <div id="recBadge" class="rec-badge">
-        <span class="rec-dot"></span>
-        <span id="recTimerText">00:00</span>
-      </div>
-      <button id="muteBtn" class="sound-btn" onclick="toggleMute()">🔊 Bật tiếng</button>
-      <button id="mp3Btn" class="sound-btn" onclick="document.getElementById('mp3Input').click()">🎵 Đổi nhạc</button>
-      <input type="file" id="mp3Input" accept="audio/*" style="display:none" onchange="loadCustomMp3(event)">
+
+    <!-- THANH CHỌN THỨ TRONG TUẦN -->
+    <div class="day-nav" id="dayNav"></div>
+
+    <!-- PHẦN 1: THAM KHẢO SỐ ĐẸP -->
+    <div class="sec-head">
+        <div class="sec-title" id="refTitle">🔥 BẢNG VÀNG THAM KHẢO XSMN</div>
+        <button class="btn-secondary" onclick="refreshReference()">🔄 Đổi Bộ Số Tham Khảo Mới</button>
     </div>
-  </div>
+    <div class="ref-grid" id="refGrid"></div>
 
-  <!-- Thanh điều khiển -->
-  <div class="control-bar">
-    <select id="daySelect" class="station-select" onchange="changeDay()"></select>
-    <div class="btn-group">
-      <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
-      <button id="downloadBtn" class="btn-download" onclick="openModal()">⬇ VIDEO</button>
+    <!-- PHẦN 2: QUAY THỬ KẾT QUẢ -->
+    <div class="spin-panel">
+        <div class="spin-toolbar">
+            <div>
+                <div class="sec-title" id="spinTitle" style="margin:0;">🎰 LỒNG CẦU QUAY THỬ XỔ SỐ MIỀN NAM</div>
+                <small id="spinSub" style="color:var(--text-sub);">Mô phỏng quay thử chuẩn 18 giải cho các đài mở thưởng trong ngày</small>
+            </div>
+            <button id="btnSpin" class="btn-action" onclick="startSpin()">⚡ BẮT ĐẦU QUAY THỬ</button>
+        </div>
+
+        <div class="table-scroll">
+            <table class="kq-board" id="boardKQ"></table>
+        </div>
     </div>
-  </div>
 
-  <!-- Tiêu đề bảng -->
-  <div class="title-area">
-    <h1>Tham khảo Xổ Số miền Nam</h1>
-    <p id="subTitle">Thông tin chỉ mang tính tham khảo</p>
-  </div>
-
-  <!-- Bảng kết quả -->
-  <div class="table-wrapper" id="tableWrapper">
-    <div class="table-header" id="tableHeader"></div>
-    <div class="table-body" id="tableBody"></div>
-  </div>
-
-  <!-- Tùy chọn hiển thị -->
-  <div class="footer-bar">
-    <label class="radio-label">
-      <input type="radio" name="viewMode" value="all" checked onchange="updateDisplayMode()"> Đầy đủ
-    </label>
-    <label class="radio-label">
-      <input type="radio" name="viewMode" value="2" onchange="updateDisplayMode()"> 2 Số
-    </label>
-    <label class="radio-label">
-      <input type="radio" name="viewMode" value="3" onchange="updateDisplayMode()"> 3 Số
-    </label>
-  </div>
-
-  <!-- Hộp thoại Xuất Video Chuẩn MP4 có âm thanh -->
-  <div id="videoModal" class="modal-overlay">
-    <div class="modal-box">
-      <h3>Đã xuất Video + Nhạc Xổ Số!</h3>
-      <p id="modalDesc">Video chuẩn MP4 (có nhạc hiệu xổ số) dài 34 giây đã sẵn sàng đăng Facebook / TikTok:</p>
-      <div class="modal-actions">
-        <button class="btn-save-main" onclick="shareVideoNow()">📤 CHIA SẺ LÊN FACEBOOK / ZALO</button>
-        <button class="btn-save-dl" onclick="downloadVideoNow()">⬇ TẢI FILE MP4 VỀ MÁY</button>
-        <button class="btn-close-modal" onclick="closeModal()">Đóng</button>
-      </div>
+    <!-- PHẦN 3: THỐNG KÊ ĐẦU ĐUÔI -->
+    <div class="sec-head">
+        <div class="sec-title">📊 BẢNG THỐNG KÊ ĐẦU - ĐUÔI LOTO (2 SỐ CUỐI)</div>
     </div>
-  </div>
+    <div class="loto-grid" id="lotoGrid"></div>
+</div>
 
-  <canvas id="videoCanvas" width="720" height="1280" style="position:fixed; left:-9999px; top:0; pointer-events:none;"></canvas>
-
-  <script>
-    const prizeConfig = [
-      { label: '8', class: 'row-g8', count: 1, digits: 2 },
-      { label: '7', class: 'row-g7', count: 1, digits: 3 },
-      { label: '6', class: 'row-g6', count: 3, digits: 4 },
-      { label: '5', class: 'row-g5', count: 1, digits: 4 },
-      { label: '4', class: 'row-g4', count: 7, digits: 5 },
-      { label: '3', class: 'row-g3', count: 2, digits: 5 },
-      { label: '2', class: 'row-g2', count: 1, digits: 5 },
-      { label: '1', class: 'row-g1', count: 1, digits: 5 },
-      { label: 'ĐB', class: 'row-db', count: 1, digits: 6 }
-    ];
-
-    const scheduleByDayIndex = {
-      0: { name: 'Chủ Nhật', stations: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'] },
-      1: { name: 'Thứ 2', stations: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'] },
-      2: { name: 'Thứ 3', stations: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'] },
-      3: { name: 'Thứ 4', stations: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'] },
-      4: { name: 'Thứ 5', stations: ['Tây Ninh', 'An Giang', 'Bình Thuận'] },
-      5: { name: 'Thứ 6', stations: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'] },
-      6: { name: 'Thứ 7', stations: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang'] }
+<script>
+    // 1. DỮ LIỆU LỊCH MỞ THƯỞNG CHUẨN CẢ 3 MIỀN
+    const LICH_3_MIEN = {
+        MN: {
+            name: "Miền Nam (XSMN)",
+            days: [
+                { day: "Chủ Nhật", stations: ["Tiền Giang", "Kiên Giang", "Đà Lạt"] },
+                { day: "Thứ Hai", stations: ["TP.HCM", "Đồng Tháp", "Cà Mau"] },
+                { day: "Thứ Ba", stations: ["Bến Tre", "Vũng Tàu", "Bạc Liêu"] },
+                { day: "Thứ Tư", stations: ["Đồng Nai", "Cần Thơ", "Sóc Trăng"] },
+                { day: "Thứ Năm", stations: ["Tây Ninh", "An Giang", "Bình Thuận"] },
+                { day: "Thứ Sáu", stations: ["Vĩnh Long", "Bình Dương", "Trà Vinh"] },
+                { day: "Thứ Bảy", stations: ["TP.HCM", "Long An", "Bình Phước", "Hậu Giang"] }
+            ]
+        },
+        MT: {
+            name: "Miền Trung (XSMT)",
+            days: [
+                { day: "Chủ Nhật", stations: ["Khánh Hòa", "Kon Tum", "Thừa Thiên Huế"] },
+                { day: "Thứ Hai", stations: ["Phú Yên", "Thừa Thiên Huế"] },
+                { day: "Thứ Ba", stations: ["Đắk Lắk", "Quảng Nam"] },
+                { day: "Thứ Tư", stations: ["Đà Nẵng", "Khánh Hòa"] },
+                { day: "Thứ Năm", stations: ["Bình Định", "Quảng Trị", "Quảng Bình"] },
+                { day: "Thứ Sáu", stations: ["Gia Lai", "Ninh Thuận"] },
+                { day: "Thứ Bảy", stations: ["Đà Nẵng", "Quảng Ngãi", "Đắk Nông"] }
+            ]
+        },
+        MB: {
+            name: "Miền Bắc (XSMB)",
+            days: [
+                { day: "Chủ Nhật", stations: ["Thái Bình (Miền Bắc)"] },
+                { day: "Thứ Hai", stations: ["Hà Nội (Miền Bắc)"] },
+                { day: "Thứ Ba", stations: ["Quảng Ninh (Miền Bắc)"] },
+                { day: "Thứ Tư", stations: ["Bắc Ninh (Miền Bắc)"] },
+                { day: "Thứ Năm", stations: ["Hà Nội (Miền Bắc)"] },
+                { day: "Thứ Sáu", stations: ["Hải Phòng (Miền Bắc)"] },
+                { day: "Thứ Bảy", stations: ["Nam Định (Miền Bắc)"] }
+            ]
+        }
     };
 
-    let currentStations = [];
-    let isSpinning = false;
-    let activeStep = -1;
-    let spinTimeout = null;
-    let pauseTimeout = null;
-    let finishRecTimeout = null;
-    let animInterval = null;
-    let totalSteps = 0;
-
-    const TICK_SPEED_MS = 220;
-    const STEP_SPIN_MS = 1550;
-    const STEP_PAUSE_MS = 250;
-
-    // ================= DÀN NHẠC HIỆU XỔ SỐ TRUYỀN THỐNG TRONG CODE =================
-    let audioCtx = null;
-    let masterGain = null;
-    let streamDest = null;
-    let isMuted = false;
-    let melodyTimer = null;
-    let stepBeat = 0;
-    let customAudioBuffer = null;
-    let customAudioSource = null;
-
-    // Bản phối Giai điệu Kèn Đồng Xổ Số ("Tèn ten tén ten... Tèn tén ten...")
-    // Mỗi nhịp gồm: [Nốt chính (Hz), Nốt bè hòa âm (Hz), Nốt Bass trầm (Hz), Độ ngân (giây)]
-    const traditionalLotteryScore = [
-      // Câu 1: Đồ Mi Sol Đố - Đố Sol Đố
-      [523.25, 392.00, 130.81, 0.16],
-      [659.25, 523.25, 0,      0.16],
-      [783.99, 659.25, 196.00, 0.16],
-      [1046.50,783.99, 130.81, 0.30],
-      [0,      0,      0,      0.12],
-      [783.99, 659.25, 196.00, 0.16],
-      [1046.50,783.99, 130.81, 0.34],
-      [0,      0,      0,      0.14],
-
-      // Câu 2: La Đố La Sol - Mi Sol Mi Đồ
-      [880.00, 698.46, 174.61, 0.16],
-      [1046.50,880.00, 0,      0.16],
-      [880.00, 698.46, 174.61, 0.16],
-      [783.99, 659.25, 130.81, 0.30],
-      [659.25, 523.25, 196.00, 0.16],
-      [783.99, 659.25, 0,      0.16],
-      [659.25, 523.25, 196.00, 0.16],
-      [523.25, 392.00, 130.81, 0.34],
-
-      // Câu 3: Rê Fa La Rế - Си Sol Rế
-      [587.33, 440.00, 146.83, 0.16],
-      [698.46, 587.33, 0,      0.16],
-      [880.00, 698.46, 146.83, 0.16],
-      [1174.66,880.00, 196.00, 0.30],
-      [0,      0,      0,      0.12],
-      [987.77, 783.99, 196.00, 0.16],
-      [783.99, 587.33, 0,      0.16],
-      [1174.66,987.77, 196.00, 0.32],
-
-      // Câu 4: Đố Sol Mi Sol - Đố (Hợp âm kết)
-      [1046.50,783.99, 130.81, 0.18],
-      [783.99, 659.25, 196.00, 0.16],
-      [659.25, 523.25, 130.81, 0.16],
-      [783.99, 587.33, 196.00, 0.18],
-      [1046.50,783.99, 130.81, 0.42],
-      [0,      0,      196.00, 0.15],
-      [1046.50,659.25, 130.81, 0.42],
-      [0,      0,      0,      0.15]
+    // Cấu trúc 18 giải chuẩn Miền Nam & Miền Trung
+    const CAU_TRUC_MN_MT = [
+        ["Giải 8", 1, 2, "num-hl"],
+        ["Giải 7", 1, 3, ""],
+        ["Giải 6", 3, 4, ""],
+        ["Giải 5", 1, 4, ""],
+        ["Giải 4", 7, 5, ""],
+        ["Giải 3", 2, 5, ""],
+        ["Giải 2", 1, 5, ""],
+        ["Giải 1", 1, 5, ""],
+        ["Đặc Biệt", 1, 6, "num-hl"]
     ];
 
-    function ensureAudioContext() {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContextClass) return null;
-      if (!audioCtx) {
-        audioCtx = new AudioContextClass({ sampleRate: 44100 });
-        masterGain = audioCtx.createGain();
-        masterGain.gain.value = isMuted ? 0 : 0.9;
-        streamDest = audioCtx.createMediaStreamDestination();
-        masterGain.connect(audioCtx.destination);
-        masterGain.connect(streamDest);
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      return audioCtx;
+    // Cấu trúc 27 giải chuẩn Miền Bắc
+    const CAU_TRUC_MB = [
+        ["Đặc Biệt", 1, 5, "num-hl"],
+        ["Giải Nhất", 1, 5, ""],
+        ["Giải Nhì", 2, 5, ""],
+        ["Giải Ba", 6, 5, ""],
+        ["Giải Tư", 4, 4, ""],
+        ["Giải Năm", 6, 4, ""],
+        ["Giải Sáu", 3, 3, ""],
+        ["Giải Bảy", 4, 2, "num-hl"]
+    ];
+
+    let currentRegion = 'MN';
+    let selectedDay = new Date().getDay();
+    let isSpinning = false;
+
+    function randomDigits(len) {
+        let s = '';
+        for (let i = 0; i < len; i++) s += Math.floor(Math.random() * 10);
+        return s;
     }
 
-    // Phát 1 nốt Kèn Đồng ấm (Kết hợp sóng răng cưa + bộ lọc âm trầm Lowpass)
-    function playBrassNote(freq, duration, vol = 0.14) {
-      if (!audioCtx || freq <= 0) return;
-      const now = audioCtx.currentTime;
+    window.onload = () => {
+        updateAllView();
+    };
 
-      const osc1 = audioCtx.createOscillator();
-      const osc2 = audioCtx.createOscillator();
-      const filter = audioCtx.createBiquadFilter();
-      const gain = audioCtx.createGain();
-
-      osc1.type = 'sawtooth';
-      osc2.type = 'triangle';
-      osc1.frequency.setValueAtTime(freq, now);
-      osc2.frequency.setValueAtTime(freq * 1.003, now); // Tạo độ dày cho tiếng kèn
-
-      // Bộ lọc khử tiếng chói điện tử, giữ âm sắc ấm như kèn đồng thật
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(freq * 2.8, now);
-      filter.Q.value = 2.5;
-
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(vol, now + 0.025);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-      osc1.connect(filter);
-      osc2.connect(filter);
-      filter.connect(gain);
-      gain.connect(masterGain);
-
-      osc1.start(now);
-      osc2.start(now);
-      osc1.stop(now + duration + 0.02);
-      osc2.stop(now + duration + 0.02);
+    // Chuyển đổi Miền Nam / Miền Trung / Miền Bắc
+    function selectRegion(region, btn) {
+        if (isSpinning) return;
+        currentRegion = region;
+        document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateAllView();
     }
 
-    // Tiếng Trống + Bass đệm nhịp hành khúc Xổ Số
-    function playBassDrum(freq) {
-      if (!audioCtx || freq <= 0) return;
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq * 1.5, now);
-      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.14);
-      gain.gain.setValueAtTime(0.22, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
-      osc.connect(gain);
-      gain.connect(masterGain);
-      osc.start(now);
-      osc.stop(now + 0.17);
+    function updateAllView() {
+        const regData = LICH_3_MIEN[currentRegion];
+        const dayObj = regData.days[selectedDay];
+        const now = new Date();
+
+        document.getElementById('todayText').innerText = 
+            `Đang xem: ${regData.name} — ${dayObj.day} (${now.toLocaleDateString('vi-VN')}) | Mở thưởng: ${dayObj.stations.join(' - ')}`;
+        document.getElementById('refTitle').innerText = `🔥 BẢNG VÀNG THAM KHẢO ${regData.name.toUpperCase()} (${dayObj.day.toUpperCase()})`;
+        document.getElementById('spinTitle').innerText = `🎰 LỒNG CẦU QUAY THỬ ${regData.name.toUpperCase()}`;
+        document.getElementById('spinSub').innerText = currentRegion === 'MB' 
+            ? "Mô phỏng quay thử chuẩn 27 giải Xổ Số Kiến Thiết Miền Bắc" 
+            : "Mô phỏng quay thử chuẩn 18 giải từ Giải 8 đến Giải Đặc Biệt cho các đài mở thưởng trong ngày";
+
+        renderDayButtons();
+        refreshReference();
+        renderSpinBoard();
     }
 
-    // Tiếng lồng cầu quay "lách cách" êm tai
-    function playTickSound() {
-      if (isMuted || !audioCtx) return;
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(680, now);
-      osc.frequency.exponentialRampToValueAtTime(320, now + 0.035);
-      g.gain.setValueAtTime(0.10, now);
-      g.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
-      osc.connect(g);
-      g.connect(masterGain);
-      osc.start(now);
-      osc.stop(now + 0.04);
-    }
-
-    // Tiếng chuông chốt giải
-    function playLockSound(isSpecial = false) {
-      if (isMuted || !audioCtx) return;
-      if (isSpecial) {
-        const fanfare = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-        fanfare.forEach((f, idx) => {
-          setTimeout(() => {
-            playBrassNote(f, 0.75, 0.22);
-            playBrassNote(f * 0.5, 0.75, 0.15);
-          }, idx * 85);
-        });
-      } else {
-        playBrassNote(1046.50, 0.22, 0.16);
-      }
-    }
-
-    function startBackgroundMusic() {
-      const ctx = ensureAudioContext();
-      if (!ctx) return;
-      stopBackgroundMusic();
-
-      // Nếu đã từng nạp file MP3 thì ưu tiên phát file MP3 đó
-      if (customAudioBuffer) {
-        customAudioSource = ctx.createBufferSource();
-        customAudioSource.buffer = customAudioBuffer;
-        customAudioSource.loop = true;
-        const bgGain = ctx.createGain();
-        bgGain.gain.value = 0.75;
-        customAudioSource.connect(bgGain);
-        bgGain.connect(masterGain);
-        customAudioSource.start(0);
-        return;
-      }
-
-      // Phát Dàn nhạc Kèn Đồng Xổ Số mặc định trong code
-      stepBeat = 0;
-      melodyTimer = setInterval(() => {
-        if (isMuted || !audioCtx || !isSpinning) return;
-        const [leadFreq, harmonyFreq, bassFreq, dur] =
-          traditionalLotteryScore[stepBeat % traditionalLotteryScore.length];
-        stepBeat++;
-
-        if (leadFreq > 0) playBrassNote(leadFreq, dur, 0.15);
-        if (harmonyFreq > 0) playBrassNote(harmonyFreq, dur, 0.09);
-        if (bassFreq > 0) playBassDrum(bassFreq);
-      }, 185);
-    }
-
-    function stopBackgroundMusic() {
-      if (melodyTimer) {
-        clearInterval(melodyTimer);
-        melodyTimer = null;
-      }
-      if (customAudioSource) {
-        try { customAudioSource.stop(); } catch (e) {}
-        customAudioSource = null;
-      }
-    }
-
-    function toggleMute() {
-      isMuted = !isMuted;
-      const btn = document.getElementById('muteBtn');
-      btn.textContent = isMuted ? '🔇 Tắt tiếng' : '🔊 Bật tiếng';
-      if (masterGain && audioCtx) {
-        masterGain.gain.setValueAtTime(isMuted ? 0 : 0.9, audioCtx.currentTime);
-      }
-    }
-
-    // Lưu vĩnh viễn file MP3 vào bộ nhớ trình duyệt (IndexedDB) để không cần nạp lại lần sau
-    function saveMp3ToStorage(arrayBuffer, fileName) {
-      try {
-        const req = indexedDB.open('XSMNAudioDB', 1);
-        req.onupgradeneeded = (e) => {
-          e.target.result.createObjectStore('files');
-        };
-        req.onsuccess = (e) => {
-          const db = e.target.result;
-          const tx = db.transaction('files', 'readwrite');
-          tx.objectStore('files').put({ data: arrayBuffer, name: fileName }, 'savedMp3');
-        };
-      } catch (e) {}
-    }
-
-    function loadSavedMp3FromStorage() {
-      try {
-        const req = indexedDB.open('XSMNAudioDB', 1);
-        req.onupgradeneeded = (e) => {
-          e.target.result.createObjectStore('files');
-        };
-        req.onsuccess = (e) => {
-          const db = e.target.result;
-          const tx = db.transaction('files', 'readonly');
-          const getReq = tx.objectStore('files').get('savedMp3');
-          getReq.onsuccess = () => {
-            if (getReq.result && getReq.result.data) {
-              const ctx = ensureAudioContext();
-              if (ctx) {
-                ctx.decodeAudioData(getReq.result.data.slice(0), (buffer) => {
-                  customAudioBuffer = buffer;
-                  document.getElementById('mp3Btn').textContent = '🎵 Đã lưu MP3';
-                });
-              }
-            }
-          };
-        };
-      } catch (e) {}
-    }
-
-    function loadCustomMp3(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const ctx = ensureAudioContext();
-      if (!ctx) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const rawBuffer = e.target.result;
-        saveMp3ToStorage(rawBuffer.slice(0), file.name);
-        ctx.decodeAudioData(rawBuffer, function(buffer) {
-          customAudioBuffer = buffer;
-          document.getElementById('mp3Btn').textContent = '🎵 Đã lưu MP3';
-          document.getElementById('subTitle').textContent = `Đang dùng nhạc: ${file.name} (Đã lưu tự động)`;
-        });
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    // ================= BIẾN GHI VIDEO MP4 + ÂM THANH =================
-    let useHardwareMp4 = false;
-    let mp4Muxer = null;
-    let videoEncoder = null;
-    let audioEncoder = null;
-    let audioScriptProcessor = null;
-    let frameCount = 0;
-    let audioSampleCount = 0;
-    const FPS = 30;
-
-    let mediaRecorder = null;
-    let recordedChunks = [];
-    let frameIntervalId = null;
-    let recStartTime = 0;
-    let lastVideoBlob = null;
-    let lastVideoExt = 'mp4';
-
-    function initDaySelector() {
-      const select = document.getElementById('daySelect');
-      select.innerHTML = '';
-
-      const now = new Date();
-      const todayIdx = now.getDay();
-      const tomorrowIdx = (todayIdx + 1) % 7;
-
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      const isAfterDraw = currentMinutes >= (16 * 60 + 35);
-
-      const orderedIndices = [todayIdx, tomorrowIdx];
-      for (let i = 0; i < 7; i++) {
-        if (i !== todayIdx && i !== tomorrowIdx) {
-          orderedIndices.push(i);
-        }
-      }
-
-      orderedIndices.forEach(idx => {
-        const info = scheduleByDayIndex[idx];
-        const opt = document.createElement('option');
-        opt.value = idx;
-
-        let prefix = '';
-        if (idx === todayIdx) prefix = '[Hôm nay] ';
-        else if (idx === tomorrowIdx) prefix = '[Ngày mai] ';
-
-        opt.textContent = `${prefix}${info.name} (${info.stations.join(', ')})`;
-        select.appendChild(opt);
-      });
-
-      select.value = isAfterDraw ? tomorrowIdx : todayIdx;
-      currentStations = scheduleByDayIndex[select.value].stations;
-    }
-
-    function initTable() {
-      const wrapper = document.getElementById('tableWrapper');
-      const thead = document.getElementById('tableHeader');
-      const tbody = document.getElementById('tableBody');
-
-      if (currentStations.length === 4) {
-        wrapper.classList.add('mode-4-cols');
-      } else {
-        wrapper.classList.remove('mode-4-cols');
-      }
-
-      thead.innerHTML = '<div class="col-giai">Giải</div>';
-      currentStations.forEach((stName) => {
-        const div = document.createElement('div');
-        div.className = 'col-station';
-        div.textContent = stName;
-        thead.appendChild(div);
-      });
-
-      tbody.innerHTML = '';
-      let stepIndex = 0;
-
-      prizeConfig.forEach(prize => {
-        const row = document.createElement('div');
-        row.className = `prize-row ${prize.class}`;
-
-        const colGiai = document.createElement('div');
-        colGiai.className = 'col-giai';
-        colGiai.textContent = prize.label;
-        row.appendChild(colGiai);
-
-        for (let s = 0; s < currentStations.length; s++) {
-          const colSt = document.createElement('div');
-          colSt.className = 'col-station';
-
-          for (let c = 0; c < prize.count; c++) {
-            const cell = document.createElement('div');
-            cell.className = 'num-cell';
-            cell.id = `cell-s${s}-step${stepIndex + c}`;
-            cell.dataset.digits = prize.digits;
-            cell.dataset.fullval = '';
-            cell.textContent = '•••';
-            colSt.appendChild(cell);
-          }
-          row.appendChild(colSt);
-        }
-
-        stepIndex += prize.count;
-        tbody.appendChild(row);
-      });
-
-      totalSteps = stepIndex;
-    }
-
-    function randomNum(digits) {
-      let res = '';
-      for (let i = 0; i < digits; i++) {
-        res += Math.floor(Math.random() * 10);
-      }
-      return res;
-    }
-
-    function formatByMode(val) {
-      if (!val) return '•••';
-      const mode = document.querySelector('input[name="viewMode"]:checked').value;
-      if (mode === '2') return val.slice(-2);
-      if (mode === '3') return val.slice(-3);
-      return val;
-    }
-
-    function updateDisplayMode() {
-      document.querySelectorAll('.num-cell').forEach(cell => {
-        if (cell.dataset.fullval) {
-          cell.textContent = formatByMode(cell.dataset.fullval);
-        }
-      });
-    }
-
-    function changeDay() {
-      if (isSpinning) stopSpin(false);
-      const val = document.getElementById('daySelect').value;
-      currentStations = scheduleByDayIndex[val].stations;
-      document.getElementById('downloadBtn').classList.remove('ready');
-      initTable();
-    }
-
-    function resetBoard() {
-      document.querySelectorAll('.num-cell').forEach(cell => {
-        cell.classList.remove('active-spin');
-        cell.dataset.fullval = '';
-        cell.textContent = '•••';
-      });
-    }
-
-    function openModal() {
-      if (lastVideoBlob) {
-        document.getElementById('videoModal').classList.add('show');
-      }
-    }
-
-    function closeModal() {
-      document.getElementById('videoModal').classList.remove('show');
-    }
-
-    // ================= VẼ KHUNG HÌNH CANVAS =================
-    function drawVideoFrame() {
-      const canvas = document.getElementById('videoCanvas');
-      const ctx = canvas.getContext('2d');
-      const W = canvas.width;
-      const H = canvas.height;
-
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, W, H);
-
-      ctx.fillStyle = '#0b4a92';
-      ctx.fillRect(0, 0, W, 62);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 28px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('←   Quay thử', 24, 31);
-
-      ctx.fillStyle = '#ebebeb';
-      ctx.fillRect(0, 62, W, 66);
-      ctx.fillStyle = '#ffffff';
-      ctx.strokeStyle = '#cccccc';
-      ctx.lineWidth = 2;
-      ctx.fillRect(16, 72, 460, 46);
-      ctx.strokeRect(16, 72, 460, 46);
-
-      const sel = document.getElementById('daySelect');
-      const dayText = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text.replace(/\[.*?\]\s*/, '') : '';
-      ctx.fillStyle = '#222222';
-      ctx.font = '600 22px sans-serif';
-      ctx.fillText(dayText.substring(0, 28), 28, 95);
-
-      ctx.fillStyle = isSpinning ? '#d9430f' : '#f37021';
-      ctx.fillRect(496, 72, 208, 46);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 23px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(isSpinning ? 'DỪNG' : 'QUAY THỬ', 600, 95);
-
-      ctx.fillStyle = '#d32f2f';
-      ctx.font = 'bold 29px sans-serif';
-      ctx.fillText('Tham khảo Xổ Số miền Nam', W / 2, 152);
-      ctx.fillStyle = '#666666';
-      ctx.font = '21px sans-serif';
-      ctx.fillText('Thông tin chỉ mang tính tham khảo', W / 2, 180);
-
-      ctx.strokeStyle = '#dddddd';
-      ctx.beginPath();
-      ctx.moveTo(0, 196);
-      ctx.lineTo(W, 196);
-      ctx.stroke();
-
-      const headerY = 196;
-      const headerH = 46;
-      ctx.fillStyle = '#f5f5f5';
-      ctx.fillRect(0, headerY, W, headerH);
-
-      const giaiW = W * 0.11;
-      const numStations = currentStations.length;
-      const stW = (W - giaiW) / numStations;
-
-      ctx.fillStyle = '#111111';
-      ctx.font = 'bold 24px sans-serif';
-      ctx.fillText('Giải', giaiW / 2, headerY + headerH / 2);
-
-      currentStations.forEach((st, i) => {
-        ctx.fillText(st, giaiW + i * stW + stW / 2, headerY + headerH / 2);
-      });
-
-      ctx.strokeStyle = '#cccccc';
-      ctx.beginPath();
-      ctx.moveTo(0, headerY + headerH);
-      ctx.lineTo(W, headerY + headerH);
-      ctx.stroke();
-
-      const bodyTop = headerY + headerH;
-      const footerH = 56;
-      const bodyH = H - bodyTop - footerH;
-      const stepH = bodyH / 18;
-
-      let stepIdx = 0;
-      prizeConfig.forEach(prize => {
-        const rowTop = bodyTop + stepIdx * stepH;
-        const rowH = prize.count * stepH;
-
-        ctx.fillStyle = '#fafafa';
-        ctx.fillRect(0, rowTop, giaiW, rowH);
-
-        ctx.fillStyle = (prize.label === 'ĐB') ? '#d32f2f' : '#333333';
-        ctx.font = 'bold 24px sans-serif';
-        ctx.fillText(prize.label, giaiW / 2, rowTop + rowH / 2);
-
-        for (let c = 0; c < prize.count; c++) {
-          const curStep = stepIdx + c;
-          const cellTop = rowTop + c * stepH;
-
-          if (curStep === activeStep) {
-            ctx.fillStyle = '#fff176';
-            ctx.fillRect(giaiW, cellTop, W - giaiW, stepH);
-          }
-
-          for (let s = 0; s < numStations; s++) {
-            const domCell = document.getElementById(`cell-s${s}-step${curStep}`);
-            const textVal = domCell ? domCell.textContent : '•••';
-            const cellX = giaiW + s * stW + stW / 2;
-            const cellY = cellTop + stepH / 2;
-
-            if (prize.label === '8' || prize.label === 'ĐB') {
-              ctx.fillStyle = '#d32f2f';
-              ctx.font = numStations === 4 ? 'bold 31px sans-serif' : 'bold 36px sans-serif';
-            } else {
-              ctx.fillStyle = '#111111';
-              ctx.font = numStations === 4 ? 'bold 29px sans-serif' : 'bold 33px sans-serif';
-            }
-            ctx.fillText(textVal, cellX, cellY);
-          }
-        }
-
-        ctx.strokeStyle = '#dcdcdc';
-        ctx.beginPath();
-        ctx.moveTo(0, rowTop + rowH);
-        ctx.lineTo(W, rowTop + rowH);
-        ctx.stroke();
-
-        stepIdx += prize.count;
-      });
-
-      ctx.strokeStyle = '#dcdcdc';
-      ctx.beginPath();
-      ctx.moveTo(giaiW, headerY);
-      ctx.lineTo(giaiW, H - footerH);
-      for (let s = 1; s < numStations; s++) {
-        const x = giaiW + s * stW;
-        ctx.moveTo(x, headerY);
-        ctx.lineTo(x, H - footerH);
-      }
-      ctx.stroke();
-
-      const footerTop = H - footerH;
-      ctx.fillStyle = '#f9f9f9';
-      ctx.fillRect(0, footerTop, W, footerH);
-      ctx.strokeStyle = '#cccccc';
-      ctx.beginPath();
-      ctx.moveTo(0, footerTop);
-      ctx.lineTo(W, footerTop);
-      ctx.stroke();
-
-      const mode = document.querySelector('input[name="viewMode"]:checked').value;
-      const opts = [
-        { k: 'all', l: 'Đầy đủ', x: W * 0.2 },
-        { k: '2', l: '2 Số', x: W * 0.5 },
-        { k: '3', l: '3 Số', x: W * 0.8 }
-      ];
-
-      opts.forEach(o => {
-        const cy = footerTop + footerH / 2;
-        ctx.strokeStyle = '#0b4a92';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(o.x - 45, cy, 11, 0, Math.PI * 2);
-        ctx.stroke();
-
-        if (mode === o.k) {
-          ctx.fillStyle = '#0b4a92';
-          ctx.beginPath();
-          ctx.arc(o.x - 45, cy, 6, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.fillStyle = '#222222';
-        ctx.font = '500 23px sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText(o.l, o.x - 26, cy);
-      });
-    }
-
-    // ================= GHI VIDEO MP4 KÈM ÂM THANH =================
-    async function startVideoRecording() {
-      const canvas = document.getElementById('videoCanvas');
-      const ctxAudio = ensureAudioContext();
-      document.getElementById('downloadBtn').classList.remove('ready');
-      closeModal();
-      lastVideoBlob = null;
-      frameCount = 0;
-      audioSampleCount = 0;
-      recStartTime = Date.now();
-
-      drawVideoFrame();
-
-      if (typeof window.Mp4Muxer !== 'undefined' && typeof window.VideoEncoder !== 'undefined') {
-        try {
-          const codecsToTry = ['avc1.42001f', 'avc1.4d001f', 'avc1.64001f'];
-          let supportedVideoCodec = null;
-          for (const c of codecsToTry) {
-            const sup = await VideoEncoder.isConfigSupported({
-              codec: c,
-              width: canvas.width,
-              height: canvas.height,
-              bitrate: 2500000,
-              framerate: FPS
-            });
-            if (sup.supported) {
-              supportedVideoCodec = c;
-              break;
-            }
-          }
-
-          let hasAACSupport = false;
-          if (typeof window.AudioEncoder !== 'undefined' && ctxAudio) {
-            try {
-              const aSup = await AudioEncoder.isConfigSupported({
-                codec: 'mp4a.40.2',
-                sampleRate: ctxAudio.sampleRate,
-                numberOfChannels: 1,
-                bitrate: 128000
-              });
-              hasAACSupport = aSup.supported;
-            } catch (e) {
-              hasAACSupport = false;
-            }
-          }
-
-          if (supportedVideoCodec) {
-            useHardwareMp4 = true;
-            const muxerConfig = {
-              target: new Mp4Muxer.ArrayBufferTarget(),
-              video: {
-                codec: 'avc',
-                width: canvas.width,
-                height: canvas.height
-              },
-              fastStart: 'in-memory'
+    function renderDayButtons() {
+        const nav = document.getElementById('dayNav');
+        nav.innerHTML = '';
+        const daysList = LICH_3_MIEN[currentRegion].days;
+
+        daysList.forEach((item, idx) => {
+            const btn = document.createElement('button');
+            btn.className = `day-btn ${idx === selectedDay ? 'active' : ''}`;
+            btn.innerHTML = `${item.day}<span>${item.stations.length} đài</span>`;
+            btn.onclick = () => {
+                if (isSpinning) return;
+                selectedDay = idx;
+                updateAllView();
             };
+            nav.appendChild(btn);
+        });
+    }
 
-            if (hasAACSupport && ctxAudio) {
-              muxerConfig.audio = {
-                codec: 'aac',
-                sampleRate: ctxAudio.sampleRate,
-                numberOfChannels: 1
-              };
-            }
+    // Khu vực Tham khảo số đẹp
+    function refreshReference() {
+        const stations = LICH_3_MIEN[currentRegion].days[selectedDay].stations;
+        const grid = document.getElementById('refGrid');
+        grid.innerHTML = '';
 
-            mp4Muxer = new Mp4Muxer.Muxer(muxerConfig);
+        stations.forEach(st => {
+            const btl = randomDigits(2);
+            const stl1 = randomDigits(2);
+            const stl2 = stl1.split('').reverse().join('') === stl1 
+                ? randomDigits(2) 
+                : stl1.split('').reverse().join('');
+            const cang3 = `${Math.floor(Math.random() * 9) + 1}${btl} - ${Math.floor(Math.random() * 9) + 1}${stl1}`;
+            const xien2 = `${btl} - ${stl1} | ${stl2} - ${randomDigits(2)}`;
+            const dauDuoi = `Đầu ${btl[0]} - Đuôi ${stl1[1]}`;
 
-            videoEncoder = new VideoEncoder({
-              output: (chunk, meta) => mp4Muxer.addVideoChunk(chunk, meta),
-              error: (e) => console.error(e)
+            grid.innerHTML += `
+                <div class="vip-card">
+                    <div class="vip-card-head">
+                        <span class="station-name">🎯 Đài ${st}</span>
+                        <span class="tag-vip">CHỐT SỐ VIP</span>
+                    </div>
+                    <div class="balls-row">
+                        <span>Bạch Thủ Lô (Độc thủ):</span>
+                        <span class="ball-vip">${btl}</span>
+                    </div>
+                    <div class="balls-row">
+                        <span>Song Thủ Lô Cặp:</span>
+                        <span class="pill-gold">${stl1} - ${stl2}</span>
+                    </div>
+                    <div class="balls-row">
+                        <span>${currentRegion === 'MB' ? 'Lô Xiên 2 Đẹp:' : 'Xỉu Chủ / 3 Càng:'}</span>
+                        <span class="pill-sub">${currentRegion === 'MB' ? xien2 : cang3}</span>
+                    </div>
+                    <div class="balls-row" style="margin-bottom:0;">
+                        <span>Chạm Đầu - Đuôi:</span>
+                        <strong style="color:#4ade80;">${dauDuoi}</strong>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // Khu vực Bảng Quay thử
+    function renderSpinBoard() {
+        const stations = LICH_3_MIEN[currentRegion].days[selectedDay].stations;
+        const structure = currentRegion === 'MB' ? CAU_TRUC_MB : CAU_TRUC_MN_MT;
+        const board = document.getElementById('boardKQ');
+
+        let html = `<thead><tr><th class="col-prize">Giải</th>`;
+        stations.forEach(st => { html += `<th>Đài ${st}</th>`; });
+        html += `</tr></thead><tbody>`;
+
+        structure.forEach((row, rIdx) => {
+            const [pName, count, digits, cls] = row;
+            html += `<tr><td class="col-prize">${pName}</td>`;
+            stations.forEach((_, sIdx) => {
+                let spans = '';
+                for (let c = 0; c < count; c++) {
+                    spans += `<span id="cell-${sIdx}-${rIdx}-${c}" class="${cls}">${'-'.repeat(digits)}</span>`;
+                }
+                html += `<td><div class="num-group">${spans}</div></td>`;
             });
+            html += `</tr>`;
+        });
+        html += `</tbody>`;
+        board.innerHTML = html;
 
-            videoEncoder.configure({
-              codec: supportedVideoCodec,
-              width: canvas.width,
-              height: canvas.height,
-              bitrate: 2500000,
-              framerate: FPS
-            });
+        renderEmptyLoto(stations);
+    }
 
-            if (hasAACSupport && ctxAudio) {
-              audioEncoder = new AudioEncoder({
-                output: (chunk, meta) => mp4Muxer.addAudioChunk(chunk, meta),
-                error: (e) => console.error(e)
-              });
-              audioEncoder.configure({
-                codec: 'mp4a.40.2',
-                sampleRate: ctxAudio.sampleRate,
-                numberOfChannels: 1,
-                bitrate: 128000
-              });
-
-              audioScriptProcessor = ctxAudio.createScriptProcessor(4096, 1, 1);
-              masterGain.connect(audioScriptProcessor);
-              audioScriptProcessor.connect(ctxAudio.destination);
-              audioScriptProcessor.onaudioprocess = (e) => {
-                if (!audioEncoder || audioEncoder.state !== 'configured') return;
-                const inputData = e.inputBuffer.getChannelData(0);
-                const dataCopy = new Float32Array(inputData);
-                const timestampUs = Math.round((audioSampleCount * 1000000) / ctxAudio.sampleRate);
-                audioSampleCount += dataCopy.length;
-
-                const audioData = new AudioData({
-                  format: 'f32-planar',
-                  sampleRate: ctxAudio.sampleRate,
-                  numberOfFrames: dataCopy.length,
-                  numberOfChannels: 1,
-                  timestamp: timestampUs,
-                  data: dataCopy
-                });
-                audioEncoder.encode(audioData);
-                audioData.close();
-              };
+    function renderEmptyLoto(stations) {
+        const lotoGrid = document.getElementById('lotoGrid');
+        lotoGrid.innerHTML = '';
+        stations.forEach((st, sIdx) => {
+            let rows = '';
+            for (let d = 0; d <= 9; d++) {
+                rows += `<tr><td class="td-dau">Đầu ${d}</td><td class="td-duoi" id="loto-${sIdx}-${d}">-</td></tr>`;
             }
-
-            document.getElementById('recBadge').classList.add('recording');
-            document.getElementById('recTimerText').textContent = '00:00';
-
-            if (frameIntervalId) clearInterval(frameIntervalId);
-            frameIntervalId = setInterval(() => {
-              drawVideoFrame();
-              if (videoEncoder && videoEncoder.state === 'configured') {
-                const timestampUs = Math.round((frameCount * 1000000) / FPS);
-                const durationUs = Math.round(1000000 / FPS);
-                const frame = new VideoFrame(canvas, { timestamp: timestampUs, duration: durationUs });
-                videoEncoder.encode(frame, { keyFrame: frameCount % 30 === 0 });
-                frame.close();
-                frameCount++;
-              }
-              const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
-              const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
-              const ss = String(elapsed % 60).padStart(2, '0');
-              document.getElementById('recTimerText').textContent = `${mm}:${ss}`;
-            }, 1000 / FPS);
-
-            return;
-          }
-        } catch (err) {
-          useHardwareMp4 = false;
-        }
-      }
-
-      useHardwareMp4 = false;
-      if (!canvas.captureStream || typeof MediaRecorder === 'undefined') return;
-
-      const vStream = canvas.captureStream(FPS);
-      const tracks = [...vStream.getVideoTracks()];
-      if (streamDest && streamDest.stream.getAudioTracks().length > 0) {
-        tracks.push(streamDest.stream.getAudioTracks()[0]);
-      }
-      const combinedStream = new MediaStream(tracks);
-
-      recordedChunks = [];
-      const mimeTypes = ['video/mp4', 'video/webm;codecs=h264,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
-      let selectedMime = '';
-      for (const m of mimeTypes) {
-        if (MediaRecorder.isTypeSupported(m)) {
-          selectedMime = m;
-          break;
-        }
-      }
-
-      mediaRecorder = selectedMime
-        ? new MediaRecorder(combinedStream, { mimeType: selectedMime, videoBitsPerSecond: 2500000 })
-        : new MediaRecorder(combinedStream);
-
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data && e.data.size > 0) recordedChunks.push(e.data);
-      };
-
-      mediaRecorder.onstop = () => {
-        const durationMs = Date.now() - recStartTime;
-        const rawBlob = new Blob(recordedChunks, { type: selectedMime || 'video/webm' });
-
-        if (typeof ysFixWebmDuration === 'function' && (!selectedMime || selectedMime.includes('webm'))) {
-          ysFixWebmDuration(rawBlob, durationMs, (fixedBlob) => {
-            lastVideoBlob = fixedBlob;
-            lastVideoExt = 'webm';
-            showReadyUI(Math.round(durationMs / 1000));
-          });
-        } else {
-          lastVideoBlob = rawBlob;
-          lastVideoExt = (selectedMime && selectedMime.includes('mp4')) ? 'mp4' : 'webm';
-          showReadyUI(Math.round(durationMs / 1000));
-        }
-      };
-
-      mediaRecorder.start();
-      document.getElementById('recBadge').classList.add('recording');
-
-      if (frameIntervalId) clearInterval(frameIntervalId);
-      frameIntervalId = setInterval(() => {
-        drawVideoFrame();
-        const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
-        const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
-        const ss = String(elapsed % 60).padStart(2, '0');
-        document.getElementById('recTimerText').textContent = `${mm}:${ss}`;
-      }, 1000 / FPS);
+            lotoGrid.innerHTML += `
+                <div class="loto-box">
+                    <div class="loto-box-head">Thống Kê Loto — Đài ${st}</div>
+                    <table class="loto-tb">${rows}</table>
+                </div>
+            `;
+        });
     }
 
-    async function stopVideoRecording(showPopup = true) {
-      document.getElementById('recBadge').classList.remove('recording');
-      stopBackgroundMusic();
-
-      if (frameIntervalId) {
-        clearInterval(frameIntervalId);
-        frameIntervalId = null;
-      }
-
-      if (audioScriptProcessor) {
-        try {
-          audioScriptProcessor.disconnect();
-          masterGain.disconnect(audioScriptProcessor);
-        } catch (e) {}
-        audioScriptProcessor = null;
-      }
-
-      if (useHardwareMp4 && videoEncoder) {
-        try {
-          if (showPopup) {
-            await videoEncoder.flush();
-            if (audioEncoder && audioEncoder.state === 'configured') {
-              await audioEncoder.flush();
-            }
-            mp4Muxer.finalize();
-            const { buffer } = mp4Muxer.target;
-            lastVideoBlob = new Blob([buffer], { type: 'video/mp4' });
-            lastVideoExt = 'mp4';
-            const totalSec = Math.round(frameCount / FPS);
-            showReadyUI(totalSec);
-          }
-          videoEncoder.close();
-          if (audioEncoder) audioEncoder.close();
-        } catch (e) {}
-        videoEncoder = null;
-        audioEncoder = null;
-        mp4Muxer = null;
-      } else if (mediaRecorder && mediaRecorder.state === 'recording') {
-        if (!showPopup) mediaRecorder.onstop = null;
-        mediaRecorder.stop();
-      }
-    }
-
-    function showReadyUI(durationSec) {
-      document.getElementById('modalDesc').textContent =
-        `Video MP4 kèm Nhạc hiệu Xổ Số dài ${durationSec} giây đã sẵn sàng đăng Facebook / TikTok:`;
-      document.getElementById('downloadBtn').classList.add('ready');
-      document.getElementById('videoModal').classList.add('show');
-    }
-
-    async function shareVideoNow() {
-      if (!lastVideoBlob) return;
-      const fileName = `xsmn-quay-thu-${Date.now()}.${lastVideoExt}`;
-      const file = new File([lastVideoBlob], fileName, { type: lastVideoBlob.type });
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: 'Tham khảo Xổ Số miền Nam'
-          });
-          return;
-        } catch (err) {}
-      }
-      downloadVideoNow();
-    }
-
-    function downloadVideoNow() {
-      if (!lastVideoBlob) return;
-      const fileName = `xsmn-quay-thu-${Date.now()}.${lastVideoExt}`;
-      const url = URL.createObjectURL(lastVideoBlob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 5000);
-      closeModal();
-    }
-
-    // ================= ĐIỀU KHIỂN QUAY THỬ =================
-    function toggleSpin() {
-      if (isSpinning) {
-        stopSpin(true);
-      } else {
-        startSpin();
-      }
-    }
-
+    // Bắt đầu quay thử
     function startSpin() {
-      clearTimeout(finishRecTimeout);
-      isSpinning = true;
-      activeStep = 0;
-      const btn = document.getElementById('spinBtn');
-      btn.textContent = 'DỪNG';
-      btn.classList.add('spinning');
-      resetBoard();
-      startBackgroundMusic();
-      startVideoRecording();
-      runStep(0);
-    }
+        if (isSpinning) return;
+        isSpinning = true;
+        const btn = document.getElementById('btnSpin');
+        btn.disabled = true;
+        btn.innerText = "⏳ ĐANG QUAY LỒNG CẦU...";
 
-    function stopSpin(saveVideo = true) {
-      isSpinning = false;
-      activeStep = -1;
-      clearTimeout(spinTimeout);
-      clearTimeout(pauseTimeout);
-      clearTimeout(finishRecTimeout);
-      clearInterval(animInterval);
-      const btn = document.getElementById('spinBtn');
-      btn.textContent = 'QUAY THỬ';
-      btn.classList.remove('spinning');
-      document.querySelectorAll('.num-cell.active-spin').forEach(c => {
-        c.classList.remove('active-spin');
-      });
+        const stations = LICH_3_MIEN[currentRegion].days[selectedDay].stations;
+        const structure = currentRegion === 'MB' ? CAU_TRUC_MB : CAU_TRUC_MN_MT;
+        renderEmptyLoto(stations);
 
-      if (saveVideo) {
-        drawVideoFrame();
-        finishRecTimeout = setTimeout(() => {
-          stopVideoRecording(true);
-        }, 2500);
-      } else {
-        stopVideoRecording(false);
-      }
-    }
+        const lotoMemory = stations.map(() => []);
+        const sequence = [];
 
-    function runStep(step) {
-      if (!isSpinning || step >= totalSteps) {
-        stopSpin(true);
-        return;
-      }
-
-      activeStep = step;
-      const currentCells = [];
-      for (let s = 0; s < currentStations.length; s++) {
-        currentCells.push(document.getElementById(`cell-s${s}-step${step}`));
-      }
-
-      const digits = parseInt(currentCells[0].dataset.digits, 10);
-
-      currentCells.forEach(cell => {
-        cell.classList.add('active-spin');
-        cell.textContent = formatByMode(randomNum(digits));
-      });
-      playTickSound();
-
-      animInterval = setInterval(() => {
-        currentCells.forEach(cell => {
-          cell.textContent = formatByMode(randomNum(digits));
-        });
-        playTickSound();
-      }, TICK_SPEED_MS);
-
-      spinTimeout = setTimeout(() => {
-        clearInterval(animInterval);
-        currentCells.forEach(cell => {
-          const finalVal = randomNum(digits);
-          cell.dataset.fullval = finalVal;
-          cell.textContent = formatByMode(finalVal);
-          cell.classList.remove('active-spin');
+        structure.forEach((row, rIdx) => {
+            const count = row[1];
+            const digits = row[2];
+            for (let c = 0; c < count; c++) {
+                stations.forEach((_, sIdx) => {
+                    sequence.push({
+                        el: document.getElementById(`cell-${sIdx}-${rIdx}-${c}`),
+                        digits,
+                        sIdx
+                    });
+                });
+            }
         });
 
-        playLockSound(step === totalSteps - 1);
-        activeStep = -1;
+        sequence.forEach((item, index) => {
+            item.el.classList.add('rolling');
+            const timer = setInterval(() => {
+                item.el.innerText = randomDigits(item.digits);
+            }, 50);
 
-        pauseTimeout = setTimeout(() => {
-          runStep(step + 1);
-        }, STEP_PAUSE_MS);
-      }, STEP_SPIN_MS);
+            setTimeout(() => {
+                clearInterval(timer);
+                const finalNum = randomDigits(item.digits);
+                item.el.innerText = finalNum;
+                item.el.classList.remove('rolling');
+
+                lotoMemory[item.sIdx].push(finalNum.slice(-2));
+                updateLotoStation(item.sIdx, lotoMemory[item.sIdx]);
+
+                if (index === sequence.length - 1) {
+                    isSpinning = false;
+                    btn.disabled = false;
+                    btn.innerText = "⚡ QUAY THỬ LẠI LẦN NỮA";
+                }
+            }, 300 + index * 85);
+        });
     }
 
-    initDaySelector();
-    initTable();
-    loadSavedMp3FromStorage();
-  </script>
+    function updateLotoStation(sIdx, list) {
+        const buckets = Array.from({ length: 10 }, () => []);
+        list.forEach(num => {
+            const dau = parseInt(num[0], 10);
+            buckets[dau].push(num[1]);
+        });
+        for (let d = 0; d <= 9; d++) {
+            const cell = document.getElementById(`loto-${sIdx}-${d}`);
+            if (cell) cell.innerText = buckets[d].length ? buckets[d].sort().join(', ') : '-';
+        }
+    }
+</script>
+
 </body>
 </html>
