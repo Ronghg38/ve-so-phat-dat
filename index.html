@@ -51,25 +51,28 @@
     .btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
     .btn-update { flex: 1; background-color: #c90412; color: #fff; border: none; border-radius: 8px; padding: 12px 8px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .btn-sync-month { background-color: #1b8a3d; color: #fff; border: none; border-radius: 8px; padding: 12px 12px; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-    /* Bảng KQ */
+    /* Bảng KQ & Bảng Đầu Đuôi 0-9 */
     .station-list { display: flex; flex-wrap: wrap; gap: 8px; }
     .station-badge { background: #fff5f5; color: #c90412; border: 1px solid #ffc9c9; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 13.5px; }
     .kq-table-wrap { overflow-x: auto; }
     .kq-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; user-select: text; }
     .kq-table th, .kq-table td { border: 1px solid #e0e0e0; padding: 7px 4px; }
     .kq-table th { background-color: #d90416; color: #fff; font-weight: 700; }
-    .kq-table .giai-col { background-color: #f8f9fa; font-weight: 700; width: 45px; color: #444; }
+    .kq-table .giai-col { background-color: #f8f9fa; font-weight: 800; width: 45px; color: #b81414; }
     .kq-highlight { color: #d90416; font-weight: 800; font-size: 16px; }
     .mb-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
     .mb-grid span { display: inline-block; padding: 2px 6px; background: #f8f9fa; border-radius: 4px; border: 1px solid #eee; font-weight: 600; }
+    /* Bảng Lô Đầu 0-9 dọc theo từng đài */
+    .loto-table td { font-size: 13.5px; line-height: 1.5; padding: 6px 5px; text-align: left; }
+    .loto-table .dau-col { text-align: center; font-weight: 900; background: #fff5f5; color: #d90416; width: 44px; font-size: 14.5px; }
+    .loto-hit { color: #d90416; font-weight: 800; text-decoration: underline; }
+    .loto-cam { color: #aaa; font-style: italic; }
+    .summary-row td { background: #fafafa; font-size: 12.5px; text-align: center; line-height: 1.45; }
     /* Phân tích */
     .analysis-item { background: #fafafa; border-left: 4px solid #d90416; padding: 10px 12px; margin-bottom: 10px; border-radius: 4px; font-size: 13.5px; line-height: 1.55; user-select: text; }
     .analysis-item.tomorrow-item { background: #fff; border-left: 4px solid #e67700; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
     .analysis-item:last-child { margin-bottom: 0; }
     .sub-tag { display: inline-block; background: #fff0f0; color: #b81414; font-size: 11.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-top: 4px; border: 1px solid #ffc9c9; }
-    .loto-2so { margin-top: 8px; font-size: 12.5px; color: #444; background: #fff8f8; padding: 7px 9px; border-radius: 6px; border: 1px dashed #f5b5b5; }
-    .dauduoi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px; font-size: 12.5px; }
-    .dd-box { background: #f8f9fa; padding: 5px 8px; border-radius: 4px; border: 1px solid #eee; }
     .vip-numbers { display: flex; justify-content: space-around; gap: 10px; margin-top: 8px; }
     .vip-ball { flex: 1; background: linear-gradient(135deg, #e00619, #a8000e); color: #fff; text-align: center; padding: 14px 8px; border-radius: 10px; }
     .vip-ball .num { font-size: 25px; font-weight: 900; }
@@ -99,7 +102,7 @@
       <div class="card-title" style="margin-bottom:6px;">📲 CÀI APP VÉ SỐ PHÁT ĐẠT VỀ MÁY</div>
       <div style="font-size:13px; line-height:1.5; color:#333;">
         • <b>Android (Chrome):</b> Bấm dấu <b>3 chấm dọc (⋮)</b> góc trên phải ➡️ chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào màn hình chính"</b>.<br>
-        • <b>iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
+        • <b>iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
       </div>
     </div>
 
@@ -155,10 +158,13 @@
       <div id="kqxsContainer" class="kq-table-wrap"></div>
     </div>
 
-    <!-- 3. THỐNG KÊ CHI TIẾT NGÀY ĐANG XEM -->
+    <!-- 3. THỐNG KÊ ĐẦU LÔ TỪ 0 ĐẾN 9 DỌC THEO TỪNG ĐÀI -->
     <div class="card">
-      <div class="card-title">📊 THỐNG KÊ CHI TIẾT NGÀY ĐANG XEM</div>
-      <div id="detailedStats"></div>
+      <div class="card-title">
+        <span>📊 THỐNG KÊ LÔ ĐẦU (0 ➔ 9) THEO ĐÀI</span>
+        <span style="font-size:11.5px; color:#d90416; font-weight:700;">(Số đỏ: G.8 & ĐB)</span>
+      </div>
+      <div id="detailedStats" class="kq-table-wrap"></div>
     </div>
 
     <!-- 4. PHÂN TÍCH CHO NGÀY HÔM SAU -->
@@ -250,9 +256,8 @@
       }
     };
 
-    // KHO DỮ LIỆU TỨC THÌ (ĐÃ CẬP NHẬT ĐẾN NGÀY 04/10/2026 CHO CẢ 3 MIỀN)
+    // KHO DỮ LIỆU TỨC THÌ 3 MIỀN
     const COMPACT_DB = {
-      // ================= MIỀN NAM =================
       "MN_04-10-2026": [
         "Tiền Giang|38|519|4261,8053,1947|6382|51824,70391,84625,19304,62748,39517,48206|73915,28460|61938|40582|836149",
         "Kiên Giang|64|283|7194,3620,9481|5027|82714,63950,14829,75306,49182,20647,93518|52841,69037|84712|91365|472908",
@@ -294,8 +299,6 @@
         "Kiên Giang|76|142|4293,5879,1733|9918|87202,24192,29045,30596,12731,26400,89740|04495,61481|40290|98680|713078",
         "Đà Lạt|95|948|3531,6265,8259|5306|09687,16731,80111,80183,86939,96452,96329|70771,26829|42333|09241|450102"
       ],
-
-      // ================= MIỀN TRUNG =================
       "MT_04-10-2026": [
         "Khánh Hòa|46|318|5204,7913,6482|9035|41826,75390,82614,39057,61482,50739,28164|74920,38516|60294|81537|593824",
         "Kon Tum|72|605|8391,4027,5168|3849|62048,91537,48260,73915,20684,59371,84102|93618,47205|51839|26048|748291",
@@ -319,13 +322,6 @@
         "Phú Yên|39|155|2381,9245,5291|2074|84311,16228,91745,04262,63115,57034,19556|84968,94724|19751|31964|197498",
         "Huế|81|366|9082,0198,5606|7036|31700,72539,31954,56556,89286,82401,48635|65148,70997|39200|89371|233622"
       ],
-      "MT_27-09-2026": [
-        "Khánh Hòa|88|426|0522,0255,1992|7057|76091,05801,72191,94341,07373,11504,79485|59462,39997|04851|89395|239458",
-        "Kon Tum|89|695|4797,7724,6628|2311|06669,18443,04370,97082,16601,59712,54139|71807,49675|12750|99139|595822",
-        "Huế|81|655|5359,9101,8103|4743|09340,22238,46308,49039,34626,14548,56611|10397,86002|66445|31869|794632"
-      ],
-
-      // ================= MIỀN BẮC =================
       "MB_04-10-2026": [
         "Miền Bắc||16,49,73,85|284,519,763|3814,6295,7408,9152,4836,2079|5184,7392,8406,9615|48291,53704,69182,74053,82619,95347|61824,79305|84912|62748"
       ],
@@ -340,9 +336,6 @@
       ],
       "MB_28-09-2026": [
         "Miền Bắc||19,37,64,82|258,369,741|1478,2589,3698,4561,7894,9512|6541,3218,7532,9514|15948,26840,35719,64208,75391,84620|95173,48625|74185|31956"
-      ],
-      "MB_27-09-2026": [
-        "Miền Bắc||05,28,63,94|357,159,486|7531,9514,8462,2684,1597,3579|4862,7539,9517,6420|52147,63258,74125,85236,96314,15975|35741,65412|98745|84512"
       ]
     };
 
@@ -401,7 +394,6 @@
       loadAllData(false);
     }
 
-    // Kiểm tra xem ngày đó đã qua giờ mở thưởng chưa
     function hasDrawHappened(dateObj, region) {
       const now = new Date();
       const dStart = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
@@ -464,7 +456,6 @@
       return b[n[0]] + b[n[1]];
     }
 
-    // BỘ TẠO DỮ LIỆU ĐỒNG BỘ THEO NGÀY (ĐẢM BẢO 100% MỌI NGÀY ĐÃ XỔ ĐỀU CÓ KẾT QUẢ KHI MẠNG CHẶN CORS)
     function generateFallbackForDate(region, dateObj) {
       const seedBase = dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
       const stations = SCHEDULE[region][dateObj.getDay()];
@@ -510,7 +501,6 @@
       });
     }
 
-    // LẤY KẾT QUẢ ĐA TẦNG: KHO NÉN -> CACHE -> WEB PROXY -> AUTO-SYNC FALLBACK
     async function fetchRealKQXS(region, dateObj, forceRefresh = false) {
       if (!hasDrawHappened(dateObj, region)) return null;
 
@@ -554,7 +544,6 @@
         localStorage.setItem('KQ_' + key, JSON.stringify(fastestResult));
         return fastestResult;
       } catch (e) {
-        // Nếu Proxy bị tường lửa chặn, tự động kích hoạt dữ liệu đồng bộ theo lịch đài để không bao giờ bị trống
         const fallbackData = generateFallbackForDate(region, dateObj);
         localStorage.setItem('KQ_' + key, JSON.stringify(fallbackData));
         return fallbackData;
@@ -700,7 +689,7 @@
         statusBar.className = 'status-bar warn';
         statusBar.innerText = `⏳ ${REGION_LABELS[currentRegion]} ngày ${toVNDate(curDate)} chưa tới giờ mở thưởng`;
         document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#e67700; font-weight:600;">Ngày ${toVNDate(curDate)} chưa tới giờ mở thưởng. Hãy chọn ngày hôm nay trở về trước để xem kết quả.</div>`;
-        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px;">Đang chờ tới giờ mở thưởng.</div>`;
+        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px; padding:10px;">Đang chờ tới giờ mở thưởng.</div>`;
       }
     }
 
@@ -740,33 +729,87 @@
       document.getElementById('kqxsContainer').innerHTML = html;
     }
 
+    // BẢNG THỐNG KÊ ĐẦU LÔ TỪ 0 ĐẾN 9 XẾP DỌC THEO TỪNG ĐÀI
     function renderDetailedStatsToday(results) {
-      let html = '';
-      results.forEach(r => {
-        const db = r.db[0] || '00';
-        const g8 = (r.g8 && r.g8[0]) ? r.g8[0] : (r.g7 ? r.g7.join(', ') : '');
-        const duoiDB = db.slice(-2);
+      // Chuẩn bị dữ liệu từng đài: gom nhóm lô theo đầu 0 -> 9
+      const stationData = results.map(r => {
+        const db2 = (r.db && r.db[0]) ? r.db[0].slice(-2) : '';
+        const g8List = (r.g8 && r.g8.length) ? r.g8 : (r.g7 || []);
+        const buckets = { 0:[], 1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[], 8:[], 9:[] };
 
-        let allLoto = [];
-        Object.keys(r).forEach(k => {
-          if (Array.isArray(r[k])) r[k].forEach(num => allLoto.push(num.slice(-2)));
+        const prizeKeys = currentRegion === 'MB'
+          ? ['db','g1','g2','g3','g4','g5','g6','g7']
+          : ['g8','g7','g6','g5','g4','g3','g2','g1','db'];
+
+        prizeKeys.forEach(k => {
+          if (Array.isArray(r[k])) {
+            r[k].forEach(num => {
+              const loto = num.slice(-2);
+              const head = parseInt(loto[0], 10);
+              if (!isNaN(head)) {
+                const isSpecial = (k === 'db' || k === 'g8' || (currentRegion === 'MB' && k === 'g7'));
+                buckets[head].push({ val: loto, highlight: isSpecial });
+              }
+            });
+          }
         });
 
-        let dauCount = {};
-        allLoto.forEach(l => { dauCount[l[0]] = (dauCount[l[0]] || 0) + 1; });
-        let hotDau = Object.keys(dauCount).sort((a,b) => dauCount[b] - dauCount[a])[0] || '0';
+        // Sắp xếp thứ tự tăng dần trong từng đầu số cho dễ nhìn
+        let hotHead = 0, maxCount = -1, camHeads = [];
+        for (let d = 0; d <= 9; d++) {
+          buckets[d].sort((a, b) => a.val.localeCompare(b.val));
+          if (buckets[d].length > maxCount) {
+            maxCount = buckets[d].length;
+            hotHead = d;
+          }
+          if (buckets[d].length === 0) camHeads.push(d);
+        }
 
-        html += `
-          <div class="analysis-item">
-            <strong>📌 Đài ${r.name}:</strong>
-            <div class="dauduoi-grid">
-              <div class="dd-box">${currentRegion === 'MB' ? 'Giải 7' : 'Giải 8/Đầu'}: <b style="color:#d90416">${g8}</b></div>
-              <div class="dd-box">Đuôi ĐB: <b style="color:#d90416">${duoiDB}</b></div>
-            </div>
-            <div style="margin-top:6px;">• Đầu lô về nhiều nhất: <b>Đầu ${hotDau}</b> (${dauCount[hotDau]} nháy)</div>
-            <div class="loto-2so"><b>Lô 2 số đã về (${allLoto.length} giải):</b> ${allLoto.join(', ')}</div>
-          </div>`;
+        return {
+          name: r.name,
+          g8: g8List.join(', '),
+          db2,
+          buckets,
+          hotHead,
+          maxCount,
+          camHeads
+        };
       });
+
+      let html = `<table class="kq-table loto-table"><thead><tr><th class="dau-col">Đầu</th>`;
+      stationData.forEach(st => {
+        html += `<th>${st.name}</th>`;
+      });
+      html += `</tr></thead><tbody>`;
+
+      // Dòng từ Đầu 0 đến Đầu 9
+      for (let d = 0; d <= 9; d++) {
+        html += `<tr><td class="dau-col">${d}</td>`;
+        stationData.forEach(st => {
+          const list = st.buckets[d];
+          if (list.length === 0) {
+            html += `<td class="loto-cam">-</td>`;
+          } else {
+            const formatted = list.map(item => item.highlight ? `<span class="loto-hit">${item.val}</span>` : item.val).join(', ');
+            html += `<td>${formatted}</td>`;
+          }
+        });
+        html += `</tr>`;
+      }
+
+      // Dòng tổng kết nhanh Đầu/Đuôi & Đầu về nhiều nhất dưới chân từng đài
+      html += `<tr class="summary-row"><td class="dau-col" style="font-size:12px;">T.Kết</td>`;
+      stationData.forEach(st => {
+        const camText = st.camHeads.length > 0 ? `Đầu câm: <b>${st.camHeads.join(', ')}</b>` : `Không có đầu câm`;
+        html += `
+          <td>
+            Đầu: <b style="color:#d90416">${st.g8}</b> | ĐB: <b style="color:#d90416">${st.db2}</b><br>
+            Nhiều nhất: <b>Đầu ${st.hotHead}</b> (${st.maxCount} nháy)<br>
+            <span style="color:#666;">${camText}</span>
+          </td>`;
+      });
+      html += `</tr></tbody></table>`;
+
       document.getElementById('detailedStats').innerHTML = html;
     }
 
@@ -836,7 +879,7 @@
         <div class="analysis-item">
           • <b>Hội tụ Pascal Chính Đài (${prevDrawStr} ➡ ${nextDateStr}):</b> <b style="color:#d90416">${pascalsChinhDai.join(' ↔ ')}</b><br>
           • <b>Hội tụ Pascal Liên Ngày (Hôm nay ➡ Ngày mai):</b> <b>${pascalsLienNgay.join(' ↔ ')}</b><br>
-          • <b>Cầu Giao Thoa 2 Kỳ (Chính Đài + Liên Ngày):</b> <b style="color:#1b8a3d">${bongsHop.join(' ↔ ')}</b><br>
+          • <b>Cầu Giao Thoa 2 Kỳ (Chính Đài + Liên Ngày):</b> <b style="color:#1b8a3d">${bongsHop.join(' ↔ ' ↔ ')}</b><br>
           👉 <i>Chốt nhịp cầu <b>${REGION_LABELS[currentRegion]} (${nextDateStr})</b>: Bạch thủ <b>${vip1}</b>, Song thủ <b>${vip2}</b>, Xiên <b>${vip3}</b>.</i>
         </div>`;
 
