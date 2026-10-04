@@ -20,18 +20,18 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
         body {
             background-color: var(--bg-dark);
-            background-image: radial-gradient(circle at 50% 0%, #2a1225 0%, #0b0f19 65%);
+            background-image: radial-gradient(circle at 50% 0%, #2a1225 0%, #0b0f19 60%);
             color: var(--text-main);
             min-height: 100vh;
             padding-bottom: 50px;
         }
 
-        /* HEADER */
+        /* HEADER HIỆN ĐẠI */
         .hero-header {
             text-align: center;
-            padding: 26px 15px 20px;
+            padding: 28px 15px 22px;
             border-bottom: 1px solid rgba(251, 191, 36, 0.25);
-            background: linear-gradient(180deg, rgba(225, 29, 72, 0.2) 0%, rgba(11, 15, 25, 0) 100%);
+            background: linear-gradient(180deg, rgba(225, 29, 72, 0.18) 0%, rgba(11, 15, 25, 0) 100%);
         }
         .badge-top {
             display: inline-block;
@@ -52,44 +52,38 @@
             background: linear-gradient(90deg, #fff, var(--gold), #fff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
         }
         .hero-header p { color: var(--text-sub); font-size: 14px; margin-top: 6px; }
 
         .main-wrap { max-width: 1140px; margin: 20px auto; padding: 0 15px; }
 
-        /* THANH CHỌN 3 MIỀN (NAM - TRUNG - BẮC) */
-        .region-switch {
-            display: flex;
-            justify-content: center;
+        /* THANH CHỌN 3 MIỀN MỚI THÊM VÀO */
+        .region-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
+            margin-bottom: 14px;
         }
         .region-btn {
-            flex: 1;
-            min-width: 150px;
-            max-width: 260px;
-            padding: 13px 20px;
-            border-radius: 12px;
-            border: 2px solid var(--card-border);
             background: var(--card-bg);
+            border: 2px solid var(--card-border);
             color: var(--text-sub);
-            font-size: 16px;
-            font-weight: 900;
-            text-transform: uppercase;
+            padding: 12px 10px;
+            border-radius: 12px;
             cursor: pointer;
+            font-weight: 900;
+            font-size: 15px;
+            text-transform: uppercase;
+            text-align: center;
             transition: 0.25s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
         .region-btn:hover { border-color: var(--gold); color: #fff; }
         .region-btn.active {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #000;
+            background: linear-gradient(135deg, var(--gold), #d97706);
             border-color: #fef08a;
-            box-shadow: 0 0 22px rgba(245, 158, 11, 0.5);
+            color: #000;
+            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
         }
 
         /* THANH CHỌN THỨ TRONG TUẦN */
@@ -100,6 +94,7 @@
             margin-bottom: 24px;
         }
         @media (max-width: 768px) {
+            .region-nav { grid-template-columns: 1fr; gap: 8px; }
             .day-nav { grid-template-columns: repeat(4, 1fr); }
         }
         .day-btn {
@@ -114,7 +109,7 @@
             text-align: center;
             transition: 0.25s;
         }
-        .day-btn span { display: block; font-size: 11px; font-weight: normal; margin-top: 3px; opacity: 0.8; }
+        .day-btn span { display: block; font-size: 11px; font-weight: normal; margin-top: 3px; opacity: 0.75; }
         .day-btn:hover { border-color: var(--gold); color: #fff; }
         .day-btn.active {
             background: linear-gradient(135deg, var(--red-vip), var(--red-dark));
@@ -124,7 +119,7 @@
         }
         .day-btn.active span { color: var(--gold-light); opacity: 1; }
 
-        /* TIÊU ĐỀ KHU VỰC */
+        /* SECTION TIÊU ĐỀ */
         .sec-head {
             display: flex;
             flex-wrap: wrap;
@@ -154,6 +149,7 @@
             border: 1px solid rgba(251, 191, 36, 0.35);
             border-radius: 16px;
             padding: 18px;
+            position: relative;
             box-shadow: 0 10px 25px rgba(0,0,0,0.35);
         }
         .vip-card-head {
@@ -174,6 +170,8 @@
             font-size: 11px;
             font-weight: 800;
         }
+
+        /* Quả cầu số đẹp */
         .balls-row {
             display: flex;
             justify-content: space-between;
@@ -263,8 +261,8 @@
         .btn-secondary:hover { background: var(--gold); color: #000; }
 
         .table-scroll { overflow-x: auto; }
-        table.kq-board { width: 100%; border-collapse: collapse; text-align: center; }
-        table.kq-board th {
+        table.xsmn-board { width: 100%; border-collapse: collapse; text-align: center; }
+        table.xsmn-board th {
             background: #0f172a;
             color: var(--gold);
             padding: 14px 10px;
@@ -273,12 +271,12 @@
             border: 1px solid var(--card-border);
             text-transform: uppercase;
         }
-        table.kq-board td {
+        table.xsmn-board td {
             border: 1px solid var(--card-border);
             padding: 10px 8px;
         }
         .col-prize {
-            width: 80px;
+            width: 75px;
             background: #0b0f19;
             color: var(--text-sub);
             font-weight: 800;
@@ -288,12 +286,12 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8px 18px;
-            font-size: 18px;
+            gap: 8px 16px;
+            font-size: 17px;
             font-weight: 700;
             letter-spacing: 1px;
         }
-        .num-hl {
+        .num-g8, .num-db {
             color: #fb7185;
             font-size: 24px;
             font-weight: 900;
@@ -330,17 +328,17 @@
 <body>
 
 <header class="hero-header">
-    <div class="badge-top">★ HỆ THỐNG SOI CẦU & QUAY THỬ 3 MIỀN VIP ★</div>
-    <h1>THAM KHẢO SỐ ĐẸP & QUAY THỬ XỔ SỐ 3 MIỀN</h1>
-    <p id="todayText">Đang tải lịch mở thưởng...</p>
+    <div class="badge-top">★ CHUYÊN TRANG XỔ SỐ 3 MIỀN VIP ★</div>
+    <h1 id="mainHeading">THAM KHẢO SỐ ĐẸP & QUAY THỬ XSMN</h1>
+    <p id="todayText">Lịch mở thưởng và phân tích nhịp cầu đẹp các đài</p>
 </header>
 
 <div class="main-wrap">
-    <!-- NÚT CHỌN 3 MIỀN -->
-    <div class="region-switch">
-        <button class="region-btn active" onclick="selectRegion('MN', this)">🌴 Xổ Số Miền Nam</button>
-        <button class="region-btn" onclick="selectRegion('MT', this)">🌊 Xổ Số Miền Trung</button>
-        <button class="region-btn" onclick="selectRegion('MB', this)">🏛️ Xổ Số Miền Bắc</button>
+    <!-- THANH CHỌN MIỀN NAM - MIỀN TRUNG - MIỀN BẮC -->
+    <div class="region-nav">
+        <button class="region-btn active" onclick="switchRegion('MN', this)">🌴 Xổ Số Miền Nam</button>
+        <button class="region-btn" onclick="switchRegion('MT', this)">🌊 Xổ Số Miền Trung</button>
+        <button class="region-btn" onclick="switchRegion('MB', this)">🏛️ Xổ Số Miền Bắc</button>
     </div>
 
     <!-- THANH CHỌN THỨ TRONG TUẦN -->
@@ -348,7 +346,7 @@
 
     <!-- PHẦN 1: THAM KHẢO SỐ ĐẸP -->
     <div class="sec-head">
-        <div class="sec-title" id="refTitle">🔥 BẢNG VÀNG THAM KHẢO XSMN</div>
+        <div class="sec-title" id="refTitle">🔥 BẢNG VÀNG THAM KHẢO XSMN HÔM NAY</div>
         <button class="btn-secondary" onclick="refreshReference()">🔄 Đổi Bộ Số Tham Khảo Mới</button>
     </div>
     <div class="ref-grid" id="refGrid"></div>
@@ -358,13 +356,13 @@
         <div class="spin-toolbar">
             <div>
                 <div class="sec-title" id="spinTitle" style="margin:0;">🎰 LỒNG CẦU QUAY THỬ XỔ SỐ MIỀN NAM</div>
-                <small id="spinSub" style="color:var(--text-sub);">Mô phỏng quay thử chuẩn 18 giải cho các đài mở thưởng trong ngày</small>
+                <small id="spinSub" style="color:var(--text-sub);">Mô phỏng quay thử 18 giải từ Giải 8 đến Giải Đặc Biệt cho tất cả đài trong ngày</small>
             </div>
-            <button id="btnSpin" class="btn-action" onclick="startSpin()">⚡ BẮT ĐẦU QUAY THỬ</button>
+            <button id="btnSpin" class="btn-action" onclick="startSpinXSMN()">⚡ BẮT ĐẦU QUAY THỬ</button>
         </div>
 
         <div class="table-scroll">
-            <table class="kq-board" id="boardKQ"></table>
+            <table class="xsmn-board" id="boardXSMN"></table>
         </div>
     </div>
 
@@ -376,11 +374,12 @@
 </div>
 
 <script>
-    // 1. DỮ LIỆU LỊCH MỞ THƯỞNG CHUẨN CẢ 3 MIỀN
-    const LICH_3_MIEN = {
+    // Lịch mở thưởng chuẩn cả 3 Miền: Nam - Trung - Bắc
+    const DATA_MIEN = {
         MN: {
-            name: "Miền Nam (XSMN)",
-            days: [
+            code: "XSMN",
+            name: "Xổ Số Miền Nam",
+            schedule: [
                 { day: "Chủ Nhật", stations: ["Tiền Giang", "Kiên Giang", "Đà Lạt"] },
                 { day: "Thứ Hai", stations: ["TP.HCM", "Đồng Tháp", "Cà Mau"] },
                 { day: "Thứ Ba", stations: ["Bến Tre", "Vũng Tàu", "Bạc Liêu"] },
@@ -391,8 +390,9 @@
             ]
         },
         MT: {
-            name: "Miền Trung (XSMT)",
-            days: [
+            code: "XSMT",
+            name: "Xổ Số Miền Trung",
+            schedule: [
                 { day: "Chủ Nhật", stations: ["Khánh Hòa", "Kon Tum", "Thừa Thiên Huế"] },
                 { day: "Thứ Hai", stations: ["Phú Yên", "Thừa Thiên Huế"] },
                 { day: "Thứ Ba", stations: ["Đắk Lắk", "Quảng Nam"] },
@@ -403,8 +403,9 @@
             ]
         },
         MB: {
-            name: "Miền Bắc (XSMB)",
-            days: [
+            code: "XSMB",
+            name: "Xổ Số Miền Bắc",
+            schedule: [
                 { day: "Chủ Nhật", stations: ["Thái Bình (Miền Bắc)"] },
                 { day: "Thứ Hai", stations: ["Hà Nội (Miền Bắc)"] },
                 { day: "Thứ Ba", stations: ["Quảng Ninh (Miền Bắc)"] },
@@ -416,9 +417,9 @@
         }
     };
 
-    // Cấu trúc 18 giải chuẩn Miền Nam & Miền Trung
+    // Cấu trúc 18 lô chuẩn XSMN & XSMT
     const CAU_TRUC_MN_MT = [
-        ["Giải 8", 1, 2, "num-hl"],
+        ["Giải 8", 1, 2, "num-g8"],
         ["Giải 7", 1, 3, ""],
         ["Giải 6", 3, 4, ""],
         ["Giải 5", 1, 4, ""],
@@ -426,19 +427,19 @@
         ["Giải 3", 2, 5, ""],
         ["Giải 2", 1, 5, ""],
         ["Giải 1", 1, 5, ""],
-        ["Đặc Biệt", 1, 6, "num-hl"]
+        ["Đặc Biệt", 1, 6, "num-db"]
     ];
 
-    // Cấu trúc 27 giải chuẩn Miền Bắc
+    // Cấu trúc 27 lô chuẩn XSMB
     const CAU_TRUC_MB = [
-        ["Đặc Biệt", 1, 5, "num-hl"],
-        ["Giải Nhất", 1, 5, ""],
-        ["Giải Nhì", 2, 5, ""],
-        ["Giải Ba", 6, 5, ""],
-        ["Giải Tư", 4, 4, ""],
-        ["Giải Năm", 6, 4, ""],
-        ["Giải Sáu", 3, 3, ""],
-        ["Giải Bảy", 4, 2, "num-hl"]
+        ["Đặc Biệt", 1, 5, "num-db"],
+        ["Giải 1", 1, 5, ""],
+        ["Giải 2", 2, 5, ""],
+        ["Giải 3", 6, 5, ""],
+        ["Giải 4", 4, 4, ""],
+        ["Giải 5", 6, 4, ""],
+        ["Giải 6", 3, 3, ""],
+        ["Giải 7", 4, 2, "num-g8"]
     ];
 
     let currentRegion = 'MN';
@@ -451,58 +452,74 @@
         return s;
     }
 
-    window.onload = () => {
-        updateAllView();
-    };
-
-    // Chuyển đổi Miền Nam / Miền Trung / Miền Bắc
-    function selectRegion(region, btn) {
-        if (isSpinning) return;
-        currentRegion = region;
-        document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        updateAllView();
+    function getActiveSchedule() {
+        return DATA_MIEN[currentRegion].schedule;
     }
 
-    function updateAllView() {
-        const regData = LICH_3_MIEN[currentRegion];
-        const dayObj = regData.days[selectedDay];
-        const now = new Date();
+    function getActiveStructure() {
+        return currentRegion === 'MB' ? CAU_TRUC_MB : CAU_TRUC_MN_MT;
+    }
 
-        document.getElementById('todayText').innerText = 
-            `Đang xem: ${regData.name} — ${dayObj.day} (${now.toLocaleDateString('vi-VN')}) | Mở thưởng: ${dayObj.stations.join(' - ')}`;
-        document.getElementById('refTitle').innerText = `🔥 BẢNG VÀNG THAM KHẢO ${regData.name.toUpperCase()} (${dayObj.day.toUpperCase()})`;
-        document.getElementById('spinTitle').innerText = `🎰 LỒNG CẦU QUAY THỬ ${regData.name.toUpperCase()}`;
-        document.getElementById('spinSub').innerText = currentRegion === 'MB' 
-            ? "Mô phỏng quay thử chuẩn 27 giải Xổ Số Kiến Thiết Miền Bắc" 
-            : "Mô phỏng quay thử chuẩn 18 giải từ Giải 8 đến Giải Đặc Biệt cho các đài mở thưởng trong ngày";
+    // Khởi tạo trang
+    window.onload = () => {
+        syncTexts();
+        renderDayButtons();
+        refreshReference();
+        renderSpinBoard();
+    };
 
+    // Đổi Miền: Nam / Trung / Bắc
+    function switchRegion(regionKey, btn) {
+        if (isSpinning) return;
+        currentRegion = regionKey;
+        document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        syncTexts();
         renderDayButtons();
         refreshReference();
         renderSpinBoard();
     }
 
+    function syncTexts() {
+        const info = DATA_MIEN[currentRegion];
+        const dayObj = info.schedule[selectedDay];
+        const now = new Date();
+
+        document.getElementById('mainHeading').innerText = `THAM KHẢO SỐ ĐẸP & QUAY THỬ ${info.code}`;
+        document.getElementById('todayText').innerText = 
+            `${info.name} — ${dayObj.day}, ngày ${now.toLocaleDateString('vi-VN')} — Mở thưởng: ${dayObj.stations.join(' - ')}`;
+        document.getElementById('refTitle').innerText = `🔥 BẢNG VÀNG THAM KHẢO ${info.code} (${dayObj.day.toUpperCase()})`;
+        document.getElementById('spinTitle').innerText = `🎰 LỒNG CẦU QUAY THỬ ${info.name.toUpperCase()}`;
+        document.getElementById('spinSub').innerText = currentRegion === 'MB'
+            ? "Mô phỏng quay thử 27 giải từ Giải Đặc Biệt đến Giải 7 chuẩn Miền Bắc"
+            : "Mô phỏng quay thử 18 giải từ Giải 8 đến Giải Đặc Biệt cho tất cả đài trong ngày";
+    }
+
+    // Vẽ thanh chọn Thứ
     function renderDayButtons() {
         const nav = document.getElementById('dayNav');
         nav.innerHTML = '';
-        const daysList = LICH_3_MIEN[currentRegion].days;
+        const lich = getActiveSchedule();
 
-        daysList.forEach((item, idx) => {
+        lich.forEach((item, idx) => {
             const btn = document.createElement('button');
             btn.className = `day-btn ${idx === selectedDay ? 'active' : ''}`;
             btn.innerHTML = `${item.day}<span>${item.stations.length} đài</span>`;
             btn.onclick = () => {
                 if (isSpinning) return;
                 selectedDay = idx;
-                updateAllView();
+                syncTexts();
+                renderDayButtons();
+                refreshReference();
+                renderSpinBoard();
             };
             nav.appendChild(btn);
         });
     }
 
-    // Khu vực Tham khảo số đẹp
+    // Vẽ khu vực Tham khảo số đẹp
     function refreshReference() {
-        const stations = LICH_3_MIEN[currentRegion].days[selectedDay].stations;
+        const stations = getActiveSchedule()[selectedDay].stations;
         const grid = document.getElementById('refGrid');
         grid.innerHTML = '';
 
@@ -512,8 +529,7 @@
             const stl2 = stl1.split('').reverse().join('') === stl1 
                 ? randomDigits(2) 
                 : stl1.split('').reverse().join('');
-            const cang3 = `${Math.floor(Math.random() * 9) + 1}${btl} - ${Math.floor(Math.random() * 9) + 1}${stl1}`;
-            const xien2 = `${btl} - ${stl1} | ${stl2} - ${randomDigits(2)}`;
+            const xiuChu = `${Math.floor(Math.random() * 9) + 1}${btl} - ${Math.floor(Math.random() * 9) + 1}${stl1}`;
             const dauDuoi = `Đầu ${btl[0]} - Đuôi ${stl1[1]}`;
 
             grid.innerHTML += `
@@ -531,8 +547,8 @@
                         <span class="pill-gold">${stl1} - ${stl2}</span>
                     </div>
                     <div class="balls-row">
-                        <span>${currentRegion === 'MB' ? 'Lô Xiên 2 Đẹp:' : 'Xỉu Chủ / 3 Càng:'}</span>
-                        <span class="pill-sub">${currentRegion === 'MB' ? xien2 : cang3}</span>
+                        <span>Xỉu Chủ / 3 Càng:</span>
+                        <span class="pill-sub">${xiuChu}</span>
                     </div>
                     <div class="balls-row" style="margin-bottom:0;">
                         <span>Chạm Đầu - Đuôi:</span>
@@ -543,17 +559,17 @@
         });
     }
 
-    // Khu vực Bảng Quay thử
+    // Vẽ bảng Quay thử
     function renderSpinBoard() {
-        const stations = LICH_3_MIEN[currentRegion].days[selectedDay].stations;
-        const structure = currentRegion === 'MB' ? CAU_TRUC_MB : CAU_TRUC_MN_MT;
-        const board = document.getElementById('boardKQ');
+        const stations = getActiveSchedule()[selectedDay].stations;
+        const cauTruc = getActiveStructure();
+        const board = document.getElementById('boardXSMN');
 
         let html = `<thead><tr><th class="col-prize">Giải</th>`;
         stations.forEach(st => { html += `<th>Đài ${st}</th>`; });
         html += `</tr></thead><tbody>`;
 
-        structure.forEach((row, rIdx) => {
+        cauTruc.forEach((row, rIdx) => {
             const [pName, count, digits, cls] = row;
             html += `<tr><td class="col-prize">${pName}</td>`;
             stations.forEach((_, sIdx) => {
@@ -588,22 +604,22 @@
         });
     }
 
-    // Bắt đầu quay thử
-    function startSpin() {
+    // Hiệu ứng Quay thử lần lượt từng giải
+    function startSpinXSMN() {
         if (isSpinning) return;
         isSpinning = true;
         const btn = document.getElementById('btnSpin');
         btn.disabled = true;
         btn.innerText = "⏳ ĐANG QUAY LỒNG CẦU...";
 
-        const stations = LICH_3_MIEN[currentRegion].days[selectedDay].stations;
-        const structure = currentRegion === 'MB' ? CAU_TRUC_MB : CAU_TRUC_MN_MT;
+        const stations = getActiveSchedule()[selectedDay].stations;
+        const cauTruc = getActiveStructure();
         renderEmptyLoto(stations);
 
         const lotoMemory = stations.map(() => []);
         const sequence = [];
 
-        structure.forEach((row, rIdx) => {
+        cauTruc.forEach((row, rIdx) => {
             const count = row[1];
             const digits = row[2];
             for (let c = 0; c < count; c++) {
@@ -637,7 +653,7 @@
                     btn.disabled = false;
                     btn.innerText = "⚡ QUAY THỬ LẠI LẦN NỮA";
                 }
-            }, 300 + index * 85);
+            }, 300 + index * 90);
         });
     }
 
