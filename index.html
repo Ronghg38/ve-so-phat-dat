@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>VÉ SỐ PHÁT ĐẠT - 3 Miền Siêu Tốc</title>
+  <title>VÉ SỐ PHÁT ĐẠT - Kết Quả Thật 100%</title>
 
   <!-- Cấu hình App Toàn Màn Hình (PWA) -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -38,7 +38,7 @@
     .key-input { flex: 1; padding: 9px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13.5px; }
     .btn-save-key { background: #1b8a3d; color: #fff; border: none; padding: 9px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; }
 
-    /* THANH TUẦN & GÓC CHỌN THÁNG GỌN GÀNG */
+    /* THANH TUẦN & GÓC CHỌN THÁNG */
     .cal-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 6px; }
     .week-nav { display: flex; align-items: center; gap: 5px; }
     .btn-week-step { background: #f1f3f5; border: 1px solid #dadce0; color: #222; padding: 6px 9px; border-radius: 7px; font-weight: 700; font-size: 12px; cursor: pointer; }
@@ -47,7 +47,7 @@
     .date-input-compact { border: none; background: transparent; color: #b81414; font-weight: 800; font-size: 12.5px; width: 112px; outline: none; text-align: center; }
     .btn-corner-sync { background: #1b8a3d; color: #fff; border: none; border-radius: 6px; padding: 5px 7px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 
-    /* Lưới 7 ngày trong tuần (T2 -> CN) vừa khít màn hình */
+    /* Lưới 7 ngày trong tuần (T2 -> CN) */
     .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
     .day-pill { padding: 7px 2px; border-radius: 8px; background: #f1f3f5; color: #333; font-size: 12px; font-weight: 800; text-align: center; cursor: pointer; border: 1px solid #e0e0e0; }
     .day-pill span { display: block; font-size: 10.5px; font-weight: 600; margin-top: 2px; opacity: 0.85; }
@@ -97,7 +97,7 @@
       <button class="btn-top" onclick="toggleKeyBox()">🔑 API Key</button>
     </div>
   </div>
-  <div id="statusBar" class="status-bar">⚡ Đang khởi tạo dữ liệu 3 Miền...</div>
+  <div id="statusBar" class="status-bar">⚡ Đang tải kết quả thực tế...</div>
 
   <div class="tabs">
     <div class="tab active" onclick="switchRegion('MN', this)">MIỀN NAM</div>
@@ -110,7 +110,7 @@
       <div class="card-title" style="margin-bottom:6px;">📲 CÀI APP VÉ SỐ PHÁT ĐẠT VỀ MÁY</div>
       <div style="font-size:13px; line-height:1.5; color:#333;">
         • <b>Android (Chrome):</b> Bấm dấu <b>3 chấm dọc (⋮)</b> góc trên phải ➡️ chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào màn hình chính"</b>.<br>
-        • <b>iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
+        • <b>iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
       </div>
     </div>
 
@@ -132,17 +132,16 @@
           <button class="btn-week-step" onclick="changeDay(1)">›</button>
           <button class="btn-week-step" onclick="changeDay(7)">Tuần ▶</button>
         </div>
-        <!-- Góc chọn ngày/tháng & Tải tháng gọn 1 góc -->
         <div class="month-corner">
           <input type="date" id="datePicker" class="date-input-compact" onchange="onDatePick(this.value)">
-          <button class="btn-corner-sync" onclick="syncEntireMonth()" title="Tải nhanh cả tháng">⚡Tháng</button>
+          <button class="btn-corner-sync" onclick="syncEntireMonth()" title="Tải kết quả thật cả tháng">⚡Tháng</button>
         </div>
       </div>
       <div id="dayStrip" class="week-grid"></div>
     </div>
 
     <button class="btn-update" onclick="loadAllData(true)">
-      🔄 CẬP NHẬT KẾT QUẢ & SOI CẦU NGÀY NÀY
+      🔄 LẤY LẠI KẾT QUẢ THẬT NGÀY NÀY
     </button>
 
     <!-- 1. CÁC ĐÀI MỞ THƯỞNG -->
@@ -200,8 +199,16 @@
   </div>
 
   <script>
+    // XÓA SẠCH CACHE CŨ BỊ LƯU SỐ GIẢ Ở PHIÊN BẢN TRƯỚC
+    if (localStorage.getItem('PHATDAT_REAL_VER') !== 'v5_real_only') {
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('KQ_')) localStorage.removeItem(k);
+      });
+      localStorage.setItem('PHATDAT_REAL_VER', 'v5_real_only');
+    }
+
     const manifestData = {
-      name: "Vé Số Phát Đạt - 3 Miền Nam Trung Bắc",
+      name: "Vé Số Phát Đạt - Kết Quả Thật 3 Miền",
       short_name: "Vé Số Phát Đạt",
       start_url: location.href,
       display: "standalone",
@@ -227,6 +234,11 @@
 
     let currentRegion = 'MN';
     let selectedDate = new Date();
+    // Nếu hiện tại trước 16h30 chiều thì mặc định mở ngày hôm qua (đã có kết quả đầy đủ)
+    if (selectedDate.getHours() < 16 || (selectedDate.getHours() === 16 && selectedDate.getMinutes() < 30)) {
+      selectedDate.setDate(selectedDate.getDate() - 1);
+    }
+
     const DAY_NAMES = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
     const FULL_DAY_NAMES = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
     const REGION_LABELS = { MN: 'MIỀN NAM', MT: 'MIỀN TRUNG', MB: 'MIỀN BẮC' };
@@ -261,85 +273,12 @@
       }
     };
 
-    const COMPACT_DB = {
-      "MN_04-10-2026": [
-        "Tiền Giang|38|519|4261,8053,1947|6382|51824,70391,84625,19304,62748,39517,48206|73915,28460|61938|40582|836149",
-        "Kiên Giang|64|283|7194,3620,9481|5027|82714,63950,14829,75306,49182,20647,93518|52841,69037|84712|91365|472908",
-        "Đà Lạt|15|740|8362,5109,2746|9184|30592,64817,92740,58163,47295,16384,70921|84629,31507|29486|75031|619472"
-      ],
-      "MN_03-10-2026": [
-        "TPHCM|82|514|3621,7409,1852|6304|41258,96320,74105,85214,36985,14789,25874|63258,95147|75319|84620|529631",
-        "Long An|19|732|4512,8965,3214|7412|52147,63258,96587,41256,78965,32145,85219|74125,85236|96321|41258|638524",
-        "Bình Phước|45|628|9514,7532,6842|8520|15963,35741,25896,65412,78951,23654,89652|45632,78954|32165|98745|741852",
-        "Hậu Giang|67|309|1478,5236,9632|4102|78945,65412,32198,85274,96385,74123,52631|85241,96302|74120|65489|852963"
-      ],
-      "MN_02-10-2026": [
-        "Vĩnh Long|08|412|3521,6874,9102|4521|63214,78541,96325,14785,25896,36974,85210|41258,96301|74185|25809|694280",
-        "Bình Dương|15|753|9512,6843,3579|8246|74125,85236,96314,15975,35791,48620,25813|65432,98710|32145|65478|318950",
-        "Trà Vinh|34|826|1593,7531,4862|9517|85246,96357,74135,15948,26840,35719,64208|75391,84620|95173|48625|904543"
-      ],
+    // CHỈ LƯU DỮ LIỆU ĐÃ XÁC THỰC 100% TỪ XOSODAIPHAT.COM (TUYỆT ĐỐI KHÔNG CÓ SỐ TỰ SINH)
+    const VERIFIED_REAL_DB = {
       "MN_01-10-2026": [
         "Tây Ninh|04|866|2102,6847,9663|9755|45546,75678,30698,38266,37991,33648,70127|31306,58213|55031|80777|348513",
         "An Giang|69|840|1812,3049,8786|0077|18346,98300,44793,37823,57354,67415,68623|63805,49007|70855|57382|016473",
         "Bình Thuận|00|861|7307,4203,7496|7649|78624,77552,59117,20761,25785,40077,58621|06279,80247|48760|57496|247346"
-      ],
-      "MN_30-09-2026": [
-        "Đồng Nai|87|956|1983,1429,8180|7819|60110,70505,04633,99206,41977,48756,79224|17078,10583|64114|46177|470822",
-        "Cần Thơ|36|587|2971,7027,2662|5952|29614,06587,40447,69545,05086,05661,53386|57775,49227|51271|25432|216556",
-        "Sóc Trăng|51|344|9792,5605,0638|4713|67466,88093,63364,00906,89217,69660,80706|98451,38484|29411|33828|275034"
-      ],
-      "MN_29-09-2026": [
-        "Bến Tre|75|665|8725,3897,2585|9293|49058,06693,06306,15228,98990,54213,61395|14309,37125|75792|61692|383665",
-        "Vũng Tàu|14|405|4027,3142,7899|1066|04232,96159,48194,08565,03103,07250,64199|16288,21673|67850|14992|333771",
-        "Bạc Liêu|20|927|1803,4497,6892|7417|74311,88775,14160,52458,10696,35055,43915|70765,65775|06956|57108|150902"
-      ],
-      "MN_28-09-2026": [
-        "TPHCM|21|285|7161,6655,2155|3811|74569,89878,58813,25531,17297,59888,76986|49513,21219|10072|57769|760372",
-        "Đồng Tháp|27|018|3636,1122,4283|9544|18640,54016,34952,69680,49404,14917,99983|02626,33134|48063|00633|048795",
-        "Cà Mau|41|276|4194,3009,2896|1237|28220,25796,43045,51872,02802,30614,07566|91031,36267|79248|42704|281551"
-      ],
-      "MN_27-09-2026": [
-        "Tiền Giang|43|189|1474,3228,9901|0218|47008,70443,97286,11585,71079,20755,50315|31815,65401|70796|26392|240624",
-        "Kiên Giang|76|142|4293,5879,1733|9918|87202,24192,29045,30596,12731,26400,89740|04495,61481|40290|98680|713078",
-        "Đà Lạt|95|948|3531,6265,8259|5306|09687,16731,80111,80183,86939,96452,96329|70771,26829|42333|09241|450102"
-      ],
-      "MT_04-10-2026": [
-        "Khánh Hòa|46|318|5204,7913,6482|9035|41826,75390,82614,39057,61482,50739,28164|74920,38516|60294|81537|593824",
-        "Kon Tum|72|605|8391,4027,5168|3849|62048,91537,48260,73915,20684,59371,84102|93618,47205|51839|26048|748291",
-        "Huế|19|842|6039,2751,9480|7163|50382,84719,39206,61584,72940,18463,95027|42718,60395|83914|57206|381645"
-      ],
-      "MT_03-10-2026": [
-        "Đà Nẵng|24|615|3214,8520,9631|4125|52147,63258,74125,85236,96314,15975,35741|65412,98745|32165|74185|582419",
-        "Quảng Ngãi|68|304|7412,8523,9630|5214|41258,63259,74185,85296,96301,14785,25896|75319,84620|95173|65489|842637",
-        "Đắk Nông|91|527|1596,3574,2589|6325|78945,65412,32198,85274,96385,74123,52631|85241,96302|74120|41258|395184"
-      ],
-      "MT_02-10-2026": [
-        "Gia Lai|37|842|4125,6325,7418|8529|96301,14785,25896,36974,85210,41258,96320|74105,85214|36985|14789|625873",
-        "Ninh Thuận|52|916|7531,8462,9517|4862|85246,96357,74135,15948,26840,35719,64208|75391,84620|95173|48625|418906"
-      ],
-      "MT_01-10-2026": [
-        "Quảng Bình|05|724|0785,9771,0548|8682|60667,98255,73940,69355,21523,25550,39683|81960,30912|54642|96546|382536",
-        "Bình Định|03|958|8495,3765,4697|2470|91001,53074,92097,46306,81022,51437,89118|67244,46733|59112|43702|067632",
-        "Quảng Trị|05|481|1112,0087,9786|8143|74386,42375,14734,06068,62498,84828,88279|36643,58437|16447|42669|114471"
-      ],
-      "MT_28-09-2026": [
-        "Phú Yên|39|155|2381,9245,5291|2074|84311,16228,91745,04262,63115,57034,19556|84968,94724|19751|31964|197498",
-        "Huế|81|366|9082,0198,5606|7036|31700,72539,31954,56556,89286,82401,48635|65148,70997|39200|89371|233622"
-      ],
-      "MB_04-10-2026": [
-        "Miền Bắc||16,49,73,85|284,519,763|3814,6295,7408,9152,4836,2079|5184,7392,8406,9615|48291,53704,69182,74053,82619,95347|61824,79305|84912|62748"
-      ],
-      "MB_03-10-2026": [
-        "Miền Bắc||18,42,67,93|412,856,903|4512,7854,9632,1478,2589,3697|5214,6325,7412,8523|41258,63258,74125,85236,96314,15975|75319,84620|65489|73829"
-      ],
-      "MB_02-10-2026": [
-        "Miền Bắc||24,59,71,86|315,648,972|3214,6547,9874,1596,3574,2581|4120,7539,8462,9517|52147,63259,74185,85296,96301,14785|65412,98745|32165|58463"
-      ],
-      "MB_01-10-2026": [
-        "Miền Bắc||50,15,07,04|390,655,395|3349,1896,5752,6691,6935,4650|6537,7453,7691,9434|16892,82700,92965,40504,68709,38492|24807,62639|92635|40208"
-      ],
-      "MB_28-09-2026": [
-        "Miền Bắc||19,37,64,82|258,369,741|1478,2589,3698,4561,7894,9512|6541,3218,7532,9514|15948,26840,35719,64208,75391,84620|95173,48625|74185|31956"
       ]
     };
 
@@ -404,12 +343,10 @@
       return (now.getHours() > drawHour) || (now.getHours() === drawHour && now.getMinutes() >= 30);
     }
 
-    // HIỂN THỊ 7 NGÀY THEO TUẦN (THỨ 2 ➔ CHỦ NHẬT)
     function renderDayStrip() {
       document.getElementById('datePicker').value = toInputDate(selectedDate);
 
-      // Tìm ngày Thứ 2 đầu tuần của ngày đang chọn
-      const curDayOfWeek = selectedDate.getDay(); // 0 (CN) -> 6 (T7)
+      const curDayOfWeek = selectedDate.getDay();
       const diffToMonday = curDayOfWeek === 0 ? -6 : (1 - curDayOfWeek);
       const monday = new Date(selectedDate);
       monday.setDate(selectedDate.getDate() + diffToMonday);
@@ -419,15 +356,17 @@
         const d = new Date(monday);
         d.setDate(monday.getDate() + i);
         const y = d.getFullYear(), m = d.getMonth(), day = d.getDate();
+        const key = `${currentRegion}_${toVNDate(d, '-')}`;
 
         const isActive = (d.toDateString() === selectedDate.toDateString());
+        const hasRealCache = !!(VERIFIED_REAL_DB[key] || localStorage.getItem('KQ_' + key));
         const isPastOrReady = hasDrawHappened(d, currentRegion);
         const dateShort = `${String(day).padStart(2,'0')}/${String(m+1).padStart(2,'0')}`;
 
         let cls = 'day-pill';
         if (isActive) cls += ' active';
-        else if (isPastOrReady) cls += ' cached';
-        else cls += ' future';
+        else if (hasRealCache) cls += ' cached';
+        else if (!isPastOrReady) cls += ' future';
 
         html += `
           <div class="${cls}" onclick="selectQuickDay(${y}, ${m}, ${day})">
@@ -458,83 +397,59 @@
       return b[n[0]] + b[n[1]];
     }
 
-    function generateFallbackForDate(region, dateObj) {
-      const seedBase = dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
-      const stations = SCHEDULE[region][dateObj.getDay()];
-      function sRand(s) {
-        let x = Math.sin(s) * 10000;
-        return x - Math.floor(x);
-      }
-      function rNum(len, s) {
-        let out = '';
-        for (let i = 0; i < len; i++) out += Math.floor(sRand(s + i * 23) * 10);
-        return out;
-      }
-
-      if (region === 'MB') {
-        const b = seedBase * 7;
-        return [{
-          name: 'Miền Bắc',
-          db: [rNum(5, b + 1)],
-          g1: [rNum(5, b + 2)],
-          g2: [rNum(5, b + 3), rNum(5, b + 4)],
-          g3: [rNum(5, b + 5), rNum(5, b + 6), rNum(5, b + 7), rNum(5, b + 8), rNum(5, b + 9), rNum(5, b + 10)],
-          g4: [rNum(4, b + 11), rNum(4, b + 12), rNum(4, b + 13), rNum(4, b + 14)],
-          g5: [rNum(4, b + 15), rNum(4, b + 16), rNum(4, b + 17), rNum(4, b + 18), rNum(4, b + 19), rNum(4, b + 20)],
-          g6: [rNum(3, b + 21), rNum(3, b + 22), rNum(3, b + 23)],
-          g7: [rNum(2, b + 24), rNum(2, b + 25), rNum(2, b + 26), rNum(2, b + 27)]
-        }];
-      }
-
-      return stations.map((stName, idx) => {
-        const b = seedBase * 13 + idx * 197 + region.charCodeAt(1) * 31;
-        return {
-          name: stName,
-          g8: [rNum(2, b + 1)],
-          g7: [rNum(3, b + 2)],
-          g6: [rNum(4, b + 3), rNum(4, b + 4), rNum(4, b + 5)],
-          g5: [rNum(4, b + 6)],
-          g4: [rNum(5, b + 7), rNum(5, b + 8), rNum(5, b + 9), rNum(5, b + 10), rNum(5, b + 11), rNum(5, b + 12), rNum(5, b + 13)],
-          g3: [rNum(5, b + 14), rNum(5, b + 15)],
-          g2: [rNum(5, b + 16)],
-          g1: [rNum(5, b + 17)],
-          db: [rNum(6, b + 18)]
-        };
-      });
-    }
-
+    // LẤY KẾT QUẢ THẬT 100% ĐA NGUỒN (XOSODAIPHAT + MINHNGOC + XSKT)
     async function fetchRealKQXS(region, dateObj, forceRefresh = false) {
       if (!hasDrawHappened(dateObj, region)) return null;
 
       const key = `${region}_${toVNDate(dateObj, '-')}`;
-      if (COMPACT_DB[key]) return COMPACT_DB[key].map(s => unpackRow(s, region === 'MB'));
-
+      if (!forceRefresh && VERIFIED_REAL_DB[key]) {
+        return VERIFIED_REAL_DB[key].map(s => unpackRow(s, region === 'MB'));
+      }
       if (!forceRefresh) {
         const cached = localStorage.getItem('KQ_' + key);
-        if (cached) return JSON.parse(cached);
+        if (cached) {
+          try { return JSON.parse(cached); } catch (e) {}
+        }
       }
 
-      const dStr = toVNDate(dateObj, '-');
+      const dStr = toVNDate(dateObj, '-'); // DD-MM-YYYY
       const rSlug = region === 'MN' ? 'xsmn' : (region === 'MT' ? 'xsmt' : 'xsmb');
-      const targetUrl = `https://xosodaiphat.com/${rSlug}-${dStr}.html`;
+      const rSlugMN = region === 'MN' ? 'mien-nam' : (region === 'MT' ? 'mien-trung' : 'mien-bac');
 
-      const proxies = [
-        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
+      // Danh sách các trang nguồn chuẩn và các cổng Proxy vượt tường lửa
+      const targetUrls = [
+        `https://xosodaiphat.com/${rSlug}-${dStr}.html`,
+        `https://www.minhngoc.net.vn/ket-qua-xo-so/${rSlugMN}/${dStr}.html`,
+        `https://xoso.com.vn/${rSlug}-${dStr}.html`
       ];
 
-      const fetchFromProxy = async (pUrl) => {
+      const buildProxyRequests = () => {
+        const reqs = [];
+        targetUrls.forEach(tUrl => {
+          reqs.push(`https://api.allorigins.win/raw?url=${encodeURIComponent(tUrl)}`);
+          reqs.push(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(tUrl)}`);
+          reqs.push(`https://corsproxy.io/?url=${encodeURIComponent(tUrl)}`);
+        });
+        return reqs;
+      };
+
+      const fetchAndParse = async (pUrl) => {
         const controller = new AbortController();
-        const tid = setTimeout(() => controller.abort(), 3000);
+        const tid = setTimeout(() => controller.abort(), 6500);
         try {
           const res = await fetch(pUrl, { signal: controller.signal });
           clearTimeout(tid);
-          if (!res.ok) throw new Error('Bad status');
+          if (!res.ok) throw new Error('HTTP Error');
           const html = await res.text();
-          const parsed = parseXosoDaiPhatHTML(html, region);
+          // Kiểm tra chắc chắn trang trả về có chứa đúng ngày đang tìm (tránh bị redirect về trang chủ ngày khác)
+          const dayMonthSlash = `${String(dateObj.getDate()).padStart(2,'0')}/${String(dateObj.getMonth()+1).padStart(2,'0')}`;
+          const dayMonthDash = `${String(dateObj.getDate()).padStart(2,'0')}-${String(dateObj.getMonth()+1).padStart(2,'0')}`;
+          if (!html.includes(dayMonthSlash) && !html.includes(dayMonthDash)) {
+            throw new Error('Date mismatch');
+          }
+          const parsed = parseUniversalLotteryHTML(html, region, dateObj);
           if (parsed && parsed.length > 0) return parsed;
-          throw new Error('Parse empty');
+          throw new Error('Parse failed');
         } catch (err) {
           clearTimeout(tid);
           throw err;
@@ -542,19 +457,18 @@
       };
 
       try {
-        const fastestResult = await Promise.any(proxies.map(p => fetchFromProxy(p)));
-        localStorage.setItem('KQ_' + key, JSON.stringify(fastestResult));
-        return fastestResult;
+        const fastest = await Promise.any(buildProxyRequests().map(u => fetchAndParse(u)));
+        localStorage.setItem('KQ_' + key, JSON.stringify(fastest));
+        return fastest;
       } catch (e) {
-        const fallbackData = generateFallbackForDate(region, dateObj);
-        localStorage.setItem('KQ_' + key, JSON.stringify(fallbackData));
-        return fallbackData;
+        return null;
       }
     }
 
-    function parseXosoDaiPhatHTML(html, region) {
+    // BỘ BÓC TÁCH ĐA NĂNG: ĐỌC CHUẨN BẢNG XOSODAIPHAT, XOSO.COM.VN & MINH NGỌC
+    function parseUniversalLotteryHTML(html, region, dateObj) {
       const doc = new DOMParser().parseFromString(html, 'text/html');
-      const tables = Array.from(doc.querySelectorAll('table.table-xsmn, table.table-xsmt, table.table-xsmb, table.table-result, table.table-bordered'));
+      const tables = Array.from(doc.querySelectorAll('table'));
       if (tables.length === 0) return null;
 
       if (region === 'MB') {
@@ -567,83 +481,98 @@
         for (const table of tables) {
           const mbObj = { name: 'Miền Bắc', db: [], g1: [], g2: [], g3: [], g4: [], g5: [], g6: [], g7: [] };
           const rows = Array.from(table.querySelectorAll('tr'));
-          let sIdx = 0;
           rows.forEach(tr => {
-            if (sIdx >= mbSpec.length) return;
             const tds = Array.from(tr.querySelectorAll('td'));
             if (tds.length >= 2) {
               const rawDigits = tds.slice(1).map(td => td.textContent).join('').replace(/\D/g, '');
-              const spec = mbSpec[sIdx];
-              if (rawDigits.length === spec.len * spec.count) {
-                mbObj[spec.key] = rawDigits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
-                sIdx++;
-              }
+              mbSpec.forEach(spec => {
+                if (mbObj[spec.key].length === 0 && rawDigits.length === spec.len * spec.count) {
+                  mbObj[spec.key] = rawDigits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
+                }
+              });
             }
           });
-          if (mbObj.db.length > 0 && mbObj.g7.length > 0) return [mbObj];
+          if (mbObj.db.length === 1 && mbObj.g7.length === 4) return [mbObj];
         }
         return null;
       }
 
+      // Miền Nam & Miền Trung: Quét từng bảng để tìm bảng chứa đủ 9 giải (G.8 -> ĐB)
+      const prizeSpecs = [
+        { key: 'g8', len: 2, count: 1 }, { key: 'g7', len: 3, count: 1 },
+        { key: 'g6', len: 4, count: 3 }, { key: 'g5', len: 4, count: 1 },
+        { key: 'g4', len: 5, count: 7 }, { key: 'g3', len: 5, count: 2 },
+        { key: 'g2', len: 5, count: 1 }, { key: 'g1', len: 5, count: 1 },
+        { key: 'db', len: 6, count: 1 }
+      ];
+
+      const expectedStations = SCHEDULE[region][dateObj.getDay()];
+
       for (const table of tables) {
-        const ths = Array.from(table.querySelectorAll('thead th, tr:first-child th')).slice(1);
-        if (ths.length === 0) continue;
+        // Tìm hàng tiêu đề chứa tên các đài
+        const headerCells = Array.from(table.querySelectorAll('thead th, tr:first-child th, tr:first-child td')).slice(1);
+        const numCols = headerCells.length || expectedStations.length;
+        if (numCols < 2 || numCols > 4) continue;
 
-        const stations = ths.map(th => ({
-          name: th.textContent.trim(),
-          g8: [], g7: [], g6: [], g5: [], g4: [], g3: [], g2: [], g1: [], db: []
-        }));
+        const stations = [];
+        for (let i = 0; i < numCols; i++) {
+          let stName = headerCells[i] ? headerCells[i].textContent.trim() : expectedStations[i];
+          if (!stName || stName.length > 25 || /\d{2}\/\d{2}/.test(stName)) {
+            stName = expectedStations[i] || `Đài ${i + 1}`;
+          }
+          stations.push({ name: stName, g8: [], g7: [], g6: [], g5: [], g4: [], g3: [], g2: [], g1: [], db: [] });
+        }
 
-        const prizeSpecs = [
-          { key: 'g8', len: 2, count: 1 }, { key: 'g7', len: 3, count: 1 },
-          { key: 'g6', len: 4, count: 3 }, { key: 'g5', len: 4, count: 1 },
-          { key: 'g4', len: 5, count: 7 }, { key: 'g3', len: 5, count: 2 },
-          { key: 'g2', len: 5, count: 1 }, { key: 'g1', len: 5, count: 1 },
-          { key: 'db', len: 6, count: 1 }
-        ];
-
-        const rows = Array.from(table.querySelectorAll('tbody tr, tr'));
-        let pIdx = 0;
+        const rows = Array.from(table.querySelectorAll('tr'));
         rows.forEach(tr => {
-          if (pIdx >= prizeSpecs.length) return;
-          const tds = Array.from(tr.querySelectorAll('td'));
-          if (tds.length >= stations.length + 1) {
-            const spec = prizeSpecs[pIdx];
-            const firstCellDigits = tds[1].textContent.replace(/\D/g, '');
-            if (firstCellDigits.length === spec.len * spec.count) {
-              for (let i = 0; i < stations.length; i++) {
-                const digits = tds[i + 1].textContent.replace(/\D/g, '');
-                stations[i][spec.key] = digits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
+          const cells = Array.from(tr.querySelectorAll('td'));
+          if (cells.length >= stations.length + 1) {
+            const firstDataDigits = cells[1].textContent.replace(/\D/g, '');
+            // So khớp độ dài chuỗi số của ô đầu tiên với cấu trúc chuẩn của 9 giải
+            for (const spec of prizeSpecs) {
+              if (stations[0][spec.key].length === 0 && firstDataDigits.length === spec.len * spec.count) {
+                for (let i = 0; i < stations.length; i++) {
+                  const d = cells[i + 1].textContent.replace(/\D/g, '');
+                  stations[i][spec.key] = d.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
+                }
+                break;
               }
-              pIdx++;
             }
           }
         });
 
-        if (stations[0] && stations[0].db.length > 0) return stations;
+        if (stations[0].db.length === 1 && stations[0].g8.length === 1 && stations[0].g4.length === 7) {
+          return stations;
+        }
       }
       return null;
     }
 
+    // TẢI CẢ THÁNG KẾT QUẢ THẬT
     async function syncEntireMonth() {
       const year = selectedDate.getFullYear();
       const month = selectedDate.getMonth();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const statusBar = document.getElementById('statusBar');
 
-      let done = 0;
+      const daysToFetch = [];
       for (let d = 1; d <= daysInMonth; d++) {
         const cur = new Date(year, month, d);
-        if (!hasDrawHappened(cur, currentRegion)) continue;
-        const key = `${currentRegion}_${toVNDate(cur, '-')}`;
-        if (!COMPACT_DB[key] && !localStorage.getItem('KQ_' + key)) {
-          localStorage.setItem('KQ_' + key, JSON.stringify(generateFallbackForDate(currentRegion, cur)));
-        }
-        done++;
+        if (hasDrawHappened(cur, currentRegion)) daysToFetch.push(cur);
       }
-      renderDayStrip();
+
+      let done = 0;
+      const batchSize = 4;
+      for (let i = 0; i < daysToFetch.length; i += batchSize) {
+        const batch = daysToFetch.slice(i, i + batchSize);
+        statusBar.className = 'status-bar loading';
+        statusBar.innerText = `⏳ Đang tải kết quả thật (${Math.min(i + batchSize, daysToFetch.length)}/${daysToFetch.length} ngày)...`;
+        await Promise.all(batch.map(d => fetchRealKQXS(currentRegion, d, false).then(r => { if (r) done++; })));
+        renderDayStrip();
+      }
+
       statusBar.className = 'status-bar';
-      statusBar.innerText = `✅ Đã đồng bộ xong ${done} ngày ${REGION_LABELS[currentRegion]} Tháng ${month + 1}/${year}!`;
+      statusBar.innerText = `✅ Đã tải thành công ${done} ngày kết quả thật trong Tháng ${month + 1}/${year}!`;
       loadAllData(false);
     }
 
@@ -673,15 +602,23 @@
       document.getElementById('stationsToday').innerHTML = stationsSchedule
         .map(s => `<span class="station-badge">📍 ${s}</span>`).join('');
 
+      if (!hasDrawHappened(curDate, currentRegion)) {
+        statusBar.className = 'status-bar warn';
+        statusBar.innerText = `⏳ ${REGION_LABELS[currentRegion]} ngày ${toVNDate(curDate)} chưa tới giờ mở thưởng`;
+        document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#e67700; font-weight:600;">Ngày ${toVNDate(curDate)} chưa tới giờ mở thưởng. Hãy chọn ngày trước đó trên thanh tuần.</div>`;
+        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px; padding:10px;">Đang chờ tới giờ mở thưởng.</div>`;
+        return;
+      }
+
       statusBar.className = 'status-bar loading';
-      statusBar.innerText = `⚡ Đang nạp kết quả ${REGION_LABELS[currentRegion]}...`;
+      statusBar.innerText = `⏳ Đang tải kết quả thật ${REGION_LABELS[currentRegion]} ngày ${toVNDate(curDate)}...`;
 
       const resultsToday = await fetchRealKQXS(currentRegion, curDate, forceRefresh);
       renderDayStrip();
 
       if (resultsToday && resultsToday.length > 0) {
         statusBar.className = 'status-bar';
-        statusBar.innerText = `✅ ${REGION_LABELS[currentRegion]} - Đã cập nhật kết quả (${curDateStr})`;
+        statusBar.innerText = `✅ Kết quả chuẩn thực tế ${REGION_LABELS[currentRegion]} (${curDateStr})`;
         renderResultTable(resultsToday, currentRegion);
         renderDetailedStatsToday(resultsToday);
 
@@ -689,9 +626,13 @@
         renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrow, nextDateStr, prevDrawStr);
       } else {
         statusBar.className = 'status-bar warn';
-        statusBar.innerText = `⏳ ${REGION_LABELS[currentRegion]} ngày ${toVNDate(curDate)} chưa tới giờ mở thưởng`;
-        document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#e67700; font-weight:600;">Ngày ${toVNDate(curDate)} chưa tới giờ mở thưởng. Hãy chọn ngày hôm nay trở về trước để xem kết quả.</div>`;
-        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px; padding:10px;">Đang chờ tới giờ mở thưởng.</div>`;
+        statusBar.innerText = `⚠️ Đang nghẽn kết nối tới máy chủ xổ số ngày ${toVNDate(curDate)}`;
+        document.getElementById('kqxsContainer').innerHTML = `
+          <div style="padding:14px; text-align:center; color:#c92a2a; font-weight:600;">
+            Chưa tải được bảng kết quả thực tế ngày ${toVNDate(curDate)} do nghẽn mạng.<br>
+            👉 Hãy bấm nút <b>"🔄 LẤY LẠI KẾT QUẢ THẬT NGÀY NÀY"</b> ở trên để thử lại!
+          </div>`;
+        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px; padding:10px;">Bấm làm mới để tải lại kết quả thật.</div>`;
       }
     }
 
