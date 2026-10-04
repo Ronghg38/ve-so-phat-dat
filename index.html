@@ -35,9 +35,9 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 8px;
-      height: 32px;
+      height: 30px;
       flex-shrink: 0;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 600;
     }
 
@@ -47,8 +47,8 @@
     }
 
     .app-bar .back-btn {
-      margin-right: 10px;
-      font-size: 17px;
+      margin-right: 8px;
+      font-size: 16px;
       cursor: pointer;
     }
 
@@ -59,7 +59,7 @@
     }
 
     .sound-btn {
-      background: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.2);
       color: #fff;
       border: none;
       border-radius: 4px;
@@ -98,37 +98,55 @@
       50% { opacity: 0.2; }
     }
 
-    /* Thanh điều khiển chọn Miền + chọn Thứ + nút Quay */
+    /* Thanh 3 nút chọn Miền nổi bật */
+    .region-tabs {
+      display: flex;
+      background-color: #08376e;
+      padding: 3px 6px;
+      gap: 6px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .region-tab {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.15);
+      color: #e0e0e0;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .region-tab.active {
+      background: #ffeb3b;
+      color: #b71c1c;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    /* Thanh điều khiển chọn Ngày + nút Quay */
     .control-bar {
       background-color: #ebebeb;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       padding: 3px 6px;
-      height: 36px;
+      height: 32px;
       flex-shrink: 0;
       border-bottom: 1px solid #dcdcdc;
-    }
-
-    .region-select {
-      background: #0b4a92;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 5px;
-      font-size: 12px;
-      font-weight: 700;
-      outline: none;
-      flex-shrink: 0;
     }
 
     .station-select {
       background: #fff;
       border: 1px solid #ccc;
       border-radius: 4px;
-      padding: 3px 4px;
-      font-size: 12px;
+      padding: 3px 5px;
+      font-size: 12.5px;
       font-weight: 600;
       flex: 1;
       min-width: 0;
@@ -147,11 +165,11 @@
       color: #fff;
       border: none;
       border-radius: 4px;
-      padding: 4px 9px;
-      font-size: 12px;
+      padding: 4px 10px;
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
-      min-width: 78px;
+      min-width: 84px;
       text-align: center;
     }
 
@@ -189,14 +207,14 @@
 
     .title-area h1 {
       color: #d32f2f;
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 700;
       line-height: 1.15;
     }
 
     .title-area p {
       color: #666;
-      font-size: 10.5px;
+      font-size: 10px;
       line-height: 1.1;
     }
 
@@ -213,7 +231,7 @@
       display: flex;
       background-color: #f5f5f5;
       border-bottom: 1px solid #ccc;
-      height: 24px;
+      height: 23px;
       flex-shrink: 0;
       font-weight: 700;
       font-size: 13px;
@@ -284,7 +302,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(15px, 2.55vh, 21px);
+      font-size: clamp(14.5px, 2.45vh, 20px);
       font-weight: 700;
       color: #111;
       letter-spacing: 0.3px;
@@ -292,7 +310,7 @@
     }
 
     .mode-4-cols .num-cell {
-      font-size: clamp(13.5px, 2.3vh, 18px);
+      font-size: clamp(13px, 2.25vh, 17.5px);
       letter-spacing: 0px;
     }
     .mode-4-cols .table-header {
@@ -307,18 +325,18 @@
     .mb-row-g7 .num-cell,
     .mb-row-g7 .col-giai {
       color: #d32f2f;
-      font-size: clamp(16px, 2.7vh, 22px);
+      font-size: clamp(15.5px, 2.6vh, 21px);
     }
 
     .mode-4-cols .row-db .num-cell {
-      font-size: clamp(14px, 2.4vh, 19px);
+      font-size: clamp(13.5px, 2.35vh, 18.5px);
     }
 
     .num-cell.active-spin {
       background-color: #fff176;
     }
 
-    /* ================= GIAO DIỆN RIÊNG CHO MIỀN BẮC (27 LÔ) ================= */
+    /* Giao diện riêng cho Miền Bắc (27 lô) */
     .mb-row-db { flex: 1.25; }
     .mb-row-g1 { flex: 1.1; }
     .mb-row-g2 { flex: 1.15; }
@@ -349,7 +367,7 @@
 
     .mb-sub-row .num-cell {
       border-right: 1px solid #f0f0f0;
-      font-size: clamp(16px, 2.7vh, 22px);
+      font-size: clamp(16px, 2.65vh, 22px);
     }
 
     .mb-sub-row .num-cell:last-child {
@@ -357,20 +375,20 @@
     }
 
     .mb-row-db .num-cell {
-      font-size: clamp(19px, 3.2vh, 26px);
+      font-size: clamp(19px, 3.1vh, 26px);
     }
 
     /* Thanh lọc chế độ xem */
     .footer-bar {
       background-color: #f9f9f9;
       border-top: 1px solid #ccc;
-      height: 30px;
+      height: 28px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-around;
       padding: 0 10px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 500;
       color: #222;
     }
@@ -384,8 +402,8 @@
 
     .radio-label input[type="radio"] {
       accent-color: #0b4a92;
-      width: 15px;
-      height: 15px;
+      width: 14px;
+      height: 14px;
       cursor: pointer;
     }
 
@@ -477,7 +495,7 @@
   <div class="app-bar">
     <div class="app-bar-left">
       <span class="back-btn">&#8592;</span>
-      <span>Quay thử</span>
+      <span>Quay thử 3 Miền</span>
     </div>
     <div class="app-bar-right">
       <div id="recBadge" class="rec-badge">
@@ -490,14 +508,16 @@
     </div>
   </div>
 
-  <!-- Thanh điều khiển: Chọn Miền + Chọn Đài theo ngày + Nút Quay -->
+  <!-- Thanh 3 nút chọn Miền rõ ràng -->
+  <div class="region-tabs">
+    <button id="tab-mn" class="region-tab active" onclick="selectRegionTab('mn')">MIỀN NAM</button>
+    <button id="tab-mt" class="region-tab" onclick="selectRegionTab('mt')">MIỀN TRUNG</button>
+    <button id="tab-mb" class="region-tab" onclick="selectRegionTab('mb')">MIỀN BẮC</button>
+  </div>
+
+  <!-- Thanh chọn Đài theo ngày (Có tích hợp cả 3 miền bên trong) + Nút Quay -->
   <div class="control-bar">
-    <select id="regionSelect" class="region-select" onchange="changeRegion()">
-      <option value="mn">Miền Nam</option>
-      <option value="mt">Miền Trung</option>
-      <option value="mb">Miền Bắc</option>
-    </select>
-    <select id="daySelect" class="station-select" onchange="changeDay()"></select>
+    <select id="daySelect" class="station-select" onchange="changeDayFromDropdown()"></select>
     <div class="btn-group">
       <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
       <button id="downloadBtn" class="btn-download" onclick="openModal()">⬇ VIDEO</button>
@@ -545,7 +565,6 @@
   <canvas id="videoCanvas" width="720" height="1280" style="position:fixed; left:-9999px; top:0; pointer-events:none;"></canvas>
 
   <script>
-    // Cấu hình giải cho Miền Nam & Miền Trung (18 lô)
     const prizeConfigMNMT = [
       { label: '8', class: 'row-g8', count: 1, digits: 2 },
       { label: '7', class: 'row-g7', count: 1, digits: 3 },
@@ -558,8 +577,6 @@
       { label: 'ĐB', class: 'row-db', count: 1, digits: 6 }
     ];
 
-    // Cấu hình giải cho Miền Bắc (Hiển thị ĐB ở trên cùng, nhưng quay từ Giải 7 lên Giải ĐB ở bước cuối)
-    // spinStep: thứ tự quay (0 -> 9, tổng 10 bước để khớp ~30s)
     const prizeConfigMB = [
       { label: 'ĐB', class: 'mb-row-db', rows: 1, cols: 1, digits: 5, spinSteps: [9] },
       { label: '1',  class: 'mb-row-g1', rows: 1, cols: 1, digits: 5, spinSteps: [8] },
@@ -571,9 +588,9 @@
       { label: '7',  class: 'mb-row-g7', rows: 1, cols: 4, digits: 2, spinSteps: [0] }
     ];
 
-    // Lịch mở thưởng 3 Miền chuẩn theo thứ (0: Chủ Nhật -> 6: Thứ 7)
     const schedulesByRegion = {
       mn: {
+        shortName: 'Miền Nam',
         title: 'Tham khảo Xổ Số miền Nam',
         drawHour: 16, drawMin: 35,
         days: {
@@ -587,11 +604,12 @@
         }
       },
       mt: {
+        shortName: 'Miền Trung',
         title: 'Tham khảo Xổ Số miền Trung',
         drawHour: 17, drawMin: 35,
         days: {
-          0: { name: 'Chủ Nhật', stations: ['Khánh Hòa', 'Kon Tum', 'Thừa Thiên Huế'] },
-          1: { name: 'Thứ 2', stations: ['Phú Yên', 'Thừa Thiên Huế'] },
+          0: { name: 'Chủ Nhật', stations: ['Khánh Hòa', 'Kon Tum', 'T.T.Huế'] },
+          1: { name: 'Thứ 2', stations: ['Phú Yên', 'T.T.Huế'] },
           2: { name: 'Thứ 3', stations: ['Đắk Lắk', 'Quảng Nam'] },
           3: { name: 'Thứ 4', stations: ['Đà Nẵng', 'Khánh Hòa'] },
           4: { name: 'Thứ 5', stations: ['Bình Định', 'Quảng Trị', 'Quảng Bình'] },
@@ -600,6 +618,7 @@
         }
       },
       mb: {
+        shortName: 'Miền Bắc',
         title: 'Tham khảo Xổ Số miền Bắc',
         drawHour: 18, drawMin: 35,
         days: {
@@ -615,6 +634,7 @@
     };
 
     let currentRegion = 'mn';
+    let currentDayIdx = new Date().getDay();
     let currentStations = [];
     let isSpinning = false;
     let activeStep = -1;
@@ -624,7 +644,6 @@
     let animInterval = null;
     let totalSteps = 0;
 
-    // TỐC ĐỘ QUAY TỪ TỪ (~32 giây cho toàn bộ giải)
     const TICK_SPEED_MS = 220;
 
     // ================= DÀN NHẠC HIỆU XỔ SỐ TRUYỀN THỐNG =================
@@ -879,27 +898,45 @@
       reader.readAsArrayBuffer(file);
     }
 
-    // ================= QUẢN LÝ LỊCH ĐÀI 3 MIỀN =================
-    function changeRegion() {
-      if (isSpinning) stopSpin(false);
-      currentRegion = document.getElementById('regionSelect').value;
+    // ================= QUẢN LÝ CHỌN 3 MIỀN & NGÀY =================
+    function updateTabHighlight() {
+      ['mn', 'mt', 'mb'].forEach(r => {
+        const tab = document.getElementById(`tab-${r}`);
+        if (r === currentRegion) tab.classList.add('active');
+        else tab.classList.remove('active');
+      });
       document.getElementById('mainTitle').textContent = schedulesByRegion[currentRegion].title;
+    }
+
+    // Khi bấm vào 1 trong 3 nút tab: MIỀN NAM | MIỀN TRUNG | MIỀN BẮC
+    function selectRegionTab(regionKey) {
+      if (isSpinning) stopSpin(false);
+      currentRegion = regionKey;
+      updateTabHighlight();
+
+      const now = new Date();
+      const todayIdx = now.getDay();
+      const tomorrowIdx = (todayIdx + 1) % 7;
+      const regConfig = schedulesByRegion[currentRegion];
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const isAfterDraw = currentMinutes >= (regConfig.drawHour * 60 + regConfig.drawMin);
+
+      currentDayIdx = isAfterDraw ? tomorrowIdx : todayIdx;
+      currentStations = regConfig.days[currentDayIdx].stations;
+
+      document.getElementById('daySelect').value = `${currentRegion}_${currentDayIdx}`;
       document.getElementById('downloadBtn').classList.remove('ready');
-      initDaySelector();
       initTable();
     }
 
+    // Khởi tạo danh sách chọn chứa tất cả 3 miền (để bấm vào dropdown cũng thấy cả 3 miền)
     function initDaySelector() {
       const select = document.getElementById('daySelect');
       select.innerHTML = '';
 
-      const regConfig = schedulesByRegion[currentRegion];
       const now = new Date();
       const todayIdx = now.getDay();
       const tomorrowIdx = (todayIdx + 1) % 7;
-
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      const isAfterDraw = currentMinutes >= (regConfig.drawHour * 60 + regConfig.drawMin);
 
       const orderedIndices = [todayIdx, tomorrowIdx];
       for (let i = 0; i < 7; i++) {
@@ -908,27 +945,46 @@
         }
       }
 
-      orderedIndices.forEach(idx => {
-        const info = regConfig.days[idx];
-        const opt = document.createElement('option');
-        opt.value = idx;
+      ['mn', 'mt', 'mb'].forEach(regKey => {
+        const regConfig = schedulesByRegion[regKey];
+        const group = document.createElement('optgroup');
+        group.label = `=== XỔ SỐ ${regConfig.shortName.toUpperCase()} ===`;
 
-        let prefix = '';
-        if (idx === todayIdx) prefix = '[Hôm nay] ';
-        else if (idx === tomorrowIdx) prefix = '[Ngày mai] ';
+        orderedIndices.forEach(idx => {
+          const info = regConfig.days[idx];
+          const opt = document.createElement('option');
+          opt.value = `${regKey}_${idx}`;
 
-        opt.textContent = `${prefix}${info.name} (${info.stations.join(', ')})`;
-        select.appendChild(opt);
+          let prefix = '';
+          if (idx === todayIdx) prefix = '[Hôm nay] ';
+          else if (idx === tomorrowIdx) prefix = '[Ngày mai] ';
+
+          opt.textContent = `${regConfig.shortName} - ${prefix}${info.name} (${info.stations.join(', ')})`;
+          group.appendChild(opt);
+        });
+
+        select.appendChild(group);
       });
 
-      select.value = isAfterDraw ? tomorrowIdx : todayIdx;
-      currentStations = regConfig.days[select.value].stations;
+      const regConfig = schedulesByRegion[currentRegion];
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const isAfterDraw = currentMinutes >= (regConfig.drawHour * 60 + regConfig.drawMin);
+      currentDayIdx = isAfterDraw ? tomorrowIdx : todayIdx;
+
+      select.value = `${currentRegion}_${currentDayIdx}`;
+      currentStations = regConfig.days[currentDayIdx].stations;
+      updateTabHighlight();
     }
 
-    function changeDay() {
+    function changeDayFromDropdown() {
       if (isSpinning) stopSpin(false);
-      const val = document.getElementById('daySelect').value;
-      currentStations = schedulesByRegion[currentRegion].days[val].stations;
+      const val = document.getElementById('daySelect').value; // định dạng: mn_0, mt_1, mb_2...
+      const parts = val.split('_');
+      currentRegion = parts[0];
+      currentDayIdx = parseInt(parts[1], 10);
+      currentStations = schedulesByRegion[currentRegion].days[currentDayIdx].stations;
+
+      updateTabHighlight();
       document.getElementById('downloadBtn').classList.remove('ready');
       initTable();
     }
@@ -941,7 +997,6 @@
       wrapper.classList.remove('mode-4-cols');
 
       if (currentRegion === 'mb') {
-        // Bảng Miền Bắc (1 đài truyền thống, 27 giải chia nhiều cột)
         thead.style.display = 'none';
         tbody.innerHTML = '';
 
@@ -977,9 +1032,8 @@
           tbody.appendChild(row);
         });
 
-        totalSteps = 10; // Miền Bắc quay theo 10 hàng (từ Giải 7 lên Giải ĐB)
+        totalSteps = 10;
       } else {
-        // Bảng Miền Nam & Miền Trung (Nhiều cột đài song song)
         thead.style.display = 'flex';
         if (currentStations.length === 4) {
           wrapper.classList.add('mode-4-cols');
@@ -1026,7 +1080,7 @@
           tbody.appendChild(row);
         });
 
-        totalSteps = stepIndex; // 18 bước
+        totalSteps = stepIndex;
       }
     }
 
@@ -1082,7 +1136,6 @@
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, W, H);
 
-      // 1. Thanh App Bar
       ctx.fillStyle = '#0b4a92';
       ctx.fillRect(0, 0, W, 62);
       ctx.fillStyle = '#ffffff';
@@ -1091,7 +1144,6 @@
       ctx.textBaseline = 'middle';
       ctx.fillText('←   Quay thử', 24, 31);
 
-      // 2. Thanh điều khiển
       ctx.fillStyle = '#ebebeb';
       ctx.fillRect(0, 62, W, 66);
       ctx.fillStyle = '#ffffff';
@@ -1100,8 +1152,8 @@
       ctx.fillRect(16, 72, 460, 46);
       ctx.strokeRect(16, 72, 460, 46);
 
-      const sel = document.getElementById('daySelect');
-      const dayText = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text.replace(/\[.*?\]\s*/, '') : '';
+      const dayInfo = schedulesByRegion[currentRegion].days[currentDayIdx];
+      const dayText = `${dayInfo.name} (${dayInfo.stations.join(', ')})`;
       ctx.fillStyle = '#222222';
       ctx.font = '600 22px sans-serif';
       ctx.fillText(dayText.substring(0, 28), 28, 95);
@@ -1113,7 +1165,6 @@
       ctx.textAlign = 'center';
       ctx.fillText(isSpinning ? 'DỪNG' : 'QUAY THỬ', 600, 95);
 
-      // 3. Tiêu đề theo miền
       const titleTxt = schedulesByRegion[currentRegion].title;
       ctx.fillStyle = '#d32f2f';
       ctx.font = 'bold 29px sans-serif';
@@ -1132,10 +1183,9 @@
       const footerH = 56;
 
       if (currentRegion === 'mb') {
-        // VẼ BẢNG MIỀN BẮC (27 LÔ)
         const bodyTop = 196;
         const bodyH = H - bodyTop - footerH;
-        const totalUnits = 10; // Tổng 10 hàng con
+        const totalUnits = 10;
         const unitH = bodyH / totalUnits;
 
         let curUnit = 0;
@@ -1206,7 +1256,6 @@
         ctx.stroke();
 
       } else {
-        // VẼ BẢNG MIỀN NAM & MIỀN TRUNG (18 LÔ)
         const headerY = 196;
         const headerH = 46;
         ctx.fillStyle = '#f5f5f5';
@@ -1292,7 +1341,6 @@
         ctx.stroke();
       }
 
-      // Vẽ Thanh Footer
       const footerTop = H - footerH;
       ctx.fillStyle = '#f9f9f9';
       ctx.fillRect(0, footerTop, W, footerH);
@@ -1693,7 +1741,6 @@
 
       const digits = parseInt(currentCells[0].dataset.digits, 10);
 
-      // Tự động căn thời gian mỗi bước sao cho cả 3 miền đều quay trong ~32 giây
       const stepSpinTime = currentRegion === 'mb' ? 2800 : 1550;
       const stepPauseTime = currentRegion === 'mb' ? 300 : 250;
 
