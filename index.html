@@ -1,555 +1,1736 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tham Khảo & Quay Thử Xổ Số Miền Nam Hiện Đại</title>
-    <style>
-        :root {
-            --bg-dark: #0b0f19;
-            --card-bg: #151c2c;
-            --card-border: #26334d;
-            --gold: #fbbf24;
-            --gold-light: #fde68a;
-            --red-vip: #e11d48;
-            --red-dark: #9f1239;
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tham khảo Xổ Số 3 Miền</title>
+  <!-- Thư viện đóng gói MP4 chuẩn H.264 + AAC Audio cho Facebook -->
+  <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fix-webm-duration@1.0.6/fix-webm-duration.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body {
-            background-color: var(--bg-dark);
-            background-image: radial-gradient(circle at 50% 0%, #2a1225 0%, #0b0f19 60%);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding-bottom: 50px;
-        }
+    html, body {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* HEADER HIỆN ĐẠI */
-        .hero-header {
-            text-align: center;
-            padding: 28px 15px 22px;
-            border-bottom: 1px solid rgba(251, 191, 36, 0.25);
-            background: linear-gradient(180deg, rgba(225, 29, 72, 0.18) 0%, rgba(11, 15, 25, 0) 100%);
-        }
-        .badge-top {
-            display: inline-block;
-            background: linear-gradient(90deg, var(--red-vip), #be123c);
-            color: #fff;
-            padding: 4px 14px;
-            border-radius: 99px;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            box-shadow: 0 0 15px rgba(225, 29, 72, 0.6);
-        }
-        .hero-header h1 {
-            font-size: clamp(22px, 4vw, 32px);
-            font-weight: 900;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, #fff, var(--gold), #fff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 0.5px;
-        }
-        .hero-header p { color: var(--text-sub); font-size: 14px; margin-top: 6px; }
+    /* Thanh tiêu đề trên cùng */
+    .app-bar {
+      background-color: #0b4a92;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      height: 32px;
+      flex-shrink: 0;
+      font-size: 15px;
+      font-weight: 600;
+    }
 
-        .main-wrap { max-width: 1140px; margin: 20px auto; padding: 0 15px; }
+    .app-bar-left {
+      display: flex;
+      align-items: center;
+    }
 
-        /* THANH CHỌN THỨ TRONG TUẦN (LỊCH XSMN) */
-        .day-nav {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-        @media (max-width: 768px) {
-            .day-nav { grid-template-columns: repeat(4, 1fr); }
-        }
-        .day-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-sub);
-            padding: 10px 6px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 13px;
-            text-align: center;
-            transition: 0.25s;
-        }
-        .day-btn span { display: block; font-size: 11px; font-weight: normal; margin-top: 3px; opacity: 0.75; }
-        .day-btn:hover { border-color: var(--gold); color: #fff; }
-        .day-btn.active {
-            background: linear-gradient(135deg, var(--red-vip), var(--red-dark));
-            border-color: var(--gold);
-            color: #fff;
-            box-shadow: 0 6px 18px rgba(225, 29, 72, 0.4);
-        }
-        .day-btn.active span { color: var(--gold-light); opacity: 1; }
+    .app-bar .back-btn {
+      margin-right: 10px;
+      font-size: 17px;
+      cursor: pointer;
+    }
 
-        /* SECTION TIÊU ĐỀ */
-        .sec-head {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-        .sec-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .app-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
-        /* KHU VỰC 1: THẺ THAM KHẢO SỐ ĐẸP XSMN */
-        .ref-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-        .vip-card {
-            background: linear-gradient(155deg, #1b2438 0%, #111726 100%);
-            border: 1px solid rgba(251, 191, 36, 0.35);
-            border-radius: 16px;
-            padding: 18px;
-            position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-        }
-        .vip-card-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px dashed rgba(255,255,255,0.12);
-            padding-bottom: 10px;
-            margin-bottom: 14px;
-        }
-        .station-name { font-size: 18px; font-weight: 900; color: #fff; }
-        .tag-vip {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 800;
-        }
+    .sound-btn {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
-        /* Quả cầu số đẹp */
-        .balls-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
-            color: var(--text-sub);
-        }
-        .ball-vip {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ff4d6d, #be123c);
-            color: #fff;
-            font-size: 19px;
-            font-weight: 900;
-            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.6), inset 0 2px 4px rgba(255,255,255,0.4);
-            border: 2px solid var(--gold);
-        }
-        .pill-gold {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #000;
-            font-weight: 900;
-            font-size: 15px;
-            padding: 5px 12px;
-            border-radius: 8px;
-            letter-spacing: 1px;
-        }
-        .pill-sub {
-            background: rgba(255,255,255,0.06);
-            color: #38bdf8;
-            font-weight: 800;
-            font-size: 15px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
+    .rec-badge {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 2px 7px;
+      border-radius: 10px;
+      color: #ffeb3b;
+      font-weight: 700;
+    }
 
-        /* KHU VỰC 2: BẢNG QUAY THỬ XSMN */
-        .spin-panel {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
-            margin-bottom: 30px;
-        }
-        .spin-toolbar {
-            background: linear-gradient(90deg, #1e293b, #0f172a);
-            padding: 16px 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid var(--card-border);
-        }
-        .btn-action {
-            background: linear-gradient(135deg, var(--gold), #f59e0b);
-            color: #000;
-            border: none;
-            padding: 12px 26px;
-            border-radius: 10px;
-            font-weight: 900;
-            font-size: 15px;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.45);
-            transition: 0.2s;
-        }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 0 28px rgba(251, 191, 36, 0.75); }
-        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .rec-badge.recording {
+      display: flex;
+    }
 
-        .btn-secondary {
-            background: rgba(255,255,255,0.07);
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .btn-secondary:hover { background: var(--gold); color: #000; }
+    .rec-dot {
+      width: 7px;
+      height: 7px;
+      background-color: #ff1744;
+      border-radius: 50%;
+      animation: blink 1s infinite;
+    }
 
-        .table-scroll { overflow-x: auto; }
-        table.xsmn-board { width: 100%; border-collapse: collapse; text-align: center; }
-        table.xsmn-board th {
-            background: #0f172a;
-            color: var(--gold);
-            padding: 14px 10px;
-            font-size: 16px;
-            font-weight: 900;
-            border: 1px solid var(--card-border);
-            text-transform: uppercase;
-        }
-        table.xsmn-board td {
-            border: 1px solid var(--card-border);
-            padding: 10px 8px;
-        }
-        .col-prize {
-            width: 75px;
-            background: #0b0f19;
-            color: var(--text-sub);
-            font-weight: 800;
-            font-size: 13px;
-        }
-        .num-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px 16px;
-            font-size: 17px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .num-g8, .num-db {
-            color: #fb7185;
-            font-size: 24px;
-            font-weight: 900;
-            text-shadow: 0 0 10px rgba(251, 113, 133, 0.35);
-        }
-        .rolling { color: var(--gold) !important; opacity: 0.85; }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
 
-        /* KHU VỰC 3: BẢNG ĐẦU ĐUÔI LOTO */
-        .loto-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .loto-box {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .loto-box-head {
-            background: #1e293b;
-            color: var(--gold);
-            padding: 10px;
-            font-weight: 800;
-            text-align: center;
-            font-size: 15px;
-        }
-        table.loto-tb { width: 100%; border-collapse: collapse; font-size: 14px; }
-        table.loto-tb td { border-top: 1px solid var(--card-border); padding: 6px 12px; }
-        .td-dau { width: 65px; font-weight: 800; color: var(--gold); background: rgba(0,0,0,0.25); text-align: center; }
-        .td-duoi { font-weight: 700; color: #e2e8f0; letter-spacing: 0.5px; }
-    </style>
+    /* Thanh điều khiển chọn Miền + chọn Thứ + nút Quay */
+    .control-bar {
+      background-color: #ebebeb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 6px;
+      height: 36px;
+      flex-shrink: 0;
+      border-bottom: 1px solid #dcdcdc;
+    }
+
+    .region-select {
+      background: #0b4a92;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 5px;
+      font-size: 12px;
+      font-weight: 700;
+      outline: none;
+      flex-shrink: 0;
+    }
+
+    .station-select {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 3px 4px;
+      font-size: 12px;
+      font-weight: 600;
+      flex: 1;
+      min-width: 0;
+      color: #0b4a92;
+      outline: none;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .btn-spin {
+      background-color: #f37021;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 78px;
+      text-align: center;
+    }
+
+    .btn-spin.spinning {
+      background-color: #d9430f;
+    }
+
+    .btn-download {
+      display: none;
+      background-color: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 7px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .btn-download.ready {
+      display: inline-flex;
+    }
+
+    /* Tiêu đề chính */
+    .title-area {
+      background-color: #fff;
+      text-align: center;
+      padding: 2px 0;
+      border-bottom: 1px solid #ddd;
+      flex-shrink: 0;
+    }
+
+    .title-area h1 {
+      color: #d32f2f;
+      font-size: 14.5px;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .title-area p {
+      color: #666;
+      font-size: 10.5px;
+      line-height: 1.1;
+    }
+
+    /* Bảng kết quả */
+    .table-wrapper {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+    }
+
+    .table-header {
+      display: flex;
+      background-color: #f5f5f5;
+      border-bottom: 1px solid #ccc;
+      height: 24px;
+      flex-shrink: 0;
+      font-weight: 700;
+      font-size: 13px;
+      color: #111;
+    }
+
+    .col-giai {
+      width: 10%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid #e0e0e0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      background-color: #fafafa;
+      flex-shrink: 0;
+    }
+
+    .col-station {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid #e0e0e0;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding: 0 2px;
+    }
+
+    .col-station:last-child {
+      border-right: none;
+    }
+
+    .table-body {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .prize-row {
+      display: flex;
+      border-bottom: 1px solid #e0e0e0;
+      width: 100%;
+      min-height: 0;
+    }
+
+    /* Tỷ lệ chiều cao cho Miền Nam & Miền Trung (18 lô) */
+    .row-g8 { flex: 1.05; }
+    .row-g7 { flex: 1; }
+    .row-g6 { flex: 2.85; }
+    .row-g5 { flex: 1; }
+    .row-g4 { flex: 6.4; }
+    .row-g3 { flex: 1.9; }
+    .row-g2 { flex: 1; }
+    .row-g1 { flex: 1; }
+    .row-db { flex: 1.15; border-bottom: none; }
+
+    .num-cell {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(15px, 2.55vh, 21px);
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.3px;
+      line-height: 1;
+    }
+
+    .mode-4-cols .num-cell {
+      font-size: clamp(13.5px, 2.3vh, 18px);
+      letter-spacing: 0px;
+    }
+    .mode-4-cols .table-header {
+      font-size: 12px;
+    }
+
+    .row-g8 .num-cell,
+    .row-db .num-cell,
+    .row-db .col-giai,
+    .mb-row-db .num-cell,
+    .mb-row-db .col-giai,
+    .mb-row-g7 .num-cell,
+    .mb-row-g7 .col-giai {
+      color: #d32f2f;
+      font-size: clamp(16px, 2.7vh, 22px);
+    }
+
+    .mode-4-cols .row-db .num-cell {
+      font-size: clamp(14px, 2.4vh, 19px);
+    }
+
+    .num-cell.active-spin {
+      background-color: #fff176;
+    }
+
+    /* ================= GIAO DIỆN RIÊNG CHO MIỀN BẮC (27 LÔ) ================= */
+    .mb-row-db { flex: 1.25; }
+    .mb-row-g1 { flex: 1.1; }
+    .mb-row-g2 { flex: 1.15; }
+    .mb-row-g3 { flex: 2.2; }
+    .mb-row-g4 { flex: 1.15; }
+    .mb-row-g5 { flex: 2.2; }
+    .mb-row-g6 { flex: 1.15; }
+    .mb-row-g7 { flex: 1.2; border-bottom: none; }
+
+    .mb-grid-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .mb-sub-row {
+      flex: 1;
+      display: flex;
+      width: 100%;
+      min-height: 0;
+      border-bottom: 1px dashed #eee;
+    }
+
+    .mb-sub-row:last-child {
+      border-bottom: none;
+    }
+
+    .mb-sub-row .num-cell {
+      border-right: 1px solid #f0f0f0;
+      font-size: clamp(16px, 2.7vh, 22px);
+    }
+
+    .mb-sub-row .num-cell:last-child {
+      border-right: none;
+    }
+
+    .mb-row-db .num-cell {
+      font-size: clamp(19px, 3.2vh, 26px);
+    }
+
+    /* Thanh lọc chế độ xem */
+    .footer-bar {
+      background-color: #f9f9f9;
+      border-top: 1px solid #ccc;
+      height: 30px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #222;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .radio-label input[type="radio"] {
+      accent-color: #0b4a92;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    /* Hộp thoại Xuất Video */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px 16px;
+      width: 100%;
+      max-width: 330px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    .modal-box h3 {
+      color: #0b4a92;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .modal-box p {
+      color: #444;
+      font-size: 13px;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-save-main {
+      background: #1877f2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 11px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-save-dl {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-close-modal {
+      background: #e0e0e0;
+      color: #333;
+      border: none;
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
 
-<header class="hero-header">
-    <div class="badge-top">★ CHUYÊN TRANG XỔ SỐ MIỀN NAM VIP ★</div>
-    <h1>THAM KHẢO SỐ ĐẸP & QUAY THỬ XSMN</h1>
-    <p id="todayText">Lịch mở thưởng và phân tích nhịp cầu đẹp các đài Miền Nam</p>
-</header>
-
-<div class="main-wrap">
-    <!-- THANH CHỌN THỨ TRONG TUẦN -->
-    <div class="day-nav" id="dayNav"></div>
-
-    <!-- PHẦN 1: THAM KHẢO SỐ ĐẸP XSMN -->
-    <div class="sec-head">
-        <div class="sec-title">🔥 BẢNG VÀNG THAM KHẢO XSMN HÔM NAY</div>
-        <button class="btn-secondary" onclick="refreshReference()">🔄 Đổi Bộ Số Tham Khảo Mới</button>
+  <!-- Thanh tiêu đề -->
+  <div class="app-bar">
+    <div class="app-bar-left">
+      <span class="back-btn">&#8592;</span>
+      <span>Quay thử</span>
     </div>
-    <div class="ref-grid" id="refGrid"></div>
-
-    <!-- PHẦN 2: QUAY THỬ KẾT QUẢ XSMN -->
-    <div class="spin-panel">
-        <div class="spin-toolbar">
-            <div>
-                <div class="sec-title" style="margin:0;">🎰 LỒNG CẦU QUAY THỬ XỔ SỐ MIỀN NAM</div>
-                <small style="color:var(--text-sub);">Mô phỏng quay thử 18 giải từ Giải 8 đến Giải Đặc Biệt cho tất cả đài trong ngày</small>
-            </div>
-            <button id="btnSpin" class="btn-action" onclick="startSpinXSMN()">⚡ BẮT ĐẦU QUAY THỬ</button>
-        </div>
-
-        <div class="table-scroll">
-            <table class="xsmn-board" id="boardXSMN"></table>
-        </div>
+    <div class="app-bar-right">
+      <div id="recBadge" class="rec-badge">
+        <span class="rec-dot"></span>
+        <span id="recTimerText">00:00</span>
+      </div>
+      <button id="muteBtn" class="sound-btn" onclick="toggleMute()">🔊 Bật tiếng</button>
+      <button id="mp3Btn" class="sound-btn" onclick="document.getElementById('mp3Input').click()">🎵 Đổi nhạc</button>
+      <input type="file" id="mp3Input" accept="audio/*" style="display:none" onchange="loadCustomMp3(event)">
     </div>
+  </div>
 
-    <!-- PHẦN 3: THỐNG KÊ ĐẦU ĐUÔI -->
-    <div class="sec-head">
-        <div class="sec-title">📊 BẢNG THỐNG KÊ ĐẦU - ĐUÔI LOTO (2 SỐ CUỐI)</div>
+  <!-- Thanh điều khiển: Chọn Miền + Chọn Đài theo ngày + Nút Quay -->
+  <div class="control-bar">
+    <select id="regionSelect" class="region-select" onchange="changeRegion()">
+      <option value="mn">Miền Nam</option>
+      <option value="mt">Miền Trung</option>
+      <option value="mb">Miền Bắc</option>
+    </select>
+    <select id="daySelect" class="station-select" onchange="changeDay()"></select>
+    <div class="btn-group">
+      <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
+      <button id="downloadBtn" class="btn-download" onclick="openModal()">⬇ VIDEO</button>
     </div>
-    <div class="loto-grid" id="lotoGrid"></div>
-</div>
+  </div>
 
-<script>
-    // Lịch mở thưởng chuẩn Xổ Số Miền Nam
-    const LICH_XSMN = [
-        { day: "Chủ Nhật", stations: ["Tiền Giang", "Kiên Giang", "Đà Lạt"] },
-        { day: "Thứ Hai", stations: ["TP.HCM", "Đồng Tháp", "Cà Mau"] },
-        { day: "Thứ Ba", stations: ["Bến Tre", "Vũng Tàu", "Bạc Liêu"] },
-        { day: "Thứ Tư", stations: ["Đồng Nai", "Cần Thơ", "Sóc Trăng"] },
-        { day: "Thứ Năm", stations: ["Tây Ninh", "An Giang", "Bình Thuận"] },
-        { day: "Thứ Sáu", stations: ["Vĩnh Long", "Bình Dương", "Trà Vinh"] },
-        { day: "Thứ Bảy", stations: ["TP.HCM", "Long An", "Bình Phước", "Hậu Giang"] }
+  <!-- Tiêu đề bảng -->
+  <div class="title-area">
+    <h1 id="mainTitle">Tham khảo Xổ Số miền Nam</h1>
+    <p id="subTitle">Thông tin chỉ mang tính tham khảo</p>
+  </div>
+
+  <!-- Bảng kết quả -->
+  <div class="table-wrapper" id="tableWrapper">
+    <div class="table-header" id="tableHeader"></div>
+    <div class="table-body" id="tableBody"></div>
+  </div>
+
+  <!-- Tùy chọn hiển thị -->
+  <div class="footer-bar">
+    <label class="radio-label">
+      <input type="radio" name="viewMode" value="all" checked onchange="updateDisplayMode()"> Đầy đủ
+    </label>
+    <label class="radio-label">
+      <input type="radio" name="viewMode" value="2" onchange="updateDisplayMode()"> 2 Số
+    </label>
+    <label class="radio-label">
+      <input type="radio" name="viewMode" value="3" onchange="updateDisplayMode()"> 3 Số
+    </label>
+  </div>
+
+  <!-- Hộp thoại Xuất Video Chuẩn MP4 -->
+  <div id="videoModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Đã xuất Video + Nhạc Xổ Số!</h3>
+      <p id="modalDesc">Video chuẩn MP4 đã sẵn sàng đăng Facebook / TikTok:</p>
+      <div class="modal-actions">
+        <button class="btn-save-main" onclick="shareVideoNow()">📤 CHIA SẺ LÊN FACEBOOK / ZALO</button>
+        <button class="btn-save-dl" onclick="downloadVideoNow()">⬇ TẢI FILE MP4 VỀ MÁY</button>
+        <button class="btn-close-modal" onclick="closeModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="videoCanvas" width="720" height="1280" style="position:fixed; left:-9999px; top:0; pointer-events:none;"></canvas>
+
+  <script>
+    // Cấu hình giải cho Miền Nam & Miền Trung (18 lô)
+    const prizeConfigMNMT = [
+      { label: '8', class: 'row-g8', count: 1, digits: 2 },
+      { label: '7', class: 'row-g7', count: 1, digits: 3 },
+      { label: '6', class: 'row-g6', count: 3, digits: 4 },
+      { label: '5', class: 'row-g5', count: 1, digits: 4 },
+      { label: '4', class: 'row-g4', count: 7, digits: 5 },
+      { label: '3', class: 'row-g3', count: 2, digits: 5 },
+      { label: '2', class: 'row-g2', count: 1, digits: 5 },
+      { label: '1', class: 'row-g1', count: 1, digits: 5 },
+      { label: 'ĐB', class: 'row-db', count: 1, digits: 6 }
     ];
 
-    // Cấu trúc 18 lô chuẩn XSMN
-    const CAU_TRUC_XSMN = [
-        ["Giải 8", 1, 2, "num-g8"],
-        ["Giải 7", 1, 3, ""],
-        ["Giải 6", 3, 4, ""],
-        ["Giải 5", 1, 4, ""],
-        ["Giải 4", 7, 5, ""],
-        ["Giải 3", 2, 5, ""],
-        ["Giải 2", 1, 5, ""],
-        ["Giải 1", 1, 5, ""],
-        ["Đặc Biệt", 1, 6, "num-db"]
+    // Cấu hình giải cho Miền Bắc (Hiển thị ĐB ở trên cùng, nhưng quay từ Giải 7 lên Giải ĐB ở bước cuối)
+    // spinStep: thứ tự quay (0 -> 9, tổng 10 bước để khớp ~30s)
+    const prizeConfigMB = [
+      { label: 'ĐB', class: 'mb-row-db', rows: 1, cols: 1, digits: 5, spinSteps: [9] },
+      { label: '1',  class: 'mb-row-g1', rows: 1, cols: 1, digits: 5, spinSteps: [8] },
+      { label: '2',  class: 'mb-row-g2', rows: 1, cols: 2, digits: 5, spinSteps: [7] },
+      { label: '3',  class: 'mb-row-g3', rows: 2, cols: 3, digits: 5, spinSteps: [5, 6] },
+      { label: '4',  class: 'mb-row-g4', rows: 1, cols: 4, digits: 4, spinSteps: [4] },
+      { label: '5',  class: 'mb-row-g5', rows: 2, cols: 3, digits: 4, spinSteps: [2, 3] },
+      { label: '6',  class: 'mb-row-g6', rows: 1, cols: 3, digits: 3, spinSteps: [1] },
+      { label: '7',  class: 'mb-row-g7', rows: 1, cols: 4, digits: 2, spinSteps: [0] }
     ];
 
-    let selectedDay = new Date().getDay();
-    let isSpinning = false;
-
-    function randomDigits(len) {
-        let s = '';
-        for (let i = 0; i < len; i++) s += Math.floor(Math.random() * 10);
-        return s;
-    }
-
-    // Khởi tạo trang
-    window.onload = () => {
-        const now = new Date();
-        document.getElementById('todayText').innerText = 
-            `Hôm nay: ${LICH_XSMN[selectedDay].day}, ngày ${now.toLocaleDateString('vi-VN')} — Mở thưởng: ${LICH_XSMN[selectedDay].stations.join(' - ')}`;
-        renderDayButtons();
-        refreshReference();
-        renderSpinBoard();
+    // Lịch mở thưởng 3 Miền chuẩn theo thứ (0: Chủ Nhật -> 6: Thứ 7)
+    const schedulesByRegion = {
+      mn: {
+        title: 'Tham khảo Xổ Số miền Nam',
+        drawHour: 16, drawMin: 35,
+        days: {
+          0: { name: 'Chủ Nhật', stations: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'] },
+          1: { name: 'Thứ 2', stations: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'] },
+          2: { name: 'Thứ 3', stations: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'] },
+          3: { name: 'Thứ 4', stations: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'] },
+          4: { name: 'Thứ 5', stations: ['Tây Ninh', 'An Giang', 'Bình Thuận'] },
+          5: { name: 'Thứ 6', stations: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'] },
+          6: { name: 'Thứ 7', stations: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang'] }
+        }
+      },
+      mt: {
+        title: 'Tham khảo Xổ Số miền Trung',
+        drawHour: 17, drawMin: 35,
+        days: {
+          0: { name: 'Chủ Nhật', stations: ['Khánh Hòa', 'Kon Tum', 'Thừa Thiên Huế'] },
+          1: { name: 'Thứ 2', stations: ['Phú Yên', 'Thừa Thiên Huế'] },
+          2: { name: 'Thứ 3', stations: ['Đắk Lắk', 'Quảng Nam'] },
+          3: { name: 'Thứ 4', stations: ['Đà Nẵng', 'Khánh Hòa'] },
+          4: { name: 'Thứ 5', stations: ['Bình Định', 'Quảng Trị', 'Quảng Bình'] },
+          5: { name: 'Thứ 6', stations: ['Gia Lai', 'Ninh Thuận'] },
+          6: { name: 'Thứ 7', stations: ['Đà Nẵng', 'Quảng Ngãi', 'Đắk Nông'] }
+        }
+      },
+      mb: {
+        title: 'Tham khảo Xổ Số miền Bắc',
+        drawHour: 18, drawMin: 35,
+        days: {
+          0: { name: 'Chủ Nhật', stations: ['Thái Bình'] },
+          1: { name: 'Thứ 2', stations: ['Hà Nội'] },
+          2: { name: 'Thứ 3', stations: ['Quảng Ninh'] },
+          3: { name: 'Thứ 4', stations: ['Bắc Ninh'] },
+          4: { name: 'Thứ 5', stations: ['Hà Nội'] },
+          5: { name: 'Thứ 6', stations: ['Hải Phòng'] },
+          6: { name: 'Thứ 7', stations: ['Nam Định'] }
+        }
+      }
     };
 
-    // Vẽ thanh chọn Thứ
-    function renderDayButtons() {
-        const nav = document.getElementById('dayNav');
-        nav.innerHTML = '';
-        LICH_XSMN.forEach((item, idx) => {
-            const btn = document.createElement('button');
-            btn.className = `day-btn ${idx === selectedDay ? 'active' : ''}`;
-            btn.innerHTML = `${item.day}<span>${item.stations.length} đài</span>`;
-            btn.onclick = () => {
-                if (isSpinning) return;
-                selectedDay = idx;
-                renderDayButtons();
-                refreshReference();
-                renderSpinBoard();
-            };
-            nav.appendChild(btn);
-        });
+    let currentRegion = 'mn';
+    let currentStations = [];
+    let isSpinning = false;
+    let activeStep = -1;
+    let spinTimeout = null;
+    let pauseTimeout = null;
+    let finishRecTimeout = null;
+    let animInterval = null;
+    let totalSteps = 0;
+
+    // TỐC ĐỘ QUAY TỪ TỪ (~32 giây cho toàn bộ giải)
+    const TICK_SPEED_MS = 220;
+
+    // ================= DÀN NHẠC HIỆU XỔ SỐ TRUYỀN THỐNG =================
+    let audioCtx = null;
+    let masterGain = null;
+    let streamDest = null;
+    let isMuted = false;
+    let melodyTimer = null;
+    let stepBeat = 0;
+    let customAudioBuffer = null;
+    let customAudioSource = null;
+
+    const traditionalLotteryScore = [
+      [523.25, 392.00, 130.81, 0.16],
+      [659.25, 523.25, 0,      0.16],
+      [783.99, 659.25, 196.00, 0.16],
+      [1046.50,783.99, 130.81, 0.30],
+      [0,      0,      0,      0.12],
+      [783.99, 659.25, 196.00, 0.16],
+      [1046.50,783.99, 130.81, 0.34],
+      [0,      0,      0,      0.14],
+
+      [880.00, 698.46, 174.61, 0.16],
+      [1046.50,880.00, 0,      0.16],
+      [880.00, 698.46, 174.61, 0.16],
+      [783.99, 659.25, 130.81, 0.30],
+      [659.25, 523.25, 196.00, 0.16],
+      [783.99, 659.25, 0,      0.16],
+      [659.25, 523.25, 196.00, 0.16],
+      [523.25, 392.00, 130.81, 0.34],
+
+      [587.33, 440.00, 146.83, 0.16],
+      [698.46, 587.33, 0,      0.16],
+      [880.00, 698.46, 146.83, 0.16],
+      [1174.66,880.00, 196.00, 0.30],
+      [0,      0,      0,      0.12],
+      [987.77, 783.99, 196.00, 0.16],
+      [783.99, 587.33, 0,      0.16],
+      [1174.66,987.77, 196.00, 0.32],
+
+      [1046.50,783.99, 130.81, 0.18],
+      [783.99, 659.25, 196.00, 0.16],
+      [659.25, 523.25, 130.81, 0.16],
+      [783.99, 587.33, 196.00, 0.18],
+      [1046.50,783.99, 130.81, 0.42],
+      [0,      0,      196.00, 0.15],
+      [1046.50,659.25, 130.81, 0.42],
+      [0,      0,      0,      0.15]
+    ];
+
+    function ensureAudioContext() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return null;
+      if (!audioCtx) {
+        audioCtx = new AudioContextClass({ sampleRate: 44100 });
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = isMuted ? 0 : 0.9;
+        streamDest = audioCtx.createMediaStreamDestination();
+        masterGain.connect(audioCtx.destination);
+        masterGain.connect(streamDest);
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
     }
 
-    // Vẽ khu vực Tham khảo số đẹp XSMN
-    function refreshReference() {
-        const stations = LICH_XSMN[selectedDay].stations;
-        const grid = document.getElementById('refGrid');
-        grid.innerHTML = '';
+    function playBrassNote(freq, duration, vol = 0.14) {
+      if (!audioCtx || freq <= 0) return;
+      const now = audioCtx.currentTime;
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const filter = audioCtx.createBiquadFilter();
+      const gain = audioCtx.createGain();
 
-        stations.forEach(st => {
-            const btl = randomDigits(2);
-            const stl1 = randomDigits(2);
-            const stl2 = stl1.split('').reverse().join('') === stl1 
-                ? randomDigits(2) 
-                : stl1.split('').reverse().join('');
-            const xiuChu = `${Math.floor(Math.random() * 9) + 1}${btl} - ${Math.floor(Math.random() * 9) + 1}${stl1}`;
-            const dauDuoi = `Đầu ${btl[0]} - Đuôi ${stl1[1]}`;
+      osc1.type = 'sawtooth';
+      osc2.type = 'triangle';
+      osc1.frequency.setValueAtTime(freq, now);
+      osc2.frequency.setValueAtTime(freq * 1.003, now);
 
-            grid.innerHTML += `
-                <div class="vip-card">
-                    <div class="vip-card-head">
-                        <span class="station-name">🎯 Đài ${st}</span>
-                        <span class="tag-vip">CHỐT SỐ VIP</span>
-                    </div>
-                    <div class="balls-row">
-                        <span>Bạch Thủ Lô (Độc thủ):</span>
-                        <span class="ball-vip">${btl}</span>
-                    </div>
-                    <div class="balls-row">
-                        <span>Song Thủ Lô Cặp:</span>
-                        <span class="pill-gold">${stl1} - ${stl2}</span>
-                    </div>
-                    <div class="balls-row">
-                        <span>Xỉu Chủ / 3 Càng:</span>
-                        <span class="pill-sub">${xiuChu}</span>
-                    </div>
-                    <div class="balls-row" style="margin-bottom:0;">
-                        <span>Chạm Đầu - Đuôi:</span>
-                        <strong style="color:#4ade80;">${dauDuoi}</strong>
-                    </div>
-                </div>
-            `;
-        });
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(freq * 2.8, now);
+      filter.Q.value = 2.5;
+
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(vol, now + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + duration + 0.02);
+      osc2.stop(now + duration + 0.02);
     }
 
-    // Vẽ bảng Quay thử XSMN
-    function renderSpinBoard() {
-        const stations = LICH_XSMN[selectedDay].stations;
-        const board = document.getElementById('boardXSMN');
-
-        let html = `<thead><tr><th class="col-prize">Giải</th>`;
-        stations.forEach(st => { html += `<th>Đài ${st}</th>`; });
-        html += `</tr></thead><tbody>`;
-
-        CAU_TRUC_XSMN.forEach((row, rIdx) => {
-            const [pName, count, digits, cls] = row;
-            html += `<tr><td class="col-prize">${pName}</td>`;
-            stations.forEach((_, sIdx) => {
-                let spans = '';
-                for (let c = 0; c < count; c++) {
-                    spans += `<span id="cell-${sIdx}-${rIdx}-${c}" class="${cls}">${'-'.repeat(digits)}</span>`;
-                }
-                html += `<td><div class="num-group">${spans}</div></td>`;
-            });
-            html += `</tr>`;
-        });
-        html += `</tbody>`;
-        board.innerHTML = html;
-
-        renderEmptyLoto(stations);
+    function playBassDrum(freq) {
+      if (!audioCtx || freq <= 0) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq * 1.5, now);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.14);
+      gain.gain.setValueAtTime(0.22, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 0.17);
     }
 
-    function renderEmptyLoto(stations) {
-        const lotoGrid = document.getElementById('lotoGrid');
-        lotoGrid.innerHTML = '';
-        stations.forEach((st, sIdx) => {
-            let rows = '';
-            for (let d = 0; d <= 9; d++) {
-                rows += `<tr><td class="td-dau">Đầu ${d}</td><td class="td-duoi" id="loto-${sIdx}-${d}">-</td></tr>`;
-            }
-            lotoGrid.innerHTML += `
-                <div class="loto-box">
-                    <div class="loto-box-head">Thống Kê Loto — Đài ${st}</div>
-                    <table class="loto-tb">${rows}</table>
-                </div>
-            `;
-        });
+    function playTickSound() {
+      if (isMuted || !audioCtx) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(680, now);
+      osc.frequency.exponentialRampToValueAtTime(320, now + 0.035);
+      g.gain.setValueAtTime(0.10, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start(now);
+      osc.stop(now + 0.04);
     }
 
-    // Hiệu ứng Quay thử lần lượt từ Giải 8 đến Đặc Biệt
-    function startSpinXSMN() {
-        if (isSpinning) return;
-        isSpinning = true;
-        const btn = document.getElementById('btnSpin');
-        btn.disabled = true;
-        btn.innerText = "⏳ ĐANG QUAY LỒNG CẦU...";
+    function playLockSound(isSpecial = false) {
+      if (isMuted || !audioCtx) return;
+      if (isSpecial) {
+        const fanfare = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+        fanfare.forEach((f, idx) => {
+          setTimeout(() => {
+            playBrassNote(f, 0.75, 0.22);
+            playBrassNote(f * 0.5, 0.75, 0.15);
+          }, idx * 85);
+        });
+      } else {
+        playBrassNote(1046.50, 0.22, 0.16);
+      }
+    }
 
-        const stations = LICH_XSMN[selectedDay].stations;
-        renderEmptyLoto(stations);
+    function startBackgroundMusic() {
+      const ctx = ensureAudioContext();
+      if (!ctx) return;
+      stopBackgroundMusic();
 
-        const lotoMemory = stations.map(() => []);
-        const sequence = [];
+      if (customAudioBuffer) {
+        customAudioSource = ctx.createBufferSource();
+        customAudioSource.buffer = customAudioBuffer;
+        customAudioSource.loop = true;
+        const bgGain = ctx.createGain();
+        bgGain.gain.value = 0.75;
+        customAudioSource.connect(bgGain);
+        bgGain.connect(masterGain);
+        customAudioSource.start(0);
+        return;
+      }
 
-        CAU_TRUC_XSMN.forEach((row, rIdx) => {
-            const count = row[1];
-            const digits = row[2];
-            for (let c = 0; c < count; c++) {
-                stations.forEach((_, sIdx) => {
-                    sequence.push({
-                        el: document.getElementById(`cell-${sIdx}-${rIdx}-${c}`),
-                        digits,
-                        sIdx
-                    });
+      stepBeat = 0;
+      melodyTimer = setInterval(() => {
+        if (isMuted || !audioCtx || !isSpinning) return;
+        const [leadFreq, harmonyFreq, bassFreq, dur] =
+          traditionalLotteryScore[stepBeat % traditionalLotteryScore.length];
+        stepBeat++;
+
+        if (leadFreq > 0) playBrassNote(leadFreq, dur, 0.15);
+        if (harmonyFreq > 0) playBrassNote(harmonyFreq, dur, 0.09);
+        if (bassFreq > 0) playBassDrum(bassFreq);
+      }, 185);
+    }
+
+    function stopBackgroundMusic() {
+      if (melodyTimer) {
+        clearInterval(melodyTimer);
+        melodyTimer = null;
+      }
+      if (customAudioSource) {
+        try { customAudioSource.stop(); } catch (e) {}
+        customAudioSource = null;
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      const btn = document.getElementById('muteBtn');
+      btn.textContent = isMuted ? '🔇 Tắt tiếng' : '🔊 Bật tiếng';
+      if (masterGain && audioCtx) {
+        masterGain.gain.setValueAtTime(isMuted ? 0 : 0.9, audioCtx.currentTime);
+      }
+    }
+
+    function saveMp3ToStorage(arrayBuffer, fileName) {
+      try {
+        const req = indexedDB.open('XSMNAudioDB', 1);
+        req.onupgradeneeded = (e) => {
+          e.target.result.createObjectStore('files');
+        };
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          const tx = db.transaction('files', 'readwrite');
+          tx.objectStore('files').put({ data: arrayBuffer, name: fileName }, 'savedMp3');
+        };
+      } catch (e) {}
+    }
+
+    function loadSavedMp3FromStorage() {
+      try {
+        const req = indexedDB.open('XSMNAudioDB', 1);
+        req.onupgradeneeded = (e) => {
+          e.target.result.createObjectStore('files');
+        };
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          const tx = db.transaction('files', 'readonly');
+          const getReq = tx.objectStore('files').get('savedMp3');
+          getReq.onsuccess = () => {
+            if (getReq.result && getReq.result.data) {
+              const ctx = ensureAudioContext();
+              if (ctx) {
+                ctx.decodeAudioData(getReq.result.data.slice(0), (buffer) => {
+                  customAudioBuffer = buffer;
+                  document.getElementById('mp3Btn').textContent = '🎵 Đã lưu MP3';
                 });
+              }
             }
-        });
-
-        sequence.forEach((item, index) => {
-            item.el.classList.add('rolling');
-            const timer = setInterval(() => {
-                item.el.innerText = randomDigits(item.digits);
-            }, 50);
-
-            setTimeout(() => {
-                clearInterval(timer);
-                const finalNum = randomDigits(item.digits);
-                item.el.innerText = finalNum;
-                item.el.classList.remove('rolling');
-
-                lotoMemory[item.sIdx].push(finalNum.slice(-2));
-                updateLotoStation(item.sIdx, lotoMemory[item.sIdx]);
-
-                if (index === sequence.length - 1) {
-                    isSpinning = false;
-                    btn.disabled = false;
-                    btn.innerText = "⚡ QUAY THỬ LẠI LẦN NỮA";
-                }
-            }, 300 + index * 90);
-        });
+          };
+        };
+      } catch (e) {}
     }
 
-    function updateLotoStation(sIdx, list) {
-        const buckets = Array.from({ length: 10 }, () => []);
-        list.forEach(num => {
-            const dau = parseInt(num[0], 10);
-            buckets[dau].push(num[1]);
+    function loadCustomMp3(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const ctx = ensureAudioContext();
+      if (!ctx) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const rawBuffer = e.target.result;
+        saveMp3ToStorage(rawBuffer.slice(0), file.name);
+        ctx.decodeAudioData(rawBuffer, function(buffer) {
+          customAudioBuffer = buffer;
+          document.getElementById('mp3Btn').textContent = '🎵 Đã lưu MP3';
+          document.getElementById('subTitle').textContent = `Đang dùng nhạc: ${file.name}`;
         });
-        for (let d = 0; d <= 9; d++) {
-            const cell = document.getElementById(`loto-${sIdx}-${d}`);
-            if (cell) cell.innerText = buckets[d].length ? buckets[d].sort().join(', ') : '-';
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    // ================= QUẢN LÝ LỊCH ĐÀI 3 MIỀN =================
+    function changeRegion() {
+      if (isSpinning) stopSpin(false);
+      currentRegion = document.getElementById('regionSelect').value;
+      document.getElementById('mainTitle').textContent = schedulesByRegion[currentRegion].title;
+      document.getElementById('downloadBtn').classList.remove('ready');
+      initDaySelector();
+      initTable();
+    }
+
+    function initDaySelector() {
+      const select = document.getElementById('daySelect');
+      select.innerHTML = '';
+
+      const regConfig = schedulesByRegion[currentRegion];
+      const now = new Date();
+      const todayIdx = now.getDay();
+      const tomorrowIdx = (todayIdx + 1) % 7;
+
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const isAfterDraw = currentMinutes >= (regConfig.drawHour * 60 + regConfig.drawMin);
+
+      const orderedIndices = [todayIdx, tomorrowIdx];
+      for (let i = 0; i < 7; i++) {
+        if (i !== todayIdx && i !== tomorrowIdx) {
+          orderedIndices.push(i);
         }
-    }
-</script>
+      }
 
+      orderedIndices.forEach(idx => {
+        const info = regConfig.days[idx];
+        const opt = document.createElement('option');
+        opt.value = idx;
+
+        let prefix = '';
+        if (idx === todayIdx) prefix = '[Hôm nay] ';
+        else if (idx === tomorrowIdx) prefix = '[Ngày mai] ';
+
+        opt.textContent = `${prefix}${info.name} (${info.stations.join(', ')})`;
+        select.appendChild(opt);
+      });
+
+      select.value = isAfterDraw ? tomorrowIdx : todayIdx;
+      currentStations = regConfig.days[select.value].stations;
+    }
+
+    function changeDay() {
+      if (isSpinning) stopSpin(false);
+      const val = document.getElementById('daySelect').value;
+      currentStations = schedulesByRegion[currentRegion].days[val].stations;
+      document.getElementById('downloadBtn').classList.remove('ready');
+      initTable();
+    }
+
+    function initTable() {
+      const wrapper = document.getElementById('tableWrapper');
+      const thead = document.getElementById('tableHeader');
+      const tbody = document.getElementById('tableBody');
+
+      wrapper.classList.remove('mode-4-cols');
+
+      if (currentRegion === 'mb') {
+        // Bảng Miền Bắc (1 đài truyền thống, 27 giải chia nhiều cột)
+        thead.style.display = 'none';
+        tbody.innerHTML = '';
+
+        prizeConfigMB.forEach(prize => {
+          const row = document.createElement('div');
+          row.className = `prize-row ${prize.class}`;
+
+          const colGiai = document.createElement('div');
+          colGiai.className = 'col-giai';
+          colGiai.textContent = prize.label;
+          row.appendChild(colGiai);
+
+          const gridContainer = document.createElement('div');
+          gridContainer.className = 'mb-grid-container';
+
+          for (let r = 0; r < prize.rows; r++) {
+            const subRow = document.createElement('div');
+            subRow.className = 'mb-sub-row';
+            const stepId = prize.spinSteps[r];
+
+            for (let c = 0; c < prize.cols; c++) {
+              const cell = document.createElement('div');
+              cell.className = `num-cell step-group-${stepId}`;
+              cell.dataset.digits = prize.digits;
+              cell.dataset.fullval = '';
+              cell.textContent = '•••';
+              subRow.appendChild(cell);
+            }
+            gridContainer.appendChild(subRow);
+          }
+
+          row.appendChild(gridContainer);
+          tbody.appendChild(row);
+        });
+
+        totalSteps = 10; // Miền Bắc quay theo 10 hàng (từ Giải 7 lên Giải ĐB)
+      } else {
+        // Bảng Miền Nam & Miền Trung (Nhiều cột đài song song)
+        thead.style.display = 'flex';
+        if (currentStations.length === 4) {
+          wrapper.classList.add('mode-4-cols');
+        }
+
+        thead.innerHTML = '<div class="col-giai">Giải</div>';
+        currentStations.forEach((stName) => {
+          const div = document.createElement('div');
+          div.className = 'col-station';
+          div.textContent = stName;
+          thead.appendChild(div);
+        });
+
+        tbody.innerHTML = '';
+        let stepIndex = 0;
+
+        prizeConfigMNMT.forEach(prize => {
+          const row = document.createElement('div');
+          row.className = `prize-row ${prize.class}`;
+
+          const colGiai = document.createElement('div');
+          colGiai.className = 'col-giai';
+          colGiai.textContent = prize.label;
+          row.appendChild(colGiai);
+
+          for (let s = 0; s < currentStations.length; s++) {
+            const colSt = document.createElement('div');
+            colSt.className = 'col-station';
+
+            for (let c = 0; c < prize.count; c++) {
+              const curStep = stepIndex + c;
+              const cell = document.createElement('div');
+              cell.className = `num-cell step-group-${curStep}`;
+              cell.id = `cell-s${s}-step${curStep}`;
+              cell.dataset.digits = prize.digits;
+              cell.dataset.fullval = '';
+              cell.textContent = '•••';
+              colSt.appendChild(cell);
+            }
+            row.appendChild(colSt);
+          }
+
+          stepIndex += prize.count;
+          tbody.appendChild(row);
+        });
+
+        totalSteps = stepIndex; // 18 bước
+      }
+    }
+
+    function randomNum(digits) {
+      let res = '';
+      for (let i = 0; i < digits; i++) {
+        res += Math.floor(Math.random() * 10);
+      }
+      return res;
+    }
+
+    function formatByMode(val) {
+      if (!val) return '•••';
+      const mode = document.querySelector('input[name="viewMode"]:checked').value;
+      if (mode === '2') return val.slice(-2);
+      if (mode === '3') return val.slice(-3);
+      return val;
+    }
+
+    function updateDisplayMode() {
+      document.querySelectorAll('.num-cell').forEach(cell => {
+        if (cell.dataset.fullval) {
+          cell.textContent = formatByMode(cell.dataset.fullval);
+        }
+      });
+    }
+
+    function resetBoard() {
+      document.querySelectorAll('.num-cell').forEach(cell => {
+        cell.classList.remove('active-spin');
+        cell.dataset.fullval = '';
+        cell.textContent = '•••';
+      });
+    }
+
+    function openModal() {
+      if (lastVideoBlob) {
+        document.getElementById('videoModal').classList.add('show');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('videoModal').classList.remove('show');
+    }
+
+    // ================= VẼ KHUNG HÌNH CANVAS CHO CẢ 3 MIỀN =================
+    function drawVideoFrame() {
+      const canvas = document.getElementById('videoCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, W, H);
+
+      // 1. Thanh App Bar
+      ctx.fillStyle = '#0b4a92';
+      ctx.fillRect(0, 0, W, 62);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 28px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('←   Quay thử', 24, 31);
+
+      // 2. Thanh điều khiển
+      ctx.fillStyle = '#ebebeb';
+      ctx.fillRect(0, 62, W, 66);
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#cccccc';
+      ctx.lineWidth = 2;
+      ctx.fillRect(16, 72, 460, 46);
+      ctx.strokeRect(16, 72, 460, 46);
+
+      const sel = document.getElementById('daySelect');
+      const dayText = sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text.replace(/\[.*?\]\s*/, '') : '';
+      ctx.fillStyle = '#222222';
+      ctx.font = '600 22px sans-serif';
+      ctx.fillText(dayText.substring(0, 28), 28, 95);
+
+      ctx.fillStyle = isSpinning ? '#d9430f' : '#f37021';
+      ctx.fillRect(496, 72, 208, 46);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 23px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(isSpinning ? 'DỪNG' : 'QUAY THỬ', 600, 95);
+
+      // 3. Tiêu đề theo miền
+      const titleTxt = schedulesByRegion[currentRegion].title;
+      ctx.fillStyle = '#d32f2f';
+      ctx.font = 'bold 29px sans-serif';
+      ctx.fillText(titleTxt, W / 2, 152);
+      ctx.fillStyle = '#666666';
+      ctx.font = '21px sans-serif';
+      ctx.fillText('Thông tin chỉ mang tính tham khảo', W / 2, 180);
+
+      ctx.strokeStyle = '#dddddd';
+      ctx.beginPath();
+      ctx.moveTo(0, 196);
+      ctx.lineTo(W, 196);
+      ctx.stroke();
+
+      const giaiW = W * 0.11;
+      const footerH = 56;
+
+      if (currentRegion === 'mb') {
+        // VẼ BẢNG MIỀN BẮC (27 LÔ)
+        const bodyTop = 196;
+        const bodyH = H - bodyTop - footerH;
+        const totalUnits = 10; // Tổng 10 hàng con
+        const unitH = bodyH / totalUnits;
+
+        let curUnit = 0;
+        prizeConfigMB.forEach(prize => {
+          const rowTop = bodyTop + curUnit * unitH;
+          const rowH = prize.rows * unitH;
+
+          ctx.fillStyle = '#fafafa';
+          ctx.fillRect(0, rowTop, giaiW, rowH);
+
+          ctx.fillStyle = (prize.label === 'ĐB' || prize.label === '7') ? '#d32f2f' : '#333333';
+          ctx.font = 'bold 25px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(prize.label, giaiW / 2, rowTop + rowH / 2);
+
+          const colW = (W - giaiW) / prize.cols;
+
+          for (let r = 0; r < prize.rows; r++) {
+            const subTop = rowTop + r * unitH;
+            const stepId = prize.spinSteps[r];
+            const domCells = document.querySelectorAll(`.step-group-${stepId}`);
+
+            if (stepId === activeStep) {
+              ctx.fillStyle = '#fff176';
+              ctx.fillRect(giaiW, subTop, W - giaiW, unitH);
+            }
+
+            for (let c = 0; c < prize.cols; c++) {
+              const textVal = domCells[c] ? domCells[c].textContent : '•••';
+              const cx = giaiW + c * colW + colW / 2;
+              const cy = subTop + unitH / 2;
+
+              if (prize.label === 'ĐB') {
+                ctx.fillStyle = '#d32f2f';
+                ctx.font = 'bold 42px sans-serif';
+              } else if (prize.label === '7') {
+                ctx.fillStyle = '#d32f2f';
+                ctx.font = 'bold 36px sans-serif';
+              } else {
+                ctx.fillStyle = '#111111';
+                ctx.font = 'bold 34px sans-serif';
+              }
+              ctx.fillText(textVal, cx, cy);
+
+              if (c > 0) {
+                ctx.strokeStyle = '#eeeeee';
+                ctx.beginPath();
+                ctx.moveTo(giaiW + c * colW, subTop);
+                ctx.lineTo(giaiW + c * colW, subTop + unitH);
+                ctx.stroke();
+              }
+            }
+          }
+
+          ctx.strokeStyle = '#dcdcdc';
+          ctx.beginPath();
+          ctx.moveTo(0, rowTop + rowH);
+          ctx.lineTo(W, rowTop + rowH);
+          ctx.stroke();
+
+          curUnit += prize.rows;
+        });
+
+        ctx.strokeStyle = '#dcdcdc';
+        ctx.beginPath();
+        ctx.moveTo(giaiW, bodyTop);
+        ctx.lineTo(giaiW, H - footerH);
+        ctx.stroke();
+
+      } else {
+        // VẼ BẢNG MIỀN NAM & MIỀN TRUNG (18 LÔ)
+        const headerY = 196;
+        const headerH = 46;
+        ctx.fillStyle = '#f5f5f5';
+        ctx.fillRect(0, headerY, W, headerH);
+
+        const numStations = currentStations.length;
+        const stW = (W - giaiW) / numStations;
+
+        ctx.fillStyle = '#111111';
+        ctx.font = 'bold 24px sans-serif';
+        ctx.fillText('Giải', giaiW / 2, headerY + headerH / 2);
+
+        currentStations.forEach((st, i) => {
+          ctx.fillText(st, giaiW + i * stW + stW / 2, headerY + headerH / 2);
+        });
+
+        ctx.strokeStyle = '#cccccc';
+        ctx.beginPath();
+        ctx.moveTo(0, headerY + headerH);
+        ctx.lineTo(W, headerY + headerH);
+        ctx.stroke();
+
+        const bodyTop = headerY + headerH;
+        const bodyH = H - bodyTop - footerH;
+        const stepH = bodyH / 18;
+
+        let stepIdx = 0;
+        prizeConfigMNMT.forEach(prize => {
+          const rowTop = bodyTop + stepIdx * stepH;
+          const rowH = prize.count * stepH;
+
+          ctx.fillStyle = '#fafafa';
+          ctx.fillRect(0, rowTop, giaiW, rowH);
+
+          ctx.fillStyle = (prize.label === 'ĐB') ? '#d32f2f' : '#333333';
+          ctx.font = 'bold 24px sans-serif';
+          ctx.fillText(prize.label, giaiW / 2, rowTop + rowH / 2);
+
+          for (let c = 0; c < prize.count; c++) {
+            const curStep = stepIdx + c;
+            const cellTop = rowTop + c * stepH;
+
+            if (curStep === activeStep) {
+              ctx.fillStyle = '#fff176';
+              ctx.fillRect(giaiW, cellTop, W - giaiW, stepH);
+            }
+
+            for (let s = 0; s < numStations; s++) {
+              const domCell = document.getElementById(`cell-s${s}-step${curStep}`);
+              const textVal = domCell ? domCell.textContent : '•••';
+              const cellX = giaiW + s * stW + stW / 2;
+              const cellY = cellTop + stepH / 2;
+
+              if (prize.label === '8' || prize.label === 'ĐB') {
+                ctx.fillStyle = '#d32f2f';
+                ctx.font = numStations === 4 ? 'bold 31px sans-serif' : 'bold 36px sans-serif';
+              } else {
+                ctx.fillStyle = '#111111';
+                ctx.font = numStations === 4 ? 'bold 29px sans-serif' : 'bold 33px sans-serif';
+              }
+              ctx.fillText(textVal, cellX, cellY);
+            }
+          }
+
+          ctx.strokeStyle = '#dcdcdc';
+          ctx.beginPath();
+          ctx.moveTo(0, rowTop + rowH);
+          ctx.lineTo(W, rowTop + rowH);
+          ctx.stroke();
+
+          stepIdx += prize.count;
+        });
+
+        ctx.strokeStyle = '#dcdcdc';
+        ctx.beginPath();
+        ctx.moveTo(giaiW, headerY);
+        ctx.lineTo(giaiW, H - footerH);
+        for (let s = 1; s < numStations; s++) {
+          const x = giaiW + s * stW;
+          ctx.moveTo(x, headerY);
+          ctx.lineTo(x, H - footerH);
+        }
+        ctx.stroke();
+      }
+
+      // Vẽ Thanh Footer
+      const footerTop = H - footerH;
+      ctx.fillStyle = '#f9f9f9';
+      ctx.fillRect(0, footerTop, W, footerH);
+      ctx.strokeStyle = '#cccccc';
+      ctx.beginPath();
+      ctx.moveTo(0, footerTop);
+      ctx.lineTo(W, footerTop);
+      ctx.stroke();
+
+      const mode = document.querySelector('input[name="viewMode"]:checked').value;
+      const opts = [
+        { k: 'all', l: 'Đầy đủ', x: W * 0.2 },
+        { k: '2', l: '2 Số', x: W * 0.5 },
+        { k: '3', l: '3 Số', x: W * 0.8 }
+      ];
+
+      opts.forEach(o => {
+        const cy = footerTop + footerH / 2;
+        ctx.strokeStyle = '#0b4a92';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(o.x - 45, cy, 11, 0, Math.PI * 2);
+        ctx.stroke();
+
+        if (mode === o.k) {
+          ctx.fillStyle = '#0b4a92';
+          ctx.beginPath();
+          ctx.arc(o.x - 45, cy, 6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = '#222222';
+        ctx.font = '500 23px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(o.l, o.x - 26, cy);
+      });
+    }
+
+    // ================= GHI VIDEO MP4 KÈM ÂM THANH =================
+    let useHardwareMp4 = false;
+    let mp4Muxer = null;
+    let videoEncoder = null;
+    let audioEncoder = null;
+    let audioScriptProcessor = null;
+    let frameCount = 0;
+    let audioSampleCount = 0;
+    const FPS = 30;
+
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let frameIntervalId = null;
+    let recStartTime = 0;
+    let lastVideoBlob = null;
+    let lastVideoExt = 'mp4';
+
+    async function startVideoRecording() {
+      const canvas = document.getElementById('videoCanvas');
+      const ctxAudio = ensureAudioContext();
+      document.getElementById('downloadBtn').classList.remove('ready');
+      closeModal();
+      lastVideoBlob = null;
+      frameCount = 0;
+      audioSampleCount = 0;
+      recStartTime = Date.now();
+
+      drawVideoFrame();
+
+      if (typeof window.Mp4Muxer !== 'undefined' && typeof window.VideoEncoder !== 'undefined') {
+        try {
+          const codecsToTry = ['avc1.42001f', 'avc1.4d001f', 'avc1.64001f'];
+          let supportedVideoCodec = null;
+          for (const c of codecsToTry) {
+            const sup = await VideoEncoder.isConfigSupported({
+              codec: c,
+              width: canvas.width,
+              height: canvas.height,
+              bitrate: 2500000,
+              framerate: FPS
+            });
+            if (sup.supported) {
+              supportedVideoCodec = c;
+              break;
+            }
+          }
+
+          let hasAACSupport = false;
+          if (typeof window.AudioEncoder !== 'undefined' && ctxAudio) {
+            try {
+              const aSup = await AudioEncoder.isConfigSupported({
+                codec: 'mp4a.40.2',
+                sampleRate: ctxAudio.sampleRate,
+                numberOfChannels: 1,
+                bitrate: 128000
+              });
+              hasAACSupport = aSup.supported;
+            } catch (e) {
+              hasAACSupport = false;
+            }
+          }
+
+          if (supportedVideoCodec) {
+            useHardwareMp4 = true;
+            const muxerConfig = {
+              target: new Mp4Muxer.ArrayBufferTarget(),
+              video: {
+                codec: 'avc',
+                width: canvas.width,
+                height: canvas.height
+              },
+              fastStart: 'in-memory'
+            };
+
+            if (hasAACSupport && ctxAudio) {
+              muxerConfig.audio = {
+                codec: 'aac',
+                sampleRate: ctxAudio.sampleRate,
+                numberOfChannels: 1
+              };
+            }
+
+            mp4Muxer = new Mp4Muxer.Muxer(muxerConfig);
+
+            videoEncoder = new VideoEncoder({
+              output: (chunk, meta) => mp4Muxer.addVideoChunk(chunk, meta),
+              error: (e) => console.error(e)
+            });
+
+            videoEncoder.configure({
+              codec: supportedVideoCodec,
+              width: canvas.width,
+              height: canvas.height,
+              bitrate: 2500000,
+              framerate: FPS
+            });
+
+            if (hasAACSupport && ctxAudio) {
+              audioEncoder = new AudioEncoder({
+                output: (chunk, meta) => mp4Muxer.addAudioChunk(chunk, meta),
+                error: (e) => console.error(e)
+              });
+              audioEncoder.configure({
+                codec: 'mp4a.40.2',
+                sampleRate: ctxAudio.sampleRate,
+                numberOfChannels: 1,
+                bitrate: 128000
+              });
+
+              audioScriptProcessor = ctxAudio.createScriptProcessor(4096, 1, 1);
+              masterGain.connect(audioScriptProcessor);
+              audioScriptProcessor.connect(ctxAudio.destination);
+              audioScriptProcessor.onaudioprocess = (e) => {
+                if (!audioEncoder || audioEncoder.state !== 'configured') return;
+                const inputData = e.inputBuffer.getChannelData(0);
+                const dataCopy = new Float32Array(inputData);
+                const timestampUs = Math.round((audioSampleCount * 1000000) / ctxAudio.sampleRate);
+                audioSampleCount += dataCopy.length;
+
+                const audioData = new AudioData({
+                  format: 'f32-planar',
+                  sampleRate: ctxAudio.sampleRate,
+                  numberOfFrames: dataCopy.length,
+                  numberOfChannels: 1,
+                  timestamp: timestampUs,
+                  data: dataCopy
+                });
+                audioEncoder.encode(audioData);
+                audioData.close();
+              };
+            }
+
+            document.getElementById('recBadge').classList.add('recording');
+            document.getElementById('recTimerText').textContent = '00:00';
+
+            if (frameIntervalId) clearInterval(frameIntervalId);
+            frameIntervalId = setInterval(() => {
+              drawVideoFrame();
+              if (videoEncoder && videoEncoder.state === 'configured') {
+                const timestampUs = Math.round((frameCount * 1000000) / FPS);
+                const durationUs = Math.round(1000000 / FPS);
+                const frame = new VideoFrame(canvas, { timestamp: timestampUs, duration: durationUs });
+                videoEncoder.encode(frame, { keyFrame: frameCount % 30 === 0 });
+                frame.close();
+                frameCount++;
+              }
+              const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
+              const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
+              const ss = String(elapsed % 60).padStart(2, '0');
+              document.getElementById('recTimerText').textContent = `${mm}:${ss}`;
+            }, 1000 / FPS);
+
+            return;
+          }
+        } catch (err) {
+          useHardwareMp4 = false;
+        }
+      }
+
+      useHardwareMp4 = false;
+      if (!canvas.captureStream || typeof MediaRecorder === 'undefined') return;
+
+      const vStream = canvas.captureStream(FPS);
+      const tracks = [...vStream.getVideoTracks()];
+      if (streamDest && streamDest.stream.getAudioTracks().length > 0) {
+        tracks.push(streamDest.stream.getAudioTracks()[0]);
+      }
+      const combinedStream = new MediaStream(tracks);
+
+      recordedChunks = [];
+      const mimeTypes = ['video/mp4', 'video/webm;codecs=h264,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
+      let selectedMime = '';
+      for (const m of mimeTypes) {
+        if (MediaRecorder.isTypeSupported(m)) {
+          selectedMime = m;
+          break;
+        }
+      }
+
+      mediaRecorder = selectedMime
+        ? new MediaRecorder(combinedStream, { mimeType: selectedMime, videoBitsPerSecond: 2500000 })
+        : new MediaRecorder(combinedStream);
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const durationMs = Date.now() - recStartTime;
+        const rawBlob = new Blob(recordedChunks, { type: selectedMime || 'video/webm' });
+
+        if (typeof ysFixWebmDuration === 'function' && (!selectedMime || selectedMime.includes('webm'))) {
+          ysFixWebmDuration(rawBlob, durationMs, (fixedBlob) => {
+            lastVideoBlob = fixedBlob;
+            lastVideoExt = 'webm';
+            showReadyUI(Math.round(durationMs / 1000));
+          });
+        } else {
+          lastVideoBlob = rawBlob;
+          lastVideoExt = (selectedMime && selectedMime.includes('mp4')) ? 'mp4' : 'webm';
+          showReadyUI(Math.round(durationMs / 1000));
+        }
+      };
+
+      mediaRecorder.start();
+      document.getElementById('recBadge').classList.add('recording');
+
+      if (frameIntervalId) clearInterval(frameIntervalId);
+      frameIntervalId = setInterval(() => {
+        drawVideoFrame();
+        const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
+        const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
+        const ss = String(elapsed % 60).padStart(2, '0');
+        document.getElementById('recTimerText').textContent = `${mm}:${ss}`;
+      }, 1000 / FPS);
+    }
+
+    async function stopVideoRecording(showPopup = true) {
+      document.getElementById('recBadge').classList.remove('recording');
+      stopBackgroundMusic();
+
+      if (frameIntervalId) {
+        clearInterval(frameIntervalId);
+        frameIntervalId = null;
+      }
+
+      if (audioScriptProcessor) {
+        try {
+          audioScriptProcessor.disconnect();
+          masterGain.disconnect(audioScriptProcessor);
+        } catch (e) {}
+        audioScriptProcessor = null;
+      }
+
+      if (useHardwareMp4 && videoEncoder) {
+        try {
+          if (showPopup) {
+            await videoEncoder.flush();
+            if (audioEncoder && audioEncoder.state === 'configured') {
+              await audioEncoder.flush();
+            }
+            mp4Muxer.finalize();
+            const { buffer } = mp4Muxer.target;
+            lastVideoBlob = new Blob([buffer], { type: 'video/mp4' });
+            lastVideoExt = 'mp4';
+            const totalSec = Math.round(frameCount / FPS);
+            showReadyUI(totalSec);
+          }
+          videoEncoder.close();
+          if (audioEncoder) audioEncoder.close();
+        } catch (e) {}
+        videoEncoder = null;
+        audioEncoder = null;
+        mp4Muxer = null;
+      } else if (mediaRecorder && mediaRecorder.state === 'recording') {
+        if (!showPopup) mediaRecorder.onstop = null;
+        mediaRecorder.stop();
+      }
+    }
+
+    function showReadyUI(durationSec) {
+      document.getElementById('modalDesc').textContent =
+        `Video MP4 (${schedulesByRegion[currentRegion].title}) dài ${durationSec} giây đã sẵn sàng đăng Facebook / TikTok:`;
+      document.getElementById('downloadBtn').classList.add('ready');
+      document.getElementById('videoModal').classList.add('show');
+    }
+
+    async function shareVideoNow() {
+      if (!lastVideoBlob) return;
+      const fileName = `xs-${currentRegion}-quay-thu-${Date.now()}.${lastVideoExt}`;
+      const file = new File([lastVideoBlob], fileName, { type: lastVideoBlob.type });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: schedulesByRegion[currentRegion].title
+          });
+          return;
+        } catch (err) {}
+      }
+      downloadVideoNow();
+    }
+
+    function downloadVideoNow() {
+      if (!lastVideoBlob) return;
+      const fileName = `xs-${currentRegion}-quay-thu-${Date.now()}.${lastVideoExt}`;
+      const url = URL.createObjectURL(lastVideoBlob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 5000);
+      closeModal();
+    }
+
+    // ================= ĐIỀU KHIỂN QUAY THỬ =================
+    function toggleSpin() {
+      if (isSpinning) {
+        stopSpin(true);
+      } else {
+        startSpin();
+      }
+    }
+
+    function startSpin() {
+      clearTimeout(finishRecTimeout);
+      isSpinning = true;
+      activeStep = 0;
+      const btn = document.getElementById('spinBtn');
+      btn.textContent = 'DỪNG';
+      btn.classList.add('spinning');
+      resetBoard();
+      startBackgroundMusic();
+      startVideoRecording();
+      runStep(0);
+    }
+
+    function stopSpin(saveVideo = true) {
+      isSpinning = false;
+      activeStep = -1;
+      clearTimeout(spinTimeout);
+      clearTimeout(pauseTimeout);
+      clearTimeout(finishRecTimeout);
+      clearInterval(animInterval);
+      const btn = document.getElementById('spinBtn');
+      btn.textContent = 'QUAY THỬ';
+      btn.classList.remove('spinning');
+      document.querySelectorAll('.num-cell.active-spin').forEach(c => {
+        c.classList.remove('active-spin');
+      });
+
+      if (saveVideo) {
+        drawVideoFrame();
+        finishRecTimeout = setTimeout(() => {
+          stopVideoRecording(true);
+        }, 2500);
+      } else {
+        stopVideoRecording(false);
+      }
+    }
+
+    function runStep(step) {
+      if (!isSpinning || step >= totalSteps) {
+        stopSpin(true);
+        return;
+      }
+
+      activeStep = step;
+      const currentCells = Array.from(document.querySelectorAll(`.step-group-${step}`));
+      if (currentCells.length === 0) {
+        stopSpin(true);
+        return;
+      }
+
+      const digits = parseInt(currentCells[0].dataset.digits, 10);
+
+      // Tự động căn thời gian mỗi bước sao cho cả 3 miền đều quay trong ~32 giây
+      const stepSpinTime = currentRegion === 'mb' ? 2800 : 1550;
+      const stepPauseTime = currentRegion === 'mb' ? 300 : 250;
+
+      currentCells.forEach(cell => {
+        cell.classList.add('active-spin');
+        cell.textContent = formatByMode(randomNum(digits));
+      });
+      playTickSound();
+
+      animInterval = setInterval(() => {
+        currentCells.forEach(cell => {
+          cell.textContent = formatByMode(randomNum(digits));
+        });
+        playTickSound();
+      }, TICK_SPEED_MS);
+
+      spinTimeout = setTimeout(() => {
+        clearInterval(animInterval);
+        currentCells.forEach(cell => {
+          const finalVal = randomNum(digits);
+          cell.dataset.fullval = finalVal;
+          cell.textContent = formatByMode(finalVal);
+          cell.classList.remove('active-spin');
+        });
+
+        playLockSound(step === totalSteps - 1);
+        activeStep = -1;
+
+        pauseTimeout = setTimeout(() => {
+          runStep(step + 1);
+        }, stepPauseTime);
+      }, stepSpinTime);
+    }
+
+    initDaySelector();
+    initTable();
+    loadSavedMp3FromStorage();
+  </script>
 </body>
 </html>
