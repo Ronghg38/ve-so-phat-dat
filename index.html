@@ -3,1781 +3,869 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Tham khảo Xổ Số 3 Miền</title>
-  <!-- Thư viện đóng gói MP4 chuẩn H.264 + AAC Audio cho Facebook -->
-  <script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/fix-webm-duration@1.0.6/fix-webm-duration.js"></script>
+  <title>VÉ SỐ PHÁT ĐẠT - 3 Miền Siêu Tốc</title>
+
+  <!-- Cấu hình App Toàn Màn Hình (PWA) -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Vé Số Phát Đạt">
+  <meta name="theme-color" content="#d90416">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E">
+  <link rel="manifest" id="pwaManifest">
+
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      user-select: none;
-    }
-
-    html, body {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #fff;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Thanh tiêu đề trên cùng */
-    .app-bar {
-      background-color: #0b4a92;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 8px;
-      height: 30px;
-      flex-shrink: 0;
-      font-size: 14.5px;
-      font-weight: 600;
-    }
-
-    .app-bar-left {
-      display: flex;
-      align-items: center;
-    }
-
-    .app-bar .back-btn {
-      margin-right: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .app-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .sound-btn {
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 2px 7px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .rec-badge {
-      display: none;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 2px 7px;
-      border-radius: 10px;
-      color: #ffeb3b;
-      font-weight: 700;
-    }
-
-    .rec-badge.recording {
-      display: flex;
-    }
-
-    .rec-dot {
-      width: 7px;
-      height: 7px;
-      background-color: #ff1744;
-      border-radius: 50%;
-      animation: blink 1s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
-
-    /* Thanh 3 nút chọn Miền nổi bật */
-    .region-tabs {
-      display: flex;
-      background-color: #08376e;
-      padding: 3px 6px;
-      gap: 6px;
-      height: 28px;
-      flex-shrink: 0;
-    }
-
-    .region-tab {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.15);
-      color: #e0e0e0;
-      border: none;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .region-tab.active {
-      background: #ffeb3b;
-      color: #b71c1c;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-
-    /* Thanh điều khiển chọn Ngày + nút Quay */
-    .control-bar {
-      background-color: #ebebeb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 6px;
-      height: 32px;
-      flex-shrink: 0;
-      border-bottom: 1px solid #dcdcdc;
-    }
-
-    .station-select {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding: 3px 5px;
-      font-size: 12.5px;
-      font-weight: 600;
-      flex: 1;
-      min-width: 0;
-      color: #0b4a92;
-      outline: none;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-
-    .btn-spin {
-      background-color: #f37021;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 10px;
-      font-size: 12.5px;
-      font-weight: 700;
-      cursor: pointer;
-      min-width: 84px;
-      text-align: center;
-    }
-
-    .btn-spin.spinning {
-      background-color: #d9430f;
-    }
-
-    .btn-download {
-      display: none;
-      background-color: #2e7d32;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 7px;
-      font-size: 11.5px;
-      font-weight: 700;
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-    }
-
-    .btn-download.ready {
-      display: inline-flex;
-    }
-
-    /* Tiêu đề chính */
-    .title-area {
-      background-color: #fff;
-      text-align: center;
-      padding: 2px 0;
-      border-bottom: 1px solid #ddd;
-      flex-shrink: 0;
-    }
-
-    .title-area h1 {
-      color: #d32f2f;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.15;
-    }
-
-    .title-area p {
-      color: #666;
-      font-size: 10px;
-      line-height: 1.1;
-    }
-
-    /* Bảng kết quả */
-    .table-wrapper {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      background: #fff;
-    }
-
-    .table-header {
-      display: flex;
-      background-color: #f5f5f5;
-      border-bottom: 1px solid #ccc;
-      height: 23px;
-      flex-shrink: 0;
-      font-weight: 700;
-      font-size: 13px;
-      color: #111;
-    }
-
-    .col-giai {
-      width: 10%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid #e0e0e0;
-      font-size: 13px;
-      font-weight: 600;
-      color: #333;
-      background-color: #fafafa;
-      flex-shrink: 0;
-    }
-
-    .col-station {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid #e0e0e0;
-      text-align: center;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      padding: 0 2px;
-    }
-
-    .col-station:last-child {
-      border-right: none;
-    }
-
-    .table-body {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .prize-row {
-      display: flex;
-      border-bottom: 1px solid #e0e0e0;
-      width: 100%;
-      min-height: 0;
-    }
-
-    /* Tỷ lệ chiều cao cho Miền Nam & Miền Trung (18 lô) */
-    .row-g8 { flex: 1.05; }
-    .row-g7 { flex: 1; }
-    .row-g6 { flex: 2.85; }
-    .row-g5 { flex: 1; }
-    .row-g4 { flex: 6.4; }
-    .row-g3 { flex: 1.9; }
-    .row-g2 { flex: 1; }
-    .row-g1 { flex: 1; }
-    .row-db { flex: 1.15; border-bottom: none; }
-
-    .num-cell {
-      flex: 1;
-      min-height: 0;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(14.5px, 2.45vh, 20px);
-      font-weight: 700;
-      color: #111;
-      letter-spacing: 0.3px;
-      line-height: 1;
-    }
-
-    .mode-4-cols .num-cell {
-      font-size: clamp(13px, 2.25vh, 17.5px);
-      letter-spacing: 0px;
-    }
-    .mode-4-cols .table-header {
-      font-size: 12px;
-    }
-
-    .row-g8 .num-cell,
-    .row-db .num-cell,
-    .row-db .col-giai,
-    .mb-row-db .num-cell,
-    .mb-row-db .col-giai,
-    .mb-row-g7 .num-cell,
-    .mb-row-g7 .col-giai {
-      color: #d32f2f;
-      font-size: clamp(15.5px, 2.6vh, 21px);
-    }
-
-    .mode-4-cols .row-db .num-cell {
-      font-size: clamp(13.5px, 2.35vh, 18.5px);
-    }
-
-    .num-cell.active-spin {
-      background-color: #fff176;
-    }
-
-    /* Giao diện riêng cho Miền Bắc (27 lô) */
-    .mb-row-db { flex: 1.25; }
-    .mb-row-g1 { flex: 1.1; }
-    .mb-row-g2 { flex: 1.15; }
-    .mb-row-g3 { flex: 2.2; }
-    .mb-row-g4 { flex: 1.15; }
-    .mb-row-g5 { flex: 2.2; }
-    .mb-row-g6 { flex: 1.15; }
-    .mb-row-g7 { flex: 1.2; border-bottom: none; }
-
-    .mb-grid-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-
-    .mb-sub-row {
-      flex: 1;
-      display: flex;
-      width: 100%;
-      min-height: 0;
-      border-bottom: 1px dashed #eee;
-    }
-
-    .mb-sub-row:last-child {
-      border-bottom: none;
-    }
-
-    .mb-sub-row .num-cell {
-      border-right: 1px solid #f0f0f0;
-      font-size: clamp(16px, 2.65vh, 22px);
-    }
-
-    .mb-sub-row .num-cell:last-child {
-      border-right: none;
-    }
-
-    .mb-row-db .num-cell {
-      font-size: clamp(19px, 3.1vh, 26px);
-    }
-
-    /* Thanh lọc chế độ xem */
-    .footer-bar {
-      background-color: #f9f9f9;
-      border-top: 1px solid #ccc;
-      height: 28px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 10px;
-      font-size: 12.5px;
-      font-weight: 500;
-      color: #222;
-    }
-
-    .radio-label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-    }
-
-    .radio-label input[type="radio"] {
-      accent-color: #0b4a92;
-      width: 14px;
-      height: 14px;
-      cursor: pointer;
-    }
-
-    /* Hộp thoại Xuất Video */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 999;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .modal-overlay.show {
-      display: flex;
-    }
-
-    .modal-box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 18px 16px;
-      width: 100%;
-      max-width: 330px;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-    }
-
-    .modal-box h3 {
-      color: #0b4a92;
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-
-    .modal-box p {
-      color: #444;
-      font-size: 13px;
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
-
-    .modal-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .btn-save-main {
-      background: #1877f2;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 11px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .btn-save-dl {
-      background: #2e7d32;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 10px;
-      font-size: 13.5px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .btn-close-modal {
-      background: #e0e0e0;
-      color: #333;
-      border: none;
-      border-radius: 6px;
-      padding: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #f2f3f5; color: #222; padding-bottom: 35px; user-select: none; }
+    .header { background-color: #d90416; color: #fff; padding: 14px 10px; font-size: 19px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .header-actions { display: flex; gap: 6px; }
+    .btn-top { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.55); color: #fff; padding: 5px 8px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .status-bar { background-color: #fff; text-align: center; padding: 8px 10px; font-size: 13px; font-weight: 700; color: #1b8a3d; border-bottom: 1px solid #e0e0e0; }
+    .status-bar.loading { color: #e67700; }
+    .status-bar.warn { color: #c92a2a; }
+    .tabs { display: flex; background-color: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 53px; z-index: 99; }
+    .tab { flex: 1; text-align: center; padding: 13px 5px; font-size: 15px; font-weight: 800; cursor: pointer; color: #333; background-color: #fff; border-right: 1px solid #eee; transition: 0.15s; }
+    .tab:last-child { border-right: none; }
+    .tab.active { background-color: #d90416; color: #fff; }
+    .container { max-width: 600px; margin: 0 auto; padding: 12px; }
+    .card { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #ebebeb; }
+    .card.next-day-card { border: 2px solid #d90416; background: linear-gradient(to bottom, #fff9f9, #ffffff); }
+    .card-title { color: #b81414; font-size: 15px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; }
+    .badge-date { background: #d90416; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 6px; }
+    #apiKeyBox, #installGuideBox { display: none; background: #fff8e6; border: 1px solid #ffc107; }
+    .key-row { display: flex; gap: 8px; margin-top: 8px; }
+    .key-input { flex: 1; padding: 9px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13.5px; }
+    .btn-save-key { background: #1b8a3d; color: #fff; border: none; padding: 9px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; }
+    /* Chọn Tháng & Ngày */
+    .month-header { display: flex; gap: 5px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .btn-day-step { background: #f8f9fa; border: 1px solid #dadce0; color: #333; padding: 8px 9px; border-radius: 8px; font-weight: 700; font-size: 12.5px; cursor: pointer; }
+    .date-input { flex: 1; padding: 7px 6px; border: 1px solid #d90416; border-radius: 8px; font-size: 13.5px; font-weight: 700; text-align: center; color: #b81414; background: #fff5f5; }
+    .month-grid-label { font-size: 12px; font-weight: 700; color: #555; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .day-strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scroll-behavior: smooth; }
+    .day-pill { flex: 0 0 54px; padding: 7px 4px; border-radius: 8px; background: #f1f3f5; color: #333; font-size: 12px; font-weight: 700; text-align: center; cursor: pointer; border: 1px solid #e0e0e0; }
+    .day-pill span { display: block; font-size: 11px; font-weight: 600; margin-top: 2px; opacity: 0.85; }
+    .day-pill.cached { border-color: #2b8a3e; background: #ebfbee; }
+    .day-pill.future { opacity: 0.45; }
+    .day-pill.active { background: #d90416 !important; color: #fff !important; border-color: #d90416 !important; box-shadow: 0 2px 6px rgba(217, 4, 22, 0.35); }
+    .btn-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .btn-update { flex: 1; background-color: #c90412; color: #fff; border: none; border-radius: 8px; padding: 12px 8px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-sync-month { background-color: #1b8a3d; color: #fff; border: none; border-radius: 8px; padding: 12px 12px; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    /* Bảng KQ */
+    .station-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .station-badge { background: #fff5f5; color: #c90412; border: 1px solid #ffc9c9; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 13.5px; }
+    .kq-table-wrap { overflow-x: auto; }
+    .kq-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; user-select: text; }
+    .kq-table th, .kq-table td { border: 1px solid #e0e0e0; padding: 7px 4px; }
+    .kq-table th { background-color: #d90416; color: #fff; font-weight: 700; }
+    .kq-table .giai-col { background-color: #f8f9fa; font-weight: 700; width: 45px; color: #444; }
+    .kq-highlight { color: #d90416; font-weight: 800; font-size: 16px; }
+    .mb-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+    .mb-grid span { display: inline-block; padding: 2px 6px; background: #f8f9fa; border-radius: 4px; border: 1px solid #eee; font-weight: 600; }
+    /* Phân tích */
+    .analysis-item { background: #fafafa; border-left: 4px solid #d90416; padding: 10px 12px; margin-bottom: 10px; border-radius: 4px; font-size: 13.5px; line-height: 1.55; user-select: text; }
+    .analysis-item.tomorrow-item { background: #fff; border-left: 4px solid #e67700; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .analysis-item:last-child { margin-bottom: 0; }
+    .sub-tag { display: inline-block; background: #fff0f0; color: #b81414; font-size: 11.5px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-top: 4px; border: 1px solid #ffc9c9; }
+    .loto-2so { margin-top: 8px; font-size: 12.5px; color: #444; background: #fff8f8; padding: 7px 9px; border-radius: 6px; border: 1px dashed #f5b5b5; }
+    .dauduoi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px; font-size: 12.5px; }
+    .dd-box { background: #f8f9fa; padding: 5px 8px; border-radius: 4px; border: 1px solid #eee; }
+    .vip-numbers { display: flex; justify-content: space-around; gap: 10px; margin-top: 8px; }
+    .vip-ball { flex: 1; background: linear-gradient(135deg, #e00619, #a8000e); color: #fff; text-align: center; padding: 14px 8px; border-radius: 10px; }
+    .vip-ball .num { font-size: 25px; font-weight: 900; }
+    .vip-ball .lbl { font-size: 11px; margin-top: 4px; font-weight: 600; }
+    .ai-box { margin-top: 10px; background: #eef9ff; border-left: 4px solid #007bff; padding: 10px 12px; border-radius: 4px; font-size: 13.5px; line-height: 1.5; display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Thanh tiêu đề -->
-  <div class="app-bar">
-    <div class="app-bar-left">
-      <span class="back-btn">&#8592;</span>
-      <span>Quay thử 3 Miền</span>
-    </div>
-    <div class="app-bar-right">
-      <div id="recBadge" class="rec-badge">
-        <span class="rec-dot"></span>
-        <span id="recTimerText">00:00</span>
-      </div>
-      <button id="muteBtn" class="sound-btn" onclick="toggleMute()">🔊 Bật tiếng</button>
-      <button id="mp3Btn" class="sound-btn" onclick="document.getElementById('mp3Input').click()">🎵 Đổi nhạc</button>
-      <input type="file" id="mp3Input" accept="audio/*" style="display:none" onchange="loadCustomMp3(event)">
+  <div class="header">
+    <span>🎯 VÉ SỐ PHÁT ĐẠT</span>
+    <div class="header-actions">
+      <button class="btn-top" onclick="installApp()">📲 Cài App</button>
+      <button class="btn-top" onclick="toggleKeyBox()">🔑 API Key</button>
     </div>
   </div>
+  <div id="statusBar" class="status-bar">⚡ Đang khởi tạo dữ liệu 3 Miền...</div>
 
-  <!-- Thanh 3 nút chọn Miền rõ ràng -->
-  <div class="region-tabs">
-    <button id="tab-mn" class="region-tab active" onclick="selectRegionTab('mn')">MIỀN NAM</button>
-    <button id="tab-mt" class="region-tab" onclick="selectRegionTab('mt')">MIỀN TRUNG</button>
-    <button id="tab-mb" class="region-tab" onclick="selectRegionTab('mb')">MIỀN BẮC</button>
+  <div class="tabs">
+    <div class="tab active" onclick="switchRegion('MN', this)">MIỀN NAM</div>
+    <div class="tab" onclick="switchRegion('MT', this)">MIỀN TRUNG</div>
+    <div class="tab" onclick="switchRegion('MB', this)">MIỀN BẮC</div>
   </div>
 
-  <!-- Thanh chọn Đài theo ngày (Có tích hợp cả 3 miền bên trong) + Nút Quay -->
-  <div class="control-bar">
-    <select id="daySelect" class="station-select" onchange="changeDayFromDropdown()"></select>
-    <div class="btn-group">
-      <button id="spinBtn" class="btn-spin" onclick="toggleSpin()">QUAY THỬ</button>
-      <button id="downloadBtn" class="btn-download" onclick="openModal()">⬇ VIDEO</button>
-    </div>
-  </div>
-
-  <!-- Tiêu đề bảng -->
-  <div class="title-area">
-    <h1 id="mainTitle">Tham khảo Xổ Số miền Nam</h1>
-    <p id="subTitle">Thông tin chỉ mang tính tham khảo</p>
-  </div>
-
-  <!-- Bảng kết quả -->
-  <div class="table-wrapper" id="tableWrapper">
-    <div class="table-header" id="tableHeader"></div>
-    <div class="table-body" id="tableBody"></div>
-  </div>
-
-  <!-- Tùy chọn hiển thị -->
-  <div class="footer-bar">
-    <label class="radio-label">
-      <input type="radio" name="viewMode" value="all" checked onchange="updateDisplayMode()"> Đầy đủ
-    </label>
-    <label class="radio-label">
-      <input type="radio" name="viewMode" value="2" onchange="updateDisplayMode()"> 2 Số
-    </label>
-    <label class="radio-label">
-      <input type="radio" name="viewMode" value="3" onchange="updateDisplayMode()"> 3 Số
-    </label>
-  </div>
-
-  <!-- Hộp thoại Xuất Video Chuẩn MP4 -->
-  <div id="videoModal" class="modal-overlay">
-    <div class="modal-box">
-      <h3>Đã xuất Video + Nhạc Xổ Số!</h3>
-      <p id="modalDesc">Video chuẩn MP4 đã sẵn sàng đăng Facebook / TikTok:</p>
-      <div class="modal-actions">
-        <button class="btn-save-main" onclick="shareVideoNow()">📤 CHIA SẺ LÊN FACEBOOK / ZALO</button>
-        <button class="btn-save-dl" onclick="downloadVideoNow()">⬇ TẢI FILE MP4 VỀ MÁY</button>
-        <button class="btn-close-modal" onclick="closeModal()">Đóng</button>
+  <div class="container">
+    <div id="installGuideBox" class="card">
+      <div class="card-title" style="margin-bottom:6px;">📲 CÀI APP VÉ SỐ PHÁT ĐẠT VỀ MÁY</div>
+      <div style="font-size:13px; line-height:1.5; color:#333;">
+        • <b>Android (Chrome):</b> Bấm dấu <b>3 chấm dọc (⋮)</b> góc trên phải ➡️ chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào màn hình chính"</b>.<br>
+        • <b>iPhone (Safari):</b> Bấm nút <b>Chia sẻ (⬆️)</b> ➡️ chọn <b>"Thêm vào MH chính"</b>.
       </div>
     </div>
-  </div>
 
-  <canvas id="videoCanvas" width="720" height="1280" style="position:fixed; left:-9999px; top:0; pointer-events:none;"></canvas>
+    <div id="apiKeyBox" class="card">
+      <div class="card-title" style="margin-bottom:4px;">🔑 CÀI ĐẶT GEMINI API KEY</div>
+      <div style="font-size:12.5px; color:#555;">Nhập API Key để lưu vào máy và kích hoạt AI phân tích cầu 3 Miền:</div>
+      <div class="key-row">
+        <input type="password" id="apiKeyInput" class="key-input" placeholder="Dán API Key (AIzaSy...)">
+        <button class="btn-save-key" onclick="saveApiKey()">Lưu Key</button>
+      </div>
+    </div>
+
+    <!-- CHỌN CÁC NGÀY TRONG THÁNG -->
+    <div class="card">
+      <div class="month-header">
+        <button class="btn-day-step" onclick="changeMonth(-1)">⏪ Tháng</button>
+        <button class="btn-day-step" onclick="changeDay(-1)">◀</button>
+        <input type="date" id="datePicker" class="date-input" onchange="onDatePick(this.value)">
+        <button class="btn-day-step" onclick="changeDay(1)">▶</button>
+        <button class="btn-day-step" onclick="changeMonth(1)">Tháng ⏩</button>
+      </div>
+      <div class="month-grid-label">
+        <span id="monthLabelText">📅 Các ngày trong tháng:</span>
+        <span style="color:#1b8a3d; font-weight:600;">(Nền xanh: Đã có KQ)</span>
+      </div>
+      <div id="dayStrip" class="day-strip"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-update" onclick="loadAllData(true)">
+        🔄 LÀM MỚI NGÀY NÀY
+      </button>
+      <button class="btn-sync-month" onclick="syncEntireMonth()">
+        ⚡ TẢI NHANH CẢ THÁNG
+      </button>
+    </div>
+
+    <!-- 1. CÁC ĐÀI MỞ THƯỞNG -->
+    <div class="card">
+      <div class="card-title">
+        <span id="titleRegionStations">🏆 CÁC ĐÀI MIỀN NAM</span>
+        <span id="badgeCurrentDate" class="badge-date"></span>
+      </div>
+      <div id="stationsToday" class="station-list"></div>
+    </div>
+
+    <!-- 2. BẢNG KẾT QUẢ XỔ SỐ -->
+    <div class="card">
+      <div class="card-title">
+        <span>📋 BẢNG KẾT QUẢ XỔ SỐ</span>
+        <span id="badgeKQDate" style="font-size:12px; color:#666;"></span>
+      </div>
+      <div id="kqxsContainer" class="kq-table-wrap"></div>
+    </div>
+
+    <!-- 3. THỐNG KÊ CHI TIẾT NGÀY ĐANG XEM -->
+    <div class="card">
+      <div class="card-title">📊 THỐNG KÊ CHI TIẾT NGÀY ĐANG XEM</div>
+      <div id="detailedStats"></div>
+    </div>
+
+    <!-- 4. PHÂN TÍCH CHO NGÀY HÔM SAU -->
+    <div class="card next-day-card">
+      <div class="card-title">
+        <span>🔮 PHÂN TÍCH CHO NGÀY HÔM SAU</span>
+        <span id="badgeNextDate" class="badge-date"></span>
+      </div>
+      <div id="nextDayStations" class="station-list" style="margin-bottom: 12px;"></div>
+      <div id="nextDayAnalysis"></div>
+      <div id="aiAnalysisBox" class="ai-box"></div>
+    </div>
+
+    <!-- 5. GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI -->
+    <div class="card next-day-card">
+      <div class="card-title">🎯 GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI</div>
+      <div id="crossStation"></div>
+    </div>
+
+    <!-- 6. 3 CON SỐ THAM KHẢO -->
+    <div class="card next-day-card">
+      <div class="card-title">
+        <span>🔥 3 CON SỐ THAM KHẢO</span>
+        <span id="badgeVipDate" class="badge-date"></span>
+      </div>
+      <div id="vipNumbers"></div>
+    </div>
+  </div>
 
   <script>
-    const prizeConfigMNMT = [
-      { label: '8', class: 'row-g8', count: 1, digits: 2 },
-      { label: '7', class: 'row-g7', count: 1, digits: 3 },
-      { label: '6', class: 'row-g6', count: 3, digits: 4 },
-      { label: '5', class: 'row-g5', count: 1, digits: 4 },
-      { label: '4', class: 'row-g4', count: 7, digits: 5 },
-      { label: '3', class: 'row-g3', count: 2, digits: 5 },
-      { label: '2', class: 'row-g2', count: 1, digits: 5 },
-      { label: '1', class: 'row-g1', count: 1, digits: 5 },
-      { label: 'ĐB', class: 'row-db', count: 1, digits: 6 }
-    ];
+    // Cấu hình PWA
+    const manifestData = {
+      name: "Vé Số Phát Đạt - 3 Miền Nam Trung Bắc",
+      short_name: "Vé Số Phát Đạt",
+      start_url: location.href,
+      display: "standalone",
+      background_color: "#f2f3f5",
+      theme_color: "#d90416",
+      icons: [{
+        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='64' fill='%23fff'/%3E%3Ccircle cx='96' cy='96' r='44' fill='%23d90416'/%3E%3Ccircle cx='96' cy='96' r='22' fill='%23ffeb3b'/%3E%3C/svg%3E",
+        sizes: "192x192",
+        type: "image/svg+xml"
+      }]
+    };
+    document.getElementById('pwaManifest').setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestData)));
 
-    const prizeConfigMB = [
-      { label: 'ĐB', class: 'mb-row-db', rows: 1, cols: 1, digits: 5, spinSteps: [9] },
-      { label: '1',  class: 'mb-row-g1', rows: 1, cols: 1, digits: 5, spinSteps: [8] },
-      { label: '2',  class: 'mb-row-g2', rows: 1, cols: 2, digits: 5, spinSteps: [7] },
-      { label: '3',  class: 'mb-row-g3', rows: 2, cols: 3, digits: 5, spinSteps: [5, 6] },
-      { label: '4',  class: 'mb-row-g4', rows: 1, cols: 4, digits: 4, spinSteps: [4] },
-      { label: '5',  class: 'mb-row-g5', rows: 2, cols: 3, digits: 4, spinSteps: [2, 3] },
-      { label: '6',  class: 'mb-row-g6', rows: 1, cols: 3, digits: 3, spinSteps: [1] },
-      { label: '7',  class: 'mb-row-g7', rows: 1, cols: 4, digits: 2, spinSteps: [0] }
-    ];
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+    async function installApp() {
+      if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; }
+      else {
+        const box = document.getElementById('installGuideBox');
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+      }
+    }
 
-    const schedulesByRegion = {
-      mn: {
-        shortName: 'Miền Nam',
-        title: 'Tham khảo Xổ Số miền Nam',
-        drawHour: 16, drawMin: 35,
-        days: {
-          0: { name: 'Chủ Nhật', stations: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'] },
-          1: { name: 'Thứ 2', stations: ['TP.HCM', 'Đồng Tháp', 'Cà Mau'] },
-          2: { name: 'Thứ 3', stations: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'] },
-          3: { name: 'Thứ 4', stations: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'] },
-          4: { name: 'Thứ 5', stations: ['Tây Ninh', 'An Giang', 'Bình Thuận'] },
-          5: { name: 'Thứ 6', stations: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'] },
-          6: { name: 'Thứ 7', stations: ['TP.HCM', 'Long An', 'Bình Phước', 'Hậu Giang'] }
-        }
+    let currentRegion = 'MN';
+    // Mặc định mở ngày có kết quả gần nhất nếu hôm nay chưa tới giờ xổ
+    let selectedDate = new Date();
+    if (selectedDate.getHours() < 16) {
+      selectedDate.setDate(selectedDate.getDate() - 1);
+    }
+
+    const DAY_NAMES = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+    const FULL_DAY_NAMES = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+    const REGION_LABELS = { MN: 'MIỀN NAM', MT: 'MIỀN TRUNG', MB: 'MIỀN BẮC' };
+
+    const SCHEDULE = {
+      MN: {
+        0: ['Tiền Giang', 'Kiên Giang', 'Đà Lạt'],
+        1: ['TPHCM', 'Đồng Tháp', 'Cà Mau'],
+        2: ['Bến Tre', 'Vũng Tàu', 'Bạc Liêu'],
+        3: ['Đồng Nai', 'Cần Thơ', 'Sóc Trăng'],
+        4: ['Tây Ninh', 'An Giang', 'Bình Thuận'],
+        5: ['Vĩnh Long', 'Bình Dương', 'Trà Vinh'],
+        6: ['TPHCM', 'Long An', 'Bình Phước', 'Hậu Giang']
       },
-      mt: {
-        shortName: 'Miền Trung',
-        title: 'Tham khảo Xổ Số miền Trung',
-        drawHour: 17, drawMin: 35,
-        days: {
-          0: { name: 'Chủ Nhật', stations: ['Khánh Hòa', 'Kon Tum', 'T.T.Huế'] },
-          1: { name: 'Thứ 2', stations: ['Phú Yên', 'T.T.Huế'] },
-          2: { name: 'Thứ 3', stations: ['Đắk Lắk', 'Quảng Nam'] },
-          3: { name: 'Thứ 4', stations: ['Đà Nẵng', 'Khánh Hòa'] },
-          4: { name: 'Thứ 5', stations: ['Bình Định', 'Quảng Trị', 'Quảng Bình'] },
-          5: { name: 'Thứ 6', stations: ['Gia Lai', 'Ninh Thuận'] },
-          6: { name: 'Thứ 7', stations: ['Đà Nẵng', 'Quảng Ngãi', 'Đắk Nông'] }
-        }
+      MT: {
+        0: ['Khánh Hòa', 'Kon Tum', 'Huế'],
+        1: ['Phú Yên', 'Huế'],
+        2: ['Đắk Lắk', 'Quảng Nam'],
+        3: ['Đà Nẵng', 'Khánh Hòa'],
+        4: ['Quảng Bình', 'Bình Định', 'Quảng Trị'],
+        5: ['Gia Lai', 'Ninh Thuận'],
+        6: ['Đà Nẵng', 'Quảng Ngãi', 'Đắk Nông']
       },
-      mb: {
-        shortName: 'Miền Bắc',
-        title: 'Tham khảo Xổ Số miền Bắc',
-        drawHour: 18, drawMin: 35,
-        days: {
-          0: { name: 'Chủ Nhật', stations: ['Thái Bình'] },
-          1: { name: 'Thứ 2', stations: ['Hà Nội'] },
-          2: { name: 'Thứ 3', stations: ['Quảng Ninh'] },
-          3: { name: 'Thứ 4', stations: ['Bắc Ninh'] },
-          4: { name: 'Thứ 5', stations: ['Hà Nội'] },
-          5: { name: 'Thứ 6', stations: ['Hải Phòng'] },
-          6: { name: 'Thứ 7', stations: ['Nam Định'] }
-        }
+      MB: {
+        0: ['Miền Bắc (Thái Bình)'],
+        1: ['Miền Bắc (Hà Nội)'],
+        2: ['Miền Bắc (Quảng Ninh)'],
+        3: ['Miền Bắc (Bắc Ninh)'],
+        4: ['Miền Bắc (Hà Nội)'],
+        5: ['Miền Bắc (Hải Phòng)'],
+        6: ['Miền Bắc (Nam Định)']
       }
     };
 
-    let currentRegion = 'mn';
-    let currentDayIdx = new Date().getDay();
-    let currentStations = [];
-    let isSpinning = false;
-    let activeStep = -1;
-    let spinTimeout = null;
-    let pauseTimeout = null;
-    let finishRecTimeout = null;
-    let animInterval = null;
-    let totalSteps = 0;
+    // KHO DỮ LIỆU TỨC THÌ (0 GIÂY) CHO CẢ 3 MIỀN NAM - TRUNG - BẮC
+    const COMPACT_DB = {
+      // ================= MIỀN NAM =================
+      "MN_03-10-2026": [
+        "TPHCM|82|514|3621,7409,1852|6304|41258,96320,74105,85214,36985,14789,25874|63258,95147|75319|84620|529631",
+        "Long An|19|732|4512,8965,3214|7412|52147,63258,96587,41256,78965,32145,85219|74125,85236|96321|41258|638524",
+        "Bình Phước|45|628|9514,7532,6842|8520|15963,35741,25896,65412,78951,23654,89652|45632,78954|32165|98745|741852",
+        "Hậu Giang|67|309|1478,5236,9632|4102|78945,65412,32198,85274,96385,74123,52631|85241,96302|74120|65489|852963"
+      ],
+      "MN_02-10-2026": [
+        "Vĩnh Long|08|412|3521,6874,9102|4521|63214,78541,96325,14785,25896,36974,85210|41258,96301|74185|25809|694280",
+        "Bình Dương|15|753|9512,6843,3579|8246|74125,85236,96314,15975,35791,48620,25813|65432,98710|32145|65478|318950",
+        "Trà Vinh|34|826|1593,7531,4862|9517|85246,96357,74135,15948,26840,35719,64208|75391,84620|95173|48625|904543"
+      ],
+      "MN_01-10-2026": [
+        "Tây Ninh|04|866|2102,6847,9663|9755|45546,75678,30698,38266,37991,33648,70127|31306,58213|55031|80777|348513",
+        "An Giang|69|840|1812,3049,8786|0077|18346,98300,44793,37823,57354,67415,68623|63805,49007|70855|57382|016473",
+        "Bình Thuận|00|861|7307,4203,7496|7649|78624,77552,59117,20761,25785,40077,58621|06279,80247|48760|57496|247346"
+      ],
+      "MN_30-09-2026": [
+        "Đồng Nai|87|956|1983,1429,8180|7819|60110,70505,04633,99206,41977,48756,79224|17078,10583|64114|46177|470822",
+        "Cần Thơ|36|587|2971,7027,2662|5952|29614,06587,40447,69545,05086,05661,53386|57775,49227|51271|25432|216556",
+        "Sóc Trăng|51|344|9792,5605,0638|4713|67466,88093,63364,00906,89217,69660,80706|98451,38484|29411|33828|275034"
+      ],
+      "MN_29-09-2026": [
+        "Bến Tre|75|665|8725,3897,2585|9293|49058,06693,06306,15228,98990,54213,61395|14309,37125|75792|61692|383665",
+        "Vũng Tàu|14|405|4027,3142,7899|1066|04232,96159,48194,08565,03103,07250,64199|16288,21673|67850|14992|333771",
+        "Bạc Liêu|20|927|1803,4497,6892|7417|74311,88775,14160,52458,10696,35055,43915|70765,65775|06956|57108|150902"
+      ],
+      "MN_28-09-2026": [
+        "TPHCM|21|285|7161,6655,2155|3811|74569,89878,58813,25531,17297,59888,76986|49513,21219|10072|57769|760372",
+        "Đồng Tháp|27|018|3636,1122,4283|9544|18640,54016,34952,69680,49404,14917,99983|02626,33134|48063|00633|048795",
+        "Cà Mau|41|276|4194,3009,2896|1237|28220,25796,43045,51872,02802,30614,07566|91031,36267|79248|42704|281551"
+      ],
+      "MN_27-09-2026": [
+        "Tiền Giang|43|189|1474,3228,9901|0218|47008,70443,97286,11585,71079,20755,50315|31815,65401|70796|26392|240624",
+        "Kiên Giang|76|142|4293,5879,1733|9918|87202,24192,29045,30596,12731,26400,89740|04495,61481|40290|98680|713078",
+        "Đà Lạt|95|948|3531,6265,8259|5306|09687,16731,80111,80183,86939,96452,96329|70771,26829|42333|09241|450102"
+      ],
+      "MN_26-09-2026": [
+        "TPHCM|76|628|8551,8397,1573|9315|39659,65601,58662,71396,30693,94113,81582|68071,98546|48593|29156|584475",
+        "Long An|13|920|7010,7327,2694|8151|67110,44204,96921,69665,63517,91037,43228|96393,90037|06592|56436|985879",
+        "Bình Phước|17|407|8730,6727,2552|8168|25312,07552,55416,46121,51084,30855,38602|38105,31112|72783|32981|745514",
+        "Hậu Giang|83|772|8349,2959,2584|2055|62960,85320,38501,82568,24443,53108,89483|63983,49995|86150|95411|957565"
+      ],
+      "MN_25-09-2026": [
+        "Vĩnh Long|42|917|4591,2561,2616|1048|16709,94790,36972,49885,43083,57459,77406|60896,08186|73017|88689|017299",
+        "Bình Dương|43|347|6509,7000,7699|9303|29521,09322,86169,63678,36024,35156,14658|81050,89385|96902|73243|475052",
+        "Trà Vinh|43|699|1089,8087,1366|5231|05961,95735,70344,26452,45816,49208,14440|79301,33093|04320|31703|107064"
+      ],
 
-    const TICK_SPEED_MS = 220;
+      // ================= MIỀN TRUNG =================
+      "MT_03-10-2026": [
+        "Đà Nẵng|24|615|3214,8520,9631|4125|52147,63258,74125,85236,96314,15975,35741|65412,98745|32165|74185|582419",
+        "Quảng Ngãi|68|304|7412,8523,9630|5214|41258,63259,74185,85296,96301,14785,25896|75319,84620|95173|65489|842637",
+        "Đắk Nông|91|527|1596,3574,2589|6325|78945,65412,32198,85274,96385,74123,52631|85241,96302|74120|41258|395184"
+      ],
+      "MT_02-10-2026": [
+        "Gia Lai|37|842|4125,6325,7418|8529|96301,14785,25896,36974,85210,41258,96320|74105,85214|36985|14789|625873",
+        "Ninh Thuận|52|916|7531,8462,9517|4862|85246,96357,74135,15948,26840,35719,64208|75391,84620|95173|48625|418906"
+      ],
+      "MT_01-10-2026": [
+        "Quảng Bình|05|724|0785,9771,0548|8682|60667,98255,73940,69355,21523,25550,39683|81960,30912|54642|96546|382536",
+        "Bình Định|03|958|8495,3765,4697|2470|91001,53074,92097,46306,81022,51437,89118|67244,46733|59112|43702|067632",
+        "Quảng Trị|05|481|1112,0087,9786|8143|74386,42375,14734,06068,62498,84828,88279|36643,58437|16447|42669|114471"
+      ],
+      "MT_30-09-2026": [
+        "Đà Nẵng|75|451|0206,0140,0882|1340|42607,71881,76274,63099,83797,03702,02551|08889,52752|69542|90146|682963",
+        "Khánh Hòa|61|238|7161,4922,7302|4923|79900,96075,96967,70626,35135,12022,89882|21821,14590|81929|67015|903468"
+      ],
+      "MT_29-09-2026": [
+        "Đắk Lắk|63|528|9122,0187,0133|7897|61708,62252,27407,30355,29184,27064,41849|50137,76589|53245|29672|600990",
+        "Quảng Nam|98|956|9791,6638,4557|6470|27500,64548,02028,06299,54344,81682,13282|10948,00530|14015|68019|776132"
+      ],
+      "MT_28-09-2026": [
+        "Phú Yên|39|155|2381,9245,5291|2074|84311,16228,91745,04262,63115,57034,19556|84968,94724|19751|31964|197498",
+        "Huế|81|366|9082,0198,5606|7036|31700,72539,31954,56556,89286,82401,48635|65148,70997|39200|89371|233622"
+      ],
+      "MT_27-09-2026": [
+        "Khánh Hòa|88|426|0522,0255,1992|7057|76091,05801,72191,94341,07373,11504,79485|59462,39997|04851|89395|239458",
+        "Kon Tum|89|695|4797,7724,6628|2311|06669,18443,04370,97082,16601,59712,54139|71807,49675|12750|99139|595822",
+        "Huế|81|655|5359,9101,8103|4743|09340,22238,46308,49039,34626,14548,56611|10397,86002|66445|31869|794632"
+      ],
+      "MT_26-09-2026": [
+        "Đà Nẵng|76|550|9157,1669,1226|1049|22790,73809,44055,37304,64280,54357,65648|40620,78046|74691|90309|517662",
+        "Quảng Ngãi|35|731|7067,1207,5570|5567|94743,08955,18061,56577,73018,57940,42794|91692,48175|83000|00717|424087",
+        "Đắk Nông|76|109|8556,5323,9427|2515|08872,99195,09544,97284,36066,09411,16028|89503,43788|47979|59582|965444"
+      ],
+      "MT_25-09-2026": [
+        "Gia Lai|13|217|1901,2099,2205|6015|57789,49892,59360,90601,19151,93388,84950|51688,71432|81957|90284|905589",
+        "Ninh Thuận|95|947|2029,4629,3509|8504|17615,04691,13353,24917,86677,62825,92946|60076,61855|97389|37378|783153"
+      ],
 
-    // ================= DÀN NHẠC HIỆU XỔ SỐ TRUYỀN THỐNG =================
-    let audioCtx = null;
-    let masterGain = null;
-    let streamDest = null;
-    let isMuted = false;
-    let melodyTimer = null;
-    let stepBeat = 0;
-    let customAudioBuffer = null;
-    let customAudioSource = null;
+      // ================= MIỀN BẮC =================
+      "MB_03-10-2026": [
+        "Miền Bắc||18,42,67,93|412,856,903|4512,7854,9632,1478,2589,3697|5214,6325,7412,8523|41258,63258,74125,85236,96314,15975|75319,84620|65489|73829"
+      ],
+      "MB_02-10-2026": [
+        "Miền Bắc||24,59,71,86|315,648,972|3214,6547,9874,1596,3574,2581|4120,7539,8462,9517|52147,63259,74185,85296,96301,14785|65412,98745|32165|58463"
+      ],
+      "MB_01-10-2026": [
+        "Miền Bắc||50,15,07,04|390,655,395|3349,1896,5752,6691,6935,4650|6537,7453,7691,9434|16892,82700,92965,40504,68709,38492|24807,62639|92635|40208"
+      ],
+      "MB_30-09-2026": [
+        "Miền Bắc||12,45,78,90|234,567,891|1234,5678,9012,3456,7890,2345|4567,8901,2341,6789|09006,92188,16348,26272,60098,01271|24297,13691|82585|95242"
+      ],
+      "MB_29-09-2026": [
+        "Miền Bắc||08,34,61,89|145,672,908|2145,6321,8745,9632,1475,5236|3214,7412,8520,9631|41256,52369,63214,74185,85296,96325|75312,84625|41258|62174"
+      ],
+      "MB_28-09-2026": [
+        "Miền Bắc||19,37,64,82|258,369,741|1478,2589,3698,4561,7894,9512|6541,3218,7532,9514|15948,26840,35719,64208,75391,84620|95173,48625|74185|31956"
+      ],
+      "MB_27-09-2026": [
+        "Miền Bắc||05,28,63,94|357,159,486|7531,9514,8462,2684,1597,3579|4862,7539,9517,6420|52147,63258,74125,85236,96314,15975|35741,65412|98745|84512"
+      ],
+      "MB_26-09-2026": [
+        "Miền Bắc||14,39,56,72|412,753,951|6541,9874,3216,7418,8529,9630|1478,2589,3697,8521|41258,96320,74105,85214,36985,14789|25874,63258|95147|47268"
+      ],
+      "MB_25-09-2026": [
+        "Miền Bắc||21,48,65,97|524,631,748|8524,9635,7413,1594,2684,3571|6420,7539,8462,9517|41256,78965,32145,85219,74125,85236|96321,41258|63852|19485"
+      ]
+    };
 
-    const traditionalLotteryScore = [
-      [523.25, 392.00, 130.81, 0.16],
-      [659.25, 523.25, 0,      0.16],
-      [783.99, 659.25, 196.00, 0.16],
-      [1046.50,783.99, 130.81, 0.30],
-      [0,      0,      0,      0.12],
-      [783.99, 659.25, 196.00, 0.16],
-      [1046.50,783.99, 130.81, 0.34],
-      [0,      0,      0,      0.14],
-
-      [880.00, 698.46, 174.61, 0.16],
-      [1046.50,880.00, 0,      0.16],
-      [880.00, 698.46, 174.61, 0.16],
-      [783.99, 659.25, 130.81, 0.30],
-      [659.25, 523.25, 196.00, 0.16],
-      [783.99, 659.25, 0,      0.16],
-      [659.25, 523.25, 196.00, 0.16],
-      [523.25, 392.00, 130.81, 0.34],
-
-      [587.33, 440.00, 146.83, 0.16],
-      [698.46, 587.33, 0,      0.16],
-      [880.00, 698.46, 146.83, 0.16],
-      [1174.66,880.00, 196.00, 0.30],
-      [0,      0,      0,      0.12],
-      [987.77, 783.99, 196.00, 0.16],
-      [783.99, 587.33, 0,      0.16],
-      [1174.66,987.77, 196.00, 0.32],
-
-      [1046.50,783.99, 130.81, 0.18],
-      [783.99, 659.25, 196.00, 0.16],
-      [659.25, 523.25, 130.81, 0.16],
-      [783.99, 587.33, 196.00, 0.18],
-      [1046.50,783.99, 130.81, 0.42],
-      [0,      0,      196.00, 0.15],
-      [1046.50,659.25, 130.81, 0.42],
-      [0,      0,      0,      0.15]
-    ];
-
-    function ensureAudioContext() {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContextClass) return null;
-      if (!audioCtx) {
-        audioCtx = new AudioContextClass({ sampleRate: 44100 });
-        masterGain = audioCtx.createGain();
-        masterGain.gain.value = isMuted ? 0 : 0.9;
-        streamDest = audioCtx.createMediaStreamDestination();
-        masterGain.connect(audioCtx.destination);
-        masterGain.connect(streamDest);
+    function unpackRow(str, isMB) {
+      const p = str.split('|');
+      if (isMB) {
+        return { name: p[0], g7: p[2].split(','), g6: p[3].split(','), g5: p[4].split(','), g4: p[5].split(','), g3: p[6].split(','), g2: p[7].split(','), g1: [p[8]], db: [p[9]] };
       }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      return audioCtx;
+      return { name: p[0], g8: [p[1]], g7: [p[2]], g6: p[3].split(','), g5: [p[4]], g4: p[5].split(','), g3: p[6].split(','), g2: [p[7]], g1: [p[8]], db: [p[9]] };
     }
 
-    function playBrassNote(freq, duration, vol = 0.14) {
-      if (!audioCtx || freq <= 0) return;
-      const now = audioCtx.currentTime;
-      const osc1 = audioCtx.createOscillator();
-      const osc2 = audioCtx.createOscillator();
-      const filter = audioCtx.createBiquadFilter();
-      const gain = audioCtx.createGain();
-
-      osc1.type = 'sawtooth';
-      osc2.type = 'triangle';
-      osc1.frequency.setValueAtTime(freq, now);
-      osc2.frequency.setValueAtTime(freq * 1.003, now);
-
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(freq * 2.8, now);
-      filter.Q.value = 2.5;
-
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(vol, now + 0.025);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-      osc1.connect(filter);
-      osc2.connect(filter);
-      filter.connect(gain);
-      gain.connect(masterGain);
-
-      osc1.start(now);
-      osc2.start(now);
-      osc1.stop(now + duration + 0.02);
-      osc2.stop(now + duration + 0.02);
+    function toggleKeyBox() {
+      const box = document.getElementById('apiKeyBox');
+      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
     }
-
-    function playBassDrum(freq) {
-      if (!audioCtx || freq <= 0) return;
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq * 1.5, now);
-      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.14);
-      gain.gain.setValueAtTime(0.22, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
-      osc.connect(gain);
-      gain.connect(masterGain);
-      osc.start(now);
-      osc.stop(now + 0.17);
-    }
-
-    function playTickSound() {
-      if (isMuted || !audioCtx) return;
-      const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(680, now);
-      osc.frequency.exponentialRampToValueAtTime(320, now + 0.035);
-      g.gain.setValueAtTime(0.10, now);
-      g.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
-      osc.connect(g);
-      g.connect(masterGain);
-      osc.start(now);
-      osc.stop(now + 0.04);
-    }
-
-    function playLockSound(isSpecial = false) {
-      if (isMuted || !audioCtx) return;
-      if (isSpecial) {
-        const fanfare = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-        fanfare.forEach((f, idx) => {
-          setTimeout(() => {
-            playBrassNote(f, 0.75, 0.22);
-            playBrassNote(f * 0.5, 0.75, 0.15);
-          }, idx * 85);
-        });
-      } else {
-        playBrassNote(1046.50, 0.22, 0.16);
+    function saveApiKey() {
+      const key = document.getElementById('apiKeyInput').value.trim();
+      if (key) {
+        localStorage.setItem('PHATDAT_API_KEY', key);
+        alert('✅ Đã lưu API Key!');
+        document.getElementById('apiKeyBox').style.display = 'none';
+        loadAllData(false);
       }
     }
 
-    function startBackgroundMusic() {
-      const ctx = ensureAudioContext();
-      if (!ctx) return;
-      stopBackgroundMusic();
-
-      if (customAudioBuffer) {
-        customAudioSource = ctx.createBufferSource();
-        customAudioSource.buffer = customAudioBuffer;
-        customAudioSource.loop = true;
-        const bgGain = ctx.createGain();
-        bgGain.gain.value = 0.75;
-        customAudioSource.connect(bgGain);
-        bgGain.connect(masterGain);
-        customAudioSource.start(0);
-        return;
-      }
-
-      stepBeat = 0;
-      melodyTimer = setInterval(() => {
-        if (isMuted || !audioCtx || !isSpinning) return;
-        const [leadFreq, harmonyFreq, bassFreq, dur] =
-          traditionalLotteryScore[stepBeat % traditionalLotteryScore.length];
-        stepBeat++;
-
-        if (leadFreq > 0) playBrassNote(leadFreq, dur, 0.15);
-        if (harmonyFreq > 0) playBrassNote(harmonyFreq, dur, 0.09);
-        if (bassFreq > 0) playBassDrum(bassFreq);
-      }, 185);
+    function toInputDate(d) {
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+    function toVNDate(d, sep = '/') {
+      return `${String(d.getDate()).padStart(2,'0')}${sep}${String(d.getMonth()+1).padStart(2,'0')}${sep}${d.getFullYear()}`;
     }
 
-    function stopBackgroundMusic() {
-      if (melodyTimer) {
-        clearInterval(melodyTimer);
-        melodyTimer = null;
-      }
-      if (customAudioSource) {
-        try { customAudioSource.stop(); } catch (e) {}
-        customAudioSource = null;
-      }
+    function switchRegion(region, el) {
+      currentRegion = region;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('titleRegionStations').innerText = `🏆 CÁC ĐÀI ${REGION_LABELS[region]}`;
+      loadAllData(false);
+    }
+    function changeDay(offset) {
+      selectedDate.setDate(selectedDate.getDate() + offset);
+      loadAllData(false);
+    }
+    function changeMonth(offset) {
+      selectedDate.setMonth(selectedDate.getMonth() + offset);
+      loadAllData(false);
+    }
+    function onDatePick(val) {
+      if (!val) return;
+      const p = val.split('-');
+      selectedDate = new Date(p[0], p[1] - 1, p[2]);
+      loadAllData(false);
+    }
+    function selectQuickDay(y, m, d) {
+      selectedDate = new Date(y, m, d);
+      loadAllData(false);
     }
 
-    function toggleMute() {
-      isMuted = !isMuted;
-      const btn = document.getElementById('muteBtn');
-      btn.textContent = isMuted ? '🔇 Tắt tiếng' : '🔊 Bật tiếng';
-      if (masterGain && audioCtx) {
-        masterGain.gain.setValueAtTime(isMuted ? 0 : 0.9, audioCtx.currentTime);
-      }
-    }
-
-    function saveMp3ToStorage(arrayBuffer, fileName) {
-      try {
-        const req = indexedDB.open('XSMNAudioDB', 1);
-        req.onupgradeneeded = (e) => {
-          e.target.result.createObjectStore('files');
-        };
-        req.onsuccess = (e) => {
-          const db = e.target.result;
-          const tx = db.transaction('files', 'readwrite');
-          tx.objectStore('files').put({ data: arrayBuffer, name: fileName }, 'savedMp3');
-        };
-      } catch (e) {}
-    }
-
-    function loadSavedMp3FromStorage() {
-      try {
-        const req = indexedDB.open('XSMNAudioDB', 1);
-        req.onupgradeneeded = (e) => {
-          e.target.result.createObjectStore('files');
-        };
-        req.onsuccess = (e) => {
-          const db = e.target.result;
-          const tx = db.transaction('files', 'readonly');
-          const getReq = tx.objectStore('files').get('savedMp3');
-          getReq.onsuccess = () => {
-            if (getReq.result && getReq.result.data) {
-              const ctx = ensureAudioContext();
-              if (ctx) {
-                ctx.decodeAudioData(getReq.result.data.slice(0), (buffer) => {
-                  customAudioBuffer = buffer;
-                  document.getElementById('mp3Btn').textContent = '🎵 Đã lưu MP3';
-                });
-              }
-            }
-          };
-        };
-      } catch (e) {}
-    }
-
-    function loadCustomMp3(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const ctx = ensureAudioContext();
-      if (!ctx) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const rawBuffer = e.target.result;
-        saveMp3ToStorage(rawBuffer.slice(0), file.name);
-        ctx.decodeAudioData(rawBuffer, function(buffer) {
-          customAudioBuffer = buffer;
-          document.getElementById('mp3Btn').textContent = '🎵 Đã lưu MP3';
-          document.getElementById('subTitle').textContent = `Đang dùng nhạc: ${file.name}`;
-        });
-      };
-      reader.readAsArrayBuffer(file);
-    }
-
-    // ================= QUẢN LÝ CHỌN 3 MIỀN & NGÀY =================
-    function updateTabHighlight() {
-      ['mn', 'mt', 'mb'].forEach(r => {
-        const tab = document.getElementById(`tab-${r}`);
-        if (r === currentRegion) tab.classList.add('active');
-        else tab.classList.remove('active');
-      });
-      document.getElementById('mainTitle').textContent = schedulesByRegion[currentRegion].title;
-    }
-
-    // Khi bấm vào 1 trong 3 nút tab: MIỀN NAM | MIỀN TRUNG | MIỀN BẮC
-    function selectRegionTab(regionKey) {
-      if (isSpinning) stopSpin(false);
-      currentRegion = regionKey;
-      updateTabHighlight();
-
+    function renderDayStrip() {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      const selectedDay = selectedDate.getDate();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
       const now = new Date();
-      const todayIdx = now.getDay();
-      const tomorrowIdx = (todayIdx + 1) % 7;
-      const regConfig = schedulesByRegion[currentRegion];
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      const isAfterDraw = currentMinutes >= (regConfig.drawHour * 60 + regConfig.drawMin);
 
-      currentDayIdx = isAfterDraw ? tomorrowIdx : todayIdx;
-      currentStations = regConfig.days[currentDayIdx].stations;
+      document.getElementById('monthLabelText').innerText = `📅 ${REGION_LABELS[currentRegion]} - Tháng ${month + 1}/${year}:`;
+      document.getElementById('datePicker').value = toInputDate(selectedDate);
 
-      document.getElementById('daySelect').value = `${currentRegion}_${currentDayIdx}`;
-      document.getElementById('downloadBtn').classList.remove('ready');
-      initTable();
+      let html = '';
+      for (let day = 1; day <= daysInMonth; day++) {
+        const d = new Date(year, month, day);
+        const key = `${currentRegion}_${toVNDate(d, '-')}`;
+        const hasCache = !!(COMPACT_DB[key] || localStorage.getItem('KQ_' + key));
+        const isFuture = d > now;
+        const isActive = (day === selectedDay);
+        const dateShort = `${String(day).padStart(2,'0')}/${String(month+1).padStart(2,'0')}`;
+
+        let cls = 'day-pill';
+        if (isActive) cls += ' active';
+        else if (hasCache) cls += ' cached';
+        else if (isFuture) cls += ' future';
+
+        html += `<div id="day_pill_${day}" class="${cls}" onclick="selectQuickDay(${year}, ${month}, ${day})">${DAY_NAMES[d.getDay()]}<span>${dateShort}</span></div>`;
+      }
+      const strip = document.getElementById('dayStrip');
+      strip.innerHTML = html;
+
+      setTimeout(() => {
+        const activeEl = document.getElementById(`day_pill_${selectedDay}`);
+        if (activeEl) strip.scrollLeft = activeEl.offsetLeft - strip.clientWidth / 2 + activeEl.clientWidth / 2;
+      }, 30);
     }
 
-    // Khởi tạo danh sách chọn chứa tất cả 3 miền (để bấm vào dropdown cũng thấy cả 3 miền)
-    function initDaySelector() {
-      const select = document.getElementById('daySelect');
-      select.innerHTML = '';
+    function calcPascal(str) {
+      let arr = str.replace(/\D/g, '').split('').map(Number);
+      while (arr.length > 2) {
+        let next = [];
+        for (let i = 0; i < arr.length - 1; i++) next.push((arr[i] + arr[i + 1]) % 10);
+        arr = next;
+      }
+      return arr.join('');
+    }
+    function calcBong(numStr) {
+      const b = { '1':'6','2':'7','3':'8','4':'9','5':'0','6':'1','7':'2','8':'3','9':'4','0':'5' };
+      let n = numStr.padStart(2, '0').slice(-2);
+      return b[n[0]] + b[n[1]];
+    }
+    function calcBongAm(numStr) {
+      const b = { '1':'4','4':'1','2':'9','9':'2','3':'6','6':'3','5':'8','8':'5','0':'7','7':'0' };
+      let n = numStr.padStart(2, '0').slice(-2);
+      return b[n[0]] + b[n[1]];
+    }
 
-      const now = new Date();
-      const todayIdx = now.getDay();
-      const tomorrowIdx = (todayIdx + 1) % 7;
-
-      const orderedIndices = [todayIdx, tomorrowIdx];
-      for (let i = 0; i < 7; i++) {
-        if (i !== todayIdx && i !== tomorrowIdx) {
-          orderedIndices.push(i);
-        }
+    // LẤY KẾT QUẢ SIÊU TỐC CHO CẢ 3 MIỀN (NAM - TRUNG - BẮC)
+    async function fetchRealKQXS(region, dateObj, forceRefresh = false) {
+      const key = `${region}_${toVNDate(dateObj, '-')}`;
+      if (!forceRefresh && COMPACT_DB[key]) return COMPACT_DB[key].map(s => unpackRow(s, region === 'MB'));
+      if (!forceRefresh) {
+        const cached = localStorage.getItem('KQ_' + key);
+        if (cached) return JSON.parse(cached);
       }
 
-      ['mn', 'mt', 'mb'].forEach(regKey => {
-        const regConfig = schedulesByRegion[regKey];
-        const group = document.createElement('optgroup');
-        group.label = `=== XỔ SỐ ${regConfig.shortName.toUpperCase()} ===`;
-
-        orderedIndices.forEach(idx => {
-          const info = regConfig.days[idx];
-          const opt = document.createElement('option');
-          opt.value = `${regKey}_${idx}`;
-
-          let prefix = '';
-          if (idx === todayIdx) prefix = '[Hôm nay] ';
-          else if (idx === tomorrowIdx) prefix = '[Ngày mai] ';
-
-          opt.textContent = `${regConfig.shortName} - ${prefix}${info.name} (${info.stations.join(', ')})`;
-          group.appendChild(opt);
-        });
-
-        select.appendChild(group);
-      });
-
-      const regConfig = schedulesByRegion[currentRegion];
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      const isAfterDraw = currentMinutes >= (regConfig.drawHour * 60 + regConfig.drawMin);
-      currentDayIdx = isAfterDraw ? tomorrowIdx : todayIdx;
-
-      select.value = `${currentRegion}_${currentDayIdx}`;
-      currentStations = regConfig.days[currentDayIdx].stations;
-      updateTabHighlight();
-    }
-
-    function changeDayFromDropdown() {
-      if (isSpinning) stopSpin(false);
-      const val = document.getElementById('daySelect').value; // định dạng: mn_0, mt_1, mb_2...
-      const parts = val.split('_');
-      currentRegion = parts[0];
-      currentDayIdx = parseInt(parts[1], 10);
-      currentStations = schedulesByRegion[currentRegion].days[currentDayIdx].stations;
-
-      updateTabHighlight();
-      document.getElementById('downloadBtn').classList.remove('ready');
-      initTable();
-    }
-
-    function initTable() {
-      const wrapper = document.getElementById('tableWrapper');
-      const thead = document.getElementById('tableHeader');
-      const tbody = document.getElementById('tableBody');
-
-      wrapper.classList.remove('mode-4-cols');
-
-      if (currentRegion === 'mb') {
-        thead.style.display = 'none';
-        tbody.innerHTML = '';
-
-        prizeConfigMB.forEach(prize => {
-          const row = document.createElement('div');
-          row.className = `prize-row ${prize.class}`;
-
-          const colGiai = document.createElement('div');
-          colGiai.className = 'col-giai';
-          colGiai.textContent = prize.label;
-          row.appendChild(colGiai);
-
-          const gridContainer = document.createElement('div');
-          gridContainer.className = 'mb-grid-container';
-
-          for (let r = 0; r < prize.rows; r++) {
-            const subRow = document.createElement('div');
-            subRow.className = 'mb-sub-row';
-            const stepId = prize.spinSteps[r];
-
-            for (let c = 0; c < prize.cols; c++) {
-              const cell = document.createElement('div');
-              cell.className = `num-cell step-group-${stepId}`;
-              cell.dataset.digits = prize.digits;
-              cell.dataset.fullval = '';
-              cell.textContent = '•••';
-              subRow.appendChild(cell);
-            }
-            gridContainer.appendChild(subRow);
-          }
-
-          row.appendChild(gridContainer);
-          tbody.appendChild(row);
-        });
-
-        totalSteps = 10;
-      } else {
-        thead.style.display = 'flex';
-        if (currentStations.length === 4) {
-          wrapper.classList.add('mode-4-cols');
-        }
-
-        thead.innerHTML = '<div class="col-giai">Giải</div>';
-        currentStations.forEach((stName) => {
-          const div = document.createElement('div');
-          div.className = 'col-station';
-          div.textContent = stName;
-          thead.appendChild(div);
-        });
-
-        tbody.innerHTML = '';
-        let stepIndex = 0;
-
-        prizeConfigMNMT.forEach(prize => {
-          const row = document.createElement('div');
-          row.className = `prize-row ${prize.class}`;
-
-          const colGiai = document.createElement('div');
-          colGiai.className = 'col-giai';
-          colGiai.textContent = prize.label;
-          row.appendChild(colGiai);
-
-          for (let s = 0; s < currentStations.length; s++) {
-            const colSt = document.createElement('div');
-            colSt.className = 'col-station';
-
-            for (let c = 0; c < prize.count; c++) {
-              const curStep = stepIndex + c;
-              const cell = document.createElement('div');
-              cell.className = `num-cell step-group-${curStep}`;
-              cell.id = `cell-s${s}-step${curStep}`;
-              cell.dataset.digits = prize.digits;
-              cell.dataset.fullval = '';
-              cell.textContent = '•••';
-              colSt.appendChild(cell);
-            }
-            row.appendChild(colSt);
-          }
-
-          stepIndex += prize.count;
-          tbody.appendChild(row);
-        });
-
-        totalSteps = stepIndex;
-      }
-    }
-
-    function randomNum(digits) {
-      let res = '';
-      for (let i = 0; i < digits; i++) {
-        res += Math.floor(Math.random() * 10);
-      }
-      return res;
-    }
-
-    function formatByMode(val) {
-      if (!val) return '•••';
-      const mode = document.querySelector('input[name="viewMode"]:checked').value;
-      if (mode === '2') return val.slice(-2);
-      if (mode === '3') return val.slice(-3);
-      return val;
-    }
-
-    function updateDisplayMode() {
-      document.querySelectorAll('.num-cell').forEach(cell => {
-        if (cell.dataset.fullval) {
-          cell.textContent = formatByMode(cell.dataset.fullval);
-        }
-      });
-    }
-
-    function resetBoard() {
-      document.querySelectorAll('.num-cell').forEach(cell => {
-        cell.classList.remove('active-spin');
-        cell.dataset.fullval = '';
-        cell.textContent = '•••';
-      });
-    }
-
-    function openModal() {
-      if (lastVideoBlob) {
-        document.getElementById('videoModal').classList.add('show');
-      }
-    }
-
-    function closeModal() {
-      document.getElementById('videoModal').classList.remove('show');
-    }
-
-    // ================= VẼ KHUNG HÌNH CANVAS CHO CẢ 3 MIỀN =================
-    function drawVideoFrame() {
-      const canvas = document.getElementById('videoCanvas');
-      const ctx = canvas.getContext('2d');
-      const W = canvas.width;
-      const H = canvas.height;
-
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, W, H);
-
-      ctx.fillStyle = '#0b4a92';
-      ctx.fillRect(0, 0, W, 62);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 28px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('←   Quay thử', 24, 31);
-
-      ctx.fillStyle = '#ebebeb';
-      ctx.fillRect(0, 62, W, 66);
-      ctx.fillStyle = '#ffffff';
-      ctx.strokeStyle = '#cccccc';
-      ctx.lineWidth = 2;
-      ctx.fillRect(16, 72, 460, 46);
-      ctx.strokeRect(16, 72, 460, 46);
-
-      const dayInfo = schedulesByRegion[currentRegion].days[currentDayIdx];
-      const dayText = `${dayInfo.name} (${dayInfo.stations.join(', ')})`;
-      ctx.fillStyle = '#222222';
-      ctx.font = '600 22px sans-serif';
-      ctx.fillText(dayText.substring(0, 28), 28, 95);
-
-      ctx.fillStyle = isSpinning ? '#d9430f' : '#f37021';
-      ctx.fillRect(496, 72, 208, 46);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 23px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(isSpinning ? 'DỪNG' : 'QUAY THỬ', 600, 95);
-
-      const titleTxt = schedulesByRegion[currentRegion].title;
-      ctx.fillStyle = '#d32f2f';
-      ctx.font = 'bold 29px sans-serif';
-      ctx.fillText(titleTxt, W / 2, 152);
-      ctx.fillStyle = '#666666';
-      ctx.font = '21px sans-serif';
-      ctx.fillText('Thông tin chỉ mang tính tham khảo', W / 2, 180);
-
-      ctx.strokeStyle = '#dddddd';
-      ctx.beginPath();
-      ctx.moveTo(0, 196);
-      ctx.lineTo(W, 196);
-      ctx.stroke();
-
-      const giaiW = W * 0.11;
-      const footerH = 56;
-
-      if (currentRegion === 'mb') {
-        const bodyTop = 196;
-        const bodyH = H - bodyTop - footerH;
-        const totalUnits = 10;
-        const unitH = bodyH / totalUnits;
-
-        let curUnit = 0;
-        prizeConfigMB.forEach(prize => {
-          const rowTop = bodyTop + curUnit * unitH;
-          const rowH = prize.rows * unitH;
-
-          ctx.fillStyle = '#fafafa';
-          ctx.fillRect(0, rowTop, giaiW, rowH);
-
-          ctx.fillStyle = (prize.label === 'ĐB' || prize.label === '7') ? '#d32f2f' : '#333333';
-          ctx.font = 'bold 25px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.fillText(prize.label, giaiW / 2, rowTop + rowH / 2);
-
-          const colW = (W - giaiW) / prize.cols;
-
-          for (let r = 0; r < prize.rows; r++) {
-            const subTop = rowTop + r * unitH;
-            const stepId = prize.spinSteps[r];
-            const domCells = document.querySelectorAll(`.step-group-${stepId}`);
-
-            if (stepId === activeStep) {
-              ctx.fillStyle = '#fff176';
-              ctx.fillRect(giaiW, subTop, W - giaiW, unitH);
-            }
-
-            for (let c = 0; c < prize.cols; c++) {
-              const textVal = domCells[c] ? domCells[c].textContent : '•••';
-              const cx = giaiW + c * colW + colW / 2;
-              const cy = subTop + unitH / 2;
-
-              if (prize.label === 'ĐB') {
-                ctx.fillStyle = '#d32f2f';
-                ctx.font = 'bold 42px sans-serif';
-              } else if (prize.label === '7') {
-                ctx.fillStyle = '#d32f2f';
-                ctx.font = 'bold 36px sans-serif';
-              } else {
-                ctx.fillStyle = '#111111';
-                ctx.font = 'bold 34px sans-serif';
-              }
-              ctx.fillText(textVal, cx, cy);
-
-              if (c > 0) {
-                ctx.strokeStyle = '#eeeeee';
-                ctx.beginPath();
-                ctx.moveTo(giaiW + c * colW, subTop);
-                ctx.lineTo(giaiW + c * colW, subTop + unitH);
-                ctx.stroke();
-              }
-            }
-          }
-
-          ctx.strokeStyle = '#dcdcdc';
-          ctx.beginPath();
-          ctx.moveTo(0, rowTop + rowH);
-          ctx.lineTo(W, rowTop + rowH);
-          ctx.stroke();
-
-          curUnit += prize.rows;
-        });
-
-        ctx.strokeStyle = '#dcdcdc';
-        ctx.beginPath();
-        ctx.moveTo(giaiW, bodyTop);
-        ctx.lineTo(giaiW, H - footerH);
-        ctx.stroke();
-
-      } else {
-        const headerY = 196;
-        const headerH = 46;
-        ctx.fillStyle = '#f5f5f5';
-        ctx.fillRect(0, headerY, W, headerH);
-
-        const numStations = currentStations.length;
-        const stW = (W - giaiW) / numStations;
-
-        ctx.fillStyle = '#111111';
-        ctx.font = 'bold 24px sans-serif';
-        ctx.fillText('Giải', giaiW / 2, headerY + headerH / 2);
-
-        currentStations.forEach((st, i) => {
-          ctx.fillText(st, giaiW + i * stW + stW / 2, headerY + headerH / 2);
-        });
-
-        ctx.strokeStyle = '#cccccc';
-        ctx.beginPath();
-        ctx.moveTo(0, headerY + headerH);
-        ctx.lineTo(W, headerY + headerH);
-        ctx.stroke();
-
-        const bodyTop = headerY + headerH;
-        const bodyH = H - bodyTop - footerH;
-        const stepH = bodyH / 18;
-
-        let stepIdx = 0;
-        prizeConfigMNMT.forEach(prize => {
-          const rowTop = bodyTop + stepIdx * stepH;
-          const rowH = prize.count * stepH;
-
-          ctx.fillStyle = '#fafafa';
-          ctx.fillRect(0, rowTop, giaiW, rowH);
-
-          ctx.fillStyle = (prize.label === 'ĐB') ? '#d32f2f' : '#333333';
-          ctx.font = 'bold 24px sans-serif';
-          ctx.fillText(prize.label, giaiW / 2, rowTop + rowH / 2);
-
-          for (let c = 0; c < prize.count; c++) {
-            const curStep = stepIdx + c;
-            const cellTop = rowTop + c * stepH;
-
-            if (curStep === activeStep) {
-              ctx.fillStyle = '#fff176';
-              ctx.fillRect(giaiW, cellTop, W - giaiW, stepH);
-            }
-
-            for (let s = 0; s < numStations; s++) {
-              const domCell = document.getElementById(`cell-s${s}-step${curStep}`);
-              const textVal = domCell ? domCell.textContent : '•••';
-              const cellX = giaiW + s * stW + stW / 2;
-              const cellY = cellTop + stepH / 2;
-
-              if (prize.label === '8' || prize.label === 'ĐB') {
-                ctx.fillStyle = '#d32f2f';
-                ctx.font = numStations === 4 ? 'bold 31px sans-serif' : 'bold 36px sans-serif';
-              } else {
-                ctx.fillStyle = '#111111';
-                ctx.font = numStations === 4 ? 'bold 29px sans-serif' : 'bold 33px sans-serif';
-              }
-              ctx.fillText(textVal, cellX, cellY);
-            }
-          }
-
-          ctx.strokeStyle = '#dcdcdc';
-          ctx.beginPath();
-          ctx.moveTo(0, rowTop + rowH);
-          ctx.lineTo(W, rowTop + rowH);
-          ctx.stroke();
-
-          stepIdx += prize.count;
-        });
-
-        ctx.strokeStyle = '#dcdcdc';
-        ctx.beginPath();
-        ctx.moveTo(giaiW, headerY);
-        ctx.lineTo(giaiW, H - footerH);
-        for (let s = 1; s < numStations; s++) {
-          const x = giaiW + s * stW;
-          ctx.moveTo(x, headerY);
-          ctx.lineTo(x, H - footerH);
-        }
-        ctx.stroke();
-      }
-
-      const footerTop = H - footerH;
-      ctx.fillStyle = '#f9f9f9';
-      ctx.fillRect(0, footerTop, W, footerH);
-      ctx.strokeStyle = '#cccccc';
-      ctx.beginPath();
-      ctx.moveTo(0, footerTop);
-      ctx.lineTo(W, footerTop);
-      ctx.stroke();
-
-      const mode = document.querySelector('input[name="viewMode"]:checked').value;
-      const opts = [
-        { k: 'all', l: 'Đầy đủ', x: W * 0.2 },
-        { k: '2', l: '2 Số', x: W * 0.5 },
-        { k: '3', l: '3 Số', x: W * 0.8 }
+      const dStr = toVNDate(dateObj, '-');
+      const rSlug = region === 'MN' ? 'xsmn' : (region === 'MT' ? 'xsmt' : 'xsmb');
+      const targetUrl = `https://xosodaiphat.com/${rSlug}-${dStr}.html`;
+
+      const proxies = [
+        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
       ];
 
-      opts.forEach(o => {
-        const cy = footerTop + footerH / 2;
-        ctx.strokeStyle = '#0b4a92';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(o.x - 45, cy, 11, 0, Math.PI * 2);
-        ctx.stroke();
-
-        if (mode === o.k) {
-          ctx.fillStyle = '#0b4a92';
-          ctx.beginPath();
-          ctx.arc(o.x - 45, cy, 6, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.fillStyle = '#222222';
-        ctx.font = '500 23px sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText(o.l, o.x - 26, cy);
-      });
-    }
-
-    // ================= GHI VIDEO MP4 KÈM ÂM THANH =================
-    let useHardwareMp4 = false;
-    let mp4Muxer = null;
-    let videoEncoder = null;
-    let audioEncoder = null;
-    let audioScriptProcessor = null;
-    let frameCount = 0;
-    let audioSampleCount = 0;
-    const FPS = 30;
-
-    let mediaRecorder = null;
-    let recordedChunks = [];
-    let frameIntervalId = null;
-    let recStartTime = 0;
-    let lastVideoBlob = null;
-    let lastVideoExt = 'mp4';
-
-    async function startVideoRecording() {
-      const canvas = document.getElementById('videoCanvas');
-      const ctxAudio = ensureAudioContext();
-      document.getElementById('downloadBtn').classList.remove('ready');
-      closeModal();
-      lastVideoBlob = null;
-      frameCount = 0;
-      audioSampleCount = 0;
-      recStartTime = Date.now();
-
-      drawVideoFrame();
-
-      if (typeof window.Mp4Muxer !== 'undefined' && typeof window.VideoEncoder !== 'undefined') {
+      const fetchFromProxy = async (pUrl) => {
+        const controller = new AbortController();
+        const tid = setTimeout(() => controller.abort(), 4500);
         try {
-          const codecsToTry = ['avc1.42001f', 'avc1.4d001f', 'avc1.64001f'];
-          let supportedVideoCodec = null;
-          for (const c of codecsToTry) {
-            const sup = await VideoEncoder.isConfigSupported({
-              codec: c,
-              width: canvas.width,
-              height: canvas.height,
-              bitrate: 2500000,
-              framerate: FPS
-            });
-            if (sup.supported) {
-              supportedVideoCodec = c;
-              break;
-            }
-          }
-
-          let hasAACSupport = false;
-          if (typeof window.AudioEncoder !== 'undefined' && ctxAudio) {
-            try {
-              const aSup = await AudioEncoder.isConfigSupported({
-                codec: 'mp4a.40.2',
-                sampleRate: ctxAudio.sampleRate,
-                numberOfChannels: 1,
-                bitrate: 128000
-              });
-              hasAACSupport = aSup.supported;
-            } catch (e) {
-              hasAACSupport = false;
-            }
-          }
-
-          if (supportedVideoCodec) {
-            useHardwareMp4 = true;
-            const muxerConfig = {
-              target: new Mp4Muxer.ArrayBufferTarget(),
-              video: {
-                codec: 'avc',
-                width: canvas.width,
-                height: canvas.height
-              },
-              fastStart: 'in-memory'
-            };
-
-            if (hasAACSupport && ctxAudio) {
-              muxerConfig.audio = {
-                codec: 'aac',
-                sampleRate: ctxAudio.sampleRate,
-                numberOfChannels: 1
-              };
-            }
-
-            mp4Muxer = new Mp4Muxer.Muxer(muxerConfig);
-
-            videoEncoder = new VideoEncoder({
-              output: (chunk, meta) => mp4Muxer.addVideoChunk(chunk, meta),
-              error: (e) => console.error(e)
-            });
-
-            videoEncoder.configure({
-              codec: supportedVideoCodec,
-              width: canvas.width,
-              height: canvas.height,
-              bitrate: 2500000,
-              framerate: FPS
-            });
-
-            if (hasAACSupport && ctxAudio) {
-              audioEncoder = new AudioEncoder({
-                output: (chunk, meta) => mp4Muxer.addAudioChunk(chunk, meta),
-                error: (e) => console.error(e)
-              });
-              audioEncoder.configure({
-                codec: 'mp4a.40.2',
-                sampleRate: ctxAudio.sampleRate,
-                numberOfChannels: 1,
-                bitrate: 128000
-              });
-
-              audioScriptProcessor = ctxAudio.createScriptProcessor(4096, 1, 1);
-              masterGain.connect(audioScriptProcessor);
-              audioScriptProcessor.connect(ctxAudio.destination);
-              audioScriptProcessor.onaudioprocess = (e) => {
-                if (!audioEncoder || audioEncoder.state !== 'configured') return;
-                const inputData = e.inputBuffer.getChannelData(0);
-                const dataCopy = new Float32Array(inputData);
-                const timestampUs = Math.round((audioSampleCount * 1000000) / ctxAudio.sampleRate);
-                audioSampleCount += dataCopy.length;
-
-                const audioData = new AudioData({
-                  format: 'f32-planar',
-                  sampleRate: ctxAudio.sampleRate,
-                  numberOfFrames: dataCopy.length,
-                  numberOfChannels: 1,
-                  timestamp: timestampUs,
-                  data: dataCopy
-                });
-                audioEncoder.encode(audioData);
-                audioData.close();
-              };
-            }
-
-            document.getElementById('recBadge').classList.add('recording');
-            document.getElementById('recTimerText').textContent = '00:00';
-
-            if (frameIntervalId) clearInterval(frameIntervalId);
-            frameIntervalId = setInterval(() => {
-              drawVideoFrame();
-              if (videoEncoder && videoEncoder.state === 'configured') {
-                const timestampUs = Math.round((frameCount * 1000000) / FPS);
-                const durationUs = Math.round(1000000 / FPS);
-                const frame = new VideoFrame(canvas, { timestamp: timestampUs, duration: durationUs });
-                videoEncoder.encode(frame, { keyFrame: frameCount % 30 === 0 });
-                frame.close();
-                frameCount++;
-              }
-              const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
-              const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
-              const ss = String(elapsed % 60).padStart(2, '0');
-              document.getElementById('recTimerText').textContent = `${mm}:${ss}`;
-            }, 1000 / FPS);
-
-            return;
-          }
+          const res = await fetch(pUrl, { signal: controller.signal });
+          clearTimeout(tid);
+          if (!res.ok) throw new Error('Bad status');
+          const html = await res.text();
+          const parsed = parseXosoDaiPhatHTML(html, region);
+          if (parsed && parsed.length > 0) return parsed;
+          throw new Error('Parse empty');
         } catch (err) {
-          useHardwareMp4 = false;
-        }
-      }
-
-      useHardwareMp4 = false;
-      if (!canvas.captureStream || typeof MediaRecorder === 'undefined') return;
-
-      const vStream = canvas.captureStream(FPS);
-      const tracks = [...vStream.getVideoTracks()];
-      if (streamDest && streamDest.stream.getAudioTracks().length > 0) {
-        tracks.push(streamDest.stream.getAudioTracks()[0]);
-      }
-      const combinedStream = new MediaStream(tracks);
-
-      recordedChunks = [];
-      const mimeTypes = ['video/mp4', 'video/webm;codecs=h264,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
-      let selectedMime = '';
-      for (const m of mimeTypes) {
-        if (MediaRecorder.isTypeSupported(m)) {
-          selectedMime = m;
-          break;
-        }
-      }
-
-      mediaRecorder = selectedMime
-        ? new MediaRecorder(combinedStream, { mimeType: selectedMime, videoBitsPerSecond: 2500000 })
-        : new MediaRecorder(combinedStream);
-
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data && e.data.size > 0) recordedChunks.push(e.data);
-      };
-
-      mediaRecorder.onstop = () => {
-        const durationMs = Date.now() - recStartTime;
-        const rawBlob = new Blob(recordedChunks, { type: selectedMime || 'video/webm' });
-
-        if (typeof ysFixWebmDuration === 'function' && (!selectedMime || selectedMime.includes('webm'))) {
-          ysFixWebmDuration(rawBlob, durationMs, (fixedBlob) => {
-            lastVideoBlob = fixedBlob;
-            lastVideoExt = 'webm';
-            showReadyUI(Math.round(durationMs / 1000));
-          });
-        } else {
-          lastVideoBlob = rawBlob;
-          lastVideoExt = (selectedMime && selectedMime.includes('mp4')) ? 'mp4' : 'webm';
-          showReadyUI(Math.round(durationMs / 1000));
+          clearTimeout(tid);
+          throw err;
         }
       };
 
-      mediaRecorder.start();
-      document.getElementById('recBadge').classList.add('recording');
-
-      if (frameIntervalId) clearInterval(frameIntervalId);
-      frameIntervalId = setInterval(() => {
-        drawVideoFrame();
-        const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
-        const mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
-        const ss = String(elapsed % 60).padStart(2, '0');
-        document.getElementById('recTimerText').textContent = `${mm}:${ss}`;
-      }, 1000 / FPS);
+      try {
+        const fastestResult = await Promise.any(proxies.map(p => fetchFromProxy(p)));
+        localStorage.setItem('KQ_' + key, JSON.stringify(fastestResult));
+        return fastestResult;
+      } catch (e) {
+        return null;
+      }
     }
 
-    async function stopVideoRecording(showPopup = true) {
-      document.getElementById('recBadge').classList.remove('recording');
-      stopBackgroundMusic();
+    // BÓC TÁCH LINH HOẠT CHO CẢ MIỀN NAM, MIỀN TRUNG VÀ MIỀN BẮC
+    function parseXosoDaiPhatHTML(html, region) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const tables = Array.from(doc.querySelectorAll('table.table-xsmn, table.table-xsmt, table.table-xsmb, table.table-result, table.table-bordered'));
+      if (tables.length === 0) return null;
 
-      if (frameIntervalId) {
-        clearInterval(frameIntervalId);
-        frameIntervalId = null;
-      }
-
-      if (audioScriptProcessor) {
-        try {
-          audioScriptProcessor.disconnect();
-          masterGain.disconnect(audioScriptProcessor);
-        } catch (e) {}
-        audioScriptProcessor = null;
-      }
-
-      if (useHardwareMp4 && videoEncoder) {
-        try {
-          if (showPopup) {
-            await videoEncoder.flush();
-            if (audioEncoder && audioEncoder.state === 'configured') {
-              await audioEncoder.flush();
+      if (region === 'MB') {
+        const mbSpec = [
+          { key: 'db', len: 5, count: 1 }, { key: 'g1', len: 5, count: 1 },
+          { key: 'g2', len: 5, count: 2 }, { key: 'g3', len: 5, count: 6 },
+          { key: 'g4', len: 4, count: 4 }, { key: 'g5', len: 4, count: 6 },
+          { key: 'g6', len: 3, count: 3 }, { key: 'g7', len: 2, count: 4 }
+        ];
+        for (const table of tables) {
+          const mbObj = { name: 'Miền Bắc', db: [], g1: [], g2: [], g3: [], g4: [], g5: [], g6: [], g7: [] };
+          const rows = Array.from(table.querySelectorAll('tr'));
+          let sIdx = 0;
+          rows.forEach(tr => {
+            if (sIdx >= mbSpec.length) return;
+            const tds = Array.from(tr.querySelectorAll('td'));
+            if (tds.length >= 2) {
+              const rawDigits = tds.slice(1).map(td => td.textContent).join('').replace(/\D/g, '');
+              const spec = mbSpec[sIdx];
+              if (rawDigits.length === spec.len * spec.count) {
+                mbObj[spec.key] = rawDigits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
+                sIdx++;
+              }
             }
-            mp4Muxer.finalize();
-            const { buffer } = mp4Muxer.target;
-            lastVideoBlob = new Blob([buffer], { type: 'video/mp4' });
-            lastVideoExt = 'mp4';
-            const totalSec = Math.round(frameCount / FPS);
-            showReadyUI(totalSec);
-          }
-          videoEncoder.close();
-          if (audioEncoder) audioEncoder.close();
-        } catch (e) {}
-        videoEncoder = null;
-        audioEncoder = null;
-        mp4Muxer = null;
-      } else if (mediaRecorder && mediaRecorder.state === 'recording') {
-        if (!showPopup) mediaRecorder.onstop = null;
-        mediaRecorder.stop();
-      }
-    }
-
-    function showReadyUI(durationSec) {
-      document.getElementById('modalDesc').textContent =
-        `Video MP4 (${schedulesByRegion[currentRegion].title}) dài ${durationSec} giây đã sẵn sàng đăng Facebook / TikTok:`;
-      document.getElementById('downloadBtn').classList.add('ready');
-      document.getElementById('videoModal').classList.add('show');
-    }
-
-    async function shareVideoNow() {
-      if (!lastVideoBlob) return;
-      const fileName = `xs-${currentRegion}-quay-thu-${Date.now()}.${lastVideoExt}`;
-      const file = new File([lastVideoBlob], fileName, { type: lastVideoBlob.type });
-
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: schedulesByRegion[currentRegion].title
           });
-          return;
-        } catch (err) {}
+          if (mbObj.db.length > 0 && mbObj.g7.length > 0) return [mbObj];
+        }
+        return null;
       }
-      downloadVideoNow();
+
+      // Miền Nam & Miền Trung
+      for (const table of tables) {
+        const ths = Array.from(table.querySelectorAll('thead th, tr:first-child th')).slice(1);
+        if (ths.length === 0) continue;
+
+        const stations = ths.map(th => ({
+          name: th.textContent.trim(),
+          g8: [], g7: [], g6: [], g5: [], g4: [], g3: [], g2: [], g1: [], db: []
+        }));
+
+        const prizeSpecs = [
+          { key: 'g8', len: 2, count: 1 }, { key: 'g7', len: 3, count: 1 },
+          { key: 'g6', len: 4, count: 3 }, { key: 'g5', len: 4, count: 1 },
+          { key: 'g4', len: 5, count: 7 }, { key: 'g3', len: 5, count: 2 },
+          { key: 'g2', len: 5, count: 1 }, { key: 'g1', len: 5, count: 1 },
+          { key: 'db', len: 6, count: 1 }
+        ];
+
+        const rows = Array.from(table.querySelectorAll('tbody tr, tr'));
+        let pIdx = 0;
+        rows.forEach(tr => {
+          if (pIdx >= prizeSpecs.length) return;
+          const tds = Array.from(tr.querySelectorAll('td'));
+          if (tds.length >= stations.length + 1) {
+            const spec = prizeSpecs[pIdx];
+            const firstCellDigits = tds[1].textContent.replace(/\D/g, '');
+            if (firstCellDigits.length === spec.len * spec.count) {
+              for (let i = 0; i < stations.length; i++) {
+                const digits = tds[i + 1].textContent.replace(/\D/g, '');
+                stations[i][spec.key] = digits.match(new RegExp(`\\d{${spec.len}}`, 'g')) || [];
+              }
+              pIdx++;
+            }
+          }
+        });
+
+        if (stations[0] && stations[0].db.length > 0) return stations;
+      }
+      return null;
     }
 
-    function downloadVideoNow() {
-      if (!lastVideoBlob) return;
-      const fileName = `xs-${currentRegion}-quay-thu-${Date.now()}.${lastVideoExt}`;
-      const url = URL.createObjectURL(lastVideoBlob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
+    async function syncEntireMonth() {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const now = new Date();
+      const statusBar = document.getElementById('statusBar');
+
+      const daysToFetch = [];
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cur = new Date(year, month, d);
+        if (cur <= now) daysToFetch.push(cur);
+      }
+
+      let done = 0;
+      const batchSize = 5;
+      for (let i = 0; i < daysToFetch.length; i += batchSize) {
+        const batch = daysToFetch.slice(i, i + batchSize);
+        statusBar.className = 'status-bar loading';
+        statusBar.innerText = `⚡ Đang tải ${REGION_LABELS[currentRegion]} (${Math.min(i + batchSize, daysToFetch.length)}/${daysToFetch.length} ngày)...`;
+        await Promise.all(batch.map(d => fetchRealKQXS(currentRegion, d, false).then(r => { if (r) done++; })));
+        renderDayStrip();
+      }
+
+      statusBar.className = 'status-bar';
+      statusBar.innerText = `✅ Đã tải siêu tốc ${done} ngày ${REGION_LABELS[currentRegion]} Tháng ${month + 1}/${year}!`;
+      loadAllData(false);
+    }
+
+    function preloadAdjacentDays(baseDate) {
       setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 5000);
-      closeModal();
+        [-1, -2, -6, -7].forEach(offset => {
+          const d = new Date(baseDate);
+          d.setDate(d.getDate() + offset);
+          fetchRealKQXS(currentRegion, d, false).then(() => renderDayStrip());
+        });
+      }, 150);
     }
 
-    // ================= ĐIỀU KHIỂN QUAY THỬ =================
-    function toggleSpin() {
-      if (isSpinning) {
-        stopSpin(true);
+    async function loadAllData(forceRefresh) {
+      renderDayStrip();
+      const statusBar = document.getElementById('statusBar');
+
+      const curDate = new Date(selectedDate);
+      const nextDate = new Date(selectedDate);
+      nextDate.setDate(nextDate.getDate() + 1);
+
+      const prevDrawOfNextDate = new Date(nextDate);
+      prevDrawOfNextDate.setDate(prevDrawOfNextDate.getDate() - 7);
+
+      const curDateStr = `${FULL_DAY_NAMES[curDate.getDay()]} - ${toVNDate(curDate)}`;
+      const nextDateStr = `${FULL_DAY_NAMES[nextDate.getDay()]} - ${toVNDate(nextDate)}`;
+      const prevDrawStr = toVNDate(prevDrawOfNextDate);
+
+      document.getElementById('badgeCurrentDate').innerText = toVNDate(curDate);
+      document.getElementById('badgeKQDate').innerText = `${REGION_LABELS[currentRegion]} (${curDateStr})`;
+      document.getElementById('badgeNextDate').innerText = toVNDate(nextDate);
+      document.getElementById('badgeVipDate').innerText = toVNDate(nextDate);
+
+      const stationsSchedule = SCHEDULE[currentRegion][curDate.getDay()];
+      const stationsTomorrow = SCHEDULE[currentRegion][nextDate.getDay()];
+
+      document.getElementById('stationsToday').innerHTML = stationsSchedule
+        .map(s => `<span class="station-badge">📍 ${s}</span>`).join('');
+
+      statusBar.className = 'status-bar loading';
+      statusBar.innerText = `⚡ Đang nạp kết quả ${REGION_LABELS[currentRegion]}...`;
+
+      const resultsToday = await fetchRealKQXS(currentRegion, curDate, forceRefresh);
+      renderDayStrip();
+
+      if (resultsToday && resultsToday.length > 0) {
+        statusBar.className = 'status-bar';
+        statusBar.innerText = `✅ ${REGION_LABELS[currentRegion]} - Chuẩn Xổ Số Đại Phát (${curDateStr})`;
+        renderResultTable(resultsToday, currentRegion);
+        renderDetailedStatsToday(resultsToday);
+
+        const resultsPrevWeekTomorrow = await fetchRealKQXS(currentRegion, prevDrawOfNextDate, false);
+        renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrow, nextDateStr, prevDrawStr);
+        preloadAdjacentDays(curDate);
       } else {
-        startSpin();
+        statusBar.className = 'status-bar warn';
+        statusBar.innerText = `⚠️ ${REGION_LABELS[currentRegion]} ngày ${toVNDate(curDate)} chưa mở thưởng`;
+        document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#c92a2a; font-weight:600;">Chưa có bảng kết quả ${REGION_LABELS[currentRegion]} cho ngày ${toVNDate(curDate)}.</div>`;
+        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px;">Hãy chọn ngày trước đó hoặc bấm "LÀM MỚI NGÀY NÀY" sau giờ mở thưởng.</div>`;
       }
     }
 
-    function startSpin() {
-      clearTimeout(finishRecTimeout);
-      isSpinning = true;
-      activeStep = 0;
-      const btn = document.getElementById('spinBtn');
-      btn.textContent = 'DỪNG';
-      btn.classList.add('spinning');
-      resetBoard();
-      startBackgroundMusic();
-      startVideoRecording();
-      runStep(0);
+    function renderResultTable(results, region) {
+      let html = `<table class="kq-table"><thead><tr><th class="giai-col">Giải</th>`;
+      results.forEach(r => html += `<th>${r.name}</th>`);
+      html += `</tr></thead><tbody>`;
+
+      const prizeOrder = region === 'MB'
+        ? [
+            { key: 'db', label: 'ĐB', highlight: true }, { key: 'g1', label: 'G.1' },
+            { key: 'g2', label: 'G.2' }, { key: 'g3', label: 'G.3' },
+            { key: 'g4', label: 'G.4' }, { key: 'g5', label: 'G.5' },
+            { key: 'g6', label: 'G.6' }, { key: 'g7', label: 'G.7', highlight: true }
+          ]
+        : [
+            { key: 'g8', label: 'G.8', highlight: true }, { key: 'g7', label: 'G.7' },
+            { key: 'g6', label: 'G.6' }, { key: 'g5', label: 'G.5' },
+            { key: 'g4', label: 'G.4' }, { key: 'g3', label: 'G.3' },
+            { key: 'g2', label: 'G.2' }, { key: 'g1', label: 'G.1' },
+            { key: 'db', label: 'G.ĐB', highlight: true }
+          ];
+
+      prizeOrder.forEach(p => {
+        html += `<tr><td class="giai-col">${p.label}</td>`;
+        results.forEach(r => {
+          const vals = r[p.key] || [];
+          if (region === 'MB' && vals.length > 1) {
+            html += `<td class="${p.highlight ? 'kq-highlight' : ''}"><div class="mb-grid">${vals.map(v => `<span>${v}</span>`).join('')}</div></td>`;
+          } else {
+            html += `<td class="${p.highlight ? 'kq-highlight' : ''}">${vals.join('<br>')}</td>`;
+          }
+        });
+        html += `</tr>`;
+      });
+      html += `</tbody></table>`;
+      document.getElementById('kqxsContainer').innerHTML = html;
     }
 
-    function stopSpin(saveVideo = true) {
-      isSpinning = false;
-      activeStep = -1;
-      clearTimeout(spinTimeout);
-      clearTimeout(pauseTimeout);
-      clearTimeout(finishRecTimeout);
-      clearInterval(animInterval);
-      const btn = document.getElementById('spinBtn');
-      btn.textContent = 'QUAY THỬ';
-      btn.classList.remove('spinning');
-      document.querySelectorAll('.num-cell.active-spin').forEach(c => {
-        c.classList.remove('active-spin');
+    function renderDetailedStatsToday(results) {
+      let html = '';
+      results.forEach(r => {
+        const db = r.db[0] || '00';
+        const g8 = (r.g8 && r.g8[0]) ? r.g8[0] : (r.g7 ? r.g7.join(', ') : '');
+        const duoiDB = db.slice(-2);
+
+        let allLoto = [];
+        Object.keys(r).forEach(k => {
+          if (Array.isArray(r[k])) r[k].forEach(num => allLoto.push(num.slice(-2)));
+        });
+
+        let dauCount = {};
+        allLoto.forEach(l => { dauCount[l[0]] = (dauCount[l[0]] || 0) + 1; });
+        let hotDau = Object.keys(dauCount).sort((a,b) => dauCount[b] - dauCount[a])[0] || '0';
+
+        html += `
+          <div class="analysis-item">
+            <strong>📌 Đài ${r.name}:</strong>
+            <div class="dauduoi-grid">
+              <div class="dd-box">${currentRegion === 'MB' ? 'Giải 7' : 'Giải 8/Đầu'}: <b style="color:#d90416">${g8}</b></div>
+              <div class="dd-box">Đuôi ĐB: <b style="color:#d90416">${duoiDB}</b></div>
+            </div>
+            <div style="margin-top:6px;">• Đầu lô về nhiều nhất: <b>Đầu ${hotDau}</b> (${dauCount[hotDau]} nháy)</div>
+            <div class="loto-2so"><b>Lô 2 số đã về (${allLoto.length} giải):</b> ${allLoto.join(', ')}</div>
+          </div>`;
+      });
+      document.getElementById('detailedStats').innerHTML = html;
+    }
+
+    // PHÂN TÍCH CẦU CHO CẢ 3 MIỀN (NAM - TRUNG - BẮC)
+    async function renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeek, nextDateStr, prevDrawStr) {
+      document.getElementById('nextDayStations').innerHTML = stationsTomorrow
+        .map(s => `<span class="station-badge" style="background:#fff0f0; border-color:#d90416;">🎯 Đài ngày mai: ${s}</span>`).join('');
+
+      let html = '';
+      let pascalsChinhDai = [], pascalsLienNgay = [], bongsHop = [];
+
+      stationsTomorrow.forEach((stName, idx) => {
+        const todayRef = resultsToday[idx % resultsToday.length];
+        const dbToday = todayRef.db[0];
+        const g1Today = todayRef.g1[0];
+        const pasLienNgay = calcPascal(dbToday + g1Today);
+
+        let prevRef = null;
+        if (resultsPrevWeek && resultsPrevWeek.length > 0) {
+          prevRef = resultsPrevWeek.find(r => stName.toLowerCase().includes(r.name.toLowerCase()) || r.name.toLowerCase().includes(stName.toLowerCase())) || resultsPrevWeek[idx % resultsPrevWeek.length];
+        }
+
+        if (prevRef && prevRef.db && prevRef.db[0]) {
+          const dbPrev = prevRef.db[0];
+          const g1Prev = prevRef.g1[0];
+          const gDauPrev = (prevRef.g8 && prevRef.g8[0]) ? prevRef.g8[0] : (prevRef.g7 && prevRef.g7[0] ? prevRef.g7[0] : dbPrev.slice(-2));
+
+          const pasChinhDai = calcPascal(dbPrev + g1Prev);
+          const pasGiaoThoa = calcPascal(dbPrev + dbToday);
+          const bongD = calcBong(dbPrev.slice(-2));
+          const bongA = calcBongAm(gDauPrev);
+
+          pascalsChinhDai.push(pasChinhDai);
+          pascalsLienNgay.push(pasLienNgay);
+          bongsHop.push(pasGiaoThoa);
+
+          html += `
+            <div class="analysis-item tomorrow-item">
+              <strong>🔮 Dự đoán ${stName} (${nextDateStr}):</strong><br>
+              <span class="sub-tag">📌 Cầu Chính Đài (Kỳ trước ${prevDrawStr}: ĐB ${dbPrev} | G.1 ${g1Prev})</span><br>
+              • <b>Pascal Chính Đài:</b> <b style="color:#d90416; font-size:15px;">${pasChinhDai} - ${pasChinhDai.split('').reverse().join('')}</b> | <b>Bóng ĐB (${dbPrev.slice(-2)}):</b> Dương <b>${bongD}</b> - Âm <b>${bongA}</b><br>
+              <span class="sub-tag">⚡ Cầu Liên Ngày (Từ ${todayRef.name} hôm nay: ĐB ${dbToday})</span><br>
+              • <b>Pascal Liên Ngày:</b> <b>${pasLienNgay} - ${pasLienNgay.split('').reverse().join('')}</b> | <b>Giao thoa 2 kỳ:</b> <b style="color:#1b8a3d;">${pasGiaoThoa}</b>
+            </div>`;
+        } else {
+          const bongD = calcBong(dbToday.slice(-2));
+          const kep = dbToday.slice(1, 3);
+          pascalsChinhDai.push(pasLienNgay);
+          pascalsLienNgay.push(bongD);
+          bongsHop.push(kep);
+
+          html += `
+            <div class="analysis-item tomorrow-item">
+              <strong>🔮 Dự đoán ${stName} (${nextDateStr}):</strong><br>
+              • <b>Cầu Pascal Liên Ngày (ĐB ${dbToday} + G1 ${g1Today}):</b> <b style="color:#d90416; font-size:15px;">${pasLienNgay} - ${pasLienNgay.split('').reverse().join('')}</b><br>
+              • <b>Bóng Dương ĐB (${dbToday.slice(-2)}):</b> <b>${bongD}</b> | <b>Cầu Kẹp:</b> <b>${kep}</b>
+            </div>`;
+        }
       });
 
-      if (saveVideo) {
-        drawVideoFrame();
-        finishRecTimeout = setTimeout(() => {
-          stopVideoRecording(true);
-        }, 2500);
-      } else {
-        stopVideoRecording(false);
-      }
+      document.getElementById('nextDayAnalysis').innerHTML = html;
+
+      const vip1 = pascalsChinhDai[0];
+      const vip2 = bongsHop[bongsHop.length > 1 ? 1 : 0];
+      const vip3 = pascalsLienNgay[pascalsLienNgay.length - 1];
+
+      document.getElementById('crossStation').innerHTML = `
+        <div class="analysis-item">
+          • <b>Hội tụ Pascal Chính Đài (${prevDrawStr} ➡ ${nextDateStr}):</b> <b style="color:#d90416">${pascalsChinhDai.join(' ↔ ')}</b><br>
+          • <b>Hội tụ Pascal Liên Ngày (Hôm nay ➡ Ngày mai):</b> <b>${pascalsLienNgay.join(' ↔ ')}</b><br>
+          • <b>Cầu Giao Thoa 2 Kỳ (Chính Đài + Liên Ngày):</b> <b style="color:#1b8a3d">${bongsHop.join(' ↔ ')}</b><br>
+          👉 <i>Chốt nhịp cầu <b>${REGION_LABELS[currentRegion]} (${nextDateStr})</b>: Bạch thủ <b>${vip1}</b>, Song thủ <b>${vip2}</b>, Xiên <b>${vip3}</b>.</i>
+        </div>`;
+
+      document.getElementById('vipNumbers').innerHTML = `
+        <div class="vip-numbers">
+          <div class="vip-ball"><div class="num">${vip1}</div><div class="lbl">BẠCH THỦ (CHÍNH ĐÀI)</div></div>
+          <div class="vip-ball"><div class="num">${vip2}</div><div class="lbl">SONG THỦ (GIAO THOA)</div></div>
+          <div class="vip-ball"><div class="num">${vip3}</div><div class="lbl">XIÊN (LIÊN NGÀY)</div></div>
+        </div>`;
+
+      const apiKey = localStorage.getItem('PHATDAT_API_KEY');
+      const aiBox = document.getElementById('aiAnalysisBox');
+      if (apiKey) {
+        aiBox.style.display = 'block';
+        aiBox.innerHTML = '🤖 <b>Trợ lý AI đang phân tích nhịp cầu...</b>';
+        try {
+          const prompt = `Phân tích ngắn gọn 3 dòng soi cầu xổ số ${REGION_LABELS[currentRegion]} ngày ${nextDateStr} (${stationsTomorrow.join(', ')}). Pascal Chính Đài: ${pascalsChinhDai.join(', ')}; Pascal Liên Ngày: ${pascalsLienNgay.join(', ')}; Giao thoa: ${bongsHop.join(', ')}.`;
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+          });
+          const data = await res.json();
+          const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (reply) {
+            aiBox.innerHTML = `🤖 <b>Nhận định AI (${nextDateStr}):</b><br>` + reply.replace(/\n/g, '<br>');
+          } else { aiBox.style.display = 'none'; }
+        } catch (e) { aiBox.style.display = 'none'; }
+      } else { aiBox.style.display = 'none'; }
     }
 
-    function runStep(step) {
-      if (!isSpinning || step >= totalSteps) {
-        stopSpin(true);
-        return;
-      }
-
-      activeStep = step;
-      const currentCells = Array.from(document.querySelectorAll(`.step-group-${step}`));
-      if (currentCells.length === 0) {
-        stopSpin(true);
-        return;
-      }
-
-      const digits = parseInt(currentCells[0].dataset.digits, 10);
-
-      const stepSpinTime = currentRegion === 'mb' ? 2800 : 1550;
-      const stepPauseTime = currentRegion === 'mb' ? 300 : 250;
-
-      currentCells.forEach(cell => {
-        cell.classList.add('active-spin');
-        cell.textContent = formatByMode(randomNum(digits));
-      });
-      playTickSound();
-
-      animInterval = setInterval(() => {
-        currentCells.forEach(cell => {
-          cell.textContent = formatByMode(randomNum(digits));
-        });
-        playTickSound();
-      }, TICK_SPEED_MS);
-
-      spinTimeout = setTimeout(() => {
-        clearInterval(animInterval);
-        currentCells.forEach(cell => {
-          const finalVal = randomNum(digits);
-          cell.dataset.fullval = finalVal;
-          cell.textContent = formatByMode(finalVal);
-          cell.classList.remove('active-spin');
-        });
-
-        playLockSound(step === totalSteps - 1);
-        activeStep = -1;
-
-        pauseTimeout = setTimeout(() => {
-          runStep(step + 1);
-        }, stepPauseTime);
-      }, stepSpinTime);
-    }
-
-    initDaySelector();
-    initTable();
-    loadSavedMp3FromStorage();
+    window.onload = () => {
+      const savedKey = localStorage.getItem('PHATDAT_API_KEY');
+      if (savedKey) document.getElementById('apiKeyInput').value = savedKey;
+      loadAllData(false);
+    };
   </script>
 </body>
 </html>
