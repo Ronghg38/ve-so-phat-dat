@@ -31,8 +31,8 @@
     .container { max-width: 600px; margin: 0 auto; padding: 12px; }
     .card { background: #fff; border-radius: 12px; padding: 13px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #ebebeb; }
     .card.next-day-card { border: 2px solid #d90416; background: linear-gradient(to bottom, #fff9f9, #ffffff); }
-    .card-title { color: #b81414; font-size: 14.5px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; }
-    .badge-date { background: #d90416; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 6px; }
+    .card-title { color: #b81414; font-size: 14px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; text-transform: uppercase; }
+    .badge-date { background: #d90416; color: #fff; font-size: 11.5px; padding: 3px 8px; border-radius: 6px; white-space: nowrap; }
     #apiKeyBox, #installGuideBox { display: none; background: #fff8e6; border: 1px solid #ffc107; }
     .key-row { display: flex; gap: 8px; margin-top: 8px; }
     .key-input { flex: 1; padding: 9px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 13.5px; }
@@ -171,10 +171,10 @@
       <div id="detailedStats" class="kq-table-wrap"></div>
     </div>
 
-    <!-- 4. PHÂN TÍCH CHO NGÀY HÔM SAU -->
+    <!-- 4. PHÂN TÍCH CHO THỨ TIẾP THEO TRONG TUẦN -->
     <div class="card next-day-card">
       <div class="card-title">
-        <span>🔮 PHÂN TÍCH CHO NGÀY HÔM SAU</span>
+        <span>🔮 PHÂN TÍCH CHO THỨ TIẾP THEO TRONG TUẦN</span>
         <span id="badgeNextDate" class="badge-date"></span>
       </div>
       <div id="nextDayStations" class="station-list" style="margin-bottom: 12px;"></div>
@@ -184,7 +184,10 @@
 
     <!-- 5. GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI -->
     <div class="card next-day-card">
-      <div class="card-title">🎯 GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI</div>
+      <div class="card-title">
+        <span>🎯 GIAO THOA CHÍNH ĐÀI & LIÊN ĐÀI</span>
+        <span id="badgeCrossDate" class="badge-date"></span>
+      </div>
       <div id="crossStation"></div>
     </div>
 
@@ -199,12 +202,11 @@
   </div>
 
   <script>
-    // Xóa cache cũ để nạp bộ kết quả thực tế mới nhất
-    if (localStorage.getItem('PHATDAT_REAL_VER') !== 'v6_verified_oct4') {
+    if (localStorage.getItem('PHATDAT_REAL_VER') !== 'v7_next_weekday') {
       Object.keys(localStorage).forEach(k => {
         if (k.startsWith('KQ_')) localStorage.removeItem(k);
       });
-      localStorage.setItem('PHATDAT_REAL_VER', 'v6_verified_oct4');
+      localStorage.setItem('PHATDAT_REAL_VER', 'v7_next_weekday');
     }
 
     const manifestData = {
@@ -524,7 +526,6 @@
       return b[n[0]] + b[n[1]];
     }
 
-    // LẤY KẾT QUẢ THẬT SAU GIỜ QUAY THƯỞNG (VƯỢT TƯỜNG LỬA CLOUDFLARE BẰNG JINA READER + MULTI-PROXY)
     async function fetchRealKQXS(region, dateObj, forceRefresh = false) {
       if (!hasDrawHappened(dateObj, region)) return null;
 
@@ -543,13 +544,11 @@
       const rSlug = region === 'MN' ? 'xsmn' : (region === 'MT' ? 'xsmt' : 'xsmb');
       const expectedStations = SCHEDULE[region][dateObj.getDay()];
 
-      // 1. Thử bóc tách qua cổng Jina Reader (không bao giờ bị chặn Cloudflare)
       const jinaUrls = [
         `https://r.jina.ai/https://xoso.com.vn/${rSlug}-${dStr}.html`,
         `https://r.jina.ai/https://xosodaiphat.com/${rSlug}-${dStr}.html`
       ];
 
-      // 2. Kết hợp các cổng HTML Proxy
       const htmlUrls = [
         `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://xoso.com.vn/${rSlug}-${dStr}.html`)}`,
         `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(`https://xosodaiphat.com/${rSlug}-${dStr}.html`)}`,
@@ -605,7 +604,6 @@
       }
     }
 
-    // Bóc tách kết quả từ bảng văn bản / Markdown của Jina Reader
     function parseMarkdownOrTextLottery(text, region, expectedStations) {
       if (region === 'MB') {
         const mbSpec = [
@@ -774,49 +772,71 @@
       const statusBar = document.getElementById('statusBar');
 
       const curDate = new Date(selectedDate);
-      const nextDate = new Date(selectedDate);
-      nextDate.setDate(nextDate.getDate() + 1);
-
-      const prevDrawOfNextDate = new Date(nextDate);
-      prevDrawOfNextDate.setDate(prevDrawOfNextDate.getDate() - 7);
-
       const curDateStr = `${FULL_DAY_NAMES[curDate.getDay()]} - ${toVNDate(curDate)}`;
-      const nextDateStr = `${FULL_DAY_NAMES[nextDate.getDay()]} - ${toVNDate(nextDate)}`;
-      const prevDrawStr = toVNDate(prevDrawOfNextDate);
 
-      document.getElementById('badgeCurrentDate').innerText = toVNDate(curDate);
+      document.getElementById('badgeCurrentDate').innerText = `${FULL_DAY_NAMES[curDate.getDay()]} (${toVNDate(curDate)})`;
       document.getElementById('badgeKQDate').innerText = `${REGION_LABELS[currentRegion]} (${curDateStr})`;
-      document.getElementById('badgeNextDate').innerText = toVNDate(nextDate);
-      document.getElementById('badgeVipDate').innerText = toVNDate(nextDate);
 
       const stationsSchedule = SCHEDULE[currentRegion][curDate.getDay()];
-      const stationsTomorrow = SCHEDULE[currentRegion][nextDate.getDay()];
-
       document.getElementById('stationsToday').innerHTML = stationsSchedule
         .map(s => `<span class="station-badge">📍 ${s}</span>`).join('');
 
+      // Nếu ngày đang bấm chưa quay thưởng (ví dụ bấm vào Thứ 2 ngày 05/10 lúc sáng),
+      // thì mục Phân tích sẽ phân tích cho chính Thứ đó (dựa trên kết quả ngày hôm trước 04/10 + kỳ trước 28/09)
       if (!hasDrawHappened(curDate, currentRegion)) {
         statusBar.className = 'status-bar warn';
-        statusBar.innerText = `⏳ ${REGION_LABELS[currentRegion]} ngày ${toVNDate(curDate)} chưa tới giờ quay thưởng`;
-        document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#e67700; font-weight:600;">Ngày ${toVNDate(curDate)} chưa tới giờ quay thưởng. Hệ thống sẽ tự động cập nhật bảng kết quả, phân tích & giao thoa ngay sau khi quay xong!</div>`;
-        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px; padding:10px;">Đang chờ tới giờ mở thưởng.</div>`;
+        statusBar.innerText = `⏳ ${REGION_LABELS[currentRegion]} (${curDateStr}) chưa tới giờ quay thưởng`;
+        document.getElementById('kqxsContainer').innerHTML = `<div style="padding:14px; text-align:center; color:#e67700; font-weight:600;">${curDateStr} chưa tới giờ quay thưởng. Xem ngay bảng Phân tích & Soi cầu cho <b>${curDateStr}</b> ở bên dưới!</div>`;
+        document.getElementById('detailedStats').innerHTML = `<div style="color:#666; font-size:13.5px; padding:10px;">Sẽ tự động thống kê Lô đầu 0 ➔ 9 ngay sau khi quay thưởng.</div>`;
+
+        const prevDay = new Date(curDate);
+        prevDay.setDate(prevDay.getDate() - 1);
+        const prevWeekSameDay = new Date(curDate);
+        prevWeekSameDay.setDate(prevWeekSameDay.getDate() - 7);
+
+        const [resPrevDay, resPrevWeek] = await Promise.all([
+          fetchRealKQXS(currentRegion, prevDay, false),
+          fetchRealKQXS(currentRegion, prevWeekSameDay, false)
+        ]);
+
+        if (resPrevDay && resPrevDay.length > 0) {
+          const targetLabel = `${FULL_DAY_NAMES[curDate.getDay()]} - ${toVNDate(curDate)}`;
+          document.getElementById('badgeNextDate').innerText = targetLabel;
+          document.getElementById('badgeCrossDate').innerText = targetLabel;
+          document.getElementById('badgeVipDate').innerText = targetLabel;
+          renderNextDayAnalysis(stationsSchedule, resPrevDay, resPrevWeek, targetLabel, toVNDate(prevWeekSameDay), FULL_DAY_NAMES[curDate.getDay()]);
+        }
         return;
       }
 
+      // Khi ngày đang chọn đã có kết quả -> Phân tích cho Thứ tiếp theo trong tuần (curDate + 1)
+      const nextDate = new Date(curDate);
+      nextDate.setDate(nextDate.getDate() + 1);
+      const prevDrawOfNextDate = new Date(nextDate);
+      prevDrawOfNextDate.setDate(prevDrawOfNextDate.getDate() - 7);
+
+      const nextDateStr = `${FULL_DAY_NAMES[nextDate.getDay()]} - ${toVNDate(nextDate)}`;
+      const prevDrawStr = toVNDate(prevDrawOfNextDate);
+      const stationsTomorrow = SCHEDULE[currentRegion][nextDate.getDay()];
+
+      document.getElementById('badgeNextDate').innerText = nextDateStr;
+      document.getElementById('badgeCrossDate').innerText = nextDateStr;
+      document.getElementById('badgeVipDate').innerText = nextDateStr;
+
       statusBar.className = 'status-bar loading';
-      statusBar.innerText = `⚡ Đang nạp kết quả thật ${REGION_LABELS[currentRegion]} ngày ${toVNDate(curDate)}...`;
+      statusBar.innerText = `⚡ Đang nạp kết quả thật ${REGION_LABELS[currentRegion]} (${curDateStr})...`;
 
       const resultsToday = await fetchRealKQXS(currentRegion, curDate, forceRefresh);
       renderDayStrip();
 
       if (resultsToday && resultsToday.length > 0) {
         statusBar.className = 'status-bar';
-        statusBar.innerText = `✅ Chuẩn thực tế ${REGION_LABELS[currentRegion]} (${curDateStr}) - Đã cập nhật cầu mới`;
+        statusBar.innerText = `✅ Chuẩn thực tế ${REGION_LABELS[currentRegion]} (${curDateStr})`;
         renderResultTable(resultsToday, currentRegion);
         renderDetailedStatsToday(resultsToday);
 
         const resultsPrevWeekTomorrow = await fetchRealKQXS(currentRegion, prevDrawOfNextDate, false);
-        renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrow, nextDateStr, prevDrawStr);
+        renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeekTomorrow, nextDateStr, prevDrawStr, FULL_DAY_NAMES[nextDate.getDay()]);
       } else {
         statusBar.className = 'status-bar warn';
         statusBar.innerText = `⚠️ Đang chờ cập nhật kết quả mới ngày ${toVNDate(curDate)}`;
@@ -944,10 +964,10 @@
       document.getElementById('detailedStats').innerHTML = html;
     }
 
-    // PHÂN TÍCH & GIAO THOA CẬP NHẬT MỚI TỪ KẾT QUẢ VỪA QUAY THƯỞNG
-    async function renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeek, nextDateStr, prevDrawStr) {
+    // PHÂN TÍCH CHO THỨ TIẾP THEO TRONG TUẦN
+    async function renderNextDayAnalysis(stationsTomorrow, resultsToday, resultsPrevWeek, nextDateStr, prevDrawStr, nextWeekdayLabel) {
       document.getElementById('nextDayStations').innerHTML = stationsTomorrow
-        .map(s => `<span class="station-badge" style="background:#fff0f0; border-color:#d90416;">🎯 Đài ngày mai: ${s}</span>`).join('');
+        .map(s => `<span class="station-badge" style="background:#fff0f0; border-color:#d90416;">🎯 Đài ${nextWeekdayLabel}: ${s}</span>`).join('');
 
       let html = '';
       let pascalsChinhDai = [], pascalsLienNgay = [], bongsHop = [];
@@ -1009,10 +1029,10 @@
 
       document.getElementById('crossStation').innerHTML = `
         <div class="analysis-item">
-          • <b>Cầu Mới Vừa Quay Xong (Hôm nay ➡ ${nextDateStr}):</b> <b style="color:#d90416">${pascalsLienNgay.join(' ↔ ')}</b><br>
+          • <b>Cầu Mới Vừa Quay Xong (➡ ${nextDateStr}):</b> <b style="color:#d90416">${pascalsLienNgay.join(' ↔ ')}</b><br>
           • <b>Giao Thoa 2 Kỳ (KQ Mới + Chính Đài ${prevDrawStr}):</b> <b style="color:#1b8a3d">${bongsHop.join(' ↔ ')}</b><br>
           • <b>Hội tụ Pascal Chính Đài (${prevDrawStr} ➡ ${nextDateStr}):</b> <b>${pascalsChinhDai.join(' ↔ ')}</b><br>
-          👉 <i>Chốt nhịp cầu mới sau quay thưởng cho <b>${REGION_LABELS[currentRegion]} (${nextDateStr})</b>: Bạch thủ <b>${vip1}</b>, Song thủ <b>${vip2}</b>, Xiên <b>${vip3}</b>.</i>
+          👉 <i>Chốt nhịp cầu cho <b>${REGION_LABELS[currentRegion]} (${nextDateStr})</b>: Bạch thủ <b>${vip1}</b>, Song thủ <b>${vip2}</b>, Xiên <b>${vip3}</b>.</i>
         </div>`;
 
       document.getElementById('vipNumbers').innerHTML = `
@@ -1026,9 +1046,9 @@
       const aiBox = document.getElementById('aiAnalysisBox');
       if (apiKey) {
         aiBox.style.display = 'block';
-        aiBox.innerHTML = '🤖 <b>Trợ lý AI đang phân tích nhịp cầu mới sau quay thưởng...</b>';
+        aiBox.innerHTML = '🤖 <b>Trợ lý AI đang phân tích nhịp cầu cho Thứ tiếp theo trong tuần...</b>';
         try {
-          const prompt = `Phân tích ngắn gọn 3 dòng soi cầu xổ số ${REGION_LABELS[currentRegion]} ngày ${nextDateStr} (${stationsTomorrow.join(', ')}). Cầu mới sau quay thưởng báo: ${pascalsLienNgay.join(', ')}; Giao thoa 2 kỳ báo: ${bongsHop.join(', ')}; Cầu chính đài kỳ trước báo: ${pascalsChinhDai.join(', ')}.`;
+          const prompt = `Phân tích ngắn gọn 3 dòng soi cầu xổ số ${REGION_LABELS[currentRegion]} cho ${nextDateStr} (${stationsTomorrow.join(', ')}). Cầu mới sau quay thưởng báo: ${pascalsLienNgay.join(', ')}; Giao thoa 2 kỳ báo: ${bongsHop.join(', ')}; Cầu chính đài kỳ trước báo: ${pascalsChinhDai.join(', ')}.`;
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1043,7 +1063,6 @@
       } else { aiBox.style.display = 'none'; }
     }
 
-    // TỰ ĐỘNG KIỂM TRA & CẬP NHẬT NGAY SAU GIỜ QUAY THƯỞNG (MỖI 60 GIÂY TRONG KHUNG GIỜ XỔ)
     setInterval(() => {
       const now = new Date();
       const h = now.getHours(), m = now.getMinutes();
